@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "name": "my-app",
+  "private": true,
+  "dependencies": {
+    "@abp/cms-kit": "~9.0.0",
+    "@volo/account": "~9.0.0",
+    "@volo/audit-logging": "~9.0.0",
+    "@volo/chat": "~9.0.0",
+    "@volo/cms-kit-pro": "~9.0.0",
+    "@volo/file-management": "~9.0.0",
+    "@volo/forms": "~9.0.0",
+    "@volo/identity": "~9.0.0",
+    "@volo/saas": "~9.0.0"
+  }
+}

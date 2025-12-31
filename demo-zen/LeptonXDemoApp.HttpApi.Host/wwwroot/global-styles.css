@@ -1,0 +1,17 @@
+/* Your Global Styles */
+
+:root {
+  --lpx-theme-light-bg: url("/images/login/login-bg-img-light.svg");
+  --lpx-theme-dim-bg: url("/images/login/login-bg-img-dim.svg");
+  --lpx-theme-dark-bg: url("/images/login/login-bg-img-dark.svg");
+}
+
+:root .lpx-theme-dark {
+  --lpx-logo: url("/images/logo/logo-light.svg");
+  --lpx-logo-icon: url("/images/logo/icon.svg");
+}
+
+:root .lpx-theme-light {
+  --lpx-logo: url("/images/logo/logo-dark.svg");
+  --lpx-logo-icon: url("/images/logo/icon.svg");
+}

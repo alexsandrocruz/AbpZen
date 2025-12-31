@@ -249,6 +249,31 @@ dotnet pack src/Volo.Saas.Domain -c Release -o ./nupkgs
 <PackageReference Include="Volo.Saas.Domain" Version="9.0.4" />
 ```
 
+
+## 🛠️ Orquestração e Infraestrutura (demo-zen)
+
+Para facilitar o desenvolvimento na pasta `demo-zen`, configuramos o **Project Tye** e o **Docker Compose**.
+
+### Opção 1: Rodar tudo via Tye (Recomendado)
+Sobe o Backend, Frontends (MVC e Angular) e os bancos de dados (MongoDB e Redis) em um único comando:
+```bash
+cd demo-zen
+tye run
+```
+Acesse o dashboard do Tye em `http://localhost:8000` para monitorar os logs.
+
+### Opção 2: Apenas Infraestrutura (Docker)
+Se preferir rodar os projetos pela IDE mas quer os bancos de dados em containers:
+```bash
+cd demo-zen
+docker-compose -f docker-compose.infra.yml up -d
+```
+
+### URLs Padrão:
+- **API Host**: `https://localhost:44322`
+- **Web (MVC)**: `https://localhost:44360`
+- **Angular**: `http://localhost:4200`
+
 ## 📝 Dicas
 
 ### VS Code Extensions Recomendadas
