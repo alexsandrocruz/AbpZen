@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -8,18 +8,25 @@ import ReactFlow, {
   addEdge,
   type Connection,
   type Edge,
-  type Node
+  type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Plus } from 'lucide-react';
 
+import EntityNode from './components/EntityNode';
+import Sidebar from './components/Sidebar';
+import type { EntityData } from './types';
 import './App.css';
 
-const initialNodes: Node[] = [];
+const nodeTypes = {
+  entity: EntityNode,
+};
+
+const initialNodes: Node<EntityData>[] = [];
 const initialEdges: Edge[] = [];
 
 function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<EntityData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
@@ -29,21 +36,38 @@ function App() {
 
   const addEntity = useCallback(() => {
     const id = `entity_${Date.now()}`;
-    const newNode: Node = {
+    const name = `NewEntity${nodes.length + 1}`;
+    const newNode: Node<EntityData> = {
       id,
-      data: { label: `New Entity ${nodes.length + 1}` },
+      type: 'entity',
+      data: {
+        name,
+        pluralName: `${name}s`,
+        tableName: `${name}s`,
+        namespace: 'ZenDoctor', // Default namespace
+        baseClass: 'FullAuditedAggregateRoot',
+        isMaster: true,
+        fields: []
+      },
       position: { x: Math.random() * 400, y: Math.random() * 400 },
-      style: {
-        background: '#1e293b',
-        color: '#f8fafc',
-        border: '1px solid #334155',
-        borderRadius: '8px',
-        padding: '10px',
-        width: 150
-      }
     };
     setNodes((nds) => nds.concat(newNode));
   }, [nodes, setNodes]);
+
+  const updateEntity = useCallback((id: string, data: EntityData) => {
+    setNodes((nds) =>
+      nds.map((node) => (node.id === id ? { ...node, data } : node))
+    );
+  }, [setNodes]);
+
+  const selectedNode = useMemo(
+    () => nodes.find((node) => node.selected) || null,
+    [nodes]
+  );
+
+  const clearSelection = useCallback(() => {
+    setNodes((nds) => nds.map((n) => ({ ...n, selected: false })));
+  }, [setNodes]);
 
   return (
     <div className="app-container">
@@ -58,6 +82,7 @@ function App() {
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          nodeTypes={nodeTypes}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
@@ -72,6 +97,12 @@ function App() {
           />
         </ReactFlow>
       </div>
+
+      <Sidebar
+        selectedEntity={selectedNode as any}
+        onUpdateEntity={updateEntity}
+        onClose={clearSelection}
+      />
     </div>
   );
 }
