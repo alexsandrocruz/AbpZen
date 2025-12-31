@@ -1,0 +1,48 @@
+## [Visual Studio]
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+## [Visual Studio Code]
+.vscode/
+
+## [JetBrains Rider]
+.idea/
+*.sln.DotSettings.user
+
+## [Build & Publish]
+[Aa]pp_Data/
+[Pp]ublish/
+[Dd]ist/
+[Oo]ut/
+*.log
+Log/
+Logs/
+
+## [Node / Web]
+node_modules/
+.angular/
+.npm/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## [ABP.io]
+.abp/
+*.abpmdl.user
+
+## [OS Specific]
+.DS_Store
+Thumbs.db
+
+## [Local Project Specific]
+nupkgs/
+demo/**/wwwroot/libs/

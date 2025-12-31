@@ -116,6 +116,7 @@
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
     <PackageVersion Include="Zxcvbn-netstandard" Version="1.0.2" />
+    <PackageVersion Include="Volo.Abp.Modularity" Version="9.0.4" />
     <PackageVersion Include="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageVersion Include="Fody" Version="6.8.2" />
   </ItemGroup>

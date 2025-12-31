@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <AbpVersion>9.0.4</AbpVersion>
+  </PropertyGroup>
+</Project>
