@@ -11,12 +11,15 @@ import ReactFlow, {
   type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus } from 'lucide-react';
+import { Plus, Download, FileJson } from 'lucide-react';
+import { useState } from 'react';
 
 import EntityNode from './components/EntityNode';
 import RelationEdge from './components/RelationEdge';
 import Sidebar from './components/Sidebar';
-import type { EntityData, RelationshipData } from './types';
+import MetadataPreview from './components/MetadataPreview';
+import type { EntityData, RelationshipData, ZenMetadata } from './types';
+import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import './App.css';
 
 const nodeTypes = {
@@ -33,6 +36,8 @@ const initialEdges: Edge[] = [];
 function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState<EntityData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [showPreview, setShowPreview] = useState(false);
+  const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -128,12 +133,31 @@ function App() {
     setEdges((eds) => eds.map((e) => ({ ...e, selected: false })));
   }, [setNodes, setEdges]);
 
+  const handleExport = useCallback(() => {
+    const data = transformToMetadata(nodes, edges);
+    downloadJson(data);
+  }, [nodes, edges]);
+
+  const handlePreview = useCallback(() => {
+    const data = transformToMetadata(nodes, edges);
+    setGeneratedMetadata(data);
+    setShowPreview(true);
+  }, [nodes, edges]);
+
   return (
     <div className="app-container">
       <div className="controls-panel">
         <button className="btn-primary" onClick={addEntity}>
           <Plus size={18} />
           Add Entity
+        </button>
+        <button className="btn-secondary" onClick={handlePreview}>
+          <FileJson size={18} />
+          Preview
+        </button>
+        <button className="btn-secondary" onClick={handleExport}>
+          <Download size={18} />
+          Export JSON
         </button>
       </div>
 
@@ -165,6 +189,13 @@ function App() {
         onUpdateEdge={updateEdge}
         onClose={clearSelection}
       />
+
+      {showPreview && generatedMetadata && (
+        <MetadataPreview
+          metadata={generatedMetadata}
+          onClose={() => setShowPreview(false)}
+        />
+      )}
     </div>
   );
 }

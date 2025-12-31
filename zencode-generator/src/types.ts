@@ -42,3 +42,18 @@ export interface RelationshipData {
     isRequired: boolean;
     description?: string;
 }
+
+export interface ZenMetadata {
+    projectName: string;
+    namespace: string;
+    entities: {
+        id: string;
+        data: EntityData;
+    }[];
+    relationships: {
+        id: string;
+        source: string;
+        target: string;
+        data: RelationshipData;
+    }[];
+}
