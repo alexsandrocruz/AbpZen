@@ -59,9 +59,31 @@
   transition: all 0.2s ease;
 }
 
+.inline-name-input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  width: 100%;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inline-name-input::selection {
+  background: rgba(99, 102, 241, 0.4);
+}
+
 .entity-node.selected {
   border-color: #6366f1;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.entity-node.is-child {
+  border-style: dashed;
+  border-color: #94a3b8;
 }
 
 .entity-header {
@@ -72,6 +94,22 @@
   gap: 8px;
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+.entity-name-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.child-badge {
+  font-size: 0.6rem;
+  background: #475569;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #cbd5e1;
+  font-weight: 800;
 }
 
 .entity-fields {
@@ -314,8 +352,21 @@
   width: 100%;
 }
 
-.field-row select {
-  width: auto;
+.inner-group input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 6px 10px !important;
+  font-size: 0.75rem !important;
+}
+
+.inner-row {
+  display: flex;
+  gap: 12px;
+}
+
+.inner-row .inner-group {
+  flex: 1;
 }
 
 .text-blue-400 {
@@ -332,8 +383,4 @@
 
 .text-yellow-400 {
   color: #facc15;
-}
-
-.text-red-400 {
-  color: #f87171;
 }

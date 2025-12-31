@@ -16,6 +16,7 @@ export interface EntityField {
     isNullable: boolean;
     isFilterable: boolean;
     isTextArea: boolean;
+    defaultValue?: string;
     minLength?: number;
     maxLength?: number;
     regex?: string;

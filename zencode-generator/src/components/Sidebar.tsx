@@ -1,4 +1,3 @@
-import React from 'react';
 import { Plus, Trash2, X } from 'lucide-react';
 import type { EntityData, EntityField, FieldType } from '../types';
 
@@ -50,7 +49,19 @@ const Sidebar = ({ selectedEntity, onUpdateEntity, onClose }: SidebarProps) => {
                     <h4>Entity Info</h4>
                     <div className="form-group">
                         <label>Entity Name</label>
-                        <input type="text" value={data.name} onChange={(e) => onUpdateEntity(id, { ...data, name: e.target.value })} />
+                        <input
+                            type="text"
+                            value={data.name}
+                            onChange={(e) => {
+                                const newName = e.target.value;
+                                onUpdateEntity(id, {
+                                    ...data,
+                                    name: newName,
+                                    pluralName: `${newName}s`,
+                                    tableName: `${newName}s`
+                                });
+                            }}
+                        />
                     </div>
                     <div className="form-group">
                         <label>Plural Name</label>
@@ -116,6 +127,28 @@ const Sidebar = ({ selectedEntity, onUpdateEntity, onClose }: SidebarProps) => {
                                     <label><input type="checkbox" checked={field.isRequired} onChange={(e) => updateField(field.id, { isRequired: e.target.checked })} /> Required</label>
                                     <label><input type="checkbox" checked={field.isNullable} onChange={(e) => updateField(field.id, { isNullable: e.target.checked })} /> Nullable</label>
                                     <label><input type="checkbox" checked={field.isTextArea} onChange={(e) => updateField(field.id, { isTextArea: e.target.checked })} /> Text Area</label>
+                                    <label><input type="checkbox" checked={field.isFilterable} onChange={(e) => updateField(field.id, { isFilterable: e.target.checked })} /> Filterable</label>
+                                    <label><input type="checkbox" checked={field.emailValidation} onChange={(e) => updateField(field.id, { emailValidation: e.target.checked })} /> Email Validation</label>
+                                </div>
+                                <div className="field-advanced">
+                                    <div className="inner-group">
+                                        <label>Default Value</label>
+                                        <input type="text" value={field.defaultValue || ''} onChange={(e) => updateField(field.id, { defaultValue: e.target.value })} placeholder="Default..." />
+                                    </div>
+                                    <div className="inner-group">
+                                        <label>Regex</label>
+                                        <input type="text" value={field.regex || ''} onChange={(e) => updateField(field.id, { regex: e.target.value })} placeholder="Regex pattern" />
+                                    </div>
+                                    <div className="inner-row">
+                                        <div className="inner-group">
+                                            <label>Min</label>
+                                            <input type="number" value={field.minLength || ''} onChange={(e) => updateField(field.id, { minLength: parseInt(e.target.value) })} />
+                                        </div>
+                                        <div className="inner-group">
+                                            <label>Max</label>
+                                            <input type="number" value={field.maxLength || ''} onChange={(e) => updateField(field.id, { maxLength: parseInt(e.target.value) })} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))}

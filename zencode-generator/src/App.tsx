@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -34,6 +34,36 @@ function App() {
     [setEdges]
   );
 
+  const updateEntity = useCallback((id: string, data: EntityData) => {
+    setNodes((nds) =>
+      nds.map((node) => (node.id === id ? { ...node, data } : node))
+    );
+  }, [setNodes]);
+
+  // Handle inline rename event from EntityNode
+  useEffect(() => {
+    const handleRename = (e: any) => {
+      const { id, name } = e.detail;
+      setNodes((nds) => nds.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              name,
+              pluralName: `${name}s`,
+              tableName: `${name}s`
+            }
+          };
+        }
+        return node;
+      }));
+    };
+
+    window.addEventListener('entity-rename', handleRename);
+    return () => window.removeEventListener('entity-rename', handleRename);
+  }, [setNodes]);
+
   const addEntity = useCallback(() => {
     const id = `entity_${Date.now()}`;
     const name = `NewEntity${nodes.length + 1}`;
@@ -53,12 +83,6 @@ function App() {
     };
     setNodes((nds) => nds.concat(newNode));
   }, [nodes, setNodes]);
-
-  const updateEntity = useCallback((id: string, data: EntityData) => {
-    setNodes((nds) =>
-      nds.map((node) => (node.id === id ? { ...node, data } : node))
-    );
-  }, [setNodes]);
 
   const selectedNode = useMemo(
     () => nodes.find((node) => node.selected) || null,
