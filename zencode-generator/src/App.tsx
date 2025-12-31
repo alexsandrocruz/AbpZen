@@ -11,13 +11,14 @@ import ReactFlow, {
   type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, FileJson } from 'lucide-react';
+import { Plus, Download, FileJson, Upload } from 'lucide-react';
 import { useState } from 'react';
 
 import EntityNode from './components/EntityNode';
 import RelationEdge from './components/RelationEdge';
 import Sidebar from './components/Sidebar';
 import MetadataPreview from './components/MetadataPreview';
+import ImportSqlModal from './components/ImportSqlModal';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import './App.css';
@@ -37,6 +38,7 @@ function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState<EntityData>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [showPreview, setShowPreview] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
 
   const onConnect = useCallback(
@@ -144,12 +146,29 @@ function App() {
     setShowPreview(true);
   }, [nodes, edges]);
 
+  const handleImportSql = useCallback((newEntities: EntityData[]) => {
+    const newNodes: Node<EntityData>[] = newEntities.map((entity, index) => {
+      const id = `entity_${Date.now()}_${index}`;
+      return {
+        id,
+        type: 'entity',
+        data: entity,
+        position: { x: 100 + index * 220, y: 100 + (index % 3) * 50 },
+      };
+    });
+    setNodes((nds) => nds.concat(newNodes));
+  }, [setNodes]);
+
   return (
     <div className="app-container">
       <div className="controls-panel">
         <button className="btn-primary" onClick={addEntity}>
           <Plus size={18} />
           Add Entity
+        </button>
+        <button className="btn-secondary" onClick={() => setShowImportModal(true)}>
+          <Upload size={18} />
+          Import SQL
         </button>
         <button className="btn-secondary" onClick={handlePreview}>
           <FileJson size={18} />
@@ -194,6 +213,13 @@ function App() {
         <MetadataPreview
           metadata={generatedMetadata}
           onClose={() => setShowPreview(false)}
+        />
+      )}
+
+      {showImportModal && (
+        <ImportSqlModal
+          onImport={handleImportSql}
+          onClose={() => setShowImportModal(false)}
         />
       )}
     </div>
