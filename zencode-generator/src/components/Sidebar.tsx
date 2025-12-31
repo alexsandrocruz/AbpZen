@@ -1,16 +1,79 @@
 import { Plus, Trash2, X } from 'lucide-react';
-import type { EntityData, EntityField, FieldType } from '../types';
+import type { EntityData, EntityField, FieldType, RelationshipData } from '../types';
 
 interface SidebarProps {
     selectedEntity: { id: string; data: EntityData } | null;
+    selectedEdge: { id: string; data: RelationshipData; sourceName?: string; targetName?: string } | null;
     onUpdateEntity: (id: string, data: EntityData) => void;
+    onUpdateEdge: (id: string, data: RelationshipData) => void;
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, onUpdateEntity, onClose }: SidebarProps) => {
-    if (!selectedEntity) return null;
+const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onClose }: SidebarProps) => {
+    if (!selectedEntity && !selectedEdge) return null;
 
-    const { id, data } = selectedEntity;
+    if (selectedEdge && !selectedEntity) {
+        const { id, data, sourceName, targetName } = selectedEdge;
+        return (
+            <div className="sidebar">
+                <div className="sidebar-header">
+                    <h3>Edit Relation</h3>
+                    <button className="btn-icon" onClick={onClose}><X size={18} /></button>
+                </div>
+                <div className="sidebar-content">
+                    <div className="relation-display">
+                        <span className="node-badge">{sourceName || 'Source'}</span>
+                        <span className="arrow">→</span>
+                        <span className="node-badge">{targetName || 'Target'}</span>
+                    </div>
+
+                    <div className="form-section">
+                        <h4>Relation Details</h4>
+                        <div className="form-group">
+                            <label>Relation Type</label>
+                            <select
+                                value={data.type}
+                                onChange={(e) => onUpdateEdge(id, { ...data, type: e.target.value as any })}
+                            >
+                                <option value="one-to-many">One to Many (1..*)</option>
+                                <option value="many-to-many">Many to Many (*..*)</option>
+                                <option value="one-to-one">One to One (1..1)</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>Source Navigation Name</label>
+                            <input
+                                type="text"
+                                value={data.sourceNavigationName}
+                                onChange={(e) => onUpdateEdge(id, { ...data, sourceNavigationName: e.target.value })}
+                                placeholder={`${targetName}s`}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Target Navigation Name</label>
+                            <input
+                                type="text"
+                                value={data.targetNavigationName}
+                                onChange={(e) => onUpdateEdge(id, { ...data, targetNavigationName: e.target.value })}
+                                placeholder={sourceName}
+                            />
+                        </div>
+                        <div className="form-group flex-row">
+                            <label>Is Required?</label>
+                            <input
+                                type="checkbox"
+                                checked={data.isRequired}
+                                onChange={(e) => onUpdateEdge(id, { ...data, isRequired: e.target.checked })}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Since we returned above if selectedEdge was prioritized, we safe access selectedEntity here
+    const { id, data } = selectedEntity!;
 
     const addField = () => {
         const newField: EntityField = {
@@ -26,14 +89,14 @@ const Sidebar = ({ selectedEntity, onUpdateEntity, onClose }: SidebarProps) => {
     };
 
     const updateField = (fieldId: string, updates: Partial<EntityField>) => {
-        const newFields = data.fields.map((f) =>
+        const newFields = data.fields.map((f: EntityField) =>
             f.id === fieldId ? { ...f, ...updates } : f
         );
         onUpdateEntity(id, { ...data, fields: newFields });
     };
 
     const removeField = (fieldId: string) => {
-        const newFields = data.fields.filter((f) => f.id !== fieldId);
+        const newFields = data.fields.filter((f: EntityField) => f.id !== fieldId);
         onUpdateEntity(id, { ...data, fields: newFields });
     };
 
@@ -97,7 +160,7 @@ const Sidebar = ({ selectedEntity, onUpdateEntity, onClose }: SidebarProps) => {
                     </div>
 
                     <div className="fields-list">
-                        {data.fields.map((field) => (
+                        {data.fields.map((field: EntityField) => (
                             <div key={field.id} className="field-editor-box">
                                 <div className="field-row">
                                     <input

@@ -384,3 +384,30 @@
 .text-yellow-400 {
   color: #facc15;
 }
+
+.relation-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  justify-content: center;
+  border: 1px solid #334155;
+}
+
+.node-badge {
+  background: #334155;
+  color: #f8fafc;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #475569;
+}
+
+.arrow {
+  color: #6366f1;
+  font-weight: bold;
+}

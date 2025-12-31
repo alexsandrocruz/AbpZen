@@ -14,12 +14,17 @@ import 'reactflow/dist/style.css';
 import { Plus } from 'lucide-react';
 
 import EntityNode from './components/EntityNode';
+import RelationEdge from './components/RelationEdge';
 import Sidebar from './components/Sidebar';
-import type { EntityData } from './types';
+import type { EntityData, RelationshipData } from './types';
 import './App.css';
 
 const nodeTypes = {
   entity: EntityNode,
+};
+
+const edgeTypes = {
+  relation: RelationEdge,
 };
 
 const initialNodes: Node<EntityData>[] = [];
@@ -30,7 +35,15 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) => {
+      const defaultData: RelationshipData = {
+        type: 'one-to-many',
+        sourceNavigationName: '',
+        targetNavigationName: '',
+        isRequired: false,
+      };
+      setEdges((eds) => addEdge({ ...params, data: defaultData, type: 'relation' }, eds));
+    },
     [setEdges]
   );
 
@@ -39,6 +52,12 @@ function App() {
       nds.map((node) => (node.id === id ? { ...node, data } : node))
     );
   }, [setNodes]);
+
+  const updateEdge = useCallback((id: string, data: RelationshipData) => {
+    setEdges((eds) =>
+      eds.map((edge) => (edge.id === id ? { ...edge, data } : edge))
+    );
+  }, [setEdges]);
 
   // Handle inline rename event from EntityNode
   useEffect(() => {
@@ -74,7 +93,7 @@ function App() {
         name,
         pluralName: `${name}s`,
         tableName: `${name}s`,
-        namespace: 'ZenDoctor', // Default namespace
+        namespace: 'ZenDoctor',
         baseClass: 'FullAuditedAggregateRoot',
         isMaster: true,
         fields: []
@@ -89,9 +108,25 @@ function App() {
     [nodes]
   );
 
+  const selectedEdge = useMemo(() => {
+    const edge = edges.find((e) => e.selected);
+    if (!edge) return null;
+
+    const sourceNode = nodes.find((n) => n.id === edge.source);
+    const targetNode = nodes.find((n) => n.id === edge.target);
+
+    return {
+      id: edge.id,
+      data: edge.data as RelationshipData,
+      sourceName: sourceNode?.data.name,
+      targetName: targetNode?.data.name,
+    };
+  }, [edges, nodes]);
+
   const clearSelection = useCallback(() => {
     setNodes((nds) => nds.map((n) => ({ ...n, selected: false })));
-  }, [setNodes]);
+    setEdges((eds) => eds.map((e) => ({ ...e, selected: false })));
+  }, [setNodes, setEdges]);
 
   return (
     <div className="app-container">
@@ -107,6 +142,7 @@ function App() {
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
@@ -123,8 +159,10 @@ function App() {
       </div>
 
       <Sidebar
-        selectedEntity={selectedNode as any}
+        selectedEntity={selectedNode}
+        selectedEdge={selectedEdge}
         onUpdateEntity={updateEntity}
+        onUpdateEdge={updateEdge}
         onClose={clearSelection}
       />
     </div>

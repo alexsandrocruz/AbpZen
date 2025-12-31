@@ -32,3 +32,13 @@ export interface EntityData {
     isMaster: boolean;
     fields: EntityField[];
 }
+
+export type RelationshipType = 'one-to-many' | 'many-to-many' | 'one-to-one';
+
+export interface RelationshipData {
+    type: RelationshipType;
+    sourceNavigationName: string;
+    targetNavigationName: string;
+    isRequired: boolean;
+    description?: string;
+}
