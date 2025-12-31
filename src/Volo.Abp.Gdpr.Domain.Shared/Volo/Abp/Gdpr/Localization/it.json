@@ -1,0 +1,28 @@
+{
+  "culture": "it",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Hai precedentemente richiesto di scaricare i dati personali. Una volta trascorso il periodo di tempo indicato per la richiesta, è possibile crearne uno nuovo.",
+    "Volo.Abp.Gdpr:010002": "I tuoi dati personali sono ancora in fase di elaborazione. Puoi scaricarlo su {GdprDataReadyTime}.",
+    "PersonalData": "Dati personali",
+    "Menu:PersonalData": "Dati personali",
+    "PersonalDataDescription": "Il tuo account contiene i dati personali che ci hai fornito. Questa pagina ti consente di scaricare o eliminare tali dati.",
+    "RequestPersonalData": "Richiedi dati personali",
+    "DeletePersonalData": "Elimina i dati personali",
+    "CreationTime": "Tempo di creazione",
+    "Action": "Azione",
+    "Preparing": "Preparazione",
+    "Download": "Scaricamento",
+    "ReadyTime": "Tempo pronto",
+    "DeletePersonalDataWarning": "L&#39;eliminazione di questi dati rimuoverà il tuo account e non accederai più all&#39;applicazione! Sei sicuro di voler procedere?",
+    "PersonalDataDeleteRequestReceived": "La tua richiesta di cancellazione dei dati personali è in elaborazione... Al termine del processo di cancellazione dei dati, il tuo account verrà cancellato e non potrai più utilizzarlo.",
+    "PersonalDataPrepareRequestReceived": "La tua richiesta di dati personali è in fase di elaborazione. Potrai scaricarlo da questa pagina, una volta pronto!",
+    "NoDataAvailable": "Nessun dato è disponibile.",
+    "Accept": "Accettare",
+    "CookiePolicy": "Gestione dei Cookie",
+    "PrivacyPolicy": "politica sulla riservatezza",
+    "ThisWebsiteUsesCookie": "Questo sito utilizza i cookie per assicurarti la migliore esperienza sul sito.",
+    "CookieConsentAgreePolicies": "Se continui a navigare, accetti i nostri {0} e {1}.",
+    "CookieConsentAgreePolicy": "Se continui a navigare, accetti i nostri {0}.",
+    "CanNotGetDownloadToken": "Non puoi ottenere un token di download per questa richiesta!"
+  }
+}

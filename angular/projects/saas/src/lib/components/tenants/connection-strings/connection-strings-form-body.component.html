@@ -1,0 +1,36 @@
+<div class="mb-3">
+  <div class="form-check mb-2">
+    <input
+      autofocus
+      id="useSharedDatabase"
+      type="checkbox"
+      class="form-check-input"
+      [(ngModel)]="useSharedDatabase"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <label for="useSharedDatabase" class="form-check-label">
+      {{ 'Saas::DisplayName:UseSharedDatabase' | abpLocalization }}
+    </label>
+  </div>
+</div>
+
+@if (!useSharedDatabase()) {
+  <div class="row">
+    <div class="col-md-10">
+      <label class="form-label" for="defaultConnectionString">
+        {{ 'Saas::DisplayName:Default' | abpLocalization }}*
+      </label>
+      <input
+        id="defaultConnectionString"
+        type="text"
+        class="form-control"
+        formControlName="default"
+      />
+    </div>
+    <div class="pt-3 col-md-2">
+      <button type="button" class="btn btn-primary" (click)="checkConnectionString()">
+        {{ 'Saas::CheckConnectionString' | abpLocalization }}
+      </button>
+    </div>
+  </div>
+}

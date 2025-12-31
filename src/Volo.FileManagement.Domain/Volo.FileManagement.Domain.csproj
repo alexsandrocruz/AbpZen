@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.FileManagement.Domain.Shared\Volo.FileManagement.Domain.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" />
+  </ItemGroup>
+
+</Project>

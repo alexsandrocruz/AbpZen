@@ -1,0 +1,52 @@
+@if (cookiePolicyUrl && privacyPolicyUrl) {
+  <span>
+    {{ splittedArr[0] }}
+  </span>
+  @if (!isHrefCookie) {
+    <a class="text-white" [routerLink]="[cookiePolicyUrl]">{{ cookiePolicy }}</a>
+  }
+
+  @if (isHrefCookie) {
+    <a class="text-white" target="_blank" [href]="[cookiePolicyUrl]">{{ cookiePolicy }}</a>
+  }
+  <span>{{ splittedArr[1] }}</span>
+
+  @if (!isHrefPrivacy) {
+    <a class="text-white" [routerLink]="[privacyPolicyUrl]">{{ privacyPolicy }}</a>
+  }
+
+  @if (isHrefPrivacy) {
+    <a class="text-white" target="_blank" [href]="[privacyPolicyUrl]">{{ privacyPolicy }}</a>
+  }
+  <span>{{ splittedArr[2] }}</span>
+}
+
+@if (cookiePolicyUrl && !privacyPolicyUrl) {
+  <span>
+    {{ policyTranslatedText[0] }}
+  </span>
+  @if (!isHrefCookie) {
+    <a class="text-white" [routerLink]="[cookiePolicyUrl]">{{ cookiePolicy }}</a>
+  }
+  @if (isHrefCookie) {
+    <a class="text-white" target="_blank" [href]="[cookiePolicyUrl]">{{ cookiePolicy }}</a>
+  }
+  <span>
+    {{ policyTranslatedText[1] }}
+  </span>
+}
+
+@if (!cookiePolicyUrl && privacyPolicyUrl) {
+  <span>
+    {{ policyTranslatedText[0] }}
+  </span>
+  @if (!isHrefPrivacy) {
+    <a class="text-white" [routerLink]="[privacyPolicyUrl]">{{ privacyPolicy }}</a>
+  }
+  @if (isHrefPrivacy) {
+    <a class="text-white" target="_blank" [href]="[privacyPolicyUrl]">{{ privacyPolicy }}</a>
+  }
+  <span>
+    {{ policyTranslatedText[1] }}
+  </span>
+}

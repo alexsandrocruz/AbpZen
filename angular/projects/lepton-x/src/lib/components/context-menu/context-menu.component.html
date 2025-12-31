@@ -1,0 +1,8 @@
+<div class="lpx-context-menu" [class.show]="visible">
+  @if (header) {
+    <div class="lpx-context-menu--header">
+      <ng-content select="lpx-context-menu-header"></ng-content>
+    </div>
+  }
+  <ng-content></ng-content>
+</div>

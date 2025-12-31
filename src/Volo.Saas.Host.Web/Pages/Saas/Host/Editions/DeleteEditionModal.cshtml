@@ -1,0 +1,51 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Saas.Host.Pages.Saas.Host.Editions
+@using Volo.Saas.Localization
+@model DeleteEditionModal
+@inject IHtmlLocalizer<SaasResource> L
+@{
+    Layout = null;
+}
+
+<form method="post"  asp-page="/Saas/Host/Editions/DeleteEditionModal" autocomplete="off">
+    <abp-modal>
+        <abp-modal-header title="@L["AreYouSure"].Value"></abp-modal-header>
+        <abp-modal-body>
+
+            <abp-input asp-for="Edition.Id" type="hidden"></abp-input>
+
+            <p class="fw-bold">@L.GetString("EditionDeletionConfirmationMessage", Model.Edition.DisplayName).Value</p>
+
+            @if (Model.Edition.TenantCount > 0)
+            {
+                <p class="mt-2">@L.GetString("ChooseAnAction", Model.Edition.TenantCount).Value</p>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" checked name="assign" id="unassign">
+                    <label class="form-check-label" for="unassign">@L["UnassignTheEditionFromTheTenants"].Value</label>
+                </div>
+
+                if (Model.Edition.OtherEditions.Any())
+                {
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="radio" name="assign" id="assign">
+                        <label class="form-check-label" for="assign">@L["AssignTenantsToOtherEdition"].Value</label>
+                    </div>
+                    <select name="Edition.AssignToEditionId" id="Edition_AssignToEditionId" class="form-select mt-2" style="display: none">
+                        <option value="" selected>@L["SelectAnEditionToAssign"].Value</option>
+                        @foreach (var edition in Model.Edition.OtherEditions)
+                        {
+                            <option value="@edition.Key">@edition.Value</option>
+                        }
+                    </select>
+                }
+            }
+        </abp-modal-body>
+        <abp-modal-footer>
+            <button class="btn btn-outline-danger" data-bs-dismiss="modal" type="button">@L["Cancel"]</button>
+            <button class="btn btn-danger"  type="submit"><i class="fa fa-trash"></i> <span>@L["Delete"]</span></button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>

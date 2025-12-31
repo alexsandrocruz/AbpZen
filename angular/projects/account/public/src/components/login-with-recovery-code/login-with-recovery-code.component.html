@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="login()">
+  <p>{{ 'AbpAccount::LoginWithRecoveryCode_Information' | abpLocalization }}</p>
+
+  <div class="mb-3">
+    <label for="recoveryCode" class="form-label">
+      {{ 'AbpAccount::RecoveryCode' | abpLocalization }}
+    </label>
+    <input
+      autofocus
+      id="recoveryCode"
+      type="text"
+      class="form-control"
+      formControlName="recoveryCode"
+      autocomplete="off"
+    />
+  </div>
+
+  <abp-button buttonType="submit" [loading]="loading" [disabled]="form.invalid">
+    {{ 'AbpAccount::Submit' | abpLocalization }}
+  </abp-button>
+</form>

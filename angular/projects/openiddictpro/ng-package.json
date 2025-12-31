@@ -1,0 +1,13 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/packages/openiddictpro",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "@abp/ng.components",
+    "@abp/ng.theme.shared",
+    "@volo/abp.commercial.ng.ui",
+    "@abp/ng.permission-management"
+  ]
+}

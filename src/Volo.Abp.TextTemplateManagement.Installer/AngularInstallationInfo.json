@@ -1,0 +1,28 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.text-template-management",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'text-template-management', loadChildren: () => import('@volo/abp.ng.text-template-management').then(m => m.TextTemplateManagementModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideTextTemplateManagementConfig"
+						],
+						"namespace": "@volo/abp.ng.text-template-management/config"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideTextTemplateManagementConfig()"
+				]
+			}
+		}
+	]
+}

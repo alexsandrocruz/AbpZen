@@ -1,0 +1,28 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.chat",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'chat', loadChildren: () => import('@volo/abp.ng.chat').then(m => m.ChatModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideChatConfig"
+						],
+						"namespace": "@volo/abp.ng.chat/config"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideChatConfig()"
+				]
+			}
+		}
+	]
+}

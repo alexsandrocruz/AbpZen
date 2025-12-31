@@ -1,0 +1,91 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.TextTemplateManagement.Web.Unified": {
+      "path": "host/Volo.Abp.TextTemplateManagement.Web.Unified/Volo.Abp.TextTemplateManagement.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.TextTemplateManagement.Host.Shared": {
+      "path": "host/Volo.Abp.TextTemplateManagement.Host.Shared/Volo.Abp.TextTemplateManagement.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.TextTemplateManagement.Web": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Web/Volo.Abp.TextTemplateManagement.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Blazor": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Blazor/Volo.Abp.TextTemplateManagement.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Blazor.Server": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Blazor.Server/Volo.Abp.TextTemplateManagement.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Blazor.WebAssembly": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Blazor.WebAssembly/Volo.Abp.TextTemplateManagement.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.HttpApi": {
+      "path": "src/Volo.Abp.TextTemplateManagement.HttpApi/Volo.Abp.TextTemplateManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.HttpApi.Client": {
+      "path": "src/Volo.Abp.TextTemplateManagement.HttpApi.Client/Volo.Abp.TextTemplateManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Application": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Application/Volo.Abp.TextTemplateManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Application.Contracts": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Application.Contracts/Volo.Abp.TextTemplateManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Domain": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Domain/Volo.Abp.TextTemplateManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.Domain.Shared": {
+      "path": "src/Volo.Abp.TextTemplateManagement.Domain.Shared/Volo.Abp.TextTemplateManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.EntityFrameworkCore": {
+      "path": "src/Volo.Abp.TextTemplateManagement.EntityFrameworkCore/Volo.Abp.TextTemplateManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.MongoDB": {
+      "path": "src/Volo.Abp.TextTemplateManagement.MongoDB/Volo.Abp.TextTemplateManagement.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.TextTemplateManagement.TestBase": {
+      "path": "test/Volo.Abp.TextTemplateManagement.TestBase/Volo.Abp.TextTemplateManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.TextTemplateManagement.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Abp.TextTemplateManagement.EntityFrameworkCore.Tests/Volo.Abp.TextTemplateManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.TextTemplateManagement.MongoDB.Tests": {
+      "path": "test/Volo.Abp.TextTemplateManagement.MongoDB.Tests/Volo.Abp.TextTemplateManagement.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.TextTemplateManagement.Domain.Tests": {
+      "path": "test/Volo.Abp.TextTemplateManagement.Domain.Tests/Volo.Abp.TextTemplateManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.TextTemplateManagement.Application.Tests": {
+      "path": "test/Volo.Abp.TextTemplateManagement.Application.Tests/Volo.Abp.TextTemplateManagement.Application.Tests.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "TextManagement",
+    "featureNamePrefix": "TextManagement"
+  }
+}

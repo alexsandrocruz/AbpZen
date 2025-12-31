@@ -1,0 +1,13 @@
+﻿using JetBrains.Annotations;
+using Volo.Abp;
+
+namespace Volo.FileManagement.Files;
+
+public class NotEnoughStorageSizeException : BusinessException
+{
+    public NotEnoughStorageSizeException([NotNull] string total, [NotNull] string remaining)
+    {
+        Code = FileManagementErrorCodes.NotEnoughStorageSize;
+        WithData("StorageSize", total).WithData("RemainingSize", remaining);
+    }
+}

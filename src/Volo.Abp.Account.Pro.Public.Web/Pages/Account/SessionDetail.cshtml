@@ -1,0 +1,80 @@
+@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Account.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<AccountResource> L
+@model Volo.Abp.Account.Public.Web.Pages.Account.SessionDetailModel
+
+@{
+    Layout = null;
+}
+
+<abp-modal size="@(AbpModalSize.Large)">
+    <abp-modal-header title="@L["Session:Detail"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:Device"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @Model.Session.Device
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:DeviceInfo"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @Model.Session.DeviceInfo
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:UserInfo"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @if(!Model.Session.TenantName.IsNullOrWhiteSpace())
+                {
+                    @($"{Model.Session.TenantName}\\{Model.Session.UserName}")
+                }
+                else
+                {
+                    @Model.Session.UserName
+                }
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:ClientId"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @Model.Session.ClientId
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:IpAddresses"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @if (!Model.Session.IpAddresses.IsNullOrEmpty())
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var ip in Model.Session.IpAddresses)
+                        {
+                            <li class="list-group-item">@ip</li>
+                        }
+                    </ul>
+                }
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:SignedIn"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @Model.Session.SignedIn
+            </abp-column>
+        </abp-row>
+        <hr class="my-0" />
+        <abp-row>
+            <abp-column size-lg="_3" class="col-form-label"><strong>@L["Session:LastAccessed"]</strong></abp-column>
+            <abp-column size-lg="_9" class="col-form-label">
+                @Model.Session.LastAccessed
+            </abp-column>
+        </abp-row>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>

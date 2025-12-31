@@ -1,0 +1,10 @@
+<div style="max-width: 160px" class="pointer abp-ellipsis-inline">
+  @if (!isReadyToDownload) {
+    <span class="badge bg-warning">{{ 'AbpGdpr::Preparing' | abpLocalization }}</span>
+  }
+  @if (isReadyToDownload) {
+    <button type="button" class="btn btn-primary" (click)="getUserData()">
+      {{ 'AbpGdpr::Download' | abpLocalization }}
+    </button>
+  }
+</div>

@@ -1,0 +1,31 @@
+@if (!edited) {
+  @if (verified) {
+    <span class="input-group-text">
+      <i class="me-1 text-success fa fa-check-square" aria-hidden="true"> </i
+      ><span class="text-success">{{
+        verifiedLabel || 'AbpAccount::Verified' | abpLocalization
+      }}</span>
+    </span>
+  } @else {
+    <button
+      style="border-top-left-radius: 0; border-bottom-left-radius: 0"
+      type="button"
+      class="btn btn-warning"
+      (click)="onBtnClick()"
+    >
+      <i class="me-1 fa fa-vcard" aria-hidden="true"></i>
+      {{ buttonLabel || 'AbpAccount::Verify' | abpLocalization }}
+    </button>
+  }
+} @else {
+  <span
+    class="input-group-text"
+    placement="top"
+    [ngbTooltip]="editedTooltip || 'AbpAccount::FirstlySubmitToVerify' | abpLocalization"
+  >
+    <i class="me-1 fa fa-times" aria-hidden="true"> </i>
+    <span class="text-danger">
+      {{ editedLabel || 'AbpAccount::NotVerified' | abpLocalization }}
+    </span>
+  </span>
+}

@@ -1,0 +1,56 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Newsletters.DetailModel
+@inject IHtmlLocalizer<CmsKitResource> L
+
+@{
+    Layout = null;
+}
+
+@section scripts {
+    <abp-script src="/Pages/CmsKit/Newsletters/Detail.js"/>
+}
+
+<abp-modal size="Large">
+    <abp-modal-header title="@L["Detail"].Value"></abp-modal-header>
+
+    <abp-modal-body>
+        <div class="mb-3">
+            <small class="text-muted">@Model.NewsletterRecordWithDetailsDto.EmailAddress</small> -
+            <small class="badge bg-primary">@Model.NewsletterRecordWithDetailsDto.CreationTime.ToShortDateString()</small>
+        </div>
+
+        <table class="table table-striped text-center">
+            <thead>
+            <tr>
+                <th>@L["Preference"]</th>
+                <th>@L["Source"]</th>
+                <th>@L["SourceUrl"]</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var newsletter in Model.NewsletterRecordWithDetailsDto.Preferences)
+            {
+                <tr>
+                    <td>
+                        <span data-bs-toggle="tooltip" title="@newsletter.Preference">
+                            @newsletter.Preference.TruncateWithPostfix(30)
+                        </span>
+                    </td>
+                    <td>
+                        <span data-bs-toggle="tooltip" title="@newsletter.Source">
+                            @newsletter.Source.TruncateWithPostfix(30)
+                        </span>
+                    </td>
+                    <td>
+                        <span data-bs-toggle="tooltip" title="@newsletter.SourceUrl">
+                            @newsletter.SourceUrl.TruncateWithPostfix(50)
+                        </span>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </abp-modal-body>
+</abp-modal>

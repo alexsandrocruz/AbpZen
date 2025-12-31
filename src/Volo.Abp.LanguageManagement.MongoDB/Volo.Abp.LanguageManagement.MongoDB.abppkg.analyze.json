@@ -1,0 +1,121 @@
+{
+  "name": "Volo.Abp.LanguageManagement.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.LanguageManagement.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.LanguageManagement.Domain",
+          "namespace": "Volo.Abp.LanguageManagement",
+          "name": "LanguageManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "namespace": "Volo.Abp.MongoDB",
+          "name": "AbpMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "LanguageManagementMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.MongoDB",
+      "connectionStringName": "AbpLanguageManagement",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.Abp.LanguageManagement.Language",
+          "contentType": "databaseCollection",
+          "name": "Languages",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Abp.LanguageManagement.LanguageText",
+          "contentType": "databaseCollection",
+          "name": "LanguageTexts",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Abp.LanguageManagement.External.LocalizationResourceRecord",
+          "contentType": "databaseCollection",
+          "name": "LocalizationResources",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Abp.LanguageManagement.External.LocalizationTextRecord",
+          "contentType": "databaseCollection",
+          "name": "LocalizationTexts",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "ILanguageManagementMongoDbContext",
+          "namespace": "Volo.Abp.LanguageManagement.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.LanguageManagement.MongoDB",
+          "fullName": "Volo.Abp.LanguageManagement.MongoDB.ILanguageManagementMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "LanguageManagementMongoDbContext",
+      "summary": null
+    }
+  ]
+}

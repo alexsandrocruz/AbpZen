@@ -1,0 +1,115 @@
+{
+  "name": "Volo.Abp.TextTemplateManagement.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.TextTemplateManagement.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.Domain",
+          "namespace": "Volo.Abp.TextTemplateManagement",
+          "name": "TextTemplateManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "namespace": "Volo.Abp.MongoDB",
+          "name": "AbpMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "TextTemplateManagementMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.TextTemplateManagement.MongoDB",
+      "connectionStringName": "TextTemplateManagement",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.Abp.TextTemplateManagement.TextTemplates.TextTemplateContent",
+          "contentType": "databaseCollection",
+          "name": "TextTemplates",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Abp.TextTemplateManagement.TextTemplates.TextTemplateDefinitionRecord",
+          "contentType": "databaseCollection",
+          "name": "TextTemplateDefinitionRecords",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Abp.TextTemplateManagement.TextTemplates.TextTemplateDefinitionContentRecord",
+          "contentType": "databaseCollection",
+          "name": "TextTemplateDefinitionContentRecords",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "ITextTemplateManagementMongoDbContext",
+          "namespace": "Volo.Abp.TextTemplateManagement.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.MongoDB",
+          "fullName": "Volo.Abp.TextTemplateManagement.MongoDB.ITextTemplateManagementMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "TextTemplateManagementMongoDbContext",
+      "summary": null
+    }
+  ]
+}

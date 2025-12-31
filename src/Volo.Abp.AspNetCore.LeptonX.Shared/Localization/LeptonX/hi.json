@@ -1,0 +1,21 @@
+{
+  "Culture": "hi",
+  "Texts": {
+    "Login": "लॉग इन करें",
+    "Appearance": "दिखावट",
+    "ContainerWidth": "कंटेनर की चौड़ाई",
+    "ContainerWidth:Boxed": "बॉक्सिंग लेआउट",
+    "ContainerWidth:Fixed": "निश्चित लेआउट",
+    "ContainerWidth:Fluid": "फ्लूइड लेआउट",
+    "GeneralSettings": "सामान्य सेटिंग्स",
+    "Language": "भाषा",
+    "Settings": "समायोजन",
+    "Theme:dark": "अँधेरा",
+    "Theme:dim": "अर्द्ध अंधेरे",
+    "Theme:light": "रोशनी",
+    "Theme:system": "व्यवस्था",
+    "Welcome": "स्वागत",
+    "FilterMenu": "मेनू फ़िल्टर करें",
+    "Menu": "मेनू"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "culture": "sv",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Du har tidigare begärt att få ladda ner personuppgifter. När den angivna tidsperioden för begäran har löpt ut kan du skapa en ny begäran.",
+    "Volo.Abp.Gdpr:010002": "Dina personuppgifter håller fortfarande på att förberedas. Du kan ladda ner den på {GdprDataReadyTime}.",
+    "PersonalData": "Personuppgifter",
+    "Menu:PersonalData": "Personuppgifter",
+    "PersonalDataDescription": "Ditt konto innehåller de personuppgifter som du har lämnat till oss. På den här sidan kan du ladda ner eller radera dessa uppgifter.",
+    "RequestPersonalData": "Begär personuppgifter",
+    "DeletePersonalData": "Radera personuppgifter",
+    "CreationTime": "Skapelsetid",
+    "Action": "Åtgärd",
+    "Preparing": "Förberedelser",
+    "Download": "Nedladdningar",
+    "ReadyTime": "Klar tid",
+    "DeletePersonalDataWarning": "Om du raderar dessa uppgifter kommer ditt konto att tas bort och du kommer inte längre att logga in i applikationen! Är du säker på att du vill fortsätta?",
+    "PersonalDataDeleteRequestReceived": "Din begäran om radering av personuppgifter håller på att behandlas... I slutet av processen för radering av uppgifter kommer ditt konto att raderas och du kommer inte längre att kunna använda det.",
+    "PersonalDataPrepareRequestReceived": "Din begäran om personuppgifter håller på att behandlas. Du kan ladda ner den från den här sidan när den är klar!",
+    "NoDataAvailable": "Inga uppgifter finns tillgängliga.",
+    "Accept": "Acceptera",
+    "CookiePolicy": "Policy för cookies",
+    "PrivacyPolicy": "Integritetspolicy",
+    "ThisWebsiteUsesCookie": "Denna webbplats använder cookies för att säkerställa att du får den bästa upplevelsen på webbplatsen.",
+    "CookieConsentAgreePolicies": "Om du fortsätter att surfa samtycker du till våra {0} och {1}.",
+    "CookieConsentAgreePolicy": "Om du fortsätter att surfa godkänner du vår {0}.",
+    "CanNotGetDownloadToken": "Du kan inte få en nedladdningstoken för den här begäran!"
+  }
+}

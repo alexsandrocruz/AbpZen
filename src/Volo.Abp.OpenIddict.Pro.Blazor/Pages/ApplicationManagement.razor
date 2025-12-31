@@ -1,0 +1,536 @@
+﻿@page "/openiddict/applications"
+@using Volo.Abp.OpenIddict.Permissions
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(AbpOpenIddictProPermissions.Application.Default)]
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.OpenIddict.Applications
+@using Volo.Abp.OpenIddict.Applications.Dtos
+@using Volo.Abp.OpenIddict.Localization
+@using Volo.Abp.AuditLogging.Blazor.Components
+@using Volo.Abp.PermissionManagement.Blazor.Components
+@using Microsoft.AspNetCore.Components.Forms;
+@using global::OpenIddict.Abstractions
+@inject AbpBlazorMessageLocalizerHelper<AbpOpenIddictResource> LH
+
+@inherits AbpCrudPageBase<IApplicationAppService, ApplicationDto, Guid, GetApplicationListInput, CreateApplicationInput, UpdateApplicationInput>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Applications"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar"/>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true"/>
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="ApplicationDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@ApplicationManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true" Size="ModalSize.Large">
+            <Form Class="form-with-card" id="CreateForm">
+                <ModalHeader>
+                    <ModalTitle>@L["NewApplication"].Value</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@CreateInput" ValidateOnLoad="false">
+                        <Row>
+
+                            <Column ColumnSize="ColumnSize.Is6">
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <FieldLabel>@L["ApplicationType"] *</FieldLabel>
+                                    <Select @bind-SelectedValue="@CreateInput.ApplicationType">
+                                        @foreach (var type in ApplicationTypes)
+                                        {
+                                            <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                        }
+                                    </Select>
+                                </Validation>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["ClientId"] *</FieldLabel>
+                                        <TextEdit @bind-Text="CreateInput.ClientId">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                </Validation>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                                        <TextEdit @bind-Text="CreateInput.DisplayName">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                </Validation>
+
+                                <Field>
+                                    <FieldLabel>@L["ClientUri"]</FieldLabel>
+                                    <TextEdit @bind-Text="CreateInput.ClientUri">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel>@L["LogoUri"]</FieldLabel>
+                                    <TextEdit @bind-Text="CreateInput.LogoUri">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                                <Field>
+                                    <FieldLabel>@L["ClientType"]</FieldLabel>
+                                    <Select @bind-SelectedValue="@CreateInput.ClientType">
+                                        @foreach (var type in ClientTypes)
+                                        {
+                                            <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                        }
+                                    </Select>
+                                </Field>
+                                @if (CreateInput.ClientType != OpenIddictConstants.ClientTypes.Public)
+                                {
+                                    <Field>
+                                        <FieldLabel>@L["ClientSecret"]</FieldLabel>
+                                        <TextEdit @bind-Text="CreateInput.ClientSecret">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                }
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is6">
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="CreateInput.AllowAuthorizationCodeFlow">
+                                        @L["AllowAuthorizationCodeFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="CreateInput.AllowImplicitFlow">
+                                        @L["AllowImplicitFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="CreateInput.AllowHybridFlow">
+                                        @L["AllowHybridFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="CreateInput.AllowPasswordFlow">
+                                        @L["AllowPasswordFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="@(CreateInput.ClientType == OpenIddictConstants.ClientTypes.Public)" TValue="bool" @bind-Checked="CreateInput.AllowClientCredentialsFlow">
+                                        @L["AllowClientCredentialsFlow"]
+                                        @if(CreateInput.ClientType == OpenIddictConstants.ClientTypes.Public)
+                                        {
+                                            <br/>
+                                            @($"({L["NotAvailableForThisType"]})")
+                                        }
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="@(!CreateInput.AllowAuthorizationCodeFlow && !CreateInput.AllowHybridFlow && !CreateInput.AllowPasswordFlow)" TValue="bool" @bind-Checked="CreateInput.AllowRefreshTokenFlow">
+                                        @L["AllowRefreshTokenFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="@(CreateInput.ClientType == OpenIddictConstants.ClientTypes.Public)" TValue="bool" @bind-Checked="CreateInput.AllowDeviceEndpoint">
+                                        @L["AllowDeviceEndpoint"]
+                                        @if(CreateInput.ClientType == OpenIddictConstants.ClientTypes.Public)
+                                        {
+                                            <br/>
+                                            @($"({L["NotAvailableForThisType"]})")
+                                        }
+                                    </Check>
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel>@L["ExtensionGrantTypes"]</FieldLabel>
+                                    <MemoEdit wrap="off" @bind-Text="CreateInput.ExtensionGrantTypes">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </MemoEdit>
+                                </Field>
+
+                                @if (CreateInput.AllowAuthorizationCodeFlow || CreateInput.AllowImplicitFlow || CreateInput.AllowHybridFlow)
+                                {
+                                    <Field>
+                                        <FieldLabel>@L["RedirectUris"]</FieldLabel>
+                                        <MemoEdit wrap="off" @bind-Text="CreateInput.RedirectUris"/>
+                                    </Field>
+                                    <Field>
+                                        <Check TValue="bool" @bind-Checked="CreateInput.AllowLogoutEndpoint">
+                                            @L["AllowLogoutEndpoint"]
+                                        </Check>
+                                    </Field>
+                                    @if (CreateInput.AllowLogoutEndpoint)
+                                    {
+                                            <Field>
+                                                <FieldLabel>@L["PostLogoutRedirectUris"]</FieldLabel>
+                                                <MemoEdit wrap="off" @bind-Text="CreateInput.PostLogoutRedirectUris">
+                                                    <Feedback>
+                                                        <ValidationError/>
+                                                    </Feedback>
+                                                </MemoEdit>
+                                            </Field>
+                                    }
+                                    <Field>
+                                        <FieldLabel>@L["ConsentType"]</FieldLabel>
+                                        <Select @bind-SelectedValue="@CreateInput.ConsentType">
+                                            @foreach (var type in ConsentTypes)
+                                            {
+                                                <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                            }
+                                        </Select>
+                                    </Field>
+                                }
+                                <h5>@L["Scopes"]</h5>
+                                @if (Scopes.Any())
+                                {
+                                    @foreach (var scope in Scopes)
+                                    {
+                                        <Field>
+                                            <Check TValue="bool" @bind-Checked="Scopes[scope.Key]">
+                                                @scope.Key
+                                            </Check>
+                                        </Field>
+                                    }
+                                }
+                                else
+                                {
+                                    @L["NoAvailableScopes"]
+                                }
+                            </Column>
+                        </Row>
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Form="CreateForm" Clicked="@CreateEntityAsync"/>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true" Size="ModalSize.Large">
+            <Form Class="form-with-card" id="EditForm">
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"].Value</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@UpdateInput" ValidateOnLoad="false">
+                        <Row>
+                            <Column ColumnSize="ColumnSize.Is6">
+                                <Validation MessageLocalizer="@LH.Localize">
+                                     <Field>
+                                         <FieldLabel>@L["ApplicationType"] *</FieldLabel>
+                                         <Select @bind-SelectedValue="@UpdateInput.ApplicationType">
+                                             @foreach (var type in ApplicationTypes)
+                                             {
+                                                 <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                             }
+                                         </Select>
+                                    </Field>
+                                    <Field>
+                                        <FieldLabel>@L["ClientId"] *</FieldLabel>
+                                        <TextEdit @bind-Text="UpdateInput.ClientId">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                </Validation>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                                        <TextEdit @bind-Text="UpdateInput.DisplayName">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                </Validation>
+                                <Field>
+                                    <FieldLabel>@L["ClientUri"]</FieldLabel>
+                                    <TextEdit @bind-Text="CreateInput.ClientUri">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                                <Field>
+                                    <FieldLabel>@L["LogoUri"]</FieldLabel>
+                                    <TextEdit @bind-Text="CreateInput.LogoUri">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                                <Field>
+                                    <FieldLabel>@L["ClientType"]</FieldLabel>
+                                    <Select @bind-SelectedValue="@UpdateInput.ClientType">
+                                        @foreach (var type in ClientTypes)
+                                        {
+                                            <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                        }
+                                    </Select>
+                                </Field>
+                                @if (UpdateInput.ClientType != OpenIddictConstants.ClientTypes.Public)
+                                {
+                                    <Field>
+                                        <FieldLabel>@L["ClientSecret"]</FieldLabel>
+                                        <TextEdit @bind-Text="UpdateInput.ClientSecret">
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Field>
+                                }
+                            </Column>
+                            <Column ColumnSize="ColumnSize.Is6">
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="UpdateInput.AllowAuthorizationCodeFlow">
+                                        @L["AllowAuthorizationCodeFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="UpdateInput.AllowImplicitFlow">
+                                        @L["AllowImplicitFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="UpdateInput.AllowHybridFlow">
+                                        @L["AllowHybridFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="UpdateInput.AllowPasswordFlow">
+                                        @L["AllowPasswordFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="UpdateInput.ClientType == OpenIddictConstants.ClientTypes.Public" TValue="bool" @bind-Checked="UpdateInput.AllowClientCredentialsFlow">
+                                        @L["AllowClientCredentialsFlow"]
+                                        @if(UpdateInput.ClientType == OpenIddictConstants.ClientTypes.Public)
+                                        {
+                                            <br/>
+                                            @($"({L["NotAvailableForThisType"]})")
+                                        }
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="@(!UpdateInput.AllowAuthorizationCodeFlow && !UpdateInput.AllowHybridFlow && !UpdateInput.AllowPasswordFlow)" TValue="bool" @bind-Checked="UpdateInput.AllowRefreshTokenFlow">
+                                        @L["AllowRefreshTokenFlow"]
+                                    </Check>
+                                </Field>
+                                <Field>
+                                    <Check Disabled="UpdateInput.ClientType == OpenIddictConstants.ClientTypes.Public" TValue="bool" @bind-Checked="UpdateInput.AllowDeviceEndpoint">
+                                        @L["AllowDeviceEndpoint"]
+                                        @if(UpdateInput.ClientType == OpenIddictConstants.ClientTypes.Public)
+                                        {
+                                            <br/>
+                                            @($"({L["NotAvailableForThisType"]})")
+                                        }
+                                    </Check>
+                                </Field>
+
+                                <Field>
+                                    <FieldLabel>@L["ExtensionGrantTypes"]</FieldLabel>
+                                    <MemoEdit wrap="off" @bind-Text="UpdateInput.ExtensionGrantTypes">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </MemoEdit>
+                                </Field>
+
+                                @if (UpdateInput.AllowAuthorizationCodeFlow || UpdateInput.AllowImplicitFlow || UpdateInput.AllowHybridFlow)
+                                {
+                                    <Field>
+                                        <FieldLabel>@L["RedirectUris"]</FieldLabel>
+                                        <MemoEdit wrap="off" @bind-Text="UpdateInput.RedirectUris"/>
+                                    </Field>
+                                    <Field>
+                                        <Check TValue="bool" @bind-Checked="UpdateInput.AllowLogoutEndpoint">
+                                            @L["AllowLogoutEndpoint"]
+                                        </Check>
+                                    </Field>
+                                    @if (UpdateInput.AllowLogoutEndpoint)
+                                    {
+                                        <Field>
+                                            <FieldLabel>@L["PostLogoutRedirectUris"]</FieldLabel>
+                                            <MemoEdit wrap="off" @bind-Text="UpdateInput.PostLogoutRedirectUris">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </MemoEdit>
+                                        </Field>
+                                    }
+                                    <Field>
+                                        <FieldLabel>@L["ConsentType"]</FieldLabel>
+                                        <Select @bind-SelectedValue="@UpdateInput.ConsentType">
+                                            @foreach (var type in ConsentTypes)
+                                            {
+                                                <SelectItem Value="@type.Value">@type.Key</SelectItem>
+                                            }
+                                        </Select>
+                                    </Field>
+                                }
+                                <h5>@L["Scopes"]</h5>
+                                @if (Scopes.Any())
+                                {
+                                    @foreach (var scope in Scopes)
+                                    {
+                                        <Field>
+                                            <Check TValue="bool" @bind-Checked="Scopes[scope.Key]">
+                                                @scope.Key
+                                            </Check>
+                                        </Field>
+                                    }
+                                }
+                                else
+                                {
+                                    @L["NoAvailableScopes"]
+                                }
+                            </Column>
+                        </Row>
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Form="EditForm" Clicked="@UpdateEntityAsync"/>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* TOKEN LIFETIME MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="TokenLifetimeModal" Closing="@ClosingTokenLifetimeModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form Class="form-with-card" id="TokenLifetimeForm">
+                <ModalHeader>
+                    <ModalTitle>@L["TokenLifetime"].Value</ModalTitle>
+                    <CloseButton Clicked="CloseTokenLifetimeModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <i class="fa fa-info-circle"></i> @L["TokenLifetimeHit"].Value
+                        </small>
+                    </div>
+                    <Validations @ref="@TokenLifetimeValidationsRef" Model="@TokenLifetime" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["AccessTokenLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" @bind-Value="TokenLifetime.AccessTokenLifetime" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+                            <Field>
+                                <FieldLabel>@L["AuthorizationCodeLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" @bind-Value="TokenLifetime.AuthorizationCodeLifetime">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+                            <Field>
+                                <FieldLabel>@L["DeviceCodeLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" @bind-Value="TokenLifetime.DeviceCodeLifetime">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+
+                            <Field>
+                                <FieldLabel>@L["IdentityTokenLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" TValue="double?" @bind-Value="TokenLifetime.IdentityTokenLifetime">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+                            <Field>
+                                <FieldLabel>@L["RefreshTokenLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" @bind-Value="TokenLifetime.RefreshTokenLifetime">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+                            <Field>
+                                <FieldLabel>@L["UserCodeLifetime"]</FieldLabel>
+                                <NumericEdit TValue="double?" @bind-Value="TokenLifetime.UserCodeLifetime">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </NumericEdit>
+                            </Field>
+                        </Validation>
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseTokenLifetimeModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Form="TokenLifetimeForm" Clicked="@UpdateTokenLifetimeAsync"/>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@if (HasViewChangeHistoryPermission)
+{
+    <EntityChangeHistoryModal @ref="EntityChangeHistoryModal"/>
+}
+
+@if (HasManagePermissionsPermission)
+{
+    <PermissionManagementModal @ref="PermissionManagementModal"/>
+}

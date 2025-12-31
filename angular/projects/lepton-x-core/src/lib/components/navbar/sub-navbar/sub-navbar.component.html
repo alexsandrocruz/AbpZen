@@ -1,0 +1,64 @@
+@if (item.component) {
+  <ng-container
+    *ngComponentOutlet="item.component; injector: injector"
+  ></ng-container>
+} @else {
+  <ng-container *ngTemplateOutlet="defaultTemplate"></ng-container>
+}
+
+<ng-template #defaultTemplate>
+  <a
+    class="lpx-menu-item-link"
+    [routerLink]="item.link"
+    [class.selected]="item.selected"
+    [class.expanded]="item.children?.length && item.expanded"
+    (click)="onItemClick(item)"
+  >
+    <lpx-icon
+      class="lpx-menu-item-icon"
+      *ngIf="item.icon"
+      [iconClass]="item.icon"
+    ></lpx-icon>
+    <ng-container
+      *ngTemplateOutlet="
+        item.template || textTmpl;
+        context: { $implicit: item }
+      "
+    ></ng-container>
+    <ng-template #textTmpl>
+      @if (item.text) {
+        <span class="lpx-menu-item-text hidden-in-hover-trigger">{{
+          item.text | lpxTranslate | async
+        }}</span>
+      }
+    </ng-template>
+
+    @if (item.children?.length) {
+      <lpx-icon
+        [iconClass]="item.expanded ? 'chevronUp' : 'chevronDown'"
+        class="dd-icon hidden-in-hover-trigger"
+      >
+      </lpx-icon>
+    }
+  </a>
+
+  @if (item.children?.length) {
+    <ul
+      class="lpx-inner-menu hidden-in-hover-trigger"
+      [class.collapsed]="!item.expanded"
+    >
+      @for (child of item.children; track $index) {
+        <li
+          class="lpx-inner-menu-item"
+          *lpxVisible="!child.visible || child.visible(child, injector)"
+        >
+          <lpx-sub-navbar
+            [item]="child"
+            (routeClick)="this.routeClick.emit($event)"
+            (expand)="onChildExpand($event)"
+          ></lpx-sub-navbar>
+        </li>
+      }
+    </ul>
+  }
+</ng-template>

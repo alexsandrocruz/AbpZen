@@ -1,0 +1,412 @@
+﻿@using Volo.Abp.Identity.Localization
+@using Volo.Abp.Identity.Settings
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+
+@if (Settings != null)
+{
+     <Row>
+        <Column>
+            <Tabs @bind-SelectedTab="@SelectedTab">
+            <Items>
+                <Tab Name="IdentitySettingsGeneral">
+                    @L["IdentitySettingsGeneral"]
+                </Tab>
+                 <Tab Name="IdentitySettingsSessions">
+                    @L["IdentitySettingsSessions"]
+                </Tab>
+                @if (Settings.IdentityLdapSettings != null)
+                {
+                    <Tab Name="IdentityLdapSettings">
+                        @L["IdentitySettingsLdap"]
+                    </Tab>
+                }
+                @if (Settings.IdentityOAuthSettings != null)
+                {
+                    <Tab Name="IdentityOAuthSettings">
+                        @L["IdentitySettingsOAuth"]
+                    </Tab>
+                }
+            </Items>
+            <Content>
+            <TabPanel Name="IdentitySettingsGeneral">
+                <Form>
+                    <Validations @ref="@IdentitySettingValidation" Model="@Settings.IdentitySettings" ValidateOnLoad="false">
+                        <Row>
+                            <Column>
+                                <h4>@L["PasswordStrengthSettings"]</h4>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Abp.Identity.Password.RequiredLength"]</FieldLabel>
+                                        <NumericEdit TValue="int" @bind-Value="@Settings.IdentitySettings.Password.RequiredLength">
+                                            <ChildContent>
+                                                <FieldHelp>@L["Description:Abp.Identity.Password.RequiredLength"]</FieldHelp>
+                                            </ChildContent>
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </NumericEdit>
+                                    </Field>
+                                </Validation>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Abp.Identity.Password.RequiredUniqueChars"]</FieldLabel>
+                                        <NumericEdit TValue="int" @bind-Value="@Settings.IdentitySettings.Password.RequiredUniqueChars">
+                                            <ChildContent>
+                                                <FieldHelp>@L["Description:Abp.Identity.Password.RequiredUniqueChars"]</FieldHelp>
+                                            </ChildContent>
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </NumericEdit>
+                                    </Field>
+                                </Validation>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Password.RequireNonAlphanumeric">
+                                        @L["DisplayName:Abp.Identity.Password.RequireNonAlphanumeric"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Password.RequireNonAlphanumeric"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Password.RequireLowercase">
+                                        @L["DisplayName:Abp.Identity.Password.RequireLowercase"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Password.RequireLowercase"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Password.RequireUppercase">
+                                        @L["DisplayName:Abp.Identity.Password.RequireUppercase"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Password.RequireUppercase"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Password.RequireDigit">
+                                        @L["DisplayName:Abp.Identity.Password.RequireDigit"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Password.RequireDigit"]</small>
+                                </Field>
+                            </Column>
+                        </Row>
+                        <hr class="my-4"/>
+                        <Row>
+                            <Column>
+                                <h4>@L["PasswordRenewingSettings"]</h4>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Password.ForceUsersToPeriodicallyChangePassword">
+                                        @L["DisplayName:Abp.Identity.Password.ForceUsersToPeriodicallyChangePassword"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Password.ForceUsersToPeriodicallyChangePassword"]</small>
+                                </Field>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Abp.Identity.Password.PasswordChangePeriodDays"]</FieldLabel>
+                                        <NumericEdit TValue="int" @bind-Value="@Settings.IdentitySettings.Password.PasswordChangePeriodDays">
+                                            <ChildContent>
+                                                <FieldHelp>@L["Description:Abp.Identity.Password.PasswordChangePeriodDays"]</FieldHelp>
+                                            </ChildContent>
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </NumericEdit>
+                                    </Field>
+                                </Validation>
+                            </Column>
+                        </Row>
+                        <hr class="my-4"/>
+                        <Row>
+                            <Column>
+                                <h4>@L["LockoutSettings"]</h4>
+
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.Lockout.AllowedForNewUsers">
+                                        @L["DisplayName:Abp.Identity.Lockout.AllowedForNewUsers"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.Lockout.AllowedForNewUsers"]</small>
+                                </Field>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Abp.Identity.Lockout.LockoutDuration"]</FieldLabel>
+                                        <NumericEdit TValue="int" @bind-Value="@Settings.IdentitySettings.Lockout.LockoutDuration">
+                                            <ChildContent>
+                                                <FieldHelp>@L["Description:Abp.Identity.Lockout.LockoutDuration"]</FieldHelp>
+                                            </ChildContent>
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </NumericEdit>
+                                    </Field>
+                                </Validation>
+                                <Validation MessageLocalizer="@LH.Localize">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Abp.Identity.Lockout.MaxFailedAccessAttempts"]</FieldLabel>
+                                        <NumericEdit TValue="int" @bind-Value="@Settings.IdentitySettings.Lockout.MaxFailedAccessAttempts">
+                                            <ChildContent>
+                                                <FieldHelp>@L["Description:Abp.Identity.Lockout.MaxFailedAccessAttempts"]</FieldHelp>
+                                            </ChildContent>
+                                            <Feedback>
+                                                <ValidationError/>
+                                            </Feedback>
+                                        </NumericEdit>
+                                    </Field>
+                                </Validation>
+                            </Column>
+                        </Row>
+                        <hr class="my-4"/>
+                        <Row>
+                            <Column>
+                                <h4>@L["SignInSettings"]</h4>
+
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.SignIn.RequireConfirmedEmail">
+                                        @L["DisplayName:Abp.Identity.SignIn.RequireConfirmedEmail"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.SignIn.RequireConfirmedEmail"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.SignIn.EnablePhoneNumberConfirmation">
+                                        @L["DisplayName:Abp.Identity.SignIn.EnablePhoneNumberConfirmation"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.SignIn.EnablePhoneNumberConfirmation"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.SignIn.RequireConfirmedPhoneNumber">
+                                        @L["DisplayName:Abp.Identity.SignIn.RequireConfirmedPhoneNumber"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.SignIn.RequireConfirmedPhoneNumber"]</small>
+                                </Field>
+                            </Column>
+                        </Row>
+                        <hr class="my-4"/>
+                        <Row>
+                            <Column>
+                                <h4>@L["UserSettings"]</h4>
+
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.User.IsEmailUpdateEnabled">
+                                        @L["DisplayName:Abp.Identity.User.IsEmailUpdateEnabled"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.User.IsEmailUpdateEnabled"]</small>
+                                </Field>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@Settings.IdentitySettings.User.IsUserNameUpdateEnabled">
+                                        @L["DisplayName:Abp.Identity.User.IsUserNameUpdateEnabled"]
+                                    </Check>
+                                    <small class="form-text text-muted">@L["Description:Abp.Identity.User.IsUserNameUpdateEnabled"]</small>
+                                </Field>
+                            </Column>
+                        </Row>
+                        <hr class="my-4"/>
+                    </Validations>
+                    <Row>
+                        <Column>
+                            <SubmitButton Clicked="@UpdateSettingsAsync"/>
+                        </Column>
+                    </Row>
+                </Form>
+            </TabPanel>
+
+            <TabPanel Name="IdentitySettingsSessions">
+                <Form id="IdentitySessionSettingsEditForm">
+                    @if (Settings.IdentitySessionSettings != null)
+                    {
+                        <Field>
+                            <FieldLabel>@L["DisplayName:Abp.Identity.PreventConcurrentLogin"]</FieldLabel>
+                            <Select TValue="IdentityProPreventConcurrentLoginBehaviour" @bind-SelectedValue="@Settings.IdentitySessionSettings.PreventConcurrentLogin">
+                                <SelectItem Value="@IdentityProPreventConcurrentLoginBehaviour.Disabled">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.Disabled"]</SelectItem>
+                                <SelectItem Value="@IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices"]</SelectItem>
+                                <SelectItem Value="@IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices"]</SelectItem>
+                            </Select>
+                        </Field>
+                    }
+                    <Field>
+                        <div class="form-text">
+                            <p>@L["Description:Abp.Identity.PreventConcurrentLogin"].Value</p>
+                            <ol class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="me-auto">
+                                        <div class="fw-bold">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.Disabled"].Value</div>
+                                        @L["Description:IdentityProPreventConcurrentLoginBehaviour.Disabled"].Value
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="me-auto">
+                                        <div class="fw-bold">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices"].Value</div>
+                                        @L["Description:IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices"].Value
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="me-auto">
+                                        <div class="fw-bold">@L["Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices"].Value</div>
+                                        @L["Description:IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices"].Value
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </Field>
+                    <Field>
+                        <SubmitButton Form="IdentitySessionSettingsEditForm" Clicked="@UpdateSessionsSettings" />
+                    </Field>
+                </Form>
+            </TabPanel>
+
+            @if (Settings.IdentityLdapSettings != null)
+            {
+                <TabPanel Name="IdentityLdapSettings">
+                    <Form id="IdentityLdapSettingsEditForm">
+                        <Validations @ref="@IdentityLdapSettingsValidations" Model="@Settings.IdentityLdapSettings" ValidateOnLoad="false">
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityLdapSettings.EnableLdapLogin">
+                                    @L["DisplayName:Abp.Identity.EnableLdapLogin"]
+                                </Check>
+                            </Field>
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityLdapSettings.Ldaps">
+                                    @LH.Localize("DisplayName:Abp.Ldap.Ldaps")
+                                </Check>
+                            </Field>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.ServerHost"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityLdapSettings.LdapServerHost">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.ServerPort"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityLdapSettings.LdapServerPort">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.BaseDc"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityLdapSettings.LdapBaseDc">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.Domain"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityLdapSettings.LdapDomain">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.UserName"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityLdapSettings.LdapUserName">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@LdapLocalizer["DisplayName:Abp.Ldap.Password"]</FieldLabel>
+                                    <TextEdit TextRole="@TextRole.Password" Placeholder="@L["LdapPasswordPlaceholder"]" @bind-Text="@Settings.IdentityLdapSettings.LdapPassword">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                        </Validations>
+                        <hr class="my-4"/>
+                        <Field>
+                            <SubmitButton Form="IdentityLdapSettingsEditForm" Clicked="@UpdateLdapSettings"/>
+                        </Field>
+                    </Form>
+                </TabPanel>
+            }
+            @if (Settings.IdentityOAuthSettings != null)
+            {
+                <TabPanel Name="IdentityOAuthSettings">
+                    <Form id="IdentityOAuthSettingsEditForm">
+                        <Validations @ref="@IdentityOAuthSettingsValidations" Model="@Settings.IdentityOAuthSettings" ValidateOnLoad="false">
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityOAuthSettings.EnableOAuthLogin">
+                                    @L["DisplayName:Abp.Identity.EnableOAuthLogin"]
+                                </Check>
+                            </Field>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["DisplayName:Abp.Identity.ClientId"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityOAuthSettings.ClientId">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["DisplayName:Abp.Identity.ClientSecret"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityOAuthSettings.ClientSecret">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["DisplayName:Abp.Identity.Authority"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityOAuthSettings.Authority">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["DisplayName:Abp.Identity.Scope"]</FieldLabel>
+                                    <TextEdit @bind-Text="@Settings.IdentityOAuthSettings.Scope">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityOAuthSettings.RequireHttpsMetadata">
+                                    @L["DisplayName:Abp.Identity.RequireHttpsMetadata"]
+                                </Check>
+                            </Field>
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityOAuthSettings.ValidateEndpoints">
+                                    @L["DisplayName:Abp.Identity.ValidateEndpoints"]
+                                </Check>
+                            </Field>
+                            <Field>
+                                <Check TValue="bool" @bind-Checked="@Settings.IdentityOAuthSettings.ValidateIssuerName">
+                                    @L["DisplayName:Abp.Identity.ValidateIssuerName"]
+                                </Check>
+                            </Field>
+                        </Validations>
+                        <hr class="my-4"/>
+                        <Field>
+                            <SubmitButton Form="IdentityOAuthSettingsEditForm" Clicked="@UpdateOAuthSettings"/>
+                        </Field>
+                    </Form>
+                </TabPanel>
+            }
+            </Content>
+            </Tabs>
+        </Column>
+    </Row>
+}

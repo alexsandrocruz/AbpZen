@@ -1,0 +1,28 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "您曾申请下载个人数据。一旦过了规定的申请期限，您可以创建新的申请。",
+    "Volo.Abp.Gdpr:010002": "您的个人数据仍在准备中。您可以从 {GdprDataReadyTime} 下载。",
+    "PersonalData": "个人数据",
+    "Menu:PersonalData": "个人数据",
+    "PersonalDataDescription": "您的账户包含您提供给我们的个人数据。本页面允许您下载或删除这些数据。",
+    "RequestPersonalData": "请求个人数据",
+    "DeletePersonalData": "删除个人数据",
+    "CreationTime": "创建时间",
+    "Action": "操作",
+    "Preparing": "准备中",
+    "Download": "下载",
+    "ReadyTime": "就绪时间",
+    "DeletePersonalDataWarning": "删除此数据将删除您的账户，您将无法再登录应用程序！您确定要继续吗？",
+    "PersonalDataDeleteRequestReceived": "您的个人数据删除请求正在处理中...数据删除过程结束后，您的账户将被删除，您将无法再使用该账户。",
+    "PersonalDataPrepareRequestReceived": "您的个人数据申请正在处理中。准备就绪后，您可从本页下载！",
+    "NoDataAvailable": "没有相关数据。",
+    "Accept": "接受",
+    "CookiePolicy": "Cookies 政策",
+    "PrivacyPolicy": "隐私政策",
+    "ThisWebsiteUsesCookie": "本网站使用 Cookies 来确保您在网站上获得最佳体验。",
+    "CookieConsentAgreePolicies": "如果您继续浏览，则表示您同意我们的 {0} 和 {1}。",
+    "CookieConsentAgreePolicy": "如果您继续浏览，则表示您同意我们的 {0}。",
+    "CanNotGetDownloadToken": "您无法为该请求获取下载令牌！"
+  }
+}

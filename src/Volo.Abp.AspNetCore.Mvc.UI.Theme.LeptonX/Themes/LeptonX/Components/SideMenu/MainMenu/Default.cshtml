@@ -1,0 +1,32 @@
+﻿@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Navigation
+
+@model MenuViewModel
+
+@foreach (var menuItem in Model.Items.Where(x=> x.MenuItem.GroupName.IsNullOrWhiteSpace()))
+{
+	menuItem.IsInRoot = true;
+
+	<li class="outer-menu-item">
+		@await Html.PartialAsync("~/Themes/LeptonX/Components/SideMenu/MainMenu/_MenuItem.cshtml", menuItem)
+	</li>
+}
+
+@foreach (var group in Model.Menu.Groups)
+{
+	var menuItems = Model.Items.Where(x=> x.MenuItem.GroupName == group.Name).ToList();
+	if (menuItems.Any())
+	{
+		<li class="group-menu-item hidden-in-hover-trigger" id="@group.ElementId">
+			@group.Name
+		</li>
+
+		@foreach (var menuItem in menuItems)
+		{
+			menuItem.IsInRoot = true;
+
+			<li class="outer-menu-item">
+				@await Html.PartialAsync("~/Themes/LeptonX/Components/SideMenu/MainMenu/_MenuItem.cshtml", menuItem)
+			</li>
+		}
+	}
+}

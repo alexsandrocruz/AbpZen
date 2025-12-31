@@ -1,0 +1,45 @@
+<lpx-toolbar [profileRef]="profileRef$" (profileClick)="toggleCtxMenu()">
+  @if (
+    { user: userProfileService.user$ | async, profileRef: profileRef$ | async };
+    as data
+  ) {
+    @if (data.profileRef) {
+      <lpx-context-menu
+        #menu="lpx-context-menu"
+        (lpxClickOutside)="menu.close()"
+        [exceptedRefs]="[data.profileRef]"
+      >
+        <lpx-context-menu-header>
+          <div class="lpx-user-ctx-header">
+            <div class="lpx-user-ctx-img">
+              <lpx-avatar [avatar]="data.user?.avatar"></lpx-avatar>
+            </div>
+            <div class="lpx-user-ctx-info">
+              <span class="lpx-context-menu-user-name">{{
+                data.user?.userName
+              }}</span>
+              @if (data.user?.tenant?.name; as tenantName) {
+                <span class="lpx-context-menu-user-tenant">
+                  {{ tenantName }}
+                </span>
+              }
+              <span class="lpx-context-menu-user-email">{{
+                data.user?.email
+              }}</span>
+            </div>
+          </div>
+        </lpx-context-menu-header>
+
+        @for (actions of data.user?.userActionGroups; track $index) {
+          <lpx-context-menu-action-group>
+            <lpx-navbar-routes
+              [navbarItems]="actions"
+              [routerItem]="true"
+              (click)="toggleCtxMenu()"
+            ></lpx-navbar-routes>
+          </lpx-context-menu-action-group>
+        }
+      </lpx-context-menu>
+    }
+  }
+</lpx-toolbar>

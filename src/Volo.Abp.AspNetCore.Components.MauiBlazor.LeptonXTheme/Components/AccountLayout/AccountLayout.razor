@@ -1,0 +1,116 @@
+﻿@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.LeptonX.Shared.Localization
+@using Volo.Abp.MultiTenancy
+@using Volo.Abp.Ui.Branding
+@inherits LayoutComponentBase
+@inject IStringLocalizer<LeptonXResource> L
+@inject IOptions<AbpMultiTenancyOptions> MultiTenancyOptions
+@inject ICurrentTenant CurrentTenant
+@inject IBrandingProvider BrandingProvider
+
+@{
+    var logoUrl = BrandingProvider.LogoUrl == null ? null : "--logo: url(" + BrandingProvider.LogoUrl + ") !important;";
+    var logoReverseUrl = BrandingProvider.LogoReverseUrl == null ? null : "--logo-reverse: url(" + BrandingProvider.LogoReverseUrl + ") !important;";
+}
+
+@* TODO: We can continue with this until find a better way *@
+@if (logoUrl != null || logoReverseUrl != null)
+{
+    <style>
+        :root {
+            @logoUrl
+            @(logoReverseUrl ?? logoUrl)
+        }
+    </style>
+}
+
+
+<div class="container-fluid p-0" style="overflow-x: hidden">
+    <div class="lpx-login-area">
+        <div class="lpx-login-bg">
+            <div class="d-flex flex-column justify-content-center min-vh-100">
+
+                <div class="row">
+                    <div class="col-xxl-5 col-lg-7 col-md-8 col-11 mx-auto position-relative py-4">
+                        <div class="lpx-brand-logo lpx-login-logo mb-3 mx-auto"></div>
+                        @if(BrandingProvider.LogoUrl.IsNullOrEmpty())
+                        {
+                            <div class="lpx-brand-name">@BrandingProvider.AppName</div>
+                        }
+                        <div class="card mx-auto" style="max-width: 30rem;">
+                            <div class="card-body p-3 p-sm-4">
+                                <div class="align-items-start d-flex justify-content-between mb-2">
+                                    <h2 class="lpx-main-title lpx-login-title m-0 me-auto"></h2>
+                                    <div class="dropdown btn-group ms-auto" aria-labelledby="languageDropdown">
+
+                                    </div>
+                                </div>
+
+                                <hr/>
+                                @if (MultiTenancyOptions.Value.IsEnabled)
+                                {
+                                    <div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <span style="font-size: .8em;"
+                                                      class="text-uppercase text-muted">
+                                                    @L["Tenant"]
+                                                </span><br/>
+                                                <h6 class="m-0 d-inline-block">
+                                                    @if (CurrentTenant.Id == null)
+                                                    {
+                                                        <span>
+                                                            @L["NotSelected"]
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <strong>
+                                                            @(CurrentTenant.Name ??
+                                                              CurrentTenant.Id.Value.ToString())
+                                                        </strong>
+                                                    }
+                                                </h6>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a id="AbpTenantSwitchLink" href="javascript:;" onclick="@OpenSwitchTenantModalAsync" class="btn btn-sm btn-outline-primary">@L["Switch"]</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                }
+                                @Body
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<Modal @ref="SwitchTenantModal" Closing="@SwitchTenantModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["SwitchTenant"]</ModalTitle>
+                <CloseButton Clicked="CloseSwitchTenantModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <Field>
+                    <FieldLabel>@L["Name"] *</FieldLabel>
+                    <TextEdit @bind-Text="TenantName" Autofocus="true"/>
+                    <div class="form-text">@L["SwitchTenantHint"]</div>
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseSwitchTenantModalAsync">@L["Cancel"]</Button>
+                <SubmitButton Clicked="@SwitchTenantAsync"/>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<UiMessageAlert/>
+<UiNotificationAlert/>

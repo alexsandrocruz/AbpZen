@@ -1,0 +1,27 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Newsletters.ImportToolbar.ImportNewslettersFromFileModal
+@inject IHtmlLocalizer<CmsKitResource> L
+
+@{
+    Layout = null;
+}
+
+<abp-modal id="ImportPreferences">
+    <abp-modal-header title="@L["UploadFile"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <input id="uploadEndpoint" hidden value="@Url.Content("~/api/cms-kit-admin/newsletter/import-newsletters-from-file")"/>
+        <div class="d-grid">
+            <label for="importNewsletterFile" class="mb-3 px-1 shadow-none btn">
+                <i class="fas fa-upload me-2"></i><span name="fileName">@L["ChooseFile"]</span>
+            </label>
+            <input id="importNewsletterFile" type="file" accept="@Model.AllowedFileType" style="display: none"/>
+        </div>
+    </abp-modal-body>
+    <abp-modal-footer>
+        <abp-button data-bs-dismiss="modal" button-type="Secondary">@L["Close"]</abp-button>
+        <abp-button id="downloadSampleImportFile" button-type="Secondary">@L["DownloadTemplateFile"]</abp-button>
+        <abp-button id="uploadImportFileBtn" button-type="Primary">@L["Upload"]</abp-button>
+    </abp-modal-footer>
+</abp-modal>

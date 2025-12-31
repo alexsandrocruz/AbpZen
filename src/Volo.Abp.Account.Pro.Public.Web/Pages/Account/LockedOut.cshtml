@@ -1,0 +1,24 @@
+﻿@page
+@model Volo.Abp.Account.Public.Web.Pages.Account.LockedOut
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@inject IHtmlLocalizer<AccountResource> L
+@inject Volo.Abp.AspNetCore.Mvc.UI.Layout.IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["UserLockedOut"].Value;
+}
+<div class="account-module-form">
+        <p>@L["UserLockedOutMessage"]</p>
+    
+        <h3 class="lpx-main-title lpx-login-title  m-0 me-auto">@L["UserLockedOut:WhatDoYouNeedToDo"]</h3>
+    
+        <p class="mt-2">@L["YourAccountWillBeUnlockedOn"]</p>
+
+        <p><b>@Model.UserInfo.LockoutEnd!.Value.ToString("yyyy-MM-dd HH:mm:ss") UTC</b></p> 
+        
+        <p>@L["TryAgainAfterThisTimeOrContactAdministrator"]</p>
+        
+        <div class="mt-4">
+        <a abp-button="Primary" asp-page="./Login" asp-all-route-data="@(new Dictionary<string, string> {{"returnUrl", Model.ReturnUrl}, {"returnUrlHash", Model.ReturnUrlHash}})">&larr; @L["BackToLogin"]</a>
+    </div>
+</div>

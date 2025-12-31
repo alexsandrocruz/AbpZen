@@ -1,0 +1,173 @@
+<div class="row entry-row">
+  <div class="col-auto"></div>
+  <div class="col-lg-auto ps-lg-0"></div>
+  <div class="col">
+    <div class="text-lg-end pt-2" id="AbpContentToolbar"></div>
+  </div>
+</div>
+
+<div id="chat_wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Users box-->
+      <div class="col-12 col-md-5 col-lg-4 d-flex align-items-stretch">
+        <abp-chat-contacts
+          class="d-flex w-100"
+          (selected)="onSelectContact($event)"
+          [(startConversation)]="clickedStartMessage"
+          [conversationDeletable]="conversationDeletable"
+          (conversationDeleted)="conversationDeleted($event)"
+        />
+      </div>
+      <!-- /Users box-->
+
+      <!-- Chat Box-->
+      <div class="col-12 col-md-7 col-lg-8 d-flex align-items-stretch">
+        <div class="card w-100 mb-0">
+          @if (selectedContact.userId) {
+            <div class="card-body p-1 p-md-2 p-lg-3">
+              <abp-chat-message-title [selectedContact]="selectedContact" />
+
+              <div #chatBox id="chat-conversation-wrapper" class="chat-box mb-2">
+                <div class="chat-box-container" id="chat-conversation">
+                  @for (
+                    message of selectedContactMessages;
+                    track message.messageDate;
+                    let i = $index
+                  ) {
+                    @if (selectedContactMessages.length - unreadMessageCount === i) {
+                      <div class="row justify-content-center unread-message-count-badge-wrapper">
+                        <h3>
+                          <span class="badge badge-info">
+                            @if (unreadMessageCount === 1) {
+                              {{ 'Chat::YouHaveAnUnreadMessage' | abpLocalization }}
+                            } @else {
+                              {{
+                                'Chat::YouHave{0}UnreadMessages'
+                                  | abpLocalization: '' + unreadMessageCount
+                              }}
+                            }
+                          </span>
+                        </h3>
+                      </div>
+                    }
+
+                    @if ({ isSender: message.side === chatMessageSide.Sender }; as data) {
+                      <div class="media w-75 mw-65 w-lp-auto mb-2" [class.ms-auto]="data.isSender">
+                        <div class="media-body position-relative">
+                          <div
+                            class="card shadow-sm rounded py-1 px-2 py-lg-2 px-lg-3 mb-1"
+                            [class.bg-primary]="data.isSender"
+                            [class.bg-light]="!data.isSender"
+                          >
+                            <p
+                              class="message-text text-small mb-0 {{
+                                data.isSender ? 'text-white' : 'text-muted'
+                              }}"
+                              [innerHTML]="message.message"
+                            ></p>
+                          </div>
+                          <p
+                            class="message-date small text-muted m-0 {{
+                              data.isSender ? 'left' : 'right'
+                            }}"
+                          >
+                            {{ message.messageDate | date: getDateFormat(message.messageDate) }}
+                          </p>
+
+                          @if (messageDeletable && message.side === chatMessageSide.Sender) {
+                            <div ngbDropdown class="dropdown position-absolute top-0 end-0">
+                              <button class="btn p-1 text-white down-arrow" ngbDropdownToggle>
+                                <i class="bi bi-chevron-down"></i>
+                              </button>
+                              <div ngbDropdownMenu>
+                                <button ngbDropdownItem (click)="deleteMessage(message)">
+                                  {{ 'AbpUi::Delete' | abpLocalization }}
+                                </button>
+                              </div>
+                            </div>
+                          }
+
+                          @if (
+                            messageDeletableWithPeriod &&
+                            showDeleteDropdown(message) &&
+                            message.side === chatMessageSide.Sender
+                          ) {
+                            <div ngbDropdown class="dropdown position-absolute top-0 end-0">
+                              <button class="btn p-1 text-light down-arrow" ngbDropdownToggle>
+                                <i class="bi bi-chevron-down"></i>
+                              </button>
+                              <div ngbDropdownMenu>
+                                <button ngbDropdownItem (click)="deleteMessage(message)">
+                                  {{ 'AbpUi::Delete' | abpLocalization }}
+                                </button>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+
+              @if (selectedContact?.userId) {
+                <div id="send-message-form" class="bg-light rounded-3 m-0">
+                  <div class="p-2 p-lg-3">
+                    <textarea
+                      id="chat-message-box"
+                      name="message"
+                      type="text"
+                      [placeholder]="'Chat::TypeMessage' | abpLocalization"
+                      class="form-control rounded py-2"
+                      [(ngModel)]="message"
+                      (keydown.enter)="sendWithEnter($event)"
+                    ></textarea>
+                    <div class="form-check float-start mt-2">
+                      <input
+                        type="checkbox"
+                        class="form-check-input border shadow-sm"
+                        id="send-on-enter"
+                        [(ngModel)]="sendOnEnter"
+                      />
+                      <label class="form-check-label" for="send-on-enter">{{
+                        'Chat::SendOnEnter' | abpLocalization
+                      }}</label>
+                    </div>
+                    <div class="mt-2 text-end">
+                      <button
+                        [disabled]="!message"
+                        (click)="send()"
+                        id="send-message-button"
+                        type="button"
+                        class="btn btn-primary px-3"
+                      >
+                        {{ 'Chat::Send' | abpLocalization }}
+                        @if (!loading) {
+                          <i class="fa fa-paper-plane ms-2" aria-hidden="true"></i>
+                        } @else {
+                          <i class="fas fa-spinner fa-spin ms-2" aria-hidden="true"></i>
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          @if (!selectedContact.userId) {
+            <div class="card-body pt-5 pb-5 text-center">
+              <i class="fa fa-commenting-o fs-2" aria-hidden="true"></i>
+              <p>{{ 'Chat::NoMessageYetMessage' | abpLocalization }}</p>
+              <button (click)="startConversation()" type="button" class="btn btn-primary">
+                {{ 'Chat::StartConversation' | abpLocalization }}
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+      <!-- /Chat Box-->
+    </div>
+  </div>
+</div>

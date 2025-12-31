@@ -1,0 +1,85 @@
+@if (email(); as vm) {
+  @if (vm.requireSetting && !vm.confirmed) {
+    <div>
+      <label for="email" class="form-label">
+        {{ 'AbpIdentity::DisplayName:Email' | abpLocalization }}
+      </label>
+      <span> * </span>
+      <div class="input-group">
+        <input readonly type="email" id="email" class="form-control" [value]="vm.address" />
+        @if (vm.showButton) {
+          <div class="input-group-append">
+            <abp-personal-settings-verify-button
+              [verified]="false"
+              (btnClick)="sendEmailConfirmation()"
+            />
+          </div>
+        }
+      </div>
+    </div>
+  }
+}
+
+@if (phone(); as vm) {
+  @if (vm.requireSetting && !vm.confirmed) {
+    <div class="mt-3">
+      <label for="phoneNumber" class="form-label">
+        {{ 'AbpIdentity::DisplayName:PhoneNumber' | abpLocalization }}
+      </label>
+      <span> * </span>
+      <form [formGroup]="form">
+        <div class="input-group" validationTarget>
+          <input
+            [readonly]="!!vm.number"
+            type="text"
+            id="phoneNumber"
+            class="form-control"
+            formControlName="phoneNumber"
+          />
+          <div class="input-group-append">
+            <abp-personal-settings-verify-button
+              [verified]="false"
+              (btnClick)="sendPhoneConfirmation()"
+            />
+          </div>
+        </div>
+      </form>
+      @if (!vm.number) {
+        <small class="form-text text-muted">
+          {{ 'AbpAccount::PhoneNumberEmptyHelpText' | abpLocalization }}
+        </small>
+      }
+    </div>
+
+    @if (phoneModalVisible) {
+      <abp-modal [visible]="true" (visibleChange)="phoneModalVisible = $event">
+        <ng-template #abpHeader>
+          <h3>{{ 'AbpAccount::Verify' | abpLocalization }}</h3>
+        </ng-template>
+
+        <ng-template #abpBody>
+          <p>{{ 'AbpAccount::ConfirmationTokenSentMessage' | abpLocalization }}</p>
+          <p>{{ 'AbpAccount::PhoneConfirmationToken' | abpLocalization }} *</p>
+
+          <form [formGroup]="phoneCodeForm" (submit)="verifyPhoneCode()">
+            <input
+              id="verificationCode"
+              type="text"
+              class="form-control"
+              formControlName="verificationCode"
+            />
+          </form>
+        </ng-template>
+
+        <ng-template #abpFooter>
+          <button type="button" class="btn btn-outline-primary" abpClose>
+            {{ 'AbpUi::Cancel' | abpLocalization }}
+          </button>
+          <button type="submit" class="btn btn-primary" (click)="verifyPhoneCode()">
+            {{ 'AbpUi::Save' | abpLocalization }}
+          </button>
+        </ng-template>
+      </abp-modal>
+    }
+  }
+}

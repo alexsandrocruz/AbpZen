@@ -1,0 +1,21 @@
+{
+  "Culture": "ar",
+  "Texts": {
+    "Login": "دخول",
+    "Appearance": "المظهر",
+    "ContainerWidth": "عرض الحاوية",
+    "ContainerWidth:Boxed": "تخطيط محاصر",
+    "ContainerWidth:Fixed": "مُثَبَّت",
+    "ContainerWidth:Fluid": "سائل",
+    "GeneralSettings": "الاعدادات العامة",
+    "Language": "اللغة",
+    "Settings": "الإعدادات",
+    "Theme:dark": "مظلم",
+    "Theme:dim": "شبه مظلم",
+    "Theme:light": "منير",
+    "Theme:system": "النظام",
+    "Welcome": "أهلا وسهلا",
+    "FilterMenu": "قائمة الفلتر",
+    "Menu": "القائمة"
+  }
+}

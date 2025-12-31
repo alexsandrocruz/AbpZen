@@ -1,0 +1,17 @@
+{
+  "culture": "fi",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Vuokralaisten hallinta",
+    "Permission:EditionManagement": "Painoksen hallinta",
+    "Permission:Create": "Luoda",
+    "Permission:Edit": "Muokata",
+    "Permission:Delete": "Poistaa",
+    "Permission:ManageConnectionStrings": "Hallitse yhteysmerkkijonoja",
+    "Permission:SetPassword": "Aseta salasana",
+    "Permission:ManageFeatures": "Hallitse ominaisuuksia",
+    "Permission:ViewChangeHistory": "Näytä muutoshistoria",
+    "Permission:Impersonation": "Toisena henkilönä esiintyminen",
+    "CheckYourProviderDashboard": "Peruuta tämä tilaus maksupalveluntarjoajasi hallintapaneelista."
+  }
+}

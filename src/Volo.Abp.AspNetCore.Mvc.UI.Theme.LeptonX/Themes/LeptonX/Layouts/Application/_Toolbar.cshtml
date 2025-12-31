@@ -1,0 +1,53 @@
+﻿@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.GeneralSettings
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.Toolbar.LanguageSwitch
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.Toolbar.UserMenu
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars
+@using Volo.Abp.LeptonX.Shared;
+@using Volo.Abp.Users
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Localization.Resources.AbpUi
+@inject IHtmlLocalizer<AbpUiResource> L
+
+@inject ICurrentUser CurrentUser
+@inject IToolbarManager ToolbarManager
+
+@{
+	var toolbar = await ToolbarManager.GetAsync(StandardToolbars.Main);
+	var leptonxToolbar = await ToolbarManager.GetAsync(LeptonXToolbars.Main);
+	toolbar.Items.AddRange(leptonxToolbar.Items);
+}
+
+<div class="lpx-toolbar-container">
+	<nav class="lpx-toolbar" id="lpx-toolbar">
+
+		@if (CurrentUser.Id.HasValue)
+		{
+			@await Component.InvokeAsync(typeof(UserMenuViewComponent))
+		}
+
+		<ul class="lpx-nav-menu">
+			@if (CurrentUser.Id.HasValue)
+			{
+				<li class="outer-menu-item lpx-user-menu" id="userItem">
+					<a href="#" class="lpx-menu-item-link" data-lpx-ctx-toggle="user-context-menu">
+						<div class="lpx-avatar">
+							<img class="lpx-avatar-img" src="@Url.Content($"~/api/account/profile-picture-file/{CurrentUser.GetId()}")" alt="@CurrentUser.UserName" />
+						</div>
+
+						<span class="lpx-menu-item-text">@CurrentUser.UserName</span>
+					</a>
+				</li>
+			}
+
+			@if (toolbar.Items != null)
+			{
+				foreach (var item in toolbar.Items.OrderBy(i => i.Order))
+				{
+					<li class="outer-menu-item">
+						@await Component.InvokeAsync(item.ComponentType)
+					</li>
+				}
+			}
+		</ul>
+	</nav>
+</div>

@@ -1,0 +1,21 @@
+﻿@inherits AbpGdprComponentBase
+
+@if (ShowCookieConsent)
+{
+    <div class="w-100" style="position: fixed; right: 0; bottom: 0; z-index: 999999;">
+        <Row>
+            <Column ColumnSize="ColumnSize.Is12">
+                <div class="d-flex flex-row justify-content-between align-items-center card bg-primary mb-0 rounded-0 text-white cookie px-2">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="m-2">
+                            @GetCookieConsentText()
+                        </div>
+                    </div>
+                    <div>
+                        <Button Color="Color.Info" Size="Size.Small" Clicked="@AcceptCookieConsentAsync">@L["Accept"]</Button>
+                    </div>
+                </div>
+            </Column>
+        </Row>
+    </div>
+}

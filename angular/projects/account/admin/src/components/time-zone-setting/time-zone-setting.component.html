@@ -1,0 +1,19 @@
+<form [formGroup]="timezoneForm" class="py-2 abp-md-form" (ngSubmit)="onSubmit()">
+  <div class="mb-3 form-group">
+    <label class="form-label"
+      >{{ 'AbpSettingManagement::Menu:TimeZone' | abpLocalization }}<span class="ms-1"></span
+    ></label>
+    <select class="form-select form-control" formControlName="selectedTimeZone">
+      @for (item of timeZones | async; track item.value) {
+        <option [ngValue]="item.value">
+          {{ item.name }}
+        </option>
+      }
+    </select>
+    <small> {{ 'AbpSettingManagement::TimezoneHelpText' | abpLocalization }}</small>
+  </div>
+  <hr />
+  <abp-button iconClass="fa fa-save" buttonType="submit" [loading]="loading">
+    {{ 'AbpUi::Save' | abpLocalization }}
+  </abp-button>
+</form>

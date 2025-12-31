@@ -1,0 +1,31 @@
+﻿@page
+@using Localization.Resources.AbpUi
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.GlobalFeatures
+@using Volo.CmsKit.GlobalFeatures
+@using Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Contact
+@inject IStringLocalizer<AbpUiResource> Localizer
+@model Volo.CmsKit.Pro.Pages.Contact.Index
+
+<div class="container mb-2">  
+    <div class="card">
+        <div class="card-header">Contact</div>  
+        
+        <div class="card-body">
+            @if (GlobalFeatureManager.Instance.IsEnabled<ContactFeature>())
+            {
+                @await Component.InvokeAsync(typeof(ContactViewComponent), new
+                {
+                    contactName = "Sales"
+                })
+            }
+        </div>
+
+         <div class="card-body">
+            @if (GlobalFeatureManager.Instance.IsEnabled<ContactFeature>())
+            {
+                @await Component.InvokeAsync(typeof(ContactViewComponent))
+            }
+        </div>
+    </div>
+</div>

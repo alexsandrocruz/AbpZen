@@ -1,0 +1,75 @@
+﻿@using Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit.Contents;
+
+@inherits CmsKitProComponentBase
+
+<Markdown
+          @Value="@Value"
+          ValueChanged="@OnValueChanged"
+          ImageUploadChanged="@OnImageUploadChangedAsync"
+          ImageUploadEnded="@OnImageUploadEndedAsync"
+          AutoDownloadFontAwesome="false"
+          CustomButtonClicked="@OnCustomButtonClicked"
+          PreviewRender="@PreviewMarkdownAsync"
+          @ref="@MarkdownRef">
+    <Toolbar>
+        @{
+            foreach (var markdownToolbarButton in MarkdownToolbarButtons)
+            {
+                <MarkdownToolbarButton Action="@markdownToolbarButton"/>
+            }
+
+            <MarkdownToolbarButton Separator Name="W" Icon="@("none")" Title="Add Widget" Text="W" ></MarkdownToolbarButton>
+        }
+    </Toolbar>
+</Markdown>
+
+
+<Modal @ref="@AddWidgetModalRef" Closing="@ClosingAddWidgetModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Size="ModalSize.Large" Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["AddWidget"]</ModalTitle>
+                <CloseButton Clicked="CloseAddWidgetModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                @if (Widgets.Any())
+                {
+                    <Field>
+                        <FieldLabel>@L["Widget"]</FieldLabel>
+                        <FieldBody>
+                            <Select @bind-SelectedValue="@ViewModel.Widget">
+                                <SelectItem></SelectItem>
+                                @foreach (var item in Widgets)
+                                {
+                                    <SelectItem Value="@item.Key">@item.Value</SelectItem>
+                                }
+                            </Select>
+                        </FieldBody>
+                    </Field>
+
+                    foreach (var item in ViewModel.Details)
+                    {
+                        if (!item.EditorComponentName.IsNullOrWhiteSpace() && ViewModel.Widget == item.Name)
+                        {
+                            <div id="editor-@item.Name">
+                                <form data-check-form-on-close="false" id="widgetForm">
+                                    <DynamicComponent Type="Options.Value.FindParameterComponentType(item.EditorComponentName)"></DynamicComponent>
+                                </form>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <p>@L["PleaseConfigureWidgets"].Value</p>
+                }
+            </ModalBody>
+            <ModalFooter>
+                @if (Widgets.Any())
+                {
+                    <Button Color="Color.Primary" Clicked="AddWidgetAsync">@L["Add"]</Button>
+                }
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

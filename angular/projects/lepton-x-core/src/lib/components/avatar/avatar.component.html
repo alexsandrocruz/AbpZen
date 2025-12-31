@@ -1,0 +1,15 @@
+@if (avatar && avatar.source) {
+  <div class="lpx-avatar">
+    @switch (avatar.type) {
+      @case ('icon') {
+        <lpx-icon
+          class="lpx-avatar-icon"
+          [iconClass]="avatar.source"
+        ></lpx-icon>
+      }
+      @case ('image') {
+        <img class="lpx-avatar-img" [src]="avatar.source" />
+      }
+    }
+  </div>
+}

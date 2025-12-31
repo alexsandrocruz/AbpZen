@@ -1,0 +1,127 @@
+{
+  "name": "Volo.Payment.Admin.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Payment.Admin.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Payment.Web",
+          "namespace": "Volo.Payment",
+          "name": "AbpPaymentWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.HttpApi",
+          "namespace": "Volo.Payment.Admin",
+          "name": "AbpPaymentAdminHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.Application.Contracts",
+          "namespace": "Volo.Payment.Admin",
+          "name": "AbpPaymentAdminApplicationContractsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpPaymentAdminWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages",
+      "contentType": "webPage",
+      "name": "PaymentPageModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Requests.Products",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans",
+      "contentType": "webPage",
+      "name": "UpdateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans.GatewayPlans",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans.GatewayPlans",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Web.Pages.Payment.Plans.GatewayPlans",
+      "contentType": "webPage",
+      "name": "UpdateModalModel",
+      "summary": null
+    }
+  ]
+}

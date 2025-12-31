@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Primitives
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.OpenIddict.Localization
+@model Volo.Abp.Account.Web.ViewModels.Verify.VerifyViewModel
+@inject IHtmlLocalizer<AccountResource> L
+@inject IHtmlLocalizer<AbpOpenIddictResource> OpenIdLocalizer
+
+<div class="jumbotron">
+    <h1>@L["DeviceAuthorization"]</h1>
+
+    @if (string.IsNullOrEmpty(Model.UserCode) || !string.IsNullOrEmpty(Model.Error))
+    {
+        @if (!string.IsNullOrEmpty(Model.Error) && !string.IsNullOrEmpty(Model.ErrorDescription))
+        {
+            <p class="lead text-center alert alert-warning">
+                An error occurred:
+                <br />
+                @Model.ErrorDescription (@Model.Error)
+            </p>
+        }
+
+        <form method="get" action="~/connect/verify">
+            <div class="mb-3">
+                <abp-input asp-for="UserCode" name="user_code"></abp-input>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit" />
+        </form>
+    }
+    else
+    {
+        <div class="mb-3">
+            <p class="lead text-left">
+                @string.Format(OpenIdLocalizer["DoYouWantToGrantAccessToYourData"].Value, Model.ApplicationName)
+            </p>
+
+            <p class="fw-light">@OpenIdLocalizer["ScopesRequested"]: @Model.Scope</p>
+        </div>
+
+        <form method="post" action="~/connect/verify">
+            @foreach (var parameter in Context.Request.HasFormContentType ?
+                (IEnumerable<KeyValuePair<string, StringValues>>) Context.Request.Form : Context.Request.Query)
+            {
+                <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>
+            }
+
+            <input class="btn btn-primary" name="accept" type="submit" value="@OpenIdLocalizer["Accept"]"/>
+            <input class="btn btn-danger ms-1" name="deny" type="submit" value="@OpenIdLocalizer["Deny"]"/>
+        </form>
+    }
+</div>

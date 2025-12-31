@@ -1,0 +1,97 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Volo.CmsKit.Pro</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <DefineConstants>$(DefineConstants);MongoDB</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.HttpApi" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.HttpApi" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Identity" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.HttpApi" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('EntityFrameworkCore'))">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Database.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.EntityFrameworkCore\Volo.CmsKit.Pro.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('MongoDB'))">
+    <PackageReference Include="Volo.Abp.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Database.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.MongoDB" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.MongoDB\Volo.CmsKit.Pro.MongoDB.csproj" />
+    
+    <Compile Remove="Migrations\*.cs" />
+    <None Include="Migrations\*.cs" />
+    <Compile Remove="EntityFrameworkCore\*.cs" />
+    <None Include="EntityFrameworkCore\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.Application\Volo.CmsKit.Pro.Application.csproj" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.HttpApi\Volo.CmsKit.Pro.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.Web\Volo.CmsKit.Pro.Web.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Host.Shared\Volo.CmsKit.Pro.Host.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Volo.CmsKit.Pro.HttpApi.Host\Seed\ProSampleDataSeeder.cs" Link="Seed\ProSampleDataSeeder.cs" />
+    <Compile Include="..\Volo.CmsKit.Pro.IdentityServer\Seed\ProSampleIdentityDataSeeder.cs" Link="Seed\ProSampleIdentityDataSeeder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

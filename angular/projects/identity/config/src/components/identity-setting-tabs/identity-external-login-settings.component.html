@@ -1,0 +1,85 @@
+@if (settings) {
+  <h4>{{ 'AbpIdentity::OAuthLoginSettings' | abpLocalization }}</h4>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" validateOnSubmit>
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="enable-oauth-login"
+        class="form-check-input"
+        formControlName="enableOAuthLogin"
+        autofocus
+      /><label class="form-check-label" for="enable-oauth-login">{{
+        'AbpIdentity::DisplayName:Abp.Identity.EnableOAuthLogin' | abpLocalization
+      }}</label>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpIdentity::DisplayName:Abp.Identity.ClientId' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" formControlName="clientId" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpIdentity::DisplayName:Abp.Identity.ClientSecret' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" formControlName="clientSecret" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpIdentity::DisplayName:Abp.Identity.Authority' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" formControlName="authority" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpIdentity::DisplayName:Abp.Identity.Scope' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" formControlName="scope" />
+    </div>
+
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="require-https-metadata"
+        class="form-check-input"
+        formControlName="requireHttpsMetadata"
+      /><label class="form-check-label" for="require-https-metadata">{{
+        'AbpIdentity::DisplayName:Abp.Identity.RequireHttpsMetadata' | abpLocalization
+      }}</label>
+    </div>
+
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="validate-endpoints"
+        class="form-check-input"
+        formControlName="validateEndpoints"
+      /><label class="form-check-label" for="validate-endpoints">{{
+        'AbpIdentity::DisplayName:Abp.Identity.ValidateEndpoints' | abpLocalization
+      }}</label>
+    </div>
+
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="validate-issuer-name"
+        class="form-check-input"
+        formControlName="validateIssuerName"
+      /><label class="form-check-label" for="validate-issuer-name">{{
+        'AbpIdentity::DisplayName:Abp.Identity.ValidateIssuerName' | abpLocalization
+      }}</label>
+    </div>
+    <hr class="my-3" />
+
+    <div>
+      <abp-button buttonType="submit" iconClass="fa fa-save" [loading]="loading">{{
+        'AbpAccount::Save' | abpLocalization
+      }}</abp-button>
+    </div>
+  </form>
+}

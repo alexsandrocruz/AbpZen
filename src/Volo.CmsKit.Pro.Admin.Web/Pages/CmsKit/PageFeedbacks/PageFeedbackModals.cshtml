@@ -1,0 +1,9 @@
+﻿@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks.PageFeedbackModalViewDto
+
+
+<div>
+    <abp-input asp-for="ModalId"></abp-input>
+    @(await Component.InvokeAsync(typeof(PageFeedbacksViewComponent)))
+</div>

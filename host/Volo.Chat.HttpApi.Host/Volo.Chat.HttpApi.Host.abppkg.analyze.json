@@ -1,0 +1,143 @@
+{
+  "name": "Volo.Chat.HttpApi.Host",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Chat",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.Application",
+          "namespace": "Volo.Chat",
+          "name": "ChatApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.EntityFrameworkCore",
+          "namespace": "Volo.Chat.EntityFrameworkCore",
+          "name": "ChatEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.HttpApi",
+          "namespace": "Volo.Chat",
+          "name": "ChatHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy",
+          "name": "AbpAspNetCoreMvcUiMultiTenancyModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Application",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Domain",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "namespace": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "name": "AbpEntityFrameworkCoreSqlServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EventBus.RabbitMQ",
+          "namespace": "Volo.Abp.EventBus.RabbitMq",
+          "name": "AbpEventBusRabbitMqModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Http.Client.IdentityModel.Web",
+          "namespace": "Volo.Abp.Http.Client.IdentityModel.Web",
+          "name": "AbpHttpClientIdentityModelWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.HttpApi.Client",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Swashbuckle",
+          "namespace": "Volo.Abp.Swashbuckle",
+          "name": "AbpSwashbuckleModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.SignalR",
+          "namespace": "Volo.Chat",
+          "name": "ChatSignalRModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatHttpApiHostModule",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+﻿@page "/Cms/Polls"
+@attribute [Authorize(CmsKitProAdminPermissions.Polls.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Admin.Polls
+@using Volo.CmsKit.Tags
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+@inherits AbpCrudPageBase<IPollAdminAppService, PollWithDetailsDto, PollDto, Guid, GetPollListInput, CreatePollDto, UpdatePollDto>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Polls"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Sync" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="PollDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@PollsManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["New"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="OnSelectedTabChangedAsync">
+                        <Items>
+                            <Tab Name="question">@L["Question"]</Tab>
+                            <Tab Name="options">@L["Options"]</Tab>
+                        </Items>
+                        <Content>
+                            <TabPanel Name="question">
+                                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Question"] *</FieldLabel>
+                                            <TextEdit TextExpression="@(()=> NewEntity.Question)" Text="@NewEntity.Question" TextChanged="(value) => OnQuestionTextChangedAsync(value, true)" Autofocus="true">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Code"] *</FieldLabel>
+                                            <TextEdit @bind-Text="NewEntity.Code" ReadOnly>
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                            <div class="form-text">@L["Poll:CodeIsAUniqueKey"]</div>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Name"]</FieldLabel>
+                                            <TextEdit @bind-Text="NewEntity.Name">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                            <div class="form-text">@L["Poll:NameIsUsedToFilterInAdminSide"]</div>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Widget"]</FieldLabel>
+                                            <Select @bind-SelectedValue="NewEntity.Widget">
+                                                <SelectItem></SelectItem>
+                                                @foreach (var widget in Widgets)
+                                                {
+                                                    <SelectItem Value="@widget.Name">@L[$"DisplayName:{widget.Name}"]</SelectItem>
+                                                }
+                                            </Select>
+                                            <ValidationError/>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["StartDate"] *</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@NewEntity.StartDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["EndDate"]</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@NewEntity.EndDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Check @bind-Checked="@NewEntity.ShowHoursLeft">@L["ShowHoursLeft"]</Check>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["ResultShowingEndDate"]</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@NewEntity.ResultShowingEndDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Check @bind-Checked="@NewEntity.AllowMultipleVote">@L["AllowMultipleVote"]</Check>
+                                    <Check @bind-Checked="@NewEntity.ShowVoteCount">@L["ShowVoteCount"]</Check>
+                                    <Check @bind-Checked="@NewEntity.ShowResultWithoutGivingVote">@L["ShowResultWithoutGivingVote"]</Check>
+                                    <ExtensionProperties TEntityType="CreatePollDto" TResourceType="CmsKitResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                                </Validations>
+                            </TabPanel>
+                            <TabPanel Name="options">
+                                <h3>@L["Options"]</h3>
+                                <div class="pt-3 pb-5 clearfix">
+                                    <Row>
+                                        <Column ColumnSize="@ColumnSize.Is12">
+                                            <Field>
+                                                <FieldLabel>@L["NewOption"]</FieldLabel>
+                                            <TextEdit @bind-Text="NewOption"></TextEdit>
+                                            </Field>
+                                        </Column>
+                                    </Row>
+                                    <Button Color="Color.Success"  Class="float-end mt-3" Clicked="AddNewOptionsAsync"><Icon Name="IconName.Add"></Icon>@L["AddNew"]</Button>
+                                </div>
+                                @if (PollOptions.Any())
+                                {
+                                    <Table Responsive="true">
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableRowHeader>@L["Text"]</TableRowHeader>
+                                                <TableRowHeader></TableRowHeader>
+                                            </TableRow>
+                                        </TableHeader>   
+                                        <TableBody>
+                                            @foreach (var option in PollOptions.OrderBy( x=> x.Order))
+                                            {
+                                                <TableRow>
+                                                    <TableRowCell>@option.Text</TableRowCell>
+                                                    <TableRowCell Class="text-end">
+                                                        <Button Outline="true" Color="Color.Dark" Clicked="@(() => ChangeOptionOrderAsync(option, true))"><Icon Name="IconName.ArrowUp"></Icon></Button>
+                                                        <Button Outline="true" Color="Color.Dark" Clicked="@(() => ChangeOptionOrderAsync(option, false))"><Icon Name="IconName.ArrowDown"></Icon></Button>
+                                                        <Button Outline="true" Color="Color.Danger" Clicked="@(() => RemoveOptionAsync(option))"><Icon class="fa-trash"></Icon></Button>
+                                                    </TableRowCell>
+                                                </TableRow>
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                }
+                            </TabPanel>
+                        </Content>
+                    </Tabs>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="OnSelectedTabChangedAsync">
+                        <Items>
+                            <Tab Name="question">@L["Question"]</Tab>
+                            <Tab Name="options">@L["Options"]</Tab>
+                        </Items>
+                        <Content>
+                            <TabPanel Name="question">
+                                <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Question"] *</FieldLabel>
+                                            <TextEdit TextExpression="@(()=> EditingEntity.Question)" Text="@EditingEntity.Question" TextChanged="(value) => OnQuestionTextChangedAsync(value, false)" Autofocus="true">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Code"] *</FieldLabel>
+                                            <TextEdit @bind-Text="EditingEntity.Code" ReadOnly>
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                            <div class="form-text">@L["Poll:CodeIsAUniqueKey"]</div>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Name"]</FieldLabel>
+                                            <TextEdit @bind-Text="EditingEntity.Name">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </TextEdit>
+                                            <div class="form-text">@L["Poll:NameIsUsedToFilterInAdminSide"]</div>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["Widget"]</FieldLabel>
+                                            <Select @bind-SelectedValue="EditingEntity.Widget">
+                                                <SelectItem></SelectItem>
+                                                @foreach (var widget in Widgets)
+                                                {
+                                                    <SelectItem Value="@widget.Name">@L[$"DisplayName:{widget.Name}"]</SelectItem>
+                                                }
+                                            </Select>
+                                            <ValidationError/>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["StartDate"] *</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@EditingEntity.StartDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["EndDate"]</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@EditingEntity.EndDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Check @bind-Checked="@EditingEntity.ShowHoursLeft">@L["ShowHoursLeft"]</Check>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["ResultShowingEndDate"]</FieldLabel>
+                                            <DateEdit InputMode="DateInputMode.DateTime" @bind-Date="@EditingEntity.ResultShowingEndDate">
+                                                <Feedback>
+                                                    <ValidationError/>
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Check @bind-Checked="@EditingEntity.ShowVoteCount">@L["ShowVoteCount"]</Check>
+                                    <Check @bind-Checked="@EditingEntity.ShowResultWithoutGivingVote">@L["ShowResultWithoutGivingVote"]</Check>
+                                    <ExtensionProperties TEntityType="UpdatePollDto" TResourceType="CmsKitResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                                </Validations>
+                            </TabPanel>
+                            <TabPanel Name="options">
+                                <h3>@L["Options"]</h3>
+                                <div class="pt-3 pb-5 clearfix">
+                                    <Row>
+                                        <Column ColumnSize="@ColumnSize.Is12">
+                                            <Field>
+                                                <FieldLabel>@L["NewOption"]</FieldLabel>
+                                            <TextEdit @bind-Text="NewOption"></TextEdit>
+                                            </Field>
+                                        </Column>
+                                    </Row>
+                                    <Button Color="Color.Success"  Class="float-end mt-3" Clicked="AddNewOptionsAsync"><Icon Name="IconName.Add"></Icon>@L["AddNew"]</Button>
+                                </div>
+                                @if (PollOptions.Any())
+                                {
+                                    <Table Responsive="true">
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableRowHeader>@L["Text"]</TableRowHeader>
+                                                <TableRowHeader></TableRowHeader>
+                                            </TableRow>
+                                        </TableHeader>   
+                                        <TableBody>
+                                            @foreach (var option in PollOptions.OrderBy( x=> x.Order))
+                                            {
+                                                <TableRow>
+                                                    <TableRowCell><TextEdit @bind-Text="@option.Text"></TextEdit></TableRowCell>
+                                                    <TableRowCell Class="text-end">
+                                                        <Button Outline="true" Color="Color.Dark" Clicked="@(() => ChangeOptionOrderAsync(option, true))">
+                                                            <Icon Name="IconName.ArrowUp"></Icon>
+                                                        </Button>
+                                                        <Button Outline="true" Color="Color.Dark" Clicked="@(() => ChangeOptionOrderAsync(option, false))">
+                                                            <Icon Name="IconName.ArrowDown"></Icon>
+                                                        </Button>
+                                                        <Button Outline="true" Color="Color.Danger" Clicked="@(() => RemoveOptionAsync(option))">
+                                                            <Icon class="fa-trash"></Icon>
+                                                        </Button>
+                                                    </TableRowCell>
+                                                </TableRow>
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                }
+                            </TabPanel>
+                        </Content>
+                    </Tabs>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* RESULT MODAL ************************* *@
+<Modal @ref="ResultModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Size="ModalSize.Large" Centered="true">
+        <ModalHeader>
+            <ModalTitle>@L["Result"]</ModalTitle>
+            <CloseButton Clicked="CloseResultModalAsync" />
+        </ModalHeader>
+        <ModalBody>
+            <div class="p-3">
+                <span class="p-3">@PollResultDetails.Question</span>
+                @foreach (var item in PollResultDetails.PollResultDetails)
+                {
+                    var percentage = item.VoteCount > 0 ? item.VoteCount * 100 / PollResultDetails.PollVoteCount : 0;
+
+                    <div class="mb-4">
+                        <label class="form-check-label d-block text-primary">
+                            @item.Text
+                        </label>
+                        <div class="row">
+                            <div class="col pe-0">
+                                <div class="progress mt-2 hide-info" style="height: 12px;">
+                                    <div class="progress-bar progress-bar-striped bg-primary progress-bar-animated" role="progressbar" style="width: @percentage%;" aria-valuenow="@percentage"> </div>
+                                </div>
+                            </div>
+                            <div class="col-2 text-start ps-0">
+                                <span class="badge hide-info text-primary">@(percentage + "%")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <small class="text-muted">
+                    @GetVoteCountText(PollResultDetails)
+                </small>
+            </div>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Clicked="CloseResultModalAsync">@L["Close"]</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

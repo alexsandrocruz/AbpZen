@@ -1,0 +1,30 @@
+﻿@page
+@using Volo.Abp.OpenIddict.Pro.Pages
+@model IndexModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Blockquote
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Card
+@using Volo.Abp.OpenIddict.Localization
+@inject IHtmlLocalizer<AbpOpenIddictResource> L
+@using Volo.Abp.Users
+@inject ICurrentUser CurrentUser
+
+<abp-card>
+    <abp-card-header>Welcome</abp-card-header>
+    <abp-card-body>
+        @if (!CurrentUser.IsAuthenticated)
+        {
+            <form method="POST">
+                <input type="submit" asp-page-handler="Login" value="LOGIN" class="btn btn-primary" />
+            </form>
+        }
+        else
+        {
+            <strong>Claims</strong><br />
+            @Html.Raw(CurrentUser.GetAllClaims().Select(c => $"{c.Type}={c.Value}").OrderBy(x => x).JoinAsString(" <br /> "))
+        }
+        <hr />
+        <p class="text-end"><a href="https://abp.io?ref=tmpl" target="_blank">abp.io</a></p>
+    </abp-card-body>
+</abp-card>

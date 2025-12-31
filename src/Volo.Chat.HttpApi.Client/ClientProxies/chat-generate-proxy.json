@@ -1,0 +1,591 @@
+{
+  "modules": {
+    "chat": {
+      "rootPath": "chat",
+      "remoteServiceName": "Chat",
+      "controllers": {
+        "Volo.Chat.Users.ContactController": {
+          "controllerName": "Contact",
+          "controllerGroupName": "Contact",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Chat.Users.ContactController",
+          "interfaces": [
+            {
+              "type": "Volo.Chat.Users.IContactAppService",
+              "name": "IContactAppService",
+              "methods": [
+                {
+                  "name": "GetContactsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Users.GetContactsInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Users.GetContactsInput",
+                      "typeSimple": "Volo.Chat.Users.GetContactsInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Chat.Users.ChatContactDto>",
+                    "typeSimple": "[Volo.Chat.Users.ChatContactDto]"
+                  }
+                },
+                {
+                  "name": "GetTotalUnreadMessageCountAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Int32",
+                    "typeSimple": "number"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetContactsAsyncByInput": {
+              "uniqueName": "GetContactsAsyncByInput",
+              "name": "GetContactsAsync",
+              "httpMethod": "GET",
+              "url": "api/chat/contact/contacts",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Users.GetContactsInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Users.GetContactsInput",
+                  "typeSimple": "Volo.Chat.Users.GetContactsInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "IncludeOtherContacts",
+                  "jsonName": null,
+                  "type": "System.Boolean",
+                  "typeSimple": "boolean",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Chat.Users.ChatContactDto>",
+                "typeSimple": "[Volo.Chat.Users.ChatContactDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Users.IContactAppService"
+            },
+            "GetTotalUnreadMessageCountAsync": {
+              "uniqueName": "GetTotalUnreadMessageCountAsync",
+              "name": "GetTotalUnreadMessageCountAsync",
+              "httpMethod": "GET",
+              "url": "api/chat/contact/total-unread-message-count",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Int32",
+                "typeSimple": "number"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Users.IContactAppService"
+            }
+          }
+        },
+        "Volo.Chat.Settings.SettingsController": {
+          "controllerName": "Settings",
+          "controllerGroupName": "Settings",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Chat.Settings.SettingsController",
+          "interfaces": [
+            {
+              "type": "Volo.Chat.Settings.ISettingsAppService",
+              "name": "ISettingsAppService",
+              "methods": [
+                {
+                  "name": "SetSendOnEnterSettingAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Settings.SendOnEnterSettingDto, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                      "typeSimple": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "Volo.Chat.Settings.ChatSettingsDto",
+                    "typeSimple": "Volo.Chat.Settings.ChatSettingsDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Settings.ChatSettingsDto, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Settings.ChatSettingsDto",
+                      "typeSimple": "Volo.Chat.Settings.ChatSettingsDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "SetSendOnEnterSettingAsyncByInput": {
+              "uniqueName": "SetSendOnEnterSettingAsyncByInput",
+              "name": "SetSendOnEnterSettingAsync",
+              "httpMethod": "POST",
+              "url": "api/chat/settings/send-on-enter",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Settings.SendOnEnterSettingDto, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                  "typeSimple": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                  "typeSimple": "Volo.Chat.Settings.SendOnEnterSettingDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Settings.ISettingsAppService"
+            },
+            "GetAsync": {
+              "uniqueName": "GetAsync",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/chat/settings",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "Volo.Chat.Settings.ChatSettingsDto",
+                "typeSimple": "Volo.Chat.Settings.ChatSettingsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Settings.ISettingsAppService"
+            },
+            "UpdateAsyncByInput": {
+              "uniqueName": "UpdateAsyncByInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/chat/settings",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Settings.ChatSettingsDto, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Settings.ChatSettingsDto",
+                  "typeSimple": "Volo.Chat.Settings.ChatSettingsDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Chat.Settings.ChatSettingsDto",
+                  "typeSimple": "Volo.Chat.Settings.ChatSettingsDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Settings.ISettingsAppService"
+            }
+          }
+        },
+        "Volo.Chat.Conversations.ConversationController": {
+          "controllerName": "Conversation",
+          "controllerGroupName": "Conversation",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Chat.Conversations.ConversationController",
+          "interfaces": [
+            {
+              "type": "Volo.Chat.Conversations.IConversationAppService",
+              "name": "IConversationAppService",
+              "methods": [
+                {
+                  "name": "SendMessageAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Messages.SendMessageInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Messages.SendMessageInput",
+                      "typeSimple": "Volo.Chat.Messages.SendMessageInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Chat.Messages.ChatMessageDto",
+                    "typeSimple": "Volo.Chat.Messages.ChatMessageDto"
+                  }
+                },
+                {
+                  "name": "DeleteMessageAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Messages.DeleteMessageInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Messages.DeleteMessageInput",
+                      "typeSimple": "Volo.Chat.Messages.DeleteMessageInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetConversationAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Conversations.GetConversationInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Conversations.GetConversationInput",
+                      "typeSimple": "Volo.Chat.Conversations.GetConversationInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Chat.Conversations.ChatConversationDto",
+                    "typeSimple": "Volo.Chat.Conversations.ChatConversationDto"
+                  }
+                },
+                {
+                  "name": "MarkConversationAsReadAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Conversations.MarkConversationAsReadInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                      "typeSimple": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "DeleteConversationAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Chat.Conversations.DeleteConversationInput, Volo.Chat.Application.Contracts",
+                      "type": "Volo.Chat.Conversations.DeleteConversationInput",
+                      "typeSimple": "Volo.Chat.Conversations.DeleteConversationInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "SendMessageAsyncByInput": {
+              "uniqueName": "SendMessageAsyncByInput",
+              "name": "SendMessageAsync",
+              "httpMethod": "POST",
+              "url": "api/chat/conversation/send-message",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Messages.SendMessageInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Messages.SendMessageInput",
+                  "typeSimple": "Volo.Chat.Messages.SendMessageInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Chat.Messages.SendMessageInput",
+                  "typeSimple": "Volo.Chat.Messages.SendMessageInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Chat.Messages.ChatMessageDto",
+                "typeSimple": "Volo.Chat.Messages.ChatMessageDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Conversations.IConversationAppService"
+            },
+            "DeleteMessageAsyncByInput": {
+              "uniqueName": "DeleteMessageAsyncByInput",
+              "name": "DeleteMessageAsync",
+              "httpMethod": "DELETE",
+              "url": "api/chat/conversation/delete-message",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Messages.DeleteMessageInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Messages.DeleteMessageInput",
+                  "typeSimple": "Volo.Chat.Messages.DeleteMessageInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "TargetUserId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MessageId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Conversations.IConversationAppService"
+            },
+            "GetConversationAsyncByInput": {
+              "uniqueName": "GetConversationAsyncByInput",
+              "name": "GetConversationAsync",
+              "httpMethod": "GET",
+              "url": "api/chat/conversation/conversation",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Conversations.GetConversationInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Conversations.GetConversationInput",
+                  "typeSimple": "Volo.Chat.Conversations.GetConversationInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "TargetUserId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Chat.Conversations.ChatConversationDto",
+                "typeSimple": "Volo.Chat.Conversations.ChatConversationDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Conversations.IConversationAppService"
+            },
+            "MarkConversationAsReadAsyncByInput": {
+              "uniqueName": "MarkConversationAsReadAsyncByInput",
+              "name": "MarkConversationAsReadAsync",
+              "httpMethod": "POST",
+              "url": "api/chat/conversation/mark-conversation-as-read",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Conversations.MarkConversationAsReadInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                  "typeSimple": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                  "typeSimple": "Volo.Chat.Conversations.MarkConversationAsReadInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Conversations.IConversationAppService"
+            },
+            "DeleteConversationAsyncByInput": {
+              "uniqueName": "DeleteConversationAsyncByInput",
+              "name": "DeleteConversationAsync",
+              "httpMethod": "DELETE",
+              "url": "api/chat/conversation/delete-conversation",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Chat.Conversations.DeleteConversationInput, Volo.Chat.Application.Contracts",
+                  "type": "Volo.Chat.Conversations.DeleteConversationInput",
+                  "typeSimple": "Volo.Chat.Conversations.DeleteConversationInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "TargetUserId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Chat.Conversations.IConversationAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

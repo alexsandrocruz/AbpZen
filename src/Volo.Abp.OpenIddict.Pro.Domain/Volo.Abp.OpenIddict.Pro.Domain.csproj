@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.OpenIddict.Domain" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.Abp.OpenIddict.Pro.Domain.Shared\Volo.Abp.OpenIddict.Pro.Domain.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

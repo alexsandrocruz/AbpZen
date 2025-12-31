@@ -1,0 +1,7 @@
+@using Volo.Abp.Account.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@inject IHtmlLocalizer<AccountResource> L
+@model Volo.Abp.Account.Public.Web.Pages.Account.Components.ProfileManagementGroup.TwoFactor.AccountProfileTwoFactorManagementGroupViewComponent.ChangeTwoFactorModel
+
+<abp-input asp-for="TwoFactorEnabled" label="@L["DisplayName:TwoFactorEnabled"].Value" info="@L["TwoFactorEnabledInfo"].Value"  id="TwoFactorEnabled"/>

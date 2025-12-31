@@ -1,0 +1,19 @@
+﻿@page
+@model Volo.Payment.Iyzico.Pages.Payment.Iyzico.PostPaymentModel
+
+@section scripts {
+	<abp-script src="/client-proxies/payment-proxy.js" />
+}
+
+@if (!Model.ErrorMessage.IsNullOrWhiteSpace())
+{
+	<div class="container">
+		<div class="alert alert-danger text-center">
+			@Model.ErrorMessage
+		</div>
+	</div>
+}
+else
+{
+	<p>Your payment is approved.</p>
+}

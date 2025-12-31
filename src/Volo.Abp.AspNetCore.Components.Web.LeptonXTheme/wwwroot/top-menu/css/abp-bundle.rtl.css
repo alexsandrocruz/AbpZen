@@ -1,0 +1,169 @@
+.confirmation .confirmation-backdrop {
+  background: rgba(var(--lpx-content-text-rgb), 0.5);
+}
+.confirmation .confirmation-dialog {
+  border: 0;
+  border-radius: var(--lpx-radius);
+  background-color: var(--lpx-card-bg);
+  box-shadow: var(--lpx-shadow);
+}
+.confirmation .confirmation-dialog .icon-container .icon {
+  stroke: var(--lpx-primary);
+  color: var(--lpx-primary);
+}
+.confirmation .confirmation-dialog .icon-container.info .icon {
+  stroke: var(--lpx-info);
+  color: var(--lpx-info);
+}
+.confirmation .confirmation-dialog .icon-container.success .icon {
+  stroke: var(--lpx-success);
+  color: var(--lpx-success);
+}
+.confirmation .confirmation-dialog .icon-container.warning .icon {
+  stroke: var(--lpx-warning);
+  color: var(--lpx-warning);
+}
+.confirmation .confirmation-dialog .icon-container.error .icon {
+  stroke: var(--lpx-danger);
+  color: var(--lpx-danger);
+}
+.confirmation .confirmation-dialog .content .title,
+.confirmation .confirmation-dialog .content .message {
+  color: var(--lpx-content-text);
+}
+.confirmation .confirmation-dialog .footer {
+  border-radius: 0 0 var(--lpx-radius) var(--lpx-radius);
+}
+.confirmation .confirmation-dialog .footer .confirmation-button {
+  background-color: var(--lpx-primary);
+  color: #fff;
+  border-radius: var(--lpx-radius);
+}
+.confirmation .confirmation-dialog .footer .confirmation-button:hover, .confirmation .confirmation-dialog .footer .confirmation-button:focus, .confirmation .confirmation-dialog .footer .confirmation-button:active {
+  background-color: rgba(var(--lpx-primary-rgb), 0.5);
+}
+
+.content-header-title {
+  color: var(--lpx-card-title-text-color);
+  font-size: 1.5em !important;
+  font-weight: 600;
+  margin-bottom: 1em;
+  margin-top: 0.3333333333em;
+}
+
+/* TODO: lpx-page-header and lpx-page-title classes not exist. Find related properties
+.entry-row {
+  @extend .lpx-page-header;
+}
+
+.content-header-title {
+  @extend .lpx-page-title;
+}
+
+*/
+#toast-container.toast-top-full-width, #toast-container.toast-top-center {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 20px 15px 100px;
+}
+#toast-container.toast-bottom-full-width, #toast-container.toast-bottom-center {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 100px 15px 20px 15px;
+}
+#toast-container.toast-top-right {
+  top: 8px;
+  left: 8px;
+}
+#toast-container.toast-top-left {
+  top: 8px;
+  right: 8px;
+}
+#toast-container.toast-bottom-left {
+  bottom: 8px;
+  right: 8px;
+}
+#toast-container.toast-bottom-right {
+  bottom: 8px;
+  left: 8px;
+}
+#toast-container > div {
+  opacity: 0.975;
+}
+#toast-container button.toast-close-button {
+  color: #000;
+}
+
+.dt-container,
+.tab-content {
+  border-radius: var(--lpx-radius);
+  background: var(--lpx-card-bg);
+  box-shadow: var(--lpx-shadow);
+  padding: 1.5rem;
+}
+
+.nav-tabs {
+  background: var(--lpx-card-bg);
+  box-shadow: var(--lpx-shadow);
+  padding: 0 1.5rem;
+  border-radius: var(--lpx-radius);
+  margin-bottom: 1rem;
+}
+
+.card .nav-tabs {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: none;
+}
+.card .tab-content {
+  background: none;
+  box-shadow: none;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.tab-content .card {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.modal-body .tab-content {
+  background: none;
+  box-shadow: none;
+}
+
+.modal-body .nav-tabs,
+.card .nav-tabs,
+.tab-content .nav-tabs {
+  background: none;
+  box-shadow: none;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+hr {
+  opacity: 0.1;
+}
+
+.abp-block-area {
+  background: var(--lpx-card-bg);
+}
+
+.abp-md-form {
+  max-width: 540px;
+}
+
+/* TODO: build for only angular-abp-pro package
+// file management breadcrumb
+abp-file-management-breadcrumb {
+  .breadcrumb-item + .breadcrumb-item:before {
+    position: relative;
+    top: -3px;
+  }
+}
+*/
+.toastui-editor-main {
+  background-color: #fff;
+}
+
+/*# sourceMappingURL=abp-bundle.rtl.css.map */

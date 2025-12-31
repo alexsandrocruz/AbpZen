@@ -1,0 +1,21 @@
+{
+  "Culture": "sl",
+  "Texts": {
+    "Login": "Prijava",
+    "Appearance": "Videz",
+    "ContainerWidth": "Širina Posode",
+    "ContainerWidth:Boxed": "Škatlasta Postavitev",
+    "ContainerWidth:Fixed": "Fiksna postavitev",
+    "ContainerWidth:Fluid": "Tekoča Širina",
+    "GeneralSettings": "Splošne Nastavitve",
+    "Language": "Jezik",
+    "Settings": "Nastavitve",
+    "Theme:dark": "Temno",
+    "Theme:dim": "Poltemno",
+    "Theme:light": "Svetloba",
+    "Theme:system": "Sistem",
+    "Welcome": "Dobrodošli",
+    "FilterMenu": "Meni filtrov",
+    "Menu": "Meni"
+  }
+}

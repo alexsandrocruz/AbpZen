@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Abp.LanguageManagement.Domain\Volo.Abp.LanguageManagement.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.MongoDB" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

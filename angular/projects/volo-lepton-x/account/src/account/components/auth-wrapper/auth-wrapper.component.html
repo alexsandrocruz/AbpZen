@@ -1,0 +1,81 @@
+<div class="card mx-auto" style="max-width: 30rem">
+  <div class="card-body p-3 p-sm-4">
+    <div class="align-items-start d-flex justify-content-between mb-2">
+      <h2 class="lpx-main-title lpx-login-title m-0 me-auto">
+        {{ service.pageLabel | abpLocalization }}
+      </h2>
+
+      <div ngbDropdown class="dropdown btn-group ms-auto">
+        @if (service.defaultLanguage$ | async; as defaultLang) {
+          <button
+            ngbDropdownToggle
+            type="button"
+            id="dropdownMenuLink"
+            class="btn btn-sm btn-light dropdown-toggle"
+            aria-expanded="false"
+            data-bs-toggle="dropdown"
+          >
+            <i class="bi bi-translate me-1"></i>
+            <span class="ml-2">{{ defaultLang.displayName }}</span>
+          </button>
+        }
+
+        <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
+          <li>
+            @for (lang of service.dropdownLanguages$ | async; track $index) {
+              <a
+                class="dropdown-item pointer"
+                (click)="service.onChangeLang(lang.cultureName)"
+              >
+                {{ lang?.displayName }}
+              </a>
+            }
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    @if (
+      (service.isMultiTenancyEnabled$ | async) && service.isTenantBoxVisible
+    ) {
+      <abp-tenant-box
+        *abpReplaceableTemplate="{ componentKey: service.tenantBoxKey }"
+      ></abp-tenant-box>
+    }
+
+    @if (service.enableLocalLogin$ | async) {
+      <div>
+        <ng-content></ng-content>
+      </div>
+    } @else {
+      <div class="alert alert-warning">
+        <strong>{{
+          'AbpAccount::InvalidLoginRequest' | abpLocalization
+        }}</strong>
+        {{
+          'AbpAccount::ThereAreNoLoginSchemesConfiguredForThisClient'
+            | abpLocalization
+        }}
+      </div>
+    }
+  </div>
+</div>
+
+<div class="copyright text-center my-3">
+  <span class="copyright-text"
+    >2023 ©
+    <a
+      href="https://leptontheme.com/"
+      class="text-dark text-decoration-none"
+      target="_blank"
+      >LeptonX Theme</a
+    >
+    by
+    <a
+      href="https://abp.io/"
+      class="text-brand text-decoration-none"
+      target="_blank"
+      >ABP Platform</a
+    >
+  </span>
+</div>

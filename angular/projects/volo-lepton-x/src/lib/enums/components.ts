@@ -1,0 +1,23 @@
+// TODO: configure for lepton next
+export const enum eThemeLeptonXComponents {
+  AccountLayout = 'Theme.AccountLayoutComponent',
+  ApplicationLayout = 'Theme.ApplicationLayoutComponent',
+  Footer = 'Theme.FooterComponent',
+  CurrentUser = 'Theme.CurrentUserComponent',
+  CurrentUserImage = 'Theme.CurrentUserImageComponent',
+  EmptyLayout = 'Theme.EmptyLayoutComponent',
+  Languages = 'Theme.LanguagesComponent',
+  Logo = 'Theme.LogoComponent',
+  Routes = 'Theme.RoutesComponent',
+  Navbar = 'Theme.NavbarComponent',
+  MobileNavbar = 'Theme.MobileNavbarComponent',
+  MobileNavbarSettings = 'Theme.MobileNavbarSettingsComponent',
+  MobileNavbarProfile = 'Theme.MobileNavbarProfileComponent',
+  NavItems = 'Theme.NavItemsComponent',
+  Breadcrumb = 'Theme.Breadcrumb',
+  PageAlertContainer = 'Theme.PageAlertContainerComponent',
+  Toolbar = 'Theme.ToolbarComponent',
+  TopNavbar = 'Theme.TopNavbarComponent',
+  Settings = 'Theme.SettingsComponent',
+  HttpError = 'Theme.HttpErrorComponent',
+}

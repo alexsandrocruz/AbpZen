@@ -1,0 +1,17 @@
+<div *ngIf="requestPersonalDataService.btnDisabled$ | async; else btnTmp" [ngbTooltip]="tooltipTmp">
+  <ng-container *ngTemplateOutlet="btnTmp"></ng-container>
+</div>
+<ng-template #btnTmp>
+  <button
+    class="btn btn-sm btn-primary"
+    (click)="requestPersonalDataService.requestPersonalDate()"
+    type="button"
+    [disabled]="requestPersonalDataService.btnDisabled$ | async"
+  >
+    {{ 'AbpGdpr::RequestPersonalData' | abpLocalization }}
+  </button>
+</ng-template>
+
+<ng-template #tooltipTmp>
+  <span>{{ 'AbpGdpr::Volo.Abp.Gdpr:010001' | abpLocalization }}</span>
+</ng-template>

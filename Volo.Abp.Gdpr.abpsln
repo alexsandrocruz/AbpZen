@@ -1,0 +1,7 @@
+{
+    "modules": {
+      "Volo.Abp.Gdpr": {
+        "path": "Volo.Abp.Gdpr.abpmdl"
+      }
+    }
+  }

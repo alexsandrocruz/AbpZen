@@ -1,0 +1,35 @@
+{
+  "name": "audit-logging",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/audit-logging/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/audit-logging"],
+      "options": {
+        "tsConfig": "packages/audit-logging/tsconfig.lib.json",
+        "project": "packages/audit-logging/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/audit-logging/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/audit-logging"],
+      "options": {
+        "jestConfig": "packages/audit-logging/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["commercial-ui"]
+}

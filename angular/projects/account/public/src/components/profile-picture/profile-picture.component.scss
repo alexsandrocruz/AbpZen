@@ -1,0 +1,46 @@
+.current-profile-picture {
+  display: block;
+  margin: 0 auto;
+  width: 250px;
+}
+
+.selected-image {
+  display: block;
+  max-width: 100%;
+}
+
+.cursor-info {
+  display: block;
+}
+
+.sample-images {
+  list-style-type: none;
+
+  img {
+    border: 1px dotted slategray;
+
+    &:hover {
+      border-radius: 50%;
+    }
+  }
+  
+  li {
+    float: left;
+    margin-left: 1.2em;
+
+    &.big img {
+      width: 250px;
+      height: 250px;
+    }
+
+    &.medium img {
+      width: 150px;
+      height: 150px;
+    }
+
+    &.small img {
+      width: 75px;
+      height: 75px;
+    }
+  }
+}

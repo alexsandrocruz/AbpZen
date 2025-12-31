@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.FeatureManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.Saas.Tenant.HttpApi.Client\Volo.Saas.Tenant.HttpApi.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Volo.Saas.Host.Blazor\Volo.Saas.Host.Blazor.csproj" />
+    </ItemGroup>
+
+</Project>

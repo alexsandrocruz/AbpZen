@@ -1,0 +1,74 @@
+{
+  "name": "Volo.Chat.Blazor.Server",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Chat.Blazor.Server",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.Blazor",
+          "namespace": "Volo.Chat.Blazor",
+          "name": "ChatBlazorModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Components.Server.Theming",
+          "namespace": "Volo.Abp.AspNetCore.Components.Server.Theming",
+          "name": "AbpAspNetCoreComponentsServerThemingModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatBlazorServerModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Chat.Blazor.Server.Components",
+      "contentType": "webPage",
+      "name": "BlazorServerMessagesToolbarItem",
+      "summary": null
+    }
+  ]
+}

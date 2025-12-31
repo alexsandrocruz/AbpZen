@@ -1,0 +1,13 @@
+{
+  "culture": "hr",
+  "texts": {
+    "Permission:LanguageManagement": "Upravljanje jezikom",
+    "Permission:LanguageTexts": "Jezični tekstovi",
+    "Permission:LanguageTextsEdit": "Uređivanje jezičnih tekstova",
+    "Permission:Languages": "Jezici",
+    "Permission:LanguagesEdit": "Uredi jezik",
+    "Permission:LanguagesCreate": "Stvorite jezik",
+    "Permission:LanguagesChangeDefault": "Promjena zadanog jezika",
+    "Permission:LanguagesDelete": "Izbriši jezik"
+  }
+}

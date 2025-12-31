@@ -1,0 +1,18 @@
+﻿@if (!ToolbarItemRenders.IsNullOrEmpty() || !PageLayout.Title.IsNullOrEmpty())
+{
+	<div class="row lpx-content-toolbar">
+		<div class="col">
+			<h1 class="lpx-main-title">@PageLayout.Title</h1>
+		</div>
+		<div class="col-auto" id="AbpContentToolbar">
+			<Row>
+				@foreach (var toolbarItemRender in ToolbarItemRenders)
+				{
+					<Column ColumnSize="ColumnSize.IsAuto" Class="p-1">
+						@toolbarItemRender
+					</Column>
+				}
+			</Row>
+		</div>
+	</div>
+}

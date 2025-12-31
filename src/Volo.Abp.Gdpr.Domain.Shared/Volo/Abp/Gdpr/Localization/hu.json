@@ -1,0 +1,28 @@
+{
+  "culture": "hu",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Ön korábban kérte a személyes adatok letöltését. A megadott kérési idő letelte után újat hozhat létre.",
+    "Volo.Abp.Gdpr:010002": "Személyes adatai még előkészítés alatt állnak. Letöltheti a {GdprDataReadyTime} címről.",
+    "PersonalData": "Személyes adatok",
+    "Menu:PersonalData": "Személyes adatok",
+    "PersonalDataDescription": "Fiókja azokat a személyes adatokat tartalmazza, amelyeket Ön megadott nekünk. Ez az oldal lehetővé teszi az adatok letöltését vagy törlését.",
+    "RequestPersonalData": "Személyes adatok kérése",
+    "DeletePersonalData": "Személyes adatok törlése",
+    "CreationTime": "Létrehozás dátuma",
+    "Action": "Akció",
+    "Preparing": "Felkészülés",
+    "Download": "Letöltés",
+    "ReadyTime": "Készenléti idő",
+    "DeletePersonalDataWarning": "Ezen adatok törlésével eltávolítja a fiókját, és többé nem tud bejelentkezni az alkalmazásba! Biztosan folytatja?",
+    "PersonalDataDeleteRequestReceived": "Személyes adatok törlésére vonatkozó kérelmének feldolgozása folyamatban van... Az adattörlési folyamat végén fiókja törlésre kerül, és többé nem tudja használni.",
+    "PersonalDataPrepareRequestReceived": "Személyes adatkérésének feldolgozása folyamatban van. Erről az oldalról letöltheti, ha elkészül!",
+    "NoDataAvailable": "Nem állnak rendelkezésre adatok.",
+    "Accept": "Elfogadás",
+    "CookiePolicy": "Cookie-szabályzat",
+    "PrivacyPolicy": "Adatvédelmi irányelvek",
+    "ThisWebsiteUsesCookie": "Ez a weboldal cookie-kat használ, hogy a lehető legjobb élményt nyújtsa a webhelyen.",
+    "CookieConsentAgreePolicies": "Ha folytatja a böngészést, akkor elfogadja a következőket: {0} és {1}.",
+    "CookieConsentAgreePolicy": "Ha folytatja a böngészést, akkor elfogadja a következőt: {0}.",
+    "CanNotGetDownloadToken": "Ehhez a kéréshez nem kaphat letöltési tokent!"
+  }
+}

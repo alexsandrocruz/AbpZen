@@ -1,0 +1,37 @@
+{
+  "name": "chat",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/chat/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/chat"],
+      "options": {
+        "tsConfig": "packages/chat/tsconfig.lib.json",
+        "project": "packages/chat/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/chat/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "packages/chat/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/chat"],
+      "options": {
+        "jestConfig": "packages/chat/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

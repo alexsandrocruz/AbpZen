@@ -1,0 +1,99 @@
+<abp-modal
+  [visible]="service.visible()"
+  (visibleChange)="onVisibleChange($event)"
+  [suppressUnsavedChangesWarning]="true"
+>
+  <ng-template #abpHeader>
+    <h5 class="modal-title">
+      {{ 'AbpUi::AreYouSure' | abpLocalization }}
+    </h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <p class="fw-bold">
+      {{
+        'AbpIdentity::OrganizationUnitDeletionConfirmationMessage' | abpLocalization: service.name()
+      }}
+    </p>
+
+    <form [formGroup]="form" id="delete-form" (ngSubmit)="save()">
+      @if (service.hasMemberOrRole()) {
+        <p class="mt-2">
+          {{
+            'AbpIdentity::ChooseAnActionForOrganizationUnit' | abpLocalization: service.countText()
+          }}
+        </p>
+        <div class="form-check mt-2">
+          <input
+            class="form-check-input"
+            formControlName="assignType"
+            type="radio"
+            name="assignType"
+            id="unassign"
+            [value]="false"
+          />
+          <label class="form-check-label" for="unassign">
+            {{ 'AbpIdentity::UnassignOrganizationUnit' | abpLocalization }}
+          </label>
+        </div>
+        @if (service.hasOtherUnits()) {
+          <div class="form-check mt-2">
+            <input
+              class="form-check-input"
+              formControlName="assignType"
+              type="radio"
+              name="assignType"
+              id="assign"
+              [value]="true"
+            />
+            <label class="form-check-label" for="assign">
+              {{ 'AbpIdentity::AssignUsersToOtherOrganizationUnit' | abpLocalization }}
+            </label>
+          </div>
+
+          @if (form.value.assignType) {
+            <select
+              class="form-select mt-2"
+              formControlName="organizationUnitId"
+              [ngClass]="{ 'border-danger': showAssignErrorMessage() }"
+            >
+              <option [ngValue]="null">
+                {{
+                  (service.loading()
+                    ? 'AbpUi::LoadingWithThreeDot'
+                    : 'AbpIdentity::SelectAnRoleToAssign'
+                  ) | abpLocalization
+                }}
+              </option>
+              @for (item of service.otherOrganizationUnits(); track $index) {
+                <option [ngValue]="item.id">
+                  {{ item.displayName }}
+                </option>
+              }
+            </select>
+            @if (showAssignErrorMessage()) {
+              <span class="text-danger">
+                {{ 'AbpValidation::ThisFieldIsRequired.' | abpLocalization }}
+              </span>
+            }
+          }
+        }
+      }
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-danger">
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button
+      buttonType="submit"
+      buttonClass="btn btn-danger"
+      [loading]="service.loading()"
+      formName="delete-form"
+    >
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      {{ 'AbpUi::Delete' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>

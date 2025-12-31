@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Navigation
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.MainMenu
+@using Volo.Abp.UI.Navigation
+
+@model MenuItemViewModel
+
+@{
+	var cssClass = string.IsNullOrEmpty(Model.MenuItem.CssClass) ? string.Empty : Model.MenuItem.CssClass;
+	var customComponentType = Model.MenuItem.GetComponentTypeOrDefault();
+}
+
+@if (Model.MenuItem.IsLeaf)
+{
+	if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+	{
+		@(await Component.InvokeAsync(customComponentType))
+	}
+	else
+	{
+		var url = string.IsNullOrEmpty(Model.MenuItem.Url) ? "#" : Url.IsLocalUrl(Model.MenuItem.Url) ? Url.Content(Model.MenuItem.Url.EnsureStartsWith('~')) : Model.MenuItem.Url;
+		var hasIcon = !Model.MenuItem.Icon.IsNullOrEmpty();
+
+		<a href="@url" target="@Model.MenuItem.Target" class="lpx-menu-item-link lpx-menu-item@(!hasIcon ? " px-2" : string.Empty) @(Model.IsActive ? "selected" : string.Empty) @cssClass" id="@Model.MenuItem.ElementId">
+			@if (hasIcon)
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @Model.MenuItem.Icon" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@Model.MenuItem.DisplayName</span>
+		</a>
+	}
+	
+}
+else
+{
+	if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+	{
+		@(await Component.InvokeAsync(customComponentType))
+	}
+	else
+	{
+		<a class="lpx-menu-item-link lpx-menu-item @(Model.IsActive ? "selected" : "")">
+
+			@if (!Model.MenuItem.Icon.IsNullOrEmpty())
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @Model.MenuItem.Icon" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@Model.MenuItem.DisplayName</span>
+		</a>
+	}
+	
+	<div class="lpx-menu-dropdown lpx-ps ps">
+		<ul id="@Model.MenuItem.ElementId" class="lpx-inner-menu hidden-in-hover-trigger @(Model.IsActive ? "" : "collapsed") @cssClass">
+			@foreach (var childMenuItem in Model.Items)
+			{
+				<li class="lpx-inner-menu-item">
+					@await Html.PartialAsync("~/Themes/LeptonX/Components/TopMenu/MainMenu/_MenuItem.cshtml", childMenuItem)
+				</li>
+			}
+		</ul>
+	</div>
+}

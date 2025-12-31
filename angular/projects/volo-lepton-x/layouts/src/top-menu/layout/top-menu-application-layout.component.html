@@ -1,0 +1,76 @@
+<lpx-layout>
+  <ng-template lpx-content>
+    <abp-page-alert-container
+      *abpReplaceableTemplate="{ componentKey: pageAlertContainerKey }"
+    ></abp-page-alert-container>
+
+    <router-outlet></router-outlet>
+  </ng-template>
+
+  <ng-template
+    lpx-breadcrumb-panel
+    *abpIfReplaceableTemplateExists="breadcrumbKey"
+  >
+    <ng-container *abpReplaceableTemplate="{ componentKey: breadcrumbKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template lpx-navbar-panel *abpIfReplaceableTemplateExists="navbarKey">
+    <ng-container *abpReplaceableTemplate="{ componentKey: navbarKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template
+    lpx-mobile-navbar-panel
+    *abpIfReplaceableTemplateExists="mobileNavbarKey"
+  >
+    <ng-container *abpReplaceableTemplate="{ componentKey: mobileNavbarKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-container *abpIfReplaceableTemplateExists="mobileNavbarSettingsKey">
+    <ng-template lpx-mobile-navbar-settings-panel>
+      <ng-container
+        *abpReplaceableTemplate="{ componentKey: mobileNavbarSettingsKey }"
+      >
+      </ng-container>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *abpIfReplaceableTemplateExists="mobileNavbarProfileKey">
+    <ng-template lpx-mobile-navbar-profile-panel>
+      <ng-container
+        *abpReplaceableTemplate="{ componentKey: mobileNavbarProfileKey }"
+      >
+      </ng-container>
+    </ng-template>
+  </ng-container>
+
+  <ng-template lpx-footer-panel *abpIfReplaceableTemplateExists="footerKey">
+    <ng-container *abpReplaceableTemplate="{ componentKey: footerKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template lpx-toolbar-panel *abpIfReplaceableTemplateExists="toolbarKey">
+    <ng-container *abpReplaceableTemplate="{ componentKey: toolbarKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template lpx-logo-panel *abpIfReplaceableTemplateExists="logoKey">
+    <ng-container *abpReplaceableTemplate="{ componentKey: logoKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template
+    lpx-top-navbar-panel
+    *abpIfReplaceableTemplateExists="topNavbarKey"
+  >
+    <ng-container *abpReplaceableTemplate="{ componentKey: topNavbarKey }">
+    </ng-container>
+  </ng-template>
+
+  <ng-template lpx-settings-panel *abpIfReplaceableTemplateExists="settingsKey">
+    <ng-container *abpReplaceableTemplate="{ componentKey: settingsKey }">
+    </ng-container>
+  </ng-template>
+</lpx-layout>

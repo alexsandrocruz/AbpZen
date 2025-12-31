@@ -1,0 +1,28 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.saas",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'saas', loadChildren: () => import('@volo/abp.ng.saas').then(m => m.SaasModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideSaasConfig"
+						],
+						"namespace": "@volo/abp.ng.saas/config"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideSaasConfig()"
+				]
+			}
+		}
+	]
+}

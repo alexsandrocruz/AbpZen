@@ -1,0 +1,197 @@
+﻿@page "/Chat"
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.Features
+@using Volo.Chat.Authorization
+@using Volo.Chat.Messages
+@attribute [Authorize(ChatPermissions.Messaging)]
+@attribute [RequiresFeature(ChatFeatures.Enable)]
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+
+<link href="_content/Volo.Chat.Blazor/libs/Index.css" rel="stylesheet"/>
+
+<div id="chat_wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Users box-->
+            <div class="col-12 col-md-5 col-lg-4  d-flex align-items-stretch">
+                <div class="card w-100 mb-3 mb-md-0">
+                    <div class="card-body p-1 p-md-2 p-lg-3">
+                        <div class=" mb-2 rounded-2" id="SearchBox">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="search"
+                                       @oninput="@((e) => { SearchValue = (string)e.Value;})"
+                                       @onchange="@(async e => await OnSearchChangeAsync(e.Value?.ToString()))"
+                                       @onkeyup="@(async e => await OnSearchKeyupAsync(e))"
+                                       class="form-control form-control-sm"
+                                       placeholder="@L["SearchInContacts"].Value"
+                                       aria-label="@L["SearchInContacts"].Value"
+                                       autocomplete="off" spellcheck="false"
+                                       aria-autocomplete="list"
+                                       role="combobox"
+                                       aria-expanded="false"
+                                       aria-owns="algolia-autocomplete-listbox-0"
+                                       dir="auto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="messages-box lpx-ps-scroll-container m-0 p-0 ps ps--active-y" id="chat-messages-container">
+                            <div class="list-group rounded-3 contract-list" id="contact_list">
+                                @{
+                                    var otherContacts = false;
+                                    foreach (var chatContact in ChatContactDtos)
+                                    {
+                                        if (chatContact.LastMessage.IsNullOrWhiteSpace() && !otherContacts)
+                                        {
+                                            <div class="list-group-item px-2 py-1 bg-light text-muted text-center font-size-sm text-uppercase border-start-0 border-end-0">
+                                                <small>@L["OtherContacts"]</small>
+                                            </div>
+
+                                            otherContacts = true;
+                                        }
+
+                                        <a class="chat-contact cursor-pointer list-group-item list-group-item-action mb-1 mt-0 px-2 rounded-2 @(ChatContactsActive.ContainsKey(chatContact) ? ChatContactsActive[chatContact] : string.Empty)">
+                                            <div class="media" @onclick="async () => await SetActiveAsync(chatContact)" >
+                                                <canvas @ref="CanvasElementReferences[chatContact]" class="canvas-avatar mx-auto rounded-circle" Width="40" Height="40"></canvas>
+                                                <div class="media-body ms-2">
+                                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                                        <h6 class="mb-0 me-1">
+                                                            @if (chatContact.UnreadMessageCount > 0)
+                                                            {
+                                                                <small class="badge bg-success me-1">@chatContact.UnreadMessageCount</small>
+                                                            }
+                                                            @GetName(chatContact)
+                                                        </h6>
+                                                        @if (chatContact.LastMessageDate != null)
+                                                        {
+                                                            <div class="d-inline">
+                                                                <small class="lh-1 d-block last-message-date">@chatContact.LastMessageDate?.ToString("d")</small>
+                                                                <small class="lh-1 d-block last-message-date">@chatContact.LastMessageDate?.ToString("t")</small>
+                                                                    
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <p class="mb-0 small last-message">@chatContact.LastMessage.TruncateWithPostfix(36,"...")</p>
+                                                </div>
+                                            </div>
+                                            @if (IsDeletingConversationEnabled())
+                                            {
+                                                <div class="dropdown position-absolute bottom-0 end-0">
+                                                    <button class="btn p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="lpx-caret bi-chevron-down" aria-hidden="true"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a class="dropdown-item delete-conversation-btn" @onclick="async () => await DeleteConversationAsync()">@L["Delete"]</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            }
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chat Box-->
+            <div id="chatBox" class="col-12 col-md-7 col-lg-8  d-flex align-items-stretch" style="@ChatMessagesContainerStyle">
+                <div class="card w-100 mb-0">
+                    <div class="card-body p-1 p-md-2 p-lg-3">
+                        <div id="AvatarId" class="px-2 py-1 border mb-2 rounded-2">
+                            <div class="row">
+                                <div class="col-auto pe-0">
+                                     @*<img src="https://avatars.dicebear.com/v2/human/volo.svg" alt="user" width="32" class="rounded-circle   border-secondary" style="border: 2px solid">*@
+                                    <canvas @ref="CurrentChatContactCanvas" class="rounded-circle mt-1" width="36" height="36"></canvas>
+                                </div>
+                                <div class="col d-flex flex-column justify-content-center">
+                                    <h5 id="Conversation_Title" class="m-0">@(CurrentChatContact != null ? GetName(CurrentChatContact) + (CurrentChatContact.HasChatPermission ? string.Empty : $" - {L["Volo.Chat:010004"]}") : string.Empty)</h5>
+                                </div>
+                            </div>
+                        </div>
+                        @if (ChatConversationDto == null)
+                        {
+                            <div id="EmptyTemplate" class="card-body pt-12 pb-12 text-center">
+                                <i class="fa fa-commenting-o fs-2" aria-hidden="true"></i>
+                                <p class="pb-3">@L["NoMessageYet"].Value</p>
+                                <p>@L["NoMessageYetMessage"].Value</p>
+                                <button id="StartConversation" @onclick="@(async () => await StartConversationAsync())" type="button" class="btn btn-primary">
+                                    @L["StartConversation"]
+                                </button>
+                            </div>
+                        }else{
+                            <div id="chat_conversation_wrapper" class="chat-box mb-2">
+                                <div class="chat-box-container" id="chat_conversation">
+                                    @foreach (var message in ChatConversationDto.Messages)
+                                    {
+                                        if (message.Side == ChatMessageSide.Sender)
+                                        {
+                                            <div class="media w-75 mw-65 w-lp-auto mb-2 ms-auto position-relative">
+                                                <div class="media-body position-relative ">
+                                                    <div class="bg-primary text-bg-primary card mb-1 px-2 px-lg-3 py-1 py-lg-2 rounded shadow-sm">
+                                                        <p class="mb-0 message-text text-small">@message.Message</p>
+                                                    </div>
+                                                    <p class="left m-0 message-date small text-muted" style="opacity: 0.35; width: 100px; left: -110px; top: 1px; ">@message.MessageDate</p>
+                                                </div>
+                                                
+                                                @if (IsDeletingMessageEnabled(message))
+                                                {
+                                                    <div class="dropdown position-absolute top-0 end-0">
+                                                        <button class="btn p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="bi bi-chevron-down text-light" aria-hidden="true"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu" style="">
+                                                            <li>
+                                                                <a class="dropdown-item delete-message-btn" @onclick="async () => await DeleteMessageAsync(message)">@L["Delete"]</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="media w-75 mw-65 w-lp-auto mb-2">
+                                                <div class="media-body position-relative ms-3">
+                                                    <div class="bg-light shadow rounded py-3 px-4 mb-1">
+                                                        <p class="text-small mb-0 text-muted">@message.Message</p>
+                                                    </div>
+                                                    <p class="small text-muted position-absolute m-0" style="opacity: 0.35; width: 100px; right: -110px; top: 1px;">@message.MessageDate</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                       
+                        <!-- Typing area -->
+                        @if (ChatConversationDto != null)
+                        {
+                            <div class="bg-light rounded-3 m-0">
+                                <div class="p-2 p-lg-3">
+                                    <textarea @ref="MessageTextArea"
+                                    @bind="Message"
+                                    @oninput="@((e) => { Message = (string)e.Value;})"
+                                    @onkeydown="@(async e => await OnMessageEntryAsync(e))"
+                                                type="text" placeholder="@L["TypeMessage"].Value" class="form-control rounded py-2"></textarea>
+                                    <div class="form-check float-start mt-2">
+                                        <input @bind="SendOnEnter" type="checkbox" class="form-check-input  border shadow-sm" id="Send_On_Enter">
+                                        <label class="form-check-label" for="Send_On_Enter">@L["SendOnEnter"].Value</label>
+                                    </div>
+                                    <div class="mt-2 text-end">
+                                        <button disabled="@Message.IsNullOrWhiteSpace()" @onclick="async () => await SendMessageAsync()" type="submit" class="btn btn-primary px-3">
+                                            @L["Send"]
+                                            <i class="fa fa-paper-plane ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

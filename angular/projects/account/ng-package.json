@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/packages/account",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "angularx-qrcode",
+    "@abp/ng.components",
+    "@abp/ng.theme.shared",
+    "@abp/ng.setting-management",
+    "@volo/abp.commercial.ng.ui",
+    "cropperjs"
+  ]
+}

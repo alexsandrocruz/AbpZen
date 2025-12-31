@@ -1,0 +1,30 @@
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme
+@using Microsoft.Extensions.Options
+@using Volo.Abp.Localization
+@inject IOptions<LeptonXThemeBlazorOptions> Options
+@inject LeptonXStyleProvider LeptonXStyleProvider
+
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/bootstrap-@(_selectedStyleFileName).css" type="text/css" rel="stylesheet" id="lpx-theme-bootstrap-@(_selectedStyle)"/>
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/@(_selectedStyleFileName).css" type="text/css" rel="stylesheet" id="lpx-theme-color-@(_selectedStyle)"/>
+
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/@($"layout-bundle{_rtl}.css")" type="text/css" rel="stylesheet" id="lpx-layout-bundle"/>
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/@($"abp-bundle{_rtl}.css")" type="text/css" rel="stylesheet" id="lpx-abp-bundle"/>
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/@($"blazor-bundle{_rtl}.css")" type="text/css" rel="stylesheet" id="lpx-blazor-bundle"/>
+<link href="_content/Volo.Abp.AspNetCore.Components.Web.LeptonXTheme/@_applicationLayout/css/@($"font-bundle{_rtl}.css")" type="text/css" rel="stylesheet" id="lpx-font-bundle"/>
+
+@code {
+
+    string _applicationLayout;
+    string _selectedStyleFileName;
+    string _selectedStyle;
+    string _rtl;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _applicationLayout = Options.Value.Layout == LeptonXBlazorLayouts.SideMenu ? "side-menu" : "top-menu";
+        _selectedStyle = await LeptonXStyleProvider.GetSelectedStyleAsync();
+        _rtl = CultureHelper.IsRtl ? ".rtl" : string.Empty;
+        _selectedStyleFileName = CultureHelper.IsRtl ?  _selectedStyle + ".rtl" :  _selectedStyle;
+    }
+
+}

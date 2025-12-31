@@ -1,0 +1,37 @@
+{
+  "name": "volo-lepton-x",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/volo-lepton-x/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/libs/volo-lepton-x"],
+      "options": {
+        "project": "libs/volo-lepton-x/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/volo-lepton-x/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/volo-lepton-x/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/volo-lepton-x"],
+      "options": {
+        "jestConfig": "libs/volo-lepton-x/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["lepton-x", "lepton-x-abp-core"]
+}

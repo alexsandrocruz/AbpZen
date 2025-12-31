@@ -1,0 +1,22 @@
+<div ngbDropdown class="d-inline-block ngb-dropdown">
+  <button class="btn btn-outline-primary btn-sm" id="Import" ngbDropdownToggle>
+    {{ 'AbpIdentity::Import' | abpLocalization }}
+  </button>
+
+  <div ngbDropdownMenu id="options" aria-labelledby="Import">
+    <button ngbDropdownItem (click)="onAddExternalLogin()">
+      {{ 'AbpIdentity::ExternalUser' | abpLocalization }}
+    </button>
+    <button ngbDropdownItem (click)="uploadExcelFile()">
+      {{ 'AbpIdentity::FromExcel' | abpLocalization }}
+    </button>
+    <button ngbDropdownItem (click)="uploadCsvFile()">
+      {{ 'AbpIdentity::FromCSV' | abpLocalization }}
+    </button>
+  </div>
+</div>
+
+<abp-external-login
+  [(visible)]="isExternalModalVisible"
+  (dataSave)="getList()"
+></abp-external-login>

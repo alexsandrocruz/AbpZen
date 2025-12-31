@@ -1,0 +1,24 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+
+<nav aria-label="breadcrumb" class="lpx-breadcrumb-container">
+	<ol class="lpx-breadcrumb">
+
+		@if (PageLayout.BreadcrumbItems.Any())
+		{
+			<li class="lpx-breadcrumb-item">
+				<a href=""><i class="lpx-breadcrumb-item-icon bi-house-door-fill" aria-hidden="true"></i></a>
+			</li>
+
+			foreach (var breadcrumb in PageLayout.BreadcrumbItems)
+			{
+				<li class="lpx-breadcrumb-separator"><i class="lpx-icon bi bi-chevron-right"></i></li>
+
+				<li class="lpx-breadcrumb-item" data-lpx-toggle="breadcrumb">
+					<i class="lpx-breadcrumb-item-icon @breadcrumb.Icon" aria-hidden="true"></i>
+
+					<a href="@breadcrumb.Url">@breadcrumb.Text</a>
+				</li>
+			}
+		}
+	</ol>
+</nav>

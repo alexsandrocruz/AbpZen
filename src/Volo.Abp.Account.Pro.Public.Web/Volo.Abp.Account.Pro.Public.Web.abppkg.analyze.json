@@ -1,0 +1,293 @@
+{
+  "name": "Volo.Abp.Account.Pro.Public.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Account.Public.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application.Contracts",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.AspNetCore",
+          "namespace": "Volo.Abp.Identity.AspNetCore",
+          "name": "AbpIdentityAspNetCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Domain",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityProDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "name": "AbpAspNetCoreMvcUiThemeCommercialModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Emailing",
+          "namespace": "Volo.Abp.Emailing",
+          "name": "AbpEmailingModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Sms",
+          "namespace": "Volo.Abp.Sms",
+          "name": "AbpSmsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Security",
+          "namespace": "Volo.Abp.Security",
+          "name": "AbpSecurityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.MultiTenancy",
+          "namespace": "Volo.Abp.AspNetCore.MultiTenancy",
+          "name": "AbpAspNetCoreMultiTenancyModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.ExceptionHandling",
+          "namespace": "Volo.Abp.ExceptionHandling",
+          "name": "AbpExceptionHandlingModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web.Shared",
+          "namespace": "Volo.Abp.Account.Pro.Public.Web.Shared",
+          "name": "AbpAccountPublicWebSharedModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAccountPublicWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "AccessDeniedModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "BackToImpersonatorModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ChangePasswordModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ConfirmUserModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "DelegatedImpersonateModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "EmailConfirmationModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ExternalLoginsModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ExternalPasswordLoginModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ForgotPasswordModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ImpersonateTenantModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ImpersonateUserModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LinkLoggedModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LinkLoginModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LockedOut",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LoggedOutModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LoginModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LoginWithRecoveryCode",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "LogoutModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ManageModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "PasswordResetLinkSentModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ProtocolCallbackModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "RegisterModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ResetPasswordModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "ResetPasswordConfirmationModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "SecurityLogsModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "SendSecurityCodeModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "SessionDetailModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "SessionsModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account",
+      "contentType": "webPage",
+      "name": "VerifySecurityCodeModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Public.Web.Pages.Account.Components.ProfileManagementGroup.PersonalInfo",
+      "contentType": "webPage",
+      "name": "ConfirmPhoneNumberModalModel",
+      "summary": null
+    }
+  ]
+}

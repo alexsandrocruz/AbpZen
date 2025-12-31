@@ -1,0 +1,34 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.language-management",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'language-management', loadChildren: () => import('@volo/abp.ng.language-management').then(m => m.LanguageManagementModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideLanguageManagementConfig"
+						],
+						"namespace": "@volo/abp.ng.language-management/config"
+					},
+					{
+						"names":[
+							"registerLocale"
+						],
+						"namespace": "@volo/abp.ng.language-management/locale"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideLanguageManagementConfig()"
+				]
+			}
+		}
+	]
+}

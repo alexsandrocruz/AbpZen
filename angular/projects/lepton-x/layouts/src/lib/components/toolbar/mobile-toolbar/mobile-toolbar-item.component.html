@@ -1,0 +1,33 @@
+<li class="outer-menu-item" *lpxVisible="!item.visible || item.visible(item)">
+  <a (click)="action()" class="lpx-menu-item-link active-menu-item">
+    <span class="lpx-menu-item-icon">
+      @if (count | toObservable | async; as count) {
+        <small class="menu-item-badge" [class]="color">
+          {{ count }}
+        </small>
+      }
+
+      @if (badgeIcon) {
+        <small class="menu-item-badge" [class]="color">
+          @if (badgeIcon) {
+            <i [class]="badgeIcon"></i>
+          } @else {
+            {{ count | toObservable | async }}
+          }
+        </small>
+      }
+
+      <i class="lpx-icon" [class]="icon" aria-hidden="true"></i>
+    </span>
+
+    <span class="lpx-menu-item-text">
+      {{ item.name || '' | lpxTranslate | async }}
+    </span>
+  </a>
+
+  @if (item.description; as description) {
+    <p class="lpx-menu-item-desc">
+      {{ description }}
+    </p>
+  }
+</li>

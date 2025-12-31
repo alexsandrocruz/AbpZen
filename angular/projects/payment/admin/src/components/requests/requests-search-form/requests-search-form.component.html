@@ -1,0 +1,84 @@
+<form id="FilterFormId" (keyup.enter)="list.get()">
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="CreationDateMin">{{
+          'Payment::PaymentRequests:CreationDateMin' | abpLocalization
+        }}</label>
+        <input
+          #dateMin="ngbDatepicker"
+          class="form-control"
+          id="CreationDateMin"
+          name="CreationDateMin"
+          readonly
+          [(ngModel)]="pageQuery.creationDateMin"
+          ngbDatepicker
+          (click)="dateMin.toggle()"
+          (ngModelChange)="emit()"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="CreationDateMax">{{
+          'Payment::PaymentRequests:CreationDateMax' | abpLocalization
+        }}</label>
+        <input
+          #dateMax="ngbDatepicker"
+          class="form-control"
+          id="CreationDateMax"
+          name="CreationDateMax"
+          readonly
+          [(ngModel)]="pageQuery.creationDateMax"
+          ngbDatepicker
+          (click)="dateMax.toggle()"
+          (ngModelChange)="emit()"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="PaymentType">{{
+          'Payment::PaymentRequests:PaymentType' | abpLocalization
+        }}</label>
+        <!-- TODO: BS5 custom select class replace -->
+        <select
+          class="custom-select form-control"
+          id="PaymentType"
+          name="PaymentType"
+          [(ngModel)]="pageQuery.paymentType"
+          (change)="list.get()"
+          (ngModelChange)="emit()"
+        >
+          <option [ngValue]="undefined"></option>
+          @for (paymentType of paymentTypes; track $index) {
+            <option [ngValue]="paymentType.value">
+              {{ paymentType.key }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="PaymentType">{{ 'Payment::PaymentRequests:Status' | abpLocalization }}</label>
+        <!-- TODO: BS5 custom select class replace -->
+        <select
+          class="custom-select form-control"
+          id="Status"
+          name="Status"
+          [(ngModel)]="pageQuery.status"
+          (change)="list.get()"
+          (ngModelChange)="emit()"
+        >
+          <option [ngValue]="undefined"></option>
+          @for (state of states; track $index) {
+            <option [ngValue]="state.value">
+              {{ state.key }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+</form>

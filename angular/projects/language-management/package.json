@@ -1,0 +1,32 @@
+{
+  "name": "@volo/abp.ng.language-management",
+  "version": "9.0.4",
+  "homepage": "https://abp.io",
+  "dependencies": {
+    "@abp/ng.components": "~9.0.4",
+    "@abp/ng.theme.shared": "~9.0.4",
+    "@volo/abp.commercial.ng.ui": "^9.0.4",
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/volo.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

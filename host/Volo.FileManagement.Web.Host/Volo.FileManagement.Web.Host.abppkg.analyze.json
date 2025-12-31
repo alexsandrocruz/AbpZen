@@ -1,0 +1,148 @@
+{
+  "name": "Volo.FileManagement.Web.Host",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.FileManagement",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.FileManagement.Web",
+          "namespace": "Volo.FileManagement.Web",
+          "name": "FileManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.FileManagement.HttpApi.Client",
+          "namespace": "Volo.FileManagement",
+          "name": "FileManagementHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Authentication.OpenIdConnect",
+          "namespace": "Volo.Abp.AspNetCore.Authentication.OpenIdConnect",
+          "name": "AbpAspNetCoreAuthenticationOpenIdConnectModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.Client",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.Client",
+          "name": "AbpAspNetCoreMvcClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "name": "AbpAspNetCoreMvcUiLeptonThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Caching.StackExchangeRedis",
+          "namespace": "Volo.Abp.Caching.StackExchangeRedis",
+          "name": "AbpCachingStackExchangeRedisModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Http.Client.IdentityModel.Web",
+          "namespace": "Volo.Abp.Http.Client.IdentityModel.Web",
+          "name": "AbpHttpClientIdentityModelWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Web",
+          "namespace": "Volo.Abp.Identity.Web",
+          "name": "AbpIdentityWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.HttpApi.Client",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Web",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.HttpApi.Client",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Web",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.HttpApi.Client",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.HttpApi.Client",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.HttpApi.Client",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementHttpApiClientModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Admin.Web",
+          "namespace": "Volo.Abp.Account.Admin.Web",
+          "name": "AbpAccountAdminWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Swashbuckle",
+          "namespace": "Volo.Abp.Swashbuckle",
+          "name": "AbpSwashbuckleModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "FileManagementWebHostModule",
+      "summary": null
+    }
+  ]
+}

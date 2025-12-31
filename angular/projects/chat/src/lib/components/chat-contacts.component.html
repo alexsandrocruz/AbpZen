@@ -1,0 +1,95 @@
+<div class="card w-100 mb-3 mb-md-0">
+  <div class="card-body p-1 p-md-2 p-lg-3">
+    <div class="mb-2 rounded-2">
+      <div class="row">
+        <div class="col">
+          <input
+            *abpPermission="'Chat.Searching'"
+            id="contacts-filter"
+            type="search"
+            class="form-control form-control"
+            autocomplete="off"
+            spellcheck="false"
+            [(ngModel)]="filter"
+            [placeholder]="'Chat::SearchInContacts' | abpLocalization"
+            [attr.aria-label]="'Chat::SearchInContacts' | abpLocalization"
+            (input.debounce)="typing()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="messages-box m-0 p-0">
+      <div
+        id="contact-list"
+        class="list-group rounded-3"
+        [ngStyle]="{ 'min-height': allContacts.length && 'calc(100vh - 254.34px)' }"
+      >
+        @for (contact of contacts; track contact.userId; let i = $index) {
+          <ng-container
+            [ngTemplateOutlet]="contactTemplate"
+            [ngTemplateOutletContext]="{ $implicit: contact, index: i }"
+          >
+          </ng-container>
+        }
+
+        @if (otherContacts.length) {
+          <div
+            class="list-group-item px-2 py-1 bg-light text-muted text-center font-size-sm text-uppercase border-start-0 border-end-0"
+          >
+            <small>{{ 'Chat::OtherContacts' | abpLocalization }}</small>
+          </div>
+        }
+
+        @for (contact of otherContacts; track contact.userId; let i = $index) {
+          <ng-container
+            [ngTemplateOutlet]="contactTemplate"
+            [ngTemplateOutletContext]="{ $implicit: contact, index: i }"
+          >
+          </ng-container>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #contactTemplate let-contact let-i="index">
+  <a
+    (click)="selectContact(contact)"
+    class="chat-contact list-group-item list-group-item-action cursor-pointer position-relative px-2 border-2 rounded-2 mb-1 mt-0"
+    [class.active]="selectedContact?.userId === contact.userId"
+  >
+    <div class="media">
+      <abp-conversation-avatar [contact]="contact" />
+      <div class="media-body ms-2">
+        <div class="d-flex align-items-center justify-content-between mb-0">
+          <h5 class="mb-0 mt-1 cursor-pointer">
+            {{ getContactName(contact) }}
+            @if (contact.unreadMessageCount) {
+              <span class="badge bg-secondary text-white ms-1">{{ contact.unreadMessageCount }}</span>
+            }
+          </h5>
+          <small class="last-message-date">{{ contact.lastMessageDate | date: 'HH:mm' }}</small>
+        </div>
+        <p class="mb-0 small last-message">
+          {{
+            contact.lastMessage?.length > 24
+              ? (contact.lastMessage | slice: 0 : 23) + '...'
+              : contact.lastMessage
+          }}
+        </p>
+
+        @if (conversationDeletable) {
+          <div ngbDropdown class="dropdown position-absolute bottom-0 end-0">
+            <button class="btn p-1 down-arrow" id="dropdownBasic1" ngbDropdownToggle>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+            <div ngbDropdownMenu>
+              <button ngbDropdownItem (click)="deleteConversation(contact)">Delete</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </a>
+</ng-template>

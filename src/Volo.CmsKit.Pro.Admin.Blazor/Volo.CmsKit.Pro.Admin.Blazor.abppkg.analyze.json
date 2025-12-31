@@ -1,0 +1,198 @@
+{
+  "name": "Volo.CmsKit.Pro.Admin.Blazor",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Blazor",
+          "namespace": "Volo.Abp.SettingManagement.Blazor",
+          "name": "AbpSettingManagementBlazorModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Guids",
+          "namespace": "Volo.Abp.Guids",
+          "name": "AbpGuidsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Admin.Application.Contracts",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProAdminApplicationContractsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProAdminBlazorModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor",
+      "contentType": "webPage",
+      "name": "CmsKitProComponentBase",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "BlogManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "BlogPostCreate",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "BlogPostManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "BlogPostUpdate",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "CommentDetail",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "CommentManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "DynamicWidgetMarkdown",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "GlobalResourceManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "MenuManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "NewslettersManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "PageCreate",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "PageFeedbacksManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "PageManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "PageUpdate",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "PollManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "TagManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit",
+      "contentType": "webPage",
+      "name": "UrlForwardingManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit.WidgetComponents",
+      "contentType": "webPage",
+      "name": "PollsComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.Pages.CmsKit.Components",
+      "contentType": "webPage",
+      "name": "NewslettersImportDropdownComponent",
+      "summary": null
+    }
+  ]
+}

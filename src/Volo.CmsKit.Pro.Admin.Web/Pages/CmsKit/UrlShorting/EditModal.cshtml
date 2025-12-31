@@ -1,0 +1,41 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.UrlShorting
+@using Volo.CmsKit.Public.UrlShorting
+@inject IOptions<UrlShortingOptions> UrlShortingOptions
+
+@inject IHtmlLocalizer<CmsKitResource> L
+@model EditModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-dynamic-form abp-model="ViewModel" asp-page="/CmsKit/UrlShorting/EditModal">
+    <abp-modal>
+        <abp-modal-header title="@L["Edit"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            <abp-form-content />
+            @if (Model.ViewModel.IsRegex)
+            {
+                <div class="p-3 mt-3 border-dashed" id="edit-modal-test-area" data-ignore-case="@UrlShortingOptions.Value.RegexIgnoreCase">
+                    <div class="mb-3">
+                        <label class="form-label">@L["TestInput"]</label>
+                        <input type="text" class="form-control" id="test-input"/>
+                    </div>
+                    <div class="d-none" id="output-div">
+                        <label class="form-label">@L["TestOutput"]</label>
+                        <input type="text" class="form-control" id="output-input" disabled="disabled"/>
+                    </div>
+                </div>
+            }
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>

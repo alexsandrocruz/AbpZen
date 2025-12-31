@@ -1,0 +1,39 @@
+<abp-page [title]="'AbpOpenIddict::Applications' | abpLocalization" [toolbar]="data.items">
+  <div id="wrapper">
+    <abp-advanced-entity-filters
+      localizationSourceName="AbpOpenIddict"
+      [list]="list"
+    ></abp-advanced-entity-filters>
+
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>
+
+@if (service.isModalVisible()) {
+  <abp-application-form-modal [selected]="selected()" (saved)="onSaved()" />
+}
+
+@if (service.isTokenLifetimeModalVisible()) {
+  <abp-token-lifetime-modal [selected]="selected()" />
+}
+<abp-permission-management
+  *abpReplaceableTemplate="{
+    inputs: {
+      providerName: { value: 'C' },
+      providerKey: { value: providerKey },
+      visible: { value: visiblePermissions, twoWay: true },
+    },
+    outputs: { visibleChange: onVisiblePermissionChange },
+    componentKey: 'PermissionManagement.PermissionManagementComponent',
+  }"
+  [(visible)]="visiblePermissions"
+  providerName="C"
+  [providerKey]="providerKey"
+>
+</abp-permission-management>

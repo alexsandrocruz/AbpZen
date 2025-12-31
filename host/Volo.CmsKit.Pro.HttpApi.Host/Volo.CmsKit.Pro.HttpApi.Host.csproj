@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Volo.CmsKit.Pro</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.HttpApi\Volo.CmsKit.Pro.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.Application\Volo.CmsKit.Pro.Application.csproj" />
+    <ProjectReference Include="..\..\src\Volo.CmsKit.Pro.EntityFrameworkCore\Volo.CmsKit.Pro.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Host.Shared\Volo.CmsKit.Pro.Host.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+</Project>

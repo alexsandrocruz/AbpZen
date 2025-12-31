@@ -1,0 +1,135 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.JsTree
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageSearchBox
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.Identity.Web
+@using Volo.Abp.Identity.Web.Navigation
+@using Volo.Abp.Identity.Web.Pages.Identity.Users
+@model IndexModel
+@inject IHtmlLocalizer<IdentityResource> L
+@inject IOptions<AbpIdentityWebOptions> IdentityWebOptions
+@inject IAuthorizationService Authorization
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["Users"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:IdentityManagement"].Value);
+    PageLayout.Content.MenuItemName = IdentityMenuNames.Users;
+
+    var booleanValues = new List<SelectListItem>()
+    {
+        new SelectListItem("-", ""),
+        new SelectListItem(L["Yes"].Value, "true"),
+        new SelectListItem(L["No"].Value, "false")
+    };
+}
+@section styles {
+    <abp-style-bundle name="@typeof(IndexModel).FullName">
+        <abp-style type="typeof(JsTreeStyleContributor)" />
+        <abp-style src="/Pages/AbpPermissionManagement/permission-management-modal.css" />
+        <abp-style src="/Pages/Identity/Users/index.css" />
+    </abp-style-bundle>
+}
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/identity-proxy.js" />
+        <abp-script type="typeof(JsTreeScriptContributor)" />
+        <abp-script src="/Pages/AbpPermissionManagement/permission-management-modal.js" />
+        <abp-script src="/Pages/Identity/Users/index.js" />
+        @if (IdentityWebOptions.Value.EnableUserImpersonation)
+        {
+            <abp-script src="/Pages/Identity/Users/enableUserImpersonation.js" />
+        }
+        <abp-script src="/Pages/Identity/Users/viewDetails.js" />
+        <abp-script src="/Pages/Identity/Users/edit.js" />
+        <abp-script src="/Pages/Identity/Users/create.js" />
+        <abp-script src="/Pages/Identity/Users/setPassword.js" />
+        <abp-script src="/Pages/Identity/Users/lock.js" />
+        <abp-script src="/Pages/Identity/Users/ImportToolbar/default.js" />
+        <abp-script src="/Pages/Identity/Users/ExportToolbar/default.js" />
+        <abp-script src="/Pages/Identity/Users/sessions.js" />
+        <abp-script src="/Pages/Identity/Shared/claimTypeEdit.js" />
+    </abp-script-bundle>
+}
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+<div id="IdentityUsersWrapper">
+    <abp-card>
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_9" size-lg="_10">
+                    <div class="mb-3">
+                        @await Component.InvokeAsync(typeof(AbpPageSearchBoxViewComponent))
+                    </div>
+                </abp-column>
+                <abp-column size-md="_3" size-lg="_2">
+                    <div class="mb-3">
+                        <abp-button style="width: 100%;" id="AdvancedFilterSectionToggler" button-type="Outline_Primary">
+                            @L["Filters"]<i aria-hidden="true" class="fa ms-1 fa-angle-down"></i>
+                        </abp-button>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row id="AdvancedFilterSection" class="mt-3" style="display: none;">
+                <abp-column size-md="_3">
+                    <abp-select id="IdentityRole" asp-for="RoleId" asp-items="@Model.RolesComboboxItems" label="@L["Role"].Value"></abp-select>
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-select id="OrganizationUnit" asp-for="OrganizationUnitId" asp-items="@Model.OrganizationUnitsComboboxItems" label="@L["OrganizationUnit"].Value"></abp-select>
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="UserName" label="@L["UserName"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="PhoneNumber" label="@L["PhoneNumber"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="MinCreationTime" class="singledatepicker" label="@L["CreationStartDate"].Value" type="text" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="MaxCreationTime" class="singledatepicker" label="@L["CreationEndDate"].Value" type="text" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="MinModificationTime" class="singledatepicker" label="@L["ModificationStartDate"].Value" type="text" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="MaxModificationTime" class="singledatepicker" label="@L["ModificationEndDate"].Value" type="text"/>
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="EmailAddress" label="@L["EmailAddress"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="Name" label="@L["Name"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-input asp-for="Surname" label="@L["Surname"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-select asp-for="NotActive" asp-items="@booleanValues" label="@L["NotActive"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-select asp-for="EmailConfirmed" asp-items="@booleanValues" label="@L["EmailConfirmed"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-select asp-for="IsLockedOut" asp-items="@booleanValues" label="@L["Lock"].Value" />
+                </abp-column>
+                <abp-column size-md="_3">
+                    <abp-select asp-for="IsExternal" asp-items="@booleanValues" label="@L["External"].Value" />
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+    <abp-table  class="nowrap"></abp-table>
+</div>
+
+@if (IdentityWebOptions.Value.EnableUserImpersonation)
+{
+    <form method="post" data-ajaxForm="false" action="~/Account/ImpersonateUser" id="ImpersonationForm">
+        <input type="hidden" name="UserId">
+    </form>
+}

@@ -1,0 +1,30 @@
+<abp-modal [visible]="true" (visibleChange)="visibleChange.emit($event)" [busy]="busy">
+  <ng-template #abpHeader>
+    <h3>{{ 'AbpIdentity::Lock' | abpLocalization }} - {{ selected.userName }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" id="lockForm" (ngSubmit)="submit()" validateOnSubmit>
+      <label class="form-label">{{
+        'AbpIdentity::DisplayName:LockoutEnd' | abpLocalization
+        }}</label>
+      <div class="mt-2 fade-in-top">
+        <div class="mb-3">
+          <abp-extensible-date-time-picker [prop]="dateTimePickerProps"/>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button
+      iconClass="fa fa-check"
+      formName="lockForm"
+      buttonType="submit"
+    >{{ 'AbpUi::Save' | abpLocalization }}</abp-button
+    >
+  </ng-template>
+</abp-modal>

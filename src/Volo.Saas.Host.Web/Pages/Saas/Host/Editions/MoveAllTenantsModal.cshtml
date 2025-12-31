@@ -1,0 +1,29 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Saas.Localization
+@model Volo.Saas.Host.Pages.Saas.Host.Editions.MoveAllTenantsModal
+@inject IHtmlLocalizer<SaasResource> L
+@{
+    Layout = null;
+}
+
+<form method="post"  asp-page="/Saas/Host/Editions/MoveAllTenantsModal" autocomplete="off">
+    <abp-modal>
+        <abp-modal-header title="@(L["MoveAllTenants"].Value) - @Model.Edition.DisplayName"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Edition.Id" type="hidden"></abp-input>
+
+            <p>@L.GetHtml("MoveAllTenantsWithEditionTo", Model.Edition.DisplayName)</p>
+
+            <select name="Edition.TargetEditionId" id="Edition_TargetEditionId"  class="form-select">
+                <option value="" selected>@L["UnassignEdition"].Value</option>
+                @foreach (var edition in Model.Edition.TargetEditions)
+                {
+                    <option value="@edition.Key">@edition.Value</option>
+                }
+            </select>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

@@ -1,0 +1,19 @@
+@if (isLoaded()) {
+  <form [formGroup]="form">
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="twoFactorEnabled"
+        formControlName="isTwoFactorEnabled"
+        class="form-check-input"
+      />
+      <label class="form-check-label" for="twoFactorEnabled">
+        {{ 'AbpAccount::DisplayName:TwoFactorEnabled' | abpLocalization }}
+      </label>
+      <br />
+      <span class="text-muted">{{ 'AbpAccount::TwoFactorEnabledInfo' | abpLocalization }}</span>
+    </div>
+  </form>
+} @else {
+  <div [abpLoading]="true"></div>
+}

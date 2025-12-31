@@ -1,0 +1,139 @@
+﻿@page "/CmsKit/Newsletters"
+@attribute [Authorize(CmsKitProAdminPermissions.Newsletters.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Admin.Newsletters
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["NewsletterUsers"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@GetNewslettersAsync">
+            <Row class="align-items-end">
+                <Column ColumnSize="@ColumnSize.Is3.OnDesktop.Is12">
+                    <Field>
+                        <FieldLabel>@L["EmailAddress"]</FieldLabel>
+                        <TextEdit Placeholder="john.doe@mail.com" @bind-Text="@GetListInput.EmailAddress"/>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.Is3.OnDesktop.Is12">
+                    <Field>
+                        <FieldLabel>@L["Preference"]</FieldLabel>
+                        <Select @bind-SelectedValue="@GetListInput.Preference">
+                            <SelectItem value="empty_value">-</SelectItem>
+                            @foreach (var preference in NewsletterPreferences)
+                            {
+                                <SelectItem Value="@preference">@preference</SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.Is3.OnDesktop.Is12">
+                    <Field>
+                        <FieldLabel>@L["Source"]</FieldLabel>
+                        <TextEdit Placeholder="footer" @bind-Text="@GetListInput.Source"/>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.Is3.OnDesktop.Is12">
+                    <div class="form-group">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchNewslettersAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </div>
+                </Column>
+            </Row>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="NewsletterRecordDto"
+                       Data="@NewsletterRecords"
+                       ReadData="@OnDataGridReadAsync"
+                       TotalItems="@TotalCount"
+                       ShowPager="true"
+                       PageSize="@PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@NewslettersManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+
+@* ************************* DETAIL MODAL ************************* *@
+<Modal @ref="DetailModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Size="ModalSize.Large" Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["Detail"]</ModalTitle>
+                <CloseButton Clicked="CloseDetailModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <div class="mb-3">
+                    <small class="text-muted">@SelectedNewsletterRecord.EmailAddress</small> -
+                    <small class="badge bg-primary">@SelectedNewsletterRecord.CreationTime</small>
+                </div>
+                <Table Responsive="true">
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell>@L["Preference"]</TableHeaderCell>
+                            <TableHeaderCell>@L["Source"]</TableHeaderCell>
+                            <TableHeaderCell>@L["SourceUrl"]</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var item in SelectedNewsletterRecord.Preferences)
+                        {
+                            <TableRow>
+                                <TableRowCell>@item.Preference</TableRowCell>
+                                <TableRowCell>@item.Source</TableRowCell>
+                                <TableRowCell>@item.SourceUrl</TableRowCell>
+                            </TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </ModalBody>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+
+<Modal @ref="EditPreferencesModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Size="ModalSize.Small" Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["Edit"]</ModalTitle>
+                <CloseButton Clicked="CloseEditPreferencesModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <div class="mb-3">
+                    <Check
+                        Checked="@(EditSelectedNewsletterPreferences.All(x => x.IsSelected))"
+                        Cursor="Cursor.Pointer"
+                        CheckedChanged="@(b => SelectedAllChanged())"
+                        TValue="bool">
+                        @L["SelectAll"]
+                    </Check>
+                </div>
+                @foreach(var preference in EditSelectedNewsletterPreferences)
+                {
+                    <input type="hidden" @bind-value="@preference.DisplayPreference"/>
+                    <Check TValue="bool" @bind-Checked="@preference.IsSelected">
+                        @preference.DisplayPreference
+                    </Check>
+                }
+            </ModalBody>
+             <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="EditPreferencesAsync">@L["SaveChanges"]</Button>
+             </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

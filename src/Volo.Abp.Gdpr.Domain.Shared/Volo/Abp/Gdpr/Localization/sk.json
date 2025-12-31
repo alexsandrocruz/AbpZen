@@ -1,0 +1,28 @@
+{
+  "culture": "sk",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Predtým ste požiadali o stiahnutie osobných údajov. Po uplynutí daného časového obdobia žiadosti môžete vytvoriť novú.",
+    "Volo.Abp.Gdpr:010002": "Vaše osobné údaje sa stále pripravujú. Môžete si ho stiahnuť na {GdprDataReadyTime}.",
+    "PersonalData": "Osobné údaje",
+    "Menu:PersonalData": "Osobné údaje",
+    "PersonalDataDescription": "Váš účet obsahuje osobné údaje, ktoré ste nám poskytli. Táto stránka vám umožňuje stiahnuť alebo odstrániť tieto údaje.",
+    "RequestPersonalData": "Vyžiadajte si osobné údaje",
+    "DeletePersonalData": "Vymazať osobné údaje",
+    "CreationTime": "Čas vytvorenia",
+    "Action": "Akcia",
+    "Preparing": "Príprava",
+    "Download": "Stiahnuť ▼",
+    "ReadyTime": "Čas pripravenosti",
+    "DeletePersonalDataWarning": "Vymazaním týchto údajov sa odstráni váš účet a vy sa už nebudete prihlasovať do aplikácie! Naozaj chcete pokračovať?",
+    "PersonalDataDeleteRequestReceived": "Vaša žiadosť o vymazanie osobných údajov sa spracováva... Na konci procesu vymazania údajov bude váš účet vymazaný a nebudete ho môcť ďalej používať.",
+    "PersonalDataPrepareRequestReceived": "Vaša žiadosť o osobné údaje sa spracúva. Môžete si ho stiahnuť z tejto stránky, keď bude pripravený!",
+    "NoDataAvailable": "Nie sú k dispozícii žiadne údaje.",
+    "Accept": "súhlasiť",
+    "CookiePolicy": "Zásady používania súborov cookie",
+    "PrivacyPolicy": "Zásady ochrany osobných údajov",
+    "ThisWebsiteUsesCookie": "Táto webová stránka používa súbory cookie, aby sme vám zabezpečili čo najlepší zážitok z webovej stránky.",
+    "CookieConsentAgreePolicies": "Ak budete pokračovať v prehliadaní, súhlasíte s našimi {0} a {1}.",
+    "CookieConsentAgreePolicy": "Ak budete pokračovať v prehliadaní, súhlasíte s našimi {0}.",
+    "CanNotGetDownloadToken": "Pre túto žiadosť nemôžete získať token na stiahnutie!"
+  }
+}

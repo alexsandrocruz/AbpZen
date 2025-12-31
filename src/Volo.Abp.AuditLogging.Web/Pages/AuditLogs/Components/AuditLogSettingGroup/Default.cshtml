@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Button
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Tab
+@using Volo.Abp.AuditLogging.Localization
+@model Volo.Abp.AuditLogging.Web.Pages.AuditLogs.Components.AuditLogSettingGroup.AuditLogSettingGroupViewComponent.AuditLogSettingsViewModel
+@inject IHtmlLocalizer<AuditLoggingResource> L
+
+<abp-script src="/Pages/AuditLogs/Components/AuditLogSettingGroup/Default.js" />
+
+<abp-tabs>
+
+    @if (Model.AuditLogGlobalSettings != null)
+    {
+        <abp-tab title="@L["AuditLogSettingsGlobal"].Value">
+            <form id="AuditLogGlobalSettingsForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <div>
+                                <abp-input label="@L["DisplayName:IsPeriodicDeleterEnabled"].Value" asp-for="@Model.AuditLogGlobalSettings.IsPeriodicDeleterEnabled" name="IsPeriodicDeleterEnabled" />
+                                <div class="form-text mb-3">@L["Description:IsPeriodicDeleterEnabled"].Value</div>
+                                
+                                <div id="deleter-enabled-group">
+                                    <abp-input label="@L["DisplayName:GlobalIsExpiredDeleterEnabled"].Value" asp-for="@Model.AuditLogGlobalSettings.IsExpiredDeleterEnabled" name="IsExpiredDeleterEnabled"  />
+                                    <div class="form-text mb-3">@L["Description:GlobalIsExpiredDeleterEnabled"].Value</div>
+
+                                    <div id="global-expired-deleter-period">
+                                        <div class="input-group w-75">
+                                            <label for="ExpiredDeleterPeriod" class="input-group-text">@L["DisplayName:ExpiredDeleterPeriod"].Value</label>
+                                            <input type="number" min="1" class="form-control text-center" value="@Model.AuditLogGlobalSettings.ExpiredDeleterPeriod" name="ExpiredDeleterPeriod" id="@Html.IdFor(m => m.AuditLogGlobalSettings.ExpiredDeleterPeriod)">
+                                            <span class="input-group-text">@L["ExpiredDeleterPeriodUnit"]</span>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.AuditLogSettings.ExpiredDeleterPeriod)
+                                        <p class="text-muted mt-1 ms-1 fst-italic"><span id="global-min-logs-date"></span> </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4"/>
+                        <div>
+                            <abp-button button-type="Primary" type="submit">
+                                <i class="fa fa-save"></i> @L["Save"]
+                            </abp-button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </abp-tab>
+    }
+
+    <abp-tab title="@L["AuditLogSettingsGeneral"].Value">
+        <form id="AuditLogSettingsForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <div>
+                            <abp-input label="@L["DisplayName:IsExpiredDeleterEnabled"].Value" asp-for="@Model.AuditLogSettings.IsExpiredDeleterEnabled" name="IsExpiredDeleterEnabled"/>
+                                <div class="form-text mb-3">@L["Description:IsExpiredDeleterEnabled"].Value</div>
+
+                            <div id="period-group">
+                                <div class="input-group w-75">
+                                    <label for="ExpiredDeleterPeriod" class="input-group-text">@L["DisplayName:ExpiredDeleterPeriod"].Value</label>
+                                    <input type="number" min="1" class="form-control text-center" value="@Model.AuditLogSettings.ExpiredDeleterPeriod" name="ExpiredDeleterPeriod" id="@Html.IdFor(m => m.AuditLogSettings.ExpiredDeleterPeriod)">
+                                    <span class="input-group-text">@L["ExpiredDeleterPeriodUnit"]</span>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.AuditLogSettings.ExpiredDeleterPeriod)
+
+                                <p class="text-muted mt-1 ms-1 fst-italic"><span id="min-logs-date"></span> </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <div>
+                        <abp-button button-type="Primary" type="submit">
+                            <i class="fa fa-save"></i> @L["Save"]
+                        </abp-button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </abp-tab>
+
+</abp-tabs>

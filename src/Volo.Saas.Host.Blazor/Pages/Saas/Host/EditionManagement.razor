@@ -1,0 +1,247 @@
+﻿@page "/saas/host/editions"
+@attribute [Authorize(SaasHostPermissions.Editions.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.FeatureManagement.Blazor.Components
+@using Volo.Saas.Host.Dtos
+@using Volo.Saas.Localization
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inject AbpBlazorMessageLocalizerHelper<SaasResource> LH
+
+@inherits AbpCrudPageBase<IEditionAppService, EditionDto, Guid, GetEditionsInput, EditionCreateDto, EditionUpdateDto>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Editions"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form @onsubmit="SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                        Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="EditionDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@EditionManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["NewEdition"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["EditionName"] *</FieldLabel>
+                                <TextEdit @bind-Text="@NewEntity.DisplayName" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        @if (Plans?.Count > 0)
+                        {
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["PlanId"]</FieldLabel>
+                                    <Select TValue="Guid?" @bind-SelectedValue="@NewEntity.PlanId">
+                                        <SelectItem Value="Guid.Empty">-</SelectItem>
+                                        @foreach (var plan in Plans)
+                                        {
+                                            <SelectItem Value="@plan.Id">
+                                                @plan.Name
+                                            </SelectItem>
+                                        }
+                                    </Select>
+                                </Field>
+                            </Validation>
+                        }
+                        <ExtensionProperties TEntityType="EditionCreateDto" TResourceType="SaasResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"] - @EditingEntity.DisplayName</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                        <Validation>
+                            <Field>
+                                <FieldLabel>@L["EditionName"] *</FieldLabel>
+                                <TextEdit @bind-Text="@EditingEntity.DisplayName" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        @if (Plans?.Count > 0)
+                        {
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["PlanId"]</FieldLabel>
+                                    <Select TValue="Guid?" @bind-SelectedValue="@EditingEntity.PlanId">
+                                        <SelectItem Value="Guid.Empty">-</SelectItem>
+                                        @foreach (var plan in Plans)
+                                        {
+                                            <SelectItem Value="@plan.Id">
+                                                @plan.Name
+                                            </SelectItem>
+                                        }
+                                    </Select>
+                                </Field>
+                            </Validation>
+                        }
+
+                        <ExtensionProperties TEntityType="EditionUpdateDto" TResourceType="SaasResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* DELETE MODAL ************************* *@
+@if (HasDeletePermission)
+{
+    <Modal @ref="DeleteModal" Closing="@ClosingDeleteModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["AreYouSure"]</ModalTitle>
+                    <CloseButton Clicked="CloseDeleteModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <p class="fw-bold">@L["EditionDeletionConfirmationMessage", DeletingEdition.DisplayName]</p>
+                    @if (DeletingEdition.TenantCount > 0)
+                    {
+                        <p class="mt-2">@L["ChooseAnAction", DeletingEdition.TenantCount]</p>
+                        <Field>
+                            <Radio
+                                TValue="string"
+                                Value="@("unassign")"
+                                Checked="@(!DeletingEdition.AssignEdition)"
+                                CheckedChanged="@OnAssignCheckedChanged"
+                                Group="assign">
+                                @L["UnassignTheEditionFromTheTenants"]
+                            </Radio>
+                        </Field>
+
+                        @if (DeletingEdition.OtherEditions.Any())
+                        {
+                            <Field>
+                                <Radio
+                                    TValue="string"
+                                    Value="@("assign")"
+                                    Checked="@DeletingEdition.AssignEdition"
+                                    CheckedChanged="@OnAssignCheckedChanged"
+                                    Group="assign">
+                                    @L["AssignTenantsToOtherEdition"]
+                                </Radio>
+                            </Field>
+                        }
+
+                        @if (DeletingEdition.AssignEdition)
+                        {
+                            <Select TValue="Guid?" SelectedValue="@DeletingEdition.AssignToEditionId" SelectedValueChanged="@OnAssignToEditionSelectedValueChanged">
+                                <SelectItem Value="@Guid.Empty">@L["SelectAnEditionToAssign"]</SelectItem>
+                                @foreach (var edition in DeletingEdition.OtherEditions)
+                                {
+                                    <SelectItem Value="@edition.Id">@edition.DisplayName</SelectItem>
+                                }
+                            </Select>
+                        }
+                    }
+                </ModalBody> 
+                <ModalFooter>
+                    <Button Color="Color.Danger" Outline Clicked="CloseDeleteModalAsync">@L["Cancel"]</Button>
+                    <Button Color="Color.Danger" Disabled="@DeletingEdition.DisabledDeleteButton" Clicked="DeleteEditionAsync"><Icon Name="IconName.Delete"/> @L["Delete"]</Button>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@if (HasManageFeaturesPermission)
+{
+    <FeatureManagementModal @ref="FeatureManagementModal" />
+}
+
+
+@* ************************* MOVE ALL TENANTS MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="MoveAllTenantsModal" Closing="@ClosingMoveAllTenantsModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["MoveAllTenants"] - @MoveAllTenantsModel.Name</ModalTitle>
+                    <CloseButton Clicked="CloseMoveAllTenantsModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <p>@((MarkupString)L["MoveAllTenantsWithEditionTo", MoveAllTenantsModel.Name].ToString())</p>
+                    <Select TValue="Guid?" @bind-SelectedValue="@MoveAllTenantsModel.TargetEditionId">
+                        <SelectItem Value="@Guid.Empty">@L["UnassignEdition"]</SelectItem>
+                        @foreach (var edition in MoveAllTenantsModel.TargetEditions)
+                        {
+                            <SelectItem Value="@edition.Id">@edition.DisplayName</SelectItem>
+                        }
+                    </Select>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseMoveAllTenantsModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@MoveAllTenantsAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

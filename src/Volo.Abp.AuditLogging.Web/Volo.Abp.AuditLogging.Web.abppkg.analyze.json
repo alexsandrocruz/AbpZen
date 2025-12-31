@@ -1,0 +1,102 @@
+{
+  "name": "Volo.Abp.AuditLogging.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.AuditLogging.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Application.Contracts",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "AbpAuditLoggingApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "name": "AbpAspNetCoreMvcUiThemeCommercialModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Web",
+          "namespace": "Volo.Abp.SettingManagement.Web",
+          "name": "AbpSettingManagementWebModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAuditLoggingWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging.Web.Pages.AuditLogs",
+      "contentType": "webPage",
+      "name": "DetailModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging.Web.Pages.AuditLogs",
+      "contentType": "webPage",
+      "name": "EntityChangeDetailModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging.Web.Pages.AuditLogs",
+      "contentType": "webPage",
+      "name": "EntityHistoryModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging.Web.Pages.AuditLogs",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    }
+  ]
+}

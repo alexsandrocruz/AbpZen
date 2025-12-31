@@ -1,0 +1,50 @@
+<form
+  [formGroup]="deleteMessageForm"
+  class="abp-md-form py-2"
+  (ngSubmit)="onSubmit()"
+  validateOnSubmit
+>
+  <div class="mb-3 form-group">
+    <label class="form-label">
+      {{ 'Chat::DisplayName:Abp.Chat.DeletingMessages' | abpLocalization }}
+      <span class="ms-1"></span>
+    </label>
+    <select class="form-select form-control" formControlName="deletingMessages">
+      @for (option of deleteMessageOptions; track option.value) {
+        <option [ngValue]="option.value">
+          {{ option.name | abpLocalization }}
+        </option>
+      }
+    </select>
+  </div>
+
+  @if (deletingMessages === 3) {
+    <div class="mb-3 form-group">
+      <label class="form-label">
+        {{ 'Chat::DisplayName:Abp.Chat.MessageDeletionPeriod' | abpLocalization }}
+        <span class="ms-1"></span>
+      </label>
+      <input type="number" class="form-control" formControlName="messageDeletionPeriod" min="0" />
+    </div>
+  }
+
+  @if (deletingMessages === 1) {
+    <div class="mb-3 form-group">
+      <label class="form-label">
+        {{ 'Chat::DisplayName:Abp.Chat.DeletingConversations' | abpLocalization }}
+        <span class="ms-1"></span>
+      </label>
+      <select class="form-select form-control" formControlName="deletingConversations">
+        @for (option of deleteConversationOptions; track option.value) {
+          <option [ngValue]="option.value">
+            {{ option.name | abpLocalization }}
+          </option>
+        }
+      </select>
+    </div>
+  }
+  <hr class="my-3" />
+  <abp-button iconClass="fa fa-save" buttonType="submit" [loading]="loading">
+    {{ 'AbpUi::Save' | abpLocalization }}
+  </abp-button>
+</form>

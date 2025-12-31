@@ -1,0 +1,448 @@
+{
+  "name": "Volo.Abp.AuditLogging.Application",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.AuditLogging",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Application.Contracts",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "AbpAuditLoggingApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Domain",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "AbpAuditLoggingDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application",
+          "namespace": "Volo.Abp.Application",
+          "name": "AbpDddApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Domain",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementDomainModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAuditLoggingApplicationModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging",
+      "baseClass": {
+        "name": "AuditLogsAppServiceBase",
+        "namespace": "Volo.Abp.AuditLogging",
+        "declaringAssemblyName": "Volo.Abp.AuditLogging.Application",
+        "fullName": "Volo.Abp.AuditLogging.AuditLogsAppServiceBase"
+      },
+      "implementingInterfaces": [
+        {
+          "name": "IApplicationService",
+          "namespace": "Volo.Abp.Application.Services",
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application.Contracts",
+          "fullName": "Volo.Abp.Application.Services.IApplicationService"
+        },
+        {
+          "name": "IRemoteService",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IRemoteService"
+        },
+        {
+          "name": "IAvoidDuplicateCrossCuttingConcerns",
+          "namespace": "Volo.Abp.Aspects",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Aspects.IAvoidDuplicateCrossCuttingConcerns"
+        },
+        {
+          "name": "IValidationEnabled",
+          "namespace": "Volo.Abp.Validation",
+          "declaringAssemblyName": "Volo.Abp.Validation",
+          "fullName": "Volo.Abp.Validation.IValidationEnabled"
+        },
+        {
+          "name": "IUnitOfWorkEnabled",
+          "namespace": "Volo.Abp.Uow",
+          "declaringAssemblyName": "Volo.Abp.Uow",
+          "fullName": "Volo.Abp.Uow.IUnitOfWorkEnabled"
+        },
+        {
+          "name": "IAuditingEnabled",
+          "namespace": "Volo.Abp.Auditing",
+          "declaringAssemblyName": "Volo.Abp.Auditing.Contracts",
+          "fullName": "Volo.Abp.Auditing.IAuditingEnabled"
+        },
+        {
+          "name": "IGlobalFeatureCheckingEnabled",
+          "namespace": "Volo.Abp.GlobalFeatures",
+          "declaringAssemblyName": "Volo.Abp.GlobalFeatures",
+          "fullName": "Volo.Abp.GlobalFeatures.IGlobalFeatureCheckingEnabled"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "IAuditLogsAppService",
+          "namespace": "Volo.Abp.AuditLogging",
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Application.Contracts",
+          "fullName": "Volo.Abp.AuditLogging.IAuditLogsAppService"
+        }
+      ],
+      "methods": [
+        {
+          "returnType": "PagedResultDto<AuditLogDto>",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetListAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "GetAuditLogListDto",
+              "name": "input",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "AuditLogDto",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "id",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "GetErrorRateOutput",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetErrorRateAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "GetErrorRateFilter",
+              "name": "filter",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "GetAverageExecutionDurationPerDayOutput",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetAverageExecutionDurationPerDayAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "GetAverageExecutionDurationPerDayInput",
+              "name": "filter",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "PagedResultDto<EntityChangeDto>",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetEntityChangesAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "GetEntityChangesDto",
+              "name": "input",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "List<EntityChangeWithUsernameDto>",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetEntityChangesWithUsernameAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "EntityChangeFilter",
+              "name": "input",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "EntityChangeWithUsernameDto",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetEntityChangeWithUsernameAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "entityChangeId",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "EntityChangeDto",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetEntityChangeAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "entityChangeId",
+              "isOptional": false
+            }
+          ]
+        }
+      ],
+      "contentType": "applicationService",
+      "name": "AuditLogsAppService",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.AuditLogging",
+      "baseClass": {
+        "name": "AuditLogsAppServiceBase",
+        "namespace": "Volo.Abp.AuditLogging",
+        "declaringAssemblyName": "Volo.Abp.AuditLogging.Application",
+        "fullName": "Volo.Abp.AuditLogging.AuditLogsAppServiceBase"
+      },
+      "implementingInterfaces": [
+        {
+          "name": "IApplicationService",
+          "namespace": "Volo.Abp.Application.Services",
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application.Contracts",
+          "fullName": "Volo.Abp.Application.Services.IApplicationService"
+        },
+        {
+          "name": "IRemoteService",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IRemoteService"
+        },
+        {
+          "name": "IAvoidDuplicateCrossCuttingConcerns",
+          "namespace": "Volo.Abp.Aspects",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Aspects.IAvoidDuplicateCrossCuttingConcerns"
+        },
+        {
+          "name": "IValidationEnabled",
+          "namespace": "Volo.Abp.Validation",
+          "declaringAssemblyName": "Volo.Abp.Validation",
+          "fullName": "Volo.Abp.Validation.IValidationEnabled"
+        },
+        {
+          "name": "IUnitOfWorkEnabled",
+          "namespace": "Volo.Abp.Uow",
+          "declaringAssemblyName": "Volo.Abp.Uow",
+          "fullName": "Volo.Abp.Uow.IUnitOfWorkEnabled"
+        },
+        {
+          "name": "IAuditingEnabled",
+          "namespace": "Volo.Abp.Auditing",
+          "declaringAssemblyName": "Volo.Abp.Auditing.Contracts",
+          "fullName": "Volo.Abp.Auditing.IAuditingEnabled"
+        },
+        {
+          "name": "IGlobalFeatureCheckingEnabled",
+          "namespace": "Volo.Abp.GlobalFeatures",
+          "declaringAssemblyName": "Volo.Abp.GlobalFeatures",
+          "fullName": "Volo.Abp.GlobalFeatures.IGlobalFeatureCheckingEnabled"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "IAuditLogSettingsAppService",
+          "namespace": "Volo.Abp.AuditLogging",
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Application.Contracts",
+          "fullName": "Volo.Abp.AuditLogging.IAuditLogSettingsAppService"
+        }
+      ],
+      "methods": [
+        {
+          "returnType": "AuditLogSettingsDto",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": []
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "UpdateAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "AuditLogSettingsDto",
+              "name": "input",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "AuditLogGlobalSettingsDto",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "GetGlobalAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": []
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "UpdateGlobalAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "AuditLogGlobalSettingsDto",
+              "name": "input",
+              "isOptional": false
+            }
+          ]
+        }
+      ],
+      "contentType": "applicationService",
+      "name": "AuditLogSettingsAppService",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Enable clean up service system wide",
+      "description": "If this option is disabled the periodic deleter won't work. Audit logs won't be deleted automatically.",
+      "isVisibleToClient": false,
+      "isInherited": false,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.AuditLogging.IsPeriodicDeleterEnabled",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Enable clean up service",
+      "description": "If this option is enabled the expired items will be deleted automatically.",
+      "isVisibleToClient": false,
+      "isInherited": false,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.AuditLogging.IsExpiredDeleterEnabled",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Expired item deletion period",
+      "description": "Set the number of days after which expired items will be automatically deleted.",
+      "isVisibleToClient": false,
+      "isInherited": false,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.AuditLogging.ExpiredDeleterPeriod",
+      "summary": null
+    }
+  ]
+}

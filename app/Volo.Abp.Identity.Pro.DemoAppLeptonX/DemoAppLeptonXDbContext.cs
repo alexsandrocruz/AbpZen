@@ -1,0 +1,31 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Volo.Abp.AuditLogging.EntityFrameworkCore;
+using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.FeatureManagement.EntityFrameworkCore;
+using Volo.Abp.Identity.EntityFrameworkCore;
+using Volo.Abp.PermissionManagement.EntityFrameworkCore;
+using Volo.Abp.SettingManagement.EntityFrameworkCore;
+
+namespace Volo.Abp.Identity.Pro.DemoAppLeptonX;
+
+public class DemoAppLeptonXDbContext : AbpDbContext<DemoAppLeptonXDbContext>
+{
+    public DemoAppLeptonXDbContext(DbContextOptions<DemoAppLeptonXDbContext> options)
+        : base(options)
+    {
+
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ConfigureAuditLogging();
+        modelBuilder.ConfigurePermissionManagement();
+        modelBuilder.ConfigureSettingManagement();
+        modelBuilder.ConfigureIdentityPro();
+        modelBuilder.ConfigureBlobStoring();
+        modelBuilder.ConfigureFeatureManagement();
+    }
+}

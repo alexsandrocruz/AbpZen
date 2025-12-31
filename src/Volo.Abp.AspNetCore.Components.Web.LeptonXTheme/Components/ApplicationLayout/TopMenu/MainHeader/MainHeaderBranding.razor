@@ -1,0 +1,15 @@
+@using Volo.Abp.Ui.Branding
+
+@inject IBrandingProvider BrandingProvider
+
+<a href="" class="text-decoration-none">
+
+    @if(BrandingProvider.LogoUrl.IsNullOrEmpty())
+    {
+        <div class="lpx-brand-name" style="position: inherit;">@BrandingProvider.AppName</div>
+    }
+    else
+    {
+        <div class="lpx-brand-logo"></div>
+    }
+</a>

@@ -1,0 +1,17 @@
+{
+  "culture": "sl",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Upravljanje najemnikov",
+    "Permission:EditionManagement": "Upravljanje izdaje",
+    "Permission:Create": "Ustvari",
+    "Permission:Edit": "Uredi",
+    "Permission:Delete": "Izbriši",
+    "Permission:ManageConnectionStrings": "Upravljajte povezovalne nize",
+    "Permission:SetPassword": "Nastavi geslo",
+    "Permission:ManageFeatures": "Upravljajte funkcije",
+    "Permission:ViewChangeHistory": "Ogled zgodovine sprememb",
+    "Permission:Impersonation": "lažno predstavljanje",
+    "CheckYourProviderDashboard": "Preverite nadzorno ploščo ponudnika plačil, da prekličete to naročnino."
+  }
+}

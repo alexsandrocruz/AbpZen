@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.Theming" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.FileManagement.HttpApi.Client\Volo.FileManagement.HttpApi.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Volo.FileManagement.Blazor\Volo.FileManagement.Blazor.csproj" />
+    </ItemGroup>
+
+</Project>

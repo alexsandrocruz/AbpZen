@@ -1,0 +1,17 @@
+{
+  "culture": "de-DE",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Mandantenverwaltung",
+    "Permission:EditionManagement": "Editionsverwaltung",
+    "Permission:Create": "Erstellen",
+    "Permission:Edit": "Bearbeiten",
+    "Permission:Delete": "Löschen",
+    "Permission:ManageConnectionStrings": "Connection Strings verwalten",
+    "Permission:SetPassword": "Passwort festlegen",
+    "Permission:ManageFeatures": "Features verwalten",
+    "Permission:ViewChangeHistory": "Änderungsverlauf anzeigen",
+    "Permission:Impersonation": "Identitätswechsel",
+    "CheckYourProviderDashboard": "Überprüfen Sie das Dashboard Ihres Zahlungsanbieters, um dieses Abonnement zu kündigen."
+  }
+}

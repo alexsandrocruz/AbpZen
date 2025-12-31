@@ -1,0 +1,17 @@
+@page
+@inject IHtmlLocalizer<AccountResource> L
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@model Volo.Abp.Account.Public.Web.Pages.Account.LoginWithRecoveryCode
+@inject Volo.Abp.AspNetCore.Mvc.UI.Layout.IPageLayout PageLayout
+
+@{
+    PageLayout.Content.Title = L["LoginWithRecoveryCode"].Value;
+}
+
+<form method="post">
+    <p>@L["LoginWithRecoveryCode_Information"]</p>
+
+    <abp-input asp-for="RecoveryCode"/>
+    <abp-button type="submit" button-type="Primary" text="@L["Submit"].Value"/>
+</form>

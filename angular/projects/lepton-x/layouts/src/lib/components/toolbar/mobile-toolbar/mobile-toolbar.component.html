@@ -1,0 +1,28 @@
+@if (items) {
+  <ng-container
+    *ngTemplateOutlet="
+      itemsRef || defaultItemsRef;
+      context: { $implicit: items }
+    "
+  ></ng-container>
+}
+
+<ng-template #defaultItemsRef let-items>
+  <ul class="lpx-nav-menu">
+    @for (item of items; track $index) {
+      <ng-container
+        *ngTemplateOutlet="
+          itemRef || defaultItemRef;
+          context: { $implicit: item }
+        "
+      ></ng-container>
+    }
+  </ul>
+</ng-template>
+
+<ng-template #defaultItemRef let-item>
+  <lpx-mobile-toolbar-item
+    [item]="item"
+    (click)="routeClick.emit(item)"
+  ></lpx-mobile-toolbar-item>
+</ng-template>

@@ -1,0 +1,36 @@
+﻿@page "/payment/requests/{Id}/products"
+
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Payment.Admin.Permissions
+@using Volo.Payment.Admin.Blazor
+@using Volo.Payment.Plans
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.Application.Dtos
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.Payment.Localization
+@using Volo.Payment.Admin.Requests
+@using Volo.Payment.Requests
+
+
+@inject AbpBlazorMessageLocalizerHelper<PaymentResource> LH
+@inject NavigationManager Navigation
+
+@inherits AbpPaymentAdminComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["PaymentRequests"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+	<CardBody>
+		<AbpExtensibleDataGrid TItem="PaymentRequestProductDto"
+							   Data="Entities"
+							   ShowPager="false"
+							   ReadData="OnDataGridReadAsync"
+							   Columns="@PaymentRequestProductsTableColumns"
+							   Responsive="true">
+		</AbpExtensibleDataGrid>
+	</CardBody>
+</Card>

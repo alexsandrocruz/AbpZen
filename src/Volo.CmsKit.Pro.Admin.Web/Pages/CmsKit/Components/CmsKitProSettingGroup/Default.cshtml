@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Tab
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Components.CmsKitProSettingGroup.ContactSettings
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Components.CmsKitProSettingGroup.PageFeedbackSettings
+@inject IHtmlLocalizer<CmsKitResource> L
+@inject IAuthorizationService AuthorizationService
+
+<abp-tabs>
+    @if (await AuthorizationService.IsGrantedAsync(CmsKitProAdminPermissions.Contact.SettingManagement))
+    {
+        <abp-tab title="@L["CmsKitPro:Contact"].Value">
+            @await Component.InvokeAsync(typeof(CmsKitProContactSettingGroupViewComponent))
+        </abp-tab>
+    }
+    @if(await AuthorizationService.IsGrantedAsync(CmsKitProAdminPermissions.PageFeedbacks.SettingManagement))
+    {
+        <abp-tab title="@L["CmsKitPro:PageFeedback"].Value">
+            @await Component.InvokeAsync(typeof(CmsKitProPageFeedbackSettingGroupViewComponent))
+        </abp-tab>
+    }
+</abp-tabs>

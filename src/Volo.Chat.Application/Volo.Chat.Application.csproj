@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>Volo.Chat.Application</AssemblyName>
+    <PackageId>Volo.Chat.Application</PackageId>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Shared" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.Chat.Application.Contracts\Volo.Chat.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Volo.Chat.Domain\Volo.Chat.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

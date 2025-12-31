@@ -1,0 +1,6 @@
+.btn-feedback {
+    border-radius: 30px !important;
+} 
+.textarea-feedback:focus { 
+    border-color: rgba(var(--bs-primary-rgb));
+}

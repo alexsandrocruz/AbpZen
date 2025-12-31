@@ -1,0 +1,13 @@
+{
+  "culture": "hu",
+  "texts": {
+    "Permission:LanguageManagement": "Nyelvkezelés",
+    "Permission:LanguageTexts": "Nyelvi szövegek",
+    "Permission:LanguageTextsEdit": "Nyelvi szövegek szerkesztése",
+    "Permission:Languages": "Nyelvek",
+    "Permission:LanguagesEdit": "Nyelv szerkesztése",
+    "Permission:LanguagesCreate": "Nyelv létrehozása",
+    "Permission:LanguagesChangeDefault": "Az alapértelmezett nyelv módosítása",
+    "Permission:LanguagesDelete": "Nyelv törlése"
+  }
+}

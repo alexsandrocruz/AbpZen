@@ -1,0 +1,11 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Identity.Localization
+@inject IHtmlLocalizer<IdentityResource> L
+
+<abp-dropdown>
+    <abp-dropdown-button size="Small" button-type="Outline_Primary" text="@L["Export"].Value" />
+    <abp-dropdown-menu>
+        <abp-dropdown-item style="cursor: pointer" id="ToExcelButton">@L["ToExcel"]</abp-dropdown-item>
+        <abp-dropdown-item style="cursor: pointer" id="ToCsvButton">@L["ToCSV"]</abp-dropdown-item>
+    </abp-dropdown-menu>
+</abp-dropdown>

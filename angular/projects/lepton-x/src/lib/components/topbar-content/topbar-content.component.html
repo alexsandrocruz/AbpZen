@@ -1,0 +1,14 @@
+@for (item of items$ | async; track $index) {
+  @if (item.component) {
+    <ng-container
+      *ngComponentOutlet="item.component; injector: item.injector || injector"
+    ></ng-container>
+  }
+  @if (item.template) {
+    <ng-container [ngTemplateOutlet]="item.template"></ng-container>
+  }
+
+  @if (item.html) {
+    <div [innerHtml]="item.html" (click)="actionClick(item)"></div>
+  }
+}

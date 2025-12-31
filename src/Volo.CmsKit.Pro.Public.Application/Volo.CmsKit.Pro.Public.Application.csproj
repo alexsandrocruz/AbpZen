@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Volo\CmsKit\Public\Emailing\Templates\*.tpl" />
+    <EmbeddedResource Include="Volo\CmsKit\Public\Emailing\Templates\*.tpl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.CmsKit.Public.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.UI.Navigation" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Emailing" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Common.Application\Volo.CmsKit.Pro.Common.Application.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Public.Application.Contracts\Volo.CmsKit.Pro.Public.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Domain\Volo.CmsKit.Pro.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

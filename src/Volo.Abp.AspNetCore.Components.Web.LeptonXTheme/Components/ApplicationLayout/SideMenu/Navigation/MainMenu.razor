@@ -1,0 +1,26 @@
+﻿@if (Menu != null)
+{
+    @foreach (var menuItem in Menu.Items.Where(x => x.MenuItem.GroupName.IsNullOrWhiteSpace()))
+    {
+        <li class="outer-menu-item">
+            <MainMenuItem Menu="@Menu" MenuItem="@menuItem"/>
+        </li>
+    }
+
+    @foreach (var group in Menu.Menu.Groups)
+    {
+        var menuItems = Menu.Items.Where(x => x.MenuItem.GroupName == group.Name).ToList();
+        if (menuItems.Any())
+        {
+            <li class="group-menu-item hidden-in-hover-trigger">
+                @group.Name
+            </li>
+            @foreach (var menuItem in menuItems)
+            {
+                <li class="outer-menu-item">
+                    <MainMenuItem Menu="@Menu" MenuItem="@menuItem"/>
+                </li>
+            }
+        }
+    }
+}

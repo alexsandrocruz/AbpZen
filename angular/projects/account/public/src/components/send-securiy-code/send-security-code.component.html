@@ -1,0 +1,53 @@
+@if (!showCodeForm) {
+  <form>
+    <p>{{ 'AbpAccount::SendSecurityCode_Information' | abpLocalization }}</p>
+
+    <div class="mb-3">
+      <label for="selected-provider" class="form-label">{{
+        'AbpAccount::SelectedProvider' | abpLocalization
+      }}</label>
+      <select
+        class="form-select form-control"
+        id="selected-provider"
+        name="selected-provider"
+        [(ngModel)]="selectedProvider"
+      >
+        @for (provider of providers; track $index) {
+          <option [ngValue]="provider">{{ provider }}</option>
+        }
+      </select>
+    </div>
+
+    <abp-button (abpClick)="sendTwoFactorCode()" [loading]="loading">
+      {{ 'AbpAccount::Submit' | abpLocalization }}
+    </abp-button>
+  </form>
+} @else {
+  <form [formGroup]="codeForm" (ngSubmit)="login()">
+    <p>{{ 'AbpAccount::VerifySecurityCode_Information' | abpLocalization }}</p>
+
+    <div class="mb-3">
+      <label for="code" class="form-label">{{ 'AbpAccount::Code' | abpLocalization }}</label>
+      <input
+        class="form-control"
+        type="text"
+        id="code"
+        formControlName="code"
+        autocomplete="off"
+        autofocus
+      />
+    </div>
+
+    <abp-button buttonType="submit" [loading]="loading">
+      {{ 'AbpAccount::Submit' | abpLocalization }}
+    </abp-button>
+  </form>
+
+  <div class="mt-3">
+    <p>
+      <a [routerLink]="['/account/login-with-recovery-code']">
+        {{ 'AbpAccount::LoginWithRecoveryCode_URL' | abpLocalization }}.
+      </a>
+    </p>
+  </div>
+}

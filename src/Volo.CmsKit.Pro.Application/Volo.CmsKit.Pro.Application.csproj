@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.CmsKit.Application" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Application.Contracts\Volo.CmsKit.Pro.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.Application\Volo.CmsKit.Pro.Admin.Application.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Public.Application\Volo.CmsKit.Pro.Public.Application.csproj" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

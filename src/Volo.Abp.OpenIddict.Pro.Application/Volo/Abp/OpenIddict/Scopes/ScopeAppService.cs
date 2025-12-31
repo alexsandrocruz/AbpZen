@@ -1,0 +1,171 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using OpenIddict.Abstractions;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Data;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.ObjectExtending;
+using Volo.Abp.OpenIddict.Permissions;
+using Volo.Abp.OpenIddict.Scopes.Dtos;
+
+namespace Volo.Abp.OpenIddict.Scopes;
+
+[Authorize(AbpOpenIddictProPermissions.Scope.Default)]
+public class ScopeAppService : AbpOpenIddictProAppService, IScopeAppService
+{
+    private static readonly List<ScopeDto> BuildScopes = new List<ScopeDto>(new[]
+    {
+        new ScopeDto
+        {
+            Name = "address",
+            BuildIn = true
+        },
+        new ScopeDto
+        {
+            Name = "email",
+            BuildIn = true
+        },
+        new ScopeDto
+        {
+            Name = "phone",
+            BuildIn = true
+        },
+        new ScopeDto
+        {
+            Name = "profile",
+            BuildIn = true
+        },
+        new ScopeDto
+        {
+            Name = "roles",
+            BuildIn = true
+        }
+    });
+
+    protected IOpenIddictScopeManager ScopeManager { get; }
+    protected IOpenIddictScopeRepository ScopeRepository { get; }
+
+    public ScopeAppService(IOpenIddictScopeManager scopeManager, IOpenIddictScopeRepository scopeRepository)
+    {
+        ScopeManager = scopeManager;
+        ScopeRepository = scopeRepository;
+    }
+
+    public virtual async Task<ScopeDto> GetAsync(Guid id)
+    {
+        var scope = await ScopeManager.FindByIdAsync(ConvertIdentifierToString(id))
+                          ?? throw new EntityNotFoundException(typeof(OpenIddictScopeModel), id);
+
+        return ObjectMapper.Map<OpenIddictScopeModel, ScopeDto>(scope.As<OpenIddictScopeModel>());
+    }
+
+    public virtual async Task<PagedResultDto<ScopeDto>> GetListAsync(GetScopeListInput input)
+    {
+        var apps = await ScopeRepository.GetListAsync(input.Sorting, input.SkipCount, input.MaxResultCount, input.Filter);
+
+        var totalCount = await ScopeRepository.GetCountAsync(input.Filter);
+
+        var dtos = ObjectMapper.Map<List<OpenIddictScopeModel>, List<ScopeDto>>(apps.Select(x => x.ToModel()).ToList());
+
+        return new PagedResultDto<ScopeDto>(totalCount, dtos);
+    }
+
+    [Authorize(AbpOpenIddictProPermissions.Scope.Create)]
+    public virtual async Task<ScopeDto> CreateAsync(CreateScopeInput input)
+    {
+        await CheckInputDtoAsync(input);
+
+        var descriptor = new OpenIddictScopeDescriptor()
+        {
+            Description = input.Description,
+            DisplayName = input.DisplayName,
+            Name = input.Name
+        };
+
+        if(!input.Resources.IsNullOrEmpty())
+        {
+            descriptor.Resources.UnionWith(input.Resources);
+        }
+
+        var scope = await ScopeManager.CreateAsync(descriptor);
+
+        input.MapExtraPropertiesTo(scope.As<OpenIddictScopeModel>());
+
+        await ScopeManager.UpdateAsync(scope);
+
+        return ObjectMapper.Map<OpenIddictScopeModel, ScopeDto>(scope.As<OpenIddictScopeModel>());
+    }
+
+    [Authorize(AbpOpenIddictProPermissions.Scope.Update)]
+    public virtual async Task<ScopeDto> UpdateAsync(Guid id, UpdateScopeInput input)
+    {
+        var scope = (await ScopeManager.FindByIdAsync(ConvertIdentifierToString(id))).As<OpenIddictScopeModel>()
+            ?? throw new EntityNotFoundException(typeof(OpenIddictScopeModel), id);
+
+        await CheckInputDtoAsync(input, scope);
+
+        var descriptor = new OpenIddictScopeDescriptor();
+        await ScopeManager.PopulateAsync(descriptor, scope);
+
+        descriptor.Description = input.Description;
+        descriptor.DisplayName = input.DisplayName;
+        descriptor.Name = input.Name;
+
+        descriptor.Resources.Clear();
+        if(!input.Resources.IsNullOrEmpty())
+        {
+            descriptor.Resources.UnionWith(input.Resources);
+        }
+
+        input.MapExtraPropertiesTo(scope.As<OpenIddictScopeModel>());
+
+        await ScopeManager.UpdateAsync(scope, descriptor);
+
+        return ObjectMapper.Map<OpenIddictScopeModel, ScopeDto>(scope);
+    }
+
+    [Authorize(AbpOpenIddictProPermissions.Scope.Delete)]
+    public virtual async Task DeleteAsync(Guid id)
+    {
+        var scope = await ScopeManager.FindByIdAsync(ConvertIdentifierToString(id))
+                    ?? throw new EntityNotFoundException(typeof(OpenIddictScopeModel), id);
+
+        await ScopeManager.DeleteAsync(scope);
+    }
+
+    public virtual async Task<List<ScopeDto>> GetAllScopesAsync()
+    {
+        var scopes = new List<ScopeDto>(BuildScopes);
+        await foreach (var scope in ScopeManager.ListAsync(null, null))
+        {
+            scopes.Add(ObjectMapper.Map<OpenIddictScopeModel, ScopeDto>(scope.As<OpenIddictScopeModel>()));
+        }
+        return scopes;
+    }
+
+    protected virtual async Task CheckInputDtoAsync(ScopeCreateOrUpdateDtoBase dto, OpenIddictScopeModel scope = null)
+    {
+        Check.NotNull(dto, nameof(dto));
+
+        if (dto != null && BuildScopes.Any(x => x.Name == dto.Name))
+        {
+            throw new UserFriendlyException(L["TheNameIsAlreadyTakenByAnotherScope"]);
+        }
+
+        if (scope != null && BuildScopes.Any(x => x.Name == scope.Name))
+        {
+            throw new UserFriendlyException(L["TheNameIsAlreadyTakenByAnotherScope"]);
+        }
+
+        if (await ScopeManager.FindByNameAsync(dto.Name) != null)
+        {
+            if (scope == null || scope.Name != dto.Name)
+            {
+                throw new UserFriendlyException(L["TheNameIsAlreadyTakenByAnotherScope"]);
+            }
+        }
+    }
+}

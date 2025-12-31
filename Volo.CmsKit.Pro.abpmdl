@@ -1,0 +1,145 @@
+{
+  "imports": {
+    "Volo.Abp.SettingManagement":{
+      "path" : "../../../abp/modules/setting-management/Volo.Abp.SettingManagement.abpmdl",
+      "isInstalled" : true
+    } 
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Volo.CmsKit.Pro.Web.Unified": {
+      "path": "host/Volo.CmsKit.Pro.Web.Unified/Volo.CmsKit.Pro.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Volo.CmsKit.Pro.Web.Host": {
+      "path": "host/Volo.CmsKit.Pro.Web.Host/Volo.CmsKit.Pro.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.CmsKit.Pro.HttpApi.Host": {
+      "path": "host/Volo.CmsKit.Pro.HttpApi.Host/Volo.CmsKit.Pro.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.CmsKit.Pro.IdentityServer": {
+      "path": "host/Volo.CmsKit.Pro.IdentityServer/Volo.CmsKit.Pro.IdentityServer.abppkg",
+      "folder": "host"
+    },
+    "Volo.CmsKit.Pro.Host.Shared": {
+      "path": "host/Volo.CmsKit.Pro.Host.Shared/Volo.CmsKit.Pro.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Volo.CmsKit.Pro.HttpApi": {
+      "path": "src/Volo.CmsKit.Pro.HttpApi/Volo.CmsKit.Pro.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Blazor": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Blazor/Volo.CmsKit.Pro.Admin.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Blazor.Server": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Blazor.Server/Volo.CmsKit.Pro.Admin.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Blazor.WebAssembly": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Blazor.WebAssembly/Volo.CmsKit.Pro.Admin.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Web": {
+      "path": "src/Volo.CmsKit.Pro.Web/Volo.CmsKit.Pro.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.HttpApi.Client": {
+      "path": "src/Volo.CmsKit.Pro.HttpApi.Client/Volo.CmsKit.Pro.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Application": {
+      "path": "src/Volo.CmsKit.Pro.Application/Volo.CmsKit.Pro.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Application.Contracts": {
+      "path": "src/Volo.CmsKit.Pro.Application.Contracts/Volo.CmsKit.Pro.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Domain": {
+      "path": "src/Volo.CmsKit.Pro.Domain/Volo.CmsKit.Pro.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Domain.Shared": {
+      "path": "src/Volo.CmsKit.Pro.Domain.Shared/Volo.CmsKit.Pro.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.EntityFrameworkCore": {
+      "path": "src/Volo.CmsKit.Pro.EntityFrameworkCore/Volo.CmsKit.Pro.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.TestBase": {
+      "path": "test/Volo.CmsKit.Pro.TestBase/Volo.CmsKit.Pro.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.CmsKit.Pro.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.CmsKit.Pro.EntityFrameworkCore.Tests/Volo.CmsKit.Pro.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.CmsKit.Pro.MongoDB.Tests": {
+      "path": "test/Volo.CmsKit.Pro.MongoDB.Tests/Volo.CmsKit.Pro.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.CmsKit.Pro.Domain.Tests": {
+      "path": "test/Volo.CmsKit.Pro.Domain.Tests/Volo.CmsKit.Pro.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.CmsKit.Pro.Application.Tests": {
+      "path": "test/Volo.CmsKit.Pro.Application.Tests/Volo.CmsKit.Pro.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.CmsKit.Pro.MongoDB": {
+      "path": "src/Volo.CmsKit.Pro.MongoDB/Volo.CmsKit.Pro.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Application": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Application/Volo.CmsKit.Pro.Admin.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Application.Contracts": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Application.Contracts/Volo.CmsKit.Pro.Admin.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.HttpApi": {
+      "path": "src/Volo.CmsKit.Pro.Admin.HttpApi/Volo.CmsKit.Pro.Admin.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.HttpApi.Client": {
+      "path": "src/Volo.CmsKit.Pro.Admin.HttpApi.Client/Volo.CmsKit.Pro.Admin.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Admin.Web": {
+      "path": "src/Volo.CmsKit.Pro.Admin.Web/Volo.CmsKit.Pro.Admin.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Public.Application": {
+      "path": "src/Volo.CmsKit.Pro.Public.Application/Volo.CmsKit.Pro.Public.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Public.Application.Contracts": {
+      "path": "src/Volo.CmsKit.Pro.Public.Application.Contracts/Volo.CmsKit.Pro.Public.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Public.HttpApi": {
+      "path": "src/Volo.CmsKit.Pro.Public.HttpApi/Volo.CmsKit.Pro.Public.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Public.HttpApi.Client": {
+      "path": "src/Volo.CmsKit.Pro.Public.HttpApi.Client/Volo.CmsKit.Pro.Public.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.CmsKit.Pro.Public.Web": {
+      "path": "src/Volo.CmsKit.Pro.Public.Web/Volo.CmsKit.Pro.Public.Web.abppkg",
+      "folder": "src"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<abp-modal [visible]="modalVisible" (visibleChange)="visibleChange.emit($event)">
+  <ng-template #abpHeader>
+    <h5 class="modal-title">{{ 'AbpIdentity::DelegateNewUser' | abpLocalization }}</h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form id="DelegateNewUser" name="DelegateNewUser" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label for="delegate-new-user-id">{{ 'AbpIdentity::UserName' | abpLocalization }}</label>
+        <abp-lookup-typeahead
+          cid="delegate-new-user-id"
+          displayNameProp="userName"
+          lookupNameProp="userName"
+          formControlName="userNameId"
+          [getFn]="getFn"
+        ></abp-lookup-typeahead>
+      </div>
+
+      <div class="mb-3">
+        <label> {{ 'AbpIdentity::DelegationDateRange' | abpLocalization }} </label>
+        <abp-date-range-picker
+          startDateProp="startTime"
+          endDateProp="endTime"
+          formControlName="times"
+        >
+        </abp-date-range-picker>
+      </div>
+
+      <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
+        <button type="button" class="btn btn-outline-primary" abpClose>
+          {{ 'AbpUi::Cancel' | abpLocalization }}
+        </button>
+        <abp-button iconClass="fa fa-check" buttonType="submit" formName="DelegateNewUser">
+          {{ 'AbpUi::Save' | abpLocalization }}
+        </abp-button>
+      </div>
+    </form>
+  </ng-template>
+</abp-modal>

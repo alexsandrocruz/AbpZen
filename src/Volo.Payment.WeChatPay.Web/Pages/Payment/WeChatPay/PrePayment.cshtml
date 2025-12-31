@@ -1,0 +1,27 @@
+﻿@page
+@model Volo.Payment.WeChatPay.Pages.Payment.WeChatPay.PrePaymentModel
+@{
+    Layout = null;
+}
+
+<script>
+   window.onload = function(){
+     var url = document.getElementById("CheckoutLink").innerText;
+     window.open(url, 'blank');
+     
+     //TODO.. check if the payment is success
+   };
+</script>
+
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <span id="CheckoutLink" hidden="hidden">@Model.CheckoutLink</span>
+                <div class="col-md-4 mx-auto mb-4">
+                    You are being redirected to WeChatPay for payment
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

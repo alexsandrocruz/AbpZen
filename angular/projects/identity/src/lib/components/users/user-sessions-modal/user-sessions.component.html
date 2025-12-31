@@ -1,0 +1,93 @@
+<abp-modal [(visible)]="isModalVisible" [options]="modalOptions">
+  <ng-template #abpHeader>
+    <h3>
+      {{ 'AbpIdentity::Sessions' | abpLocalization }}
+      @if (selected().userName) {
+        - {{ selected().userName }}
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <ngx-datatable [rows]="data().items" [count]="data().totalCount" [list]="list" default>
+      <ngx-datatable-column [name]="'AbpUi::Actions' | abpLocalization" [sortable]="false">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div ngbDropdown container="body" class="d-inline-block">
+            <button
+              ngbDropdownToggle
+              class="btn btn-primary btn-sm dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+            >
+              <i class="fa fa-cog me-1" aria-hidden="true"></i
+              >{{ 'AbpUi::Actions' | abpLocalization }}
+            </button>
+            <div ngbDropdownMenu>
+              <button ngbDropdownItem (click)="showDetail(row)">
+                {{ 'AbpIdentity::Session:Detail' | abpLocalization }}
+              </button>
+              <button ngbDropdownItem (click)="revokeSession(row)">
+                {{ 'AbpIdentity::Session:Revoke' | abpLocalization }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="'AbpIdentity::Session:Device' | abpLocalization"
+        [sortable]="true"
+        prop="device"
+      >
+        <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+          {{ value }}
+          @if (row.isCurrent) {
+            <i
+              class="fas fa-dot-circle"
+              [ngbTooltip]="'AbpIdentity::Session:Current' | abpLocalization"
+              container="body"
+              placement="end"
+            ></i>
+          }
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="'AbpIdentity::Session:DeviceInfo' | abpLocalization"
+        [sortable]="true"
+        prop="deviceInfo"
+      >
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="'AbpIdentity::Session:SignedIn' | abpLocalization"
+        [sortable]="true"
+        prop="signedIn"
+      >
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value | shortDateTime }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        [name]="'AbpIdentity::Session:LastAccessed' | abpLocalization"
+        [sortable]="true"
+        prop="lastAccessed"
+      >
+        <ng-template ngx-datatable-cell-template let-value="value">
+          {{ value | shortDateTime }}
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ 'AbpUi::Close' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>
+
+<!-- TODO re-configure the defer here after all migration is done -->
+@if (visibleSessionDetailModal()) {
+  <abp-user-session-detail
+    [sessionId]="sessionId()"
+    [(isModalVisible)]="visibleSessionDetailModal"
+  />
+}

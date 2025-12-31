@@ -1,0 +1,28 @@
+{
+  "Culture": "zh-Hant",
+  "Texts": {
+    "Appearance": "外貌",
+    "ContainerWidth": "容器寬度",
+    "ContainerWidth:Boxed": "盒裝佈局",
+    "ContainerWidth:Fixed": "固定佈局",
+    "ContainerWidth:Fluid": "流體佈局",
+    "GeneralSettings": "通用設置",
+    "Language": "語",
+    "Settings": "設置",
+    "Theme:dark": "黑暗的",
+    "Theme:dim": "半暗",
+    "Theme:light": "光",
+    "Theme:system": "系統",
+    "Welcome": "歡迎",
+    "FilterMenu": "篩選菜單",
+    "GivenTenantIsNotExist": "指定的租戶不存在: {0}",
+    "GivenTenantIsNotAvailable": "指定的租戶不可用: {0}",
+    "SwitchTenant": "切換租戶",
+    "Name": "名稱",
+    "SwitchTenantHint": "將name欄位留空以切換到主控端.",
+    "Tenant": "租戶",
+    "Switch": "切換",
+    "NotSelected": "尚未選定",
+    "Menu": "菜單"
+  }
+}

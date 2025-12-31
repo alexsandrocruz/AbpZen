@@ -1,0 +1,14 @@
+<div ngbDropdown class="d-inline-block ngb-dropdown">
+  <button class="btn btn-outline-primary btn-sm" id="Import" ngbDropdownToggle>
+    {{ 'AbpIdentity::Export' | abpLocalization }}
+  </button>
+
+  <div ngbDropdownMenu id="options" aria-labelledby="Import">
+    <button ngbDropdownItem (click)="exportExcel()">
+      {{ 'AbpIdentity::ToExcel' | abpLocalization }}
+    </button>
+    <button ngbDropdownItem (click)="exportCSV()">
+      {{ 'AbpIdentity::ToCSV' | abpLocalization }}
+    </button>
+  </div>
+</div>

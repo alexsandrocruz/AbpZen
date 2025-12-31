@@ -1,0 +1,15 @@
+{
+  "name": "Volo.CmsKit.Pro.Admin.Blazor.WebAssembly",
+  "hash": "295d06c8fd3ba7910acec004c526799a",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Blazor.WebAssembly",
+      "dependsOnModules": [
+        
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProAdminBlazorWebAssemblyModule",
+      "summary": null
+    }
+  ]
+}

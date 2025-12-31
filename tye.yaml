@@ -1,0 +1,10 @@
+name: Forms
+services:
+- name: web-unified
+  project: host/Volo.Forms.Web.Unified/Volo.Forms.Web.Unified.csproj
+  bindings:
+    - protocol: https
+      port: 44356
+  env:
+    - Kestrel__Certificates__Default__Path=../../etc/dev-cert/localhost.pfx
+    - Kestrel__Certificates__Default__Password=8b6039b6-c67a-448b-977b-0ce6d3fcfd49

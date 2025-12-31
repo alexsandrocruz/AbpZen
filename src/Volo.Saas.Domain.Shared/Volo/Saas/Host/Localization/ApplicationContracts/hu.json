@@ -1,0 +1,17 @@
+{
+  "culture": "hu",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Bérlőkezelés",
+    "Permission:EditionManagement": "Kiadáskezelés",
+    "Permission:Create": "Létrehozás",
+    "Permission:Edit": "Szerkesztés",
+    "Permission:Delete": "Törlés",
+    "Permission:ManageConnectionStrings": "Kapcsolati karakterláncok kezelése",
+    "Permission:SetPassword": "Állítsd be a jelszót",
+    "Permission:ManageFeatures": "Funkciók kezelése",
+    "Permission:ViewChangeHistory": "Változástörténet megtekintése",
+    "Permission:Impersonation": "Megszemélyesítés",
+    "CheckYourProviderDashboard": "Az előfizetés lemondásához ellenőrizze fizetési szolgáltatója irányítópultját."
+  }
+}

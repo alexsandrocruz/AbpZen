@@ -1,0 +1,268 @@
+{
+  "name": "Volo.Abp.Identity.Pro.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Identity.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application.Contracts",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Web",
+          "namespace": "Volo.Abp.PermissionManagement.Web",
+          "name": "AbpPermissionManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Web",
+          "namespace": "Volo.Abp.SettingManagement.Web",
+          "name": "AbpSettingManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.VirtualFileSystem",
+          "namespace": "Volo.Abp.VirtualFileSystem",
+          "name": "AbpVirtualFileSystemModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "name": "AbpAspNetCoreMvcUiThemeCommercialModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpIdentityWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "ClaimTypeEditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "IdentityUserModalPageModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "Lock",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "SessionDetailModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "SessionsModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "SetPassword",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "TwoFactorModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users",
+      "contentType": "webPage",
+      "name": "ViewDetailsModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users.ImportToolbar",
+      "contentType": "webPage",
+      "name": "ExternalUserModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Users.ImportToolbar",
+      "contentType": "webPage",
+      "name": "ImportUserFromFileModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.SecurityLogs",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "ClaimTypeEditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "DeleteRoleModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.Roles",
+      "contentType": "webPage",
+      "name": "MoveAllUsersModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "AddMemberModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "AddRoleModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "DeleteModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.OrganizationUnits",
+      "contentType": "webPage",
+      "name": "MoveAllUsersModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.ClaimTypes",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.ClaimTypes",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Web.Pages.Identity.ClaimTypes",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    }
+  ]
+}

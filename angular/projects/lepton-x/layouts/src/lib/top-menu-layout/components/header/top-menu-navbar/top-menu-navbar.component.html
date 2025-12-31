@@ -1,0 +1,14 @@
+<div class="lpx-header-bottom">
+  @if (menuItems$ | async; as menuItems) {
+    <nav class="lpx-nav">
+      <ul class="lpx-nav-menu">
+        @for (menuItem of menuItems; track $index) {
+          <lpx-top-menu-nav-item
+            [menuItem]="menuItem"
+          >
+          </lpx-top-menu-nav-item>
+        }
+      </ul>
+    </nav>
+  }
+</div>

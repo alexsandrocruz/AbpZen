@@ -1,0 +1,441 @@
+﻿@page "/identity/organization-units"
+@using Volo.Abp.Identity.Localization
+@using Microsoft.AspNetCore.Components.Forms
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inherits AbpIdentityProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["OrganizationUnits"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+<Row>
+    <Column ColumnSize="ColumnSize.Is6">
+        <Card>
+            <CardBody>
+                <CardTitle Size="5">
+                    <Row Class="justify-content-between">
+                        <Column ColumnSize="ColumnSize.IsAuto" class="text-dark">
+                            <span style="font-size:initial">@L["OrganizationTree"]</span>
+                        </Column>
+                        @if (HasManageOuPermission)
+                        {
+                            <Column ColumnSize="ColumnSize.IsAuto">
+                                <Button Clicked="() => OpenCreateOuModalAsync()" Color="Color.Primary" class="btn-sm">
+                                    <Icon Name="IconName.Add" Margin="Margin.Is1.FromEnd"></Icon>@L["AddRootUnit"]
+                                </Button>
+                            </Column>
+                        }
+                    </Row>
+                </CardTitle>
+                
+                @if (OrganizationUnits == null || !OrganizationUnits.Any())
+                {
+                    @L["NoOrganizationUnits"]
+                }
+                else
+                {
+                    <TreeView
+                        Items="OrganizationUnits"
+                        GetChildren="@(item => item.Children)"
+                        HasChildren="@(item => item.HasChildren == true)">
+                        <ItemTemplate>
+                            <span role="button" class="ms-1 me-1 @(SelectedOrganizationUnit == context.Item ? "text-primary" : "text-dark")" @onclick="() => OnSelectedOUNodeChangedAsync(context.Item)">
+                                <i class="fas fa-folder fs-15px me-1"/>
+                                @context.Item.DisplayName
+
+                                <Dropdown @ref="@Dropdowns[context.Item.Id]" Style="display:inline;">
+                                    <DropdownToggle Padding="Padding.Is0" Color="Color.Default" Size="Size.ExtraSmall" Split="true"/>
+
+                                    <DropdownMenu>
+                                        <DropdownItem Style="cursor: pointer" Clicked="() => OpenCreateOuModalAsync(context.Item)">
+                                            @L["AddSubUnit"]
+                                        </DropdownItem>
+                                        <DropdownItem Style="cursor: pointer" Clicked="() => OpenEditOuModalAsync(context.Item)">
+                                            @L["Edit"]
+                                        </DropdownItem>
+                                        <DropdownItem Style="cursor: pointer" Clicked="() => OpenMoveOuModal(context.Item)">
+                                            @L["Move"]
+                                        </DropdownItem>
+                                        <DropdownItem Style="cursor: pointer" Clicked="() => OpenDeleteModalAsync(context.Item)">
+                                            @L["Delete"]
+                                        </DropdownItem>
+                                        <DropdownItem Style="cursor: pointer" Clicked="() => OpenMoveAllUsersModalAsync(context.Item)">
+                                            @L["MoveAllUsers"]
+                                        </DropdownItem>
+                                    </DropdownMenu>
+
+                                </Dropdown>
+                            </span>
+                        </ItemTemplate>
+                    </TreeView>
+                }
+            </CardBody>
+        </Card>
+    </Column>
+
+    <Column ColumnSize="ColumnSize.Is6">
+        <Card>
+            <CardBody Padding="Padding.Is1.FromTop">
+
+                <Tabs @bind-SelectedTab="@OuDetailSelectedTab">
+                    <Items>
+                        <Tab Name="Members">
+                            @L["Members"]
+                        </Tab>
+                        <Tab Name="Roles">
+                            @L["Roles"]
+                        </Tab>
+                    </Items>
+                    <Content>
+                        <TabPanel Name="Members">
+                            @if (SelectedOrganizationUnit == null)
+                            {
+                                <p class="my-2">
+                                    @L["SelectAnOrganizationUnitToSeeMembers"]
+                                </p>
+                            }
+                            else
+                            {
+                                <div class="d-flex justify-content-between align-items-center pb-2">
+
+                                    @if (SelectedOrganizationUnit != null)
+                                    {
+                                        <h3>@SelectedOrganizationUnit.DisplayName</h3>
+                                    }
+
+                                    @if (HasManageUsersPermission)
+                                    {
+                                        <Button Float="Float.End" Clicked="@OpenAddMemberModalAsync" Size="Size.Small" Color="Color.Primary">
+                                            <Icon Name="IconName.Add" Class="me-1"></Icon>@L["AddMember"]
+                                        </Button>
+                                    }
+                                </div>
+
+                                <EditForm Model="@SelectedOuUsersFilter" OnValidSubmit="@GetSelectedOuUsersAsync">
+                                    <Addons>
+                                        <Addon AddonType="AddonType.Body">
+                                            <TextEdit Placeholder="@L["Filter"].Value" @bind-Text="@SelectedOuUsersFilter.Filter" Autofocus="true" />
+                                        </Addon>
+                                        <Addon AddonType="AddonType.End">
+                                            <Button Color="Color.Primary"
+                                                    Clicked="SearchSelectedOuUsersAsync">
+                                                <Icon Name="IconName.Search" />
+                                            </Button>
+                                        </Addon>
+                                    </Addons>
+                                </EditForm>
+
+                                <Row>
+                                    <AbpExtensibleDataGrid TItem="IdentityUserDto"
+                                                           Data="SelectedOuUsers"
+                                                           ReadData="OnIdentityUserDataGridReadAsync"
+                                                           TotalItems="TotalUsersCount"
+                                                           ShowPager="true"
+                                                           PageSize="PageSize"
+                                                           CurrentPage="@SelectedOuUsersCurrentPage"
+                                                           Columns="@UserManagementTableColumns"
+                                                           Responsive="true">
+                                    </AbpExtensibleDataGrid>
+                                </Row>
+                            }
+                        </TabPanel>
+                        <TabPanel Name="Roles">
+                            @if (SelectedOrganizationUnit == null)
+                            {
+                                <p class="my-2">
+                                    @L["SelectAnOrganizationUnitToSeeRoles"]
+                                </p>
+                            }
+                            else
+                            {
+                                <div class="d-flex justify-content-between align-items-center pb-2">
+
+                                    @if (SelectedOrganizationUnit != null)
+                                    {
+                                        <h3>@SelectedOrganizationUnit.DisplayName</h3>
+                                    }
+
+                                    @if (HasManageRolesPermission)
+                                    {
+                                        <Button Clicked="@OpenAddRoleModalAsync" Color="Color.Primary" Size="Size.Small">
+                                            <Icon Name="IconName.Add" Class="me-1"></Icon>@L["AddRole"]
+                                        </Button>
+                                    }
+                                </div>
+
+                                <Row>
+                                    <AbpExtensibleDataGrid TItem="IdentityRoleDto"
+                                                           Data="SelectedOuRoles"
+                                                           ReadData="OnIdentityRoleDataGridReadAsync"
+                                                           TotalItems="TotalRolesCount"
+                                                           ShowPager="true"
+                                                           PageSize="PageSize"
+                                                           CurrentPage="@SelectedOuRolesCurrentPage"
+                                                           Columns="@RoleManagementTableColumns"
+                                                           Responsive="true">
+                                    </AbpExtensibleDataGrid>
+                                </Row>
+                            }
+                        </TabPanel>
+                    </Content>
+                </Tabs>
+
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+
+<Modal @ref="@CreateOuModal" Closing="@ClosingCreateOuModal">
+    <ModalContent Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewOrganizationUnit"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateOuModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateOuValidationsRef" Model="@CreateOuModel" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@CreateOuModel.DisplayName" Autofocus="true">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <ExtensionProperties TEntityType="OrganizationUnitCreateDto" TResourceType="IdentityResource" Entity="@CreateOuModel" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="CloseCreateOuModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateOuAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="@EditOuModal" Closing="@ClosingEditOuModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"] - @EditOuModel.DisplayName</ModalTitle>
+                    <CloseButton Clicked="CloseEditOuModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditOuValidationsRef" Model="@EditOuModel" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@EditOuModel.DisplayName" Autofocus="true">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <ExtensionProperties TEntityType="OrganizationUnitUpdateDto" TResourceType="IdentityResource" Entity="@EditOuModel" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="CloseEditOuModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateOrganizationUnitAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="@AddMemberModal" Closing="@ClosingAddMemberModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>@L["AddMember"] - @SelectedOrganizationUnit.DisplayName</ModalTitle>
+                <CloseButton Clicked="CloseAddMemberModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <EditForm Model="@OuAssignableUsersFilter" OnValidSubmit="@GetOuAssignableUsersAsync">
+                    <TextEdit Placeholder="@L["Filter"].Value" @bind-Text="@OuAssignableUsersFilter.Filter" />
+                </EditForm>
+
+                <DataGrid TItem="IdentityUserDto"
+                          Data="OuAssignableUsers"
+                          ReadData="OnAssignableUserDataGridReadAsync"
+                          TotalItems="TotalAssignableUsersCount"
+                          ShowPager="true"
+                          Responsive="true"
+                          @bind-SelectedRows="SelectedAssignableOuUsers"
+                          SelectionMode="DataGridSelectionMode.Multiple"
+                          PageSize="PageSize">
+                    <DataGridColumns>
+                        <DataGridMultiSelectColumn TItem="IdentityUserDto" Width="30px"></DataGridMultiSelectColumn>
+                        <DataGridCommandColumn TItem="IdentityUserDto" />
+                        @foreach (var column in AddMemberTableColumns)
+                    {
+                        <DataGridColumn TItem="IdentityUserDto" Field="@column.Field" Caption="@column.Caption" />
+                    }
+                </DataGridColumns>
+            </DataGrid>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Outline Clicked="CloseAddMemberModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary" Clicked="AddSelectedMembersToOuAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="@AddRoleModal" Closing="@ClosingAddRoleModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>@L["AddRole"] - @SelectedOrganizationUnit.DisplayName</ModalTitle>
+                <CloseButton Clicked="CloseAddRoleModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <DataGrid TItem="IdentityRoleDto"
+                          Data="OuAssignableRoles"
+                          ReadData="OnAssignableRoleDataGridReadAsync"
+                          TotalItems="TotalAssignableRolesCount"
+                          ShowPager="true"
+                          Responsive="true"
+                          @bind-SelectedRows="SelectedAssignableOuRoles"
+                          SelectionMode="DataGridSelectionMode.Multiple"
+                          PageSize="PageSize">
+                    <DataGridColumns>
+                        <DataGridMultiSelectColumn TItem="IdentityRoleDto" Width="30px"></DataGridMultiSelectColumn>
+                        <DataGridCommandColumn TItem="IdentityRoleDto" />
+                        @foreach (var column in AddRoleTableColumns)
+                    {
+                        <DataGridColumn TItem="IdentityRoleDto" Field="@column.Field" Caption="@column.Caption" />
+                    }
+                </DataGridColumns>
+            </DataGrid>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Outline Clicked="CloseAddRoleModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary" Clicked="AddSelectedRolesToOuAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="@MoveOuModal" Closing="@ClosingMoveOuModal">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>@L["MoveOrganizationUnit", MovingOu?.DisplayName]</ModalTitle>
+                <CloseButton Clicked="CloseMoveOuModal" />
+            </ModalHeader>
+            <ModalBody>
+                @if (MovableOuTree == null || !MovableOuTree.Any())
+            {
+                @L["NoOrganizationUnits"]
+            }
+            else
+            {
+                <TreeView Items="MovableOuTree"
+                          GetChildren="@(item => item.Children)"
+                          HasChildren="@(item => item.HasChildren == true)">
+                    <ItemTemplate>
+                        <span class="ms-1 me-1 @(NewParentOu == context.Item ? "text-primary" : "text-dark")"  @onclick="() => MovableOuSelected(context.Item)">
+                            <i class="fas fa-folder fs-15px me-1" />
+                            <span class="d-inline">@context.Item.DisplayName</span>
+                        </span>
+                    </ItemTemplate>
+                </TreeView>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" Outline Clicked="CloseMoveOuModal">@L["Cancel"]</Button>
+                <Button Color="Color.Primary" Clicked="MoveOrganizationUnitAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    @* ************************* DELETE MODAL ************************* *@
+    @if (HasManageOuPermission)
+{
+    <Modal @ref="DeleteModal" Closing="@ClosingDeleteModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["AreYouSure"]</ModalTitle>
+                        <CloseButton Clicked="CloseDeleteModalAsync" />
+                    </ModalHeader>
+                    <ModalBody>
+                        <p class="fw-bold">@L["OrganizationUnitDeletionConfirmationMessage", DeletingOu.DisplayName]</p>
+                    @if (DeletingOu.UserCount > 0)
+                    {
+                        <p class="mt-2">@L["ChooseAnActionForOrganizationUnit", DeletingOu.UserCount]</p>
+                        <Field>
+                            <Radio TValue="string"
+                                   Value="@("unassign")"
+                                   Checked="@(!DeletingOu.AssignOrganizationUnit)"
+                                   CheckedChanged="@OnAssignCheckedChanged"
+                                   Group="assign">
+                                @L["UnassignTheOrganizationUnitFromTheUsers"]
+                            </Radio>
+                        </Field>
+
+                        @if (DeletingOu.OtherOrganizationUnits.Any())
+                        {
+                            <Field>
+                                <Radio TValue="string"
+                                       Value="@("assign")"
+                                       Checked="@DeletingOu.AssignOrganizationUnit"
+                                       CheckedChanged="@OnAssignCheckedChanged"
+                                       Group="assign">
+                                    @L["AssignUsersToOtherOrganizationUnit"]
+                                </Radio>
+                            </Field>
+                        }
+
+                        @if (DeletingOu.AssignOrganizationUnit)
+                        {
+                            <Select TValue="Guid?" SelectedValue="@DeletingOu.AssignToOrganizationUnitId" SelectedValueChanged="@OnAssignToOrganizationUnitSelectedValueChanged">
+                                <SelectItem Value="Guid.Empty">@L["SelectAnOrganizationUnitToAssign"]</SelectItem>
+                                    @foreach (var ou in DeletingOu.OtherOrganizationUnits)
+                                {
+                                    <SelectItem Value="@ou.Id">@ou.DisplayName</SelectItem>
+                                }
+                            </Select>
+                        }
+                    }
+
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseDeleteModalAsync">@L["Cancel"]</Button>
+                        <Button Color="Color.Primary" Disabled="@DeletingOu.DisabledDeleteButton" Clicked="DeleteOrganizationUnitAsync"><Icon Name="IconName.Delete" /> @L["Delete"]</Button>
+                    </ModalFooter>
+                </Form>
+            </ModalContent>
+        </Modal>
+}
+
+@* ************************* MOVE ALL USERS MODAL ************************* *@
+@if (HasManageOuPermission)
+{
+    <Modal @ref="MoveAllUsersModal" Closing="@ClosingMoveAllUsersModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["MoveAllUsers"] - @MoveAllUsersModel.Name</ModalTitle>
+                        <CloseButton Clicked="CloseMoveAllUsersModalAsync" />
+                    </ModalHeader>
+                    <ModalBody>
+
+                        <p>@((MarkupString)L["MoveAllUsersWithOrganizationUnitTo", MoveAllUsersModel.Name].ToString())</p>
+                        <Select TValue="Guid?" @bind-SelectedValue="@MoveAllUsersModel.TargetOrganizationUnitId">
+                            <SelectItem Value="Guid.Empty">@L["UnassignOrganizationUnit"]</SelectItem>
+                            @foreach (var organizationUnit in MoveAllUsersModel.OtherOrganizationUnits)
+                        {
+                            <SelectItem Value="@organizationUnit.Id">@organizationUnit.DisplayName</SelectItem>
+                        }
+                    </Select>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseMoveAllUsersModalAsync">@L["Cancel"]</Button>
+                        <SubmitButton Clicked="@MoveAllUsersAsync" />
+                    </ModalFooter>
+                </Form>
+            </ModalContent>
+        </Modal>
+}

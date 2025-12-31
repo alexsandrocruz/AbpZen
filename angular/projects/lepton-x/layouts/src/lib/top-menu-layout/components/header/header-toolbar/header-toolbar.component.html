@@ -1,0 +1,12 @@
+<ng-container
+  *ngTemplateOutlet="
+    itemsTmp || defaultItemsTmp;
+    context: { $implicit: items$ | async }
+  "
+></ng-container>
+
+<ng-template #defaultItemsTmp let-items>
+  @if (hasVisibleItems(items)) {
+    <lpx-toolbar-items [items]="items"></lpx-toolbar-items>
+  }
+</ng-template>

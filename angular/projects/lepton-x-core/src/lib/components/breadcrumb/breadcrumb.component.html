@@ -1,0 +1,39 @@
+<nav aria-label="breadcrumb">
+  <ol class="lpx-breadcrumb">
+    @for (item of service.items$ | async; track $index; let last = $last) {
+      <li
+        class="lpx-breadcrumb-item"
+        (click)="onClick(item)"
+        [class.expanded]="item.expanded"
+        (lpxClickOutside)="item.expanded = false"
+      >
+        @if (item.icon) {
+          <lpx-icon
+            class="lpx-breadcrumb-item-icon"
+            [iconClass]="item.icon"
+          ></lpx-icon>
+        }
+        <ng-container
+          *ngTemplateOutlet="
+            item.children?.length ? textTemplate : linkTemplate;
+            context: { $implicit: item }
+          "
+        ></ng-container>
+      </li>
+      @if (!last) {
+        <li class="lpx-breadcrumb-separator">
+          <lpx-icon iconClass="bi bi-chevron-right"></lpx-icon>
+        </li>
+      }
+    }
+  </ol>
+</nav>
+
+<ng-template #linkTemplate let-item>
+  <a [routerLink]="item.link"> {{ item.text | toObservable | async }} </a>
+</ng-template>
+<ng-template #textTemplate let-item>
+  <span class="lpx-breadcrumb-item-text">
+    {{ item.text | toObservable | async }}
+  </span>
+</ng-template>

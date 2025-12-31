@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Payment.Domain\Volo.Payment.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

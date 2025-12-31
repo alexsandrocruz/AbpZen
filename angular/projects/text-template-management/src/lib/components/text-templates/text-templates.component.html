@@ -1,0 +1,20 @@
+  <abp-page
+    [title]="'TextTemplateManagement::Menu:TextTemplates' | abpLocalization"
+    [toolbar]="data.items"
+  >
+    <div id="wrapper">
+      <abp-advanced-entity-filters
+        [list]="list"
+        localizationSourceName="TextTemplateManagement"
+      ></abp-advanced-entity-filters>
+
+      <div class="card">
+        <abp-extensible-table
+          [actionsColumnWidth]="170"
+          [data]="data.items"
+          [recordsTotal]="data.totalCount"
+          [list]="list"
+        ></abp-extensible-table>
+      </div>
+    </div>
+  </abp-page>

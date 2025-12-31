@@ -1,0 +1,33 @@
+{
+  "name": "@volo/abp.ng.lepton-x.core",
+  "version": "4.0.5",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@volo/ngx-lepton-x.core": "4.0.5"
+  },
+  "peerDependencies": {
+    "@abp/ng.components": "~9.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://www.leptontheme.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/lepton.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

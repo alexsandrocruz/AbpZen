@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Navigation
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.MainMenu
+@using Volo.Abp.UI.Navigation
+
+@model MenuItemViewModel
+
+@{
+	var cssClass = string.IsNullOrEmpty(Model.MenuItem.CssClass) ? string.Empty : Model.MenuItem.CssClass;
+	var customComponentType = Model.MenuItem.GetComponentTypeOrDefault();
+}
+
+@if (Model.MenuItem.IsLeaf)
+{
+	@if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+	{
+		@(await Component.InvokeAsync(customComponentType))
+	}
+	else
+	{
+		var url = string.IsNullOrEmpty(Model.MenuItem.Url) ? "#" : Url.IsLocalUrl(Model.MenuItem.Url) ? Url.Content(Model.MenuItem.Url.EnsureStartsWith('~')) : Model.MenuItem.Url;
+
+		<a href="@url" target="@Model.MenuItem.Target" class="lpx-menu-item-link lpx-menu-item @(Model.IsActive ? "selected" : "") @cssClass" id="@Model.MenuItem.ElementId">
+
+			@if (!Model.MenuItem.Icon.IsNullOrEmpty() || Model.IsInRoot)
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @(Model.MenuItem.Icon ?? "")" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@Model.MenuItem.DisplayName</span>
+		</a>
+	}
+}
+else
+{
+	@if (customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+	{
+		@(await Component.InvokeAsync(customComponentType))
+	}
+	else
+	{
+		<a class="lpx-menu-item-link lpx-menu-item @(Model.IsActive ? "selected" : "")">
+
+			@if (!Model.MenuItem.Icon.IsNullOrEmpty() || Model.IsInRoot)
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @(Model.MenuItem.Icon)" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@Model.MenuItem.DisplayName</span>
+
+			<i class="dd-icon hidden-in-hover-trigger lpx-caret bi-chevron-down" aria-hidden="true"></i>
+		</a>
+	}
+	
+	<ul id="@Model.MenuItem.ElementId" class="lpx-inner-menu hidden-in-hover-trigger @(Model.IsActive ? "" : "collapsed") @cssClass">
+		@foreach (var childMenuItem in Model.Items)
+		{
+			<li class="lpx-inner-menu-item">
+				@await Html.PartialAsync("~/Themes/LeptonX/Components/SideMenu/MainMenu/_MenuItem.cshtml", childMenuItem)
+			</li>
+		}
+	</ul>
+}

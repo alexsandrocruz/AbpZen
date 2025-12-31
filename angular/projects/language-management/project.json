@@ -1,0 +1,35 @@
+{
+  "name": "language-management",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/language-management/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/language-management"],
+      "options": {
+        "tsConfig": "packages/language-management/tsconfig.lib.json",
+        "project": "packages/language-management/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/language-management/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/language-management"],
+      "options": {
+        "jestConfig": "packages/language-management/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["commercial-ui"]
+}

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    
+    
+    
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.AspNetCore.Components.Server.Theming" VersionOverride="9.0.4" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Volo.Payment.Admin.Blazor\Volo.Payment.Admin.Blazor.csproj" />
+    </ItemGroup>
+
+</Project>

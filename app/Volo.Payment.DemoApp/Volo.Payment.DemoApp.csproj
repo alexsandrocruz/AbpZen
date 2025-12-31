@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>2681587e-6ffd-48d0-ab0b-3062ea7fe39b</UserSecretsId>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <Configurations>Debug;Release;Docker</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Web" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.Identity.HttpApi" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.Identity.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Identity" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.TenantManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Database.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Payment.Admin.Application\Volo.Payment.Admin.Application.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Admin.HttpApi\Volo.Payment.Admin.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Admin.Web\Volo.Payment.Admin.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.EntityFrameworkCore\Volo.Payment.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.PayPal.Domain\Volo.Payment.PayPal.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.PayPal.Web\Volo.Payment.PayPal.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Payu.Domain\Volo.Payment.Payu.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Payu.Web\Volo.Payment.Payu.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Iyzico.Domain\Volo.Payment.Iyzico.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Iyzico.Web\Volo.Payment.Iyzico.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.TwoCheckout.Domain\Volo.Payment.TwoCheckout.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.TwoCheckout.Web\Volo.Payment.TwoCheckout.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Stripe.Domain\Volo.Payment.Stripe.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Stripe.Web\Volo.Payment.Stripe.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Alipay.Domain\Volo.Payment.Alipay.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Payment.Alipay.Web\Volo.Payment.Alipay.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

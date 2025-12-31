@@ -1,0 +1,17 @@
+{
+  "culture": "sv",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Förvaltning av hyresgäster",
+    "Permission:EditionManagement": "Hantering av upplagan",
+    "Permission:Create": "Skapa",
+    "Permission:Edit": "Redigera",
+    "Permission:Delete": "Radera",
+    "Permission:ManageConnectionStrings": "Hantera anslutningssträngar",
+    "Permission:SetPassword": "Ange lösenord",
+    "Permission:ManageFeatures": "Hantera funktioner",
+    "Permission:ViewChangeHistory": "Visa ändringshistorik",
+    "Permission:Impersonation": "Imitation",
+    "CheckYourProviderDashboard": "Kontrollera din betalningsleverantörs instrumentpanel för att avsluta prenumerationen."
+  }
+}

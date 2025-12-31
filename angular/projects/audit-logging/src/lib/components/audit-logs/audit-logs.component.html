@@ -1,0 +1,456 @@
+<div id="wrapper">
+  <abp-page [title]="'AbpAuditLogging::AuditLogs' | abpLocalization" [toolbar]="data.items">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a
+          class="nav-link pointer"
+          [class.active]="selectedTab === 'audit-logs'"
+          (click)="selectedTab = 'audit-logs'"
+          >{{ 'AbpAuditLogging::AuditLogs' | abpLocalization }}</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link pointer"
+          [class.active]="selectedTab === 'entity-changes'"
+          (click)="selectedTab = 'entity-changes'"
+          >{{ 'AbpAuditLogging::EntityChanges' | abpLocalization }}</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" [class.p-0]="selectedTab !== 'audit-logs'">
+      <div class="tab-pane" [class.active]="selectedTab === 'audit-logs'" [@fadeIn]="selectedTab">
+        <div class="card mb-0">
+          <div class="card-body pb-lg-3 px-0">
+            <form (keyup.enter)="list.get()">
+              <div class="row">
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label class="form-label">{{
+                      'AbpAuditLogging::StartDate' | abpLocalization
+                    }}</label>
+                    <abp-datetime-picker
+                      [(ngModel)]="pageQuery.startTime"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></abp-datetime-picker>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label class="form-label">{{
+                      'AbpAuditLogging::EndDate' | abpLocalization
+                    }}</label>
+                    <abp-datetime-picker
+                      [(ngModel)]="pageQuery.endTime"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></abp-datetime-picker>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label for="userName" class="form-label">{{
+                      'AbpAuditLogging::UserName' | abpLocalization
+                    }}</label
+                    ><input
+                      id="userName"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="pageQuery.userName"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label class="form-label" for="url">{{
+                      'AbpAuditLogging::Url' | abpLocalization
+                    }}</label
+                    ><input
+                      id="url"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="pageQuery.url"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label for="minDuration" class="form-label">{{
+                      'AbpAuditLogging::MinMaxDuration' | abpLocalization
+                    }}</label>
+                    <div class="input-group">
+                      <input
+                        id="minDuration"
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="pageQuery.minExecutionDuration"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <span class="input-group-text px-1">-</span>
+                      <input
+                        id="maxDuration"
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="pageQuery.maxExecutionDuration"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label for="httpMethod" class="form-label">{{
+                      'AbpAuditLogging::HttpMethod' | abpLocalization
+                    }}</label
+                    ><select
+                      id="httpMethod"
+                      class="form-select form-control"
+                      [(ngModel)]="pageQuery.httpMethod"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="list.get()"
+                    >
+                      <option [ngValue]="null">-</option>
+                      @for (method of httpMethods; track $index) {
+                        <option [ngValue]="method">
+                          {{ method }}
+                        </option>
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3">
+                    <label for="httpStatusCode" class="form-label">{{
+                      'AbpAuditLogging::HttpStatusCode' | abpLocalization
+                    }}</label
+                    ><select
+                      id="httpStatusCode"
+                      class="form-select form-control"
+                      [(ngModel)]="pageQuery.httpStatusCode"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="list.get()"
+                    >
+                      <option [ngValue]="null">-</option>
+                      @for (h of httpStatusCodes; track $index) {
+                        <option [ngValue]="h.code">{{ h.code }} - {{ h.message }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3 mb-lg-0">
+                    <label for="applicationName" class="form-label">{{
+                      'AbpAuditLogging::ApplicationName' | abpLocalization
+                    }}</label
+                    ><input
+                      id="applicationName"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="pageQuery.applicationName"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3 mb-lg-0">
+                    <label for="correlationId" class="form-label">{{
+                      'AbpAuditLogging::ClientIpAddress' | abpLocalization
+                    }}</label
+                    ><input
+                      id="clientIpAddress"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="pageQuery.clientIpAddress"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3 mb-lg-0">
+                    <label for="correlationId" class="form-label">{{
+                      'AbpAuditLogging::CorrelationId' | abpLocalization
+                    }}</label
+                    ><input
+                      id="correlationId"
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="pageQuery.correlationId"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mb-3 mb-lg-0">
+                    <label for="hasException" class="form-label">{{
+                      'AbpAuditLogging::HasException' | abpLocalization
+                    }}</label>
+                    <select
+                      name="hasException"
+                      id="hasException"
+                      class="form-select form-control"
+                      [(ngModel)]="pageQuery.hasException"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="list.get()"
+                    >
+                      <option [ngValue]="null">-</option>
+                      <option [ngValue]="true">
+                        {{ 'AbpAuditLogging::Yes' | abpLocalization }}
+                      </option>
+                      <option [ngValue]="false">
+                        {{ 'AbpAuditLogging::No' | abpLocalization }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xxl-3">
+                  <div class="mt-3 mb-lg-0 d-grid">
+                    <button type="button" class="btn btn-primary" (click)="list.get()">
+                      <span>
+                        {{ 'AbpAuditLogging::Refresh' | abpLocalization }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card mb-0">
+          <div class="card-body p-0">
+            <abp-extensible-table
+              [data]="data.items"
+              [recordsTotal]="data.totalCount"
+              [list]="list"
+            ></abp-extensible-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" [class.p-0]="selectedTab !== 'entity-changes'">
+      <div
+        class="tab-pane"
+        [class.active]="selectedTab === 'entity-changes'"
+        [@fadeIn]="selectedTab"
+      >
+        @if (selectedTab === 'entity-changes') {
+          <abp-entity-changes></abp-entity-changes>
+        }
+      </div>
+    </div>
+  </abp-page>
+</div>
+
+@if (selected) {
+  <abp-modal [(visible)]="modalVisible" [options]="{ size: 'lg' }">
+    <ng-template #abpHeader>
+      <h5 class="modal-title">
+        {{ 'AbpAuditLogging::Detail' | abpLocalization }}
+      </h5>
+    </ng-template>
+    <ng-template #abpBody>
+      <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <li ngbNavItem>
+          <a ngbNavLink>{{ 'AbpAuditLogging::Overall' | abpLocalization }}</a>
+          <ng-template ngbNavContent>
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::HttpStatusCode' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">
+                <span class="badge" [ngClass]="httpCodeClass(selected.httpStatusCode)">{{
+                  selected.httpStatusCode
+                }}</span>
+              </div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::HttpMethod' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">
+                <span class="badge" [ngClass]="httpMethodClass(selected.httpMethod)">{{
+                  selected.httpMethod
+                }}</span>
+              </div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::Url' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.url }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::ClientIpAddress' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.clientIpAddress }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::ClientName' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.clientName }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::Exceptions' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">
+                @if (selected.exceptions) {
+                  <pre lang="c-sharp">
+                    {{ selected.exceptions }}
+                  </pre>
+                }
+              </div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::UserName' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.userName }}</div>
+            </div>
+            <hr class="m-0" />
+            @if (selected.impersonatorTenantId) {
+              <div class="row">
+                <div class="col-form-label col col-lg-3">
+                  <strong>{{ 'AbpAuditLogging::TenantImpersonator' | abpLocalization }}</strong>
+                </div>
+                <div class="col-form-label col col-lg-9">
+                  {{ selected.impersonatorTenantName || selected.impersonatorTenantId }}
+                </div>
+              </div>
+              <hr class="m-0" />
+            }
+            @if (selected.impersonatorUserId) {
+              <div class="row">
+                <div class="col-form-label col col-lg-3">
+                  <strong>{{ 'AbpAuditLogging::UserImpersonator' | abpLocalization }}</strong>
+                </div>
+                <div class="col-form-label col col-lg-9">
+                  @if (selected.impersonatorUserName) {
+                    {{ selected.impersonatorUserName }} ({{ selected.impersonatorUserId }})
+                  } @else {
+                    {{ selected.impersonatorUserId }}
+                  }
+                </div>
+              </div>
+              <hr class="m-0" />
+            }
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::Time' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">
+                {{ selected.executionTime | shortDateTime }}
+              </div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::Duration' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.executionDuration }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::BrowserInfo' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.browserInfo }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::ApplicationName' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.applicationName }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::CorrelationId' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.correlationId }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::Comments' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">{{ selected.comments }}</div>
+            </div>
+            <hr class="m-0" />
+            <div class="row">
+              <div class="col-form-label col col-lg-3">
+                <strong>{{ 'AbpAuditLogging::ExtraProperties' | abpLocalization }}</strong>
+              </div>
+              <div class="col-form-label col col-lg-9">
+                <pre lang="json" class="p-2">
+                  {{ selected.extraProperties | json }}
+                </pre>
+              </div>
+            </div>
+          </ng-template>
+        </li>
+        <li ngbNavItem>
+          <a ngbNavLink
+            >{{ 'AbpAuditLogging::Actions' | abpLocalization }} ({{ selected.actions.length }})</a
+          >
+          <ng-template ngbNavContent>
+            @for (action of selected.actions; track $index; let i = $index) {
+              <div class="mb-3 border border-dark rounded">
+                <div class="d-grid">
+                  <button
+                    class="btn btn-primary d-flex justify-content-between text-break"
+                    type="button"
+                    (click)="collapseActionStates[i] = !collapseActionStates[i]"
+                  >
+                    {{ action.serviceName }} - {{ action.methodName }}
+                    <i
+                      class="fa align-self-center"
+                      [ngClass]="collapseActionStates[i] ? 'fa-chevron-up' : 'fa-chevron-down'"
+                    ></i>
+                  </button>
+                </div>
+                <div [@collapse]="collapseActionStates[i] ? 'expanded' : 'collapsed'">
+                  <div class="m-3">
+                    <div class="row">
+                      <div class="col-form-label col col-lg-3">
+                        <strong>{{ 'AbpAuditLogging::Duration' | abpLocalization }}</strong>
+                      </div>
+                      <div class="col-form-label col col-lg-9">
+                        {{ action.executionDuration ? action.executionDuration + ' ms' : '' }}
+                      </div>
+                    </div>
+                    <hr class="m-0" />
+                    <div class="row">
+                      <div class="col-form-label col col-lg-3">
+                        <strong>{{ 'AbpAuditLogging::Parameters' | abpLocalization }}</strong>
+                      </div>
+                      <div class="col-form-label col col-lg-9">
+                        <pre lang="json" class="p-2">{{ action.parameters }}</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+    </ng-template>
+    <ng-template #abpFooter>
+      <button class="btn btn-secondary" abpClose>
+        {{ 'AbpAuditLogging::Close' | abpLocalization }}
+      </button>
+    </ng-template>
+  </abp-modal>
+}

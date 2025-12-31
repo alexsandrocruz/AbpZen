@@ -1,0 +1,212 @@
+<abp-modal [visible]="isModalVisible" (visibleChange)="isModalVisibleChange.emit($event)">
+  <ng-template #abpHeader>
+    <h3>{{ 'AbpIdentity::ViewDetails' | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <ul id="user-nav-tabs" ngbNav #nav="ngbNav" class="nav-tabs">
+      <li id="viewdetails-informations" ngbNavItem>
+        <a ngbNavLink>{{ 'AbpIdentity::UserInformations' | abpLocalization }}</a>
+        <ng-template ngbNavContent>
+          <table class="table table-striped align-middle">
+            <tbody>
+              <tr class="border-top">
+                <td class="col-5">{{ 'AbpIdentity::UserName' | abpLocalization }}</td>
+                <td class="col-7">
+                  <span class="fw-bold">{{
+                    user.userName || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::Name' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    user.name || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::Surname' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    user.surname || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::Email' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    user.email || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::Roles' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">
+                    @if (user.roleNames.length === 0) {
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    } @else {
+                      @for (role of user.roleNames; track role; let last = $last) {
+                        {{ role }}{{ last ? '' : ', ' }}
+                      }
+                    }
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::PhoneNumber' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    user.phoneNumber || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::DisplayName:IsActive' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.isActive ? 'AbpUi::Yes' : 'AbpUi::No') | abpLocalization
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'AbpIdentity::DisplayName:ShouldChangePasswordOnNextLogin' | abpLocalization }}
+                </td>
+                <td>
+                  <span class="fw-bold">
+                    {{
+                      (user.shouldChangePasswordOnNextLogin ? 'AbpUi::Yes' : 'AbpUi::No')
+                        | abpLocalization
+                    }}</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::DisplayName:LockoutEnabled' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.lockoutEnabled ? 'AbpUi::Yes' : 'AbpUi::No') | abpLocalization
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::IsExternal' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.isExternal ? 'AbpUi::Yes' : 'AbpUi::No') | abpLocalization
+                  }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </li>
+      <li id="viewdetails-user-organization-units" ngbNavItem>
+        @if (organization$ | async; as organization) {
+          <a ngbNavLink>
+            {{ 'AbpIdentity::OrganizationUnits' | abpLocalization }}
+            <span> ({{ organization.userNodes.length }}) </span>
+          </a>
+          <ng-template ngbNavContent>
+            @if (organization.userNodes.length) {
+              <abp-tree
+                [checkable]="true"
+                [checkStrictly]="true"
+                [nodes]="organization.availableNodes"
+                [(checkedKeys)]="organization.userNodes"
+                [(expandedKeys)]="organization.expandedKeys"
+              ></abp-tree>
+            } @else {
+              <p class="text-muted">
+                {{ 'AbpIdentity::NoOrganizationUnits' | abpLocalization }}
+              </p>
+            }
+          </ng-template>
+        }
+      </li>
+
+      <li id="viewdetails-details" ngbNavItem>
+        <a ngbNavLink>{{ 'AbpIdentity::General' | abpLocalization }}</a>
+        <ng-template ngbNavContent>
+          <table class="table table-striped align-middle">
+            <tbody>
+              <tr class="border-top">
+                <td class="col-6">{{ 'AbpIdentity::CreatedBy' | abpLocalization }}</td>
+                <td class="col-6">
+                  <span class="fw-bold">
+                    @if (createdBy$ | async; as creator) {
+                      {{ creator.userName || ('AbpIdentity::Dash' | abpLocalization) }}
+                    } @else {
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    }
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::CreationTime' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{ user.creationTime | shortDateTime }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::ModifiedBy' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">
+                    @if (modifiedBy$ | async; as modifier) {
+                      {{ modifier.userName || ('AbpIdentity::Dash' | abpLocalization) }}
+                    } @else {
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    }
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::ModificationTime' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.lastModificationTime | shortDateTime) ||
+                      ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::PasswordUpdateTime' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.lastPasswordChangeTime | shortDateTime) ||
+                      ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::LockoutEndTime' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{
+                    (user.lockoutEnd | shortDateTime) || ('AbpIdentity::Dash' | abpLocalization)
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>{{ 'AbpIdentity::FailedAccessCount' | abpLocalization }}</td>
+                <td>
+                  <span class="fw-bold">{{ user.accessFailedCount }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2 fade-in-top"></div>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary col-12" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>

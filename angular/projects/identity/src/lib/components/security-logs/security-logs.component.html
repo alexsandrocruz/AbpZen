@@ -1,0 +1,114 @@
+<div id="wrapper">
+  <abp-page [title]="'AbpIdentity::SecurityLogs' | abpLocalization" [toolbar]="data.items">
+    <div class="card">
+      <div class="card-body pb-lg-3">
+        <div class="row" (keyup.enter)="list.get()">
+          <div class="col-md-12 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{ 'AbpIdentity::StartTime' | abpLocalization }}</label>
+              <abp-datetime-picker
+                [(ngModel)]="filter.startTime"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{ 'AbpIdentity::EndTime' | abpLocalization }}</label>
+              <abp-datetime-picker
+                [(ngModel)]="filter.endTime"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:Application' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.applicationName" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:Identity' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.identity" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:UserName' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.userName" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:Action' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.action" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:Client' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.clientId" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:CorrelationId' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.correlationId" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-3">
+              <label class="form-label">{{
+                'AbpIdentity::SecurityLogs:IpAddress' | abpLocalization
+              }}</label>
+              <input type="text" class="form-control" [(ngModel)]="filter.clientIpAddress" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-end gap-md-0 gap-2">
+          <div class="col-md-6 col-lg-3 col-xxl-3">
+            <div class="mb-lg-0 d-grid">
+              <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 col-xxl-3">
+            <div class="mb-lg-0 d-grid">
+              <button type="button" class="btn btn-primary" (click)="list.get()">
+                <i class="fa fa-search me-1"></i>
+                <span>{{ 'AbpUi::Search' | abpLocalization }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body p-0">
+        <abp-extensible-table [data]="data.items" [recordsTotal]="data.totalCount" [list]="list" />
+      </div>
+    </div>
+  </abp-page>
+</div>

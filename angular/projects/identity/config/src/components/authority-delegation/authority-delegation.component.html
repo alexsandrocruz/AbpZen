@@ -1,0 +1,29 @@
+<abp-modal [(visible)]="isModalOpen" [suppressUnsavedChangesWarning]="true" [options]="option">
+  <ng-template #abpHeader>
+    <h5 class="modal-title">{{ 'AbpIdentity::AuthorityDelegation' | abpLocalization }}</h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <ul class="nav nav-tabs mb-0">
+      <li *abpFor="let tab of tabs; trackBy: trackByFn" class="nav-item">
+        <a
+          [id]="tab.name + '-tab'"
+          role="tab"
+          class="nav-link pointer"
+          [class.active]="selected.name === tab.name"
+          (click)="selected = tab"
+        >
+          {{ tab.name | abpLocalization }}
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active">
+        <div class="card mb-0">
+          <ng-container *ngComponentOutlet="selected.component"></ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</abp-modal>

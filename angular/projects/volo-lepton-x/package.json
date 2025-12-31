@@ -1,0 +1,40 @@
+{
+  "name": "@volosoft/abp.ng.theme.lepton-x",
+  "version": "4.0.5",
+  "homepage": "https://www.leptontheme.com/",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@ng-bootstrap/ng-bootstrap": "~17.0.0",
+    "@abp/ng.theme.shared": "~9.0.4",
+    "@volo/abp.commercial.ng.ui": "~9.0.4",
+    "@volo/abp.ng.account.core": "~9.0.4",
+    "@volo/abp.ng.lepton-x.core": "~4.0.5",
+    "@volosoft/ngx-lepton-x": "~4.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./assets/*": {
+      "default": "./assets/*"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/lepton.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

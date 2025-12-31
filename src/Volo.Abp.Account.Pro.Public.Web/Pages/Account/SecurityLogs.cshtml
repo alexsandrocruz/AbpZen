@@ -1,0 +1,67 @@
+﻿@page
+@using Volo.Abp.Account.Public.Web.Pages.Account
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@inject IThemeManager ThemeManager
+@inject PageLayout PageLayout
+@inject IHtmlLocalizer<AccountResource> L
+@model SecurityLogsModel;
+@{
+    Layout = ThemeManager.CurrentTheme.GetApplicationLayout();
+    PageLayout.Content.Title = L["MySecurityLogs"].Value;
+}
+
+@section styles {
+<abp-style-bundle name="@typeof(SecurityLogsModel).FullName">
+    <abp-style src="/Pages/Account/SecurityLog.css" />
+</abp-style-bundle>
+}
+
+@section scripts {
+<abp-script-bundle name="@typeof(SecurityLogsModel).FullName">
+    <abp-script src="/Pages/Account/SecurityLog.js" />
+</abp-script-bundle>
+}
+
+
+@if (!Model.ReturnUrl.IsNullOrWhiteSpace())
+{
+    <abp-row class="mb-2">
+        <abp-column>
+            <a class="btn btn-primary" href="@Model.ReturnUrl">
+                <i class="fa fa-chevron-left me-2"></i>@L["ReturnToApplication"]
+            </a>
+        </abp-column>
+    </abp-row>
+}
+
+<abp-card>
+    <abp-card-body class="pb-lg-3">
+        <form id="FilterFormId" method="post">
+            <abp-row class="align-items-end">
+                <abp-column size-lg="_3" size-md="_3">
+                    <abp-date-picker time-picker="true" asp-for="StartTime"></abp-date-picker>
+                </abp-column>
+                <abp-column size-lg="_3" size-md="_3">
+                    <abp-date-picker time-picker="true" asp-for="EndTime"></abp-date-picker>
+                </abp-column>
+                <abp-column size-lg="_3" size-md="_3">
+                    <abp-input asp-for="@Model.Action" label-tooltip="@L["SecurityLogs:ActionDescription"].Value"/>
+                </abp-column>
+                <abp-column size-lg="_3" size-md="_3">
+                    <abp-button class="mb-3" button-type="Primary" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        @L["Search"]
+                    </abp-button>
+                </abp-column>
+            </abp-row>
+        </form>
+    </abp-card-body>
+</abp-card>
+<abp-card>
+    <abp-card-body>
+        <abp-table  id="MySecurityLogsTable" class="nowrap"></abp-table>
+    </abp-card-body>
+</abp-card>

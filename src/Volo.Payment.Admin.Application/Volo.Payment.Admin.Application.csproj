@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Payment.Application\Volo.Payment.Application.csproj" />
+    <ProjectReference Include="..\Volo.Payment.Admin.Application.Contracts\Volo.Payment.Admin.Application.Contracts.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\..\src\Volo.Abp.Gdpr.EntityFrameworkCore\Volo.Abp.Gdpr.EntityFrameworkCore.csproj" />
+        <ProjectReference Include="..\Volo.Abp.Gdpr.TestBase\Volo.Abp.Gdpr.TestBase.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" />
+    </ItemGroup>
+
+</Project>

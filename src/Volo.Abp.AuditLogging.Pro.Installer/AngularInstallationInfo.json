@@ -1,0 +1,29 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.audit-logging",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'audit-logs', loadChildren: () => import('@volo/abp.ng.audit-logging').then(m => m.AuditLoggingModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"AuditLoggingConfigModule",
+							"provideAuditLoggingConfig"
+						],
+						"namespace": "@volo/abp.ng.audit-logging/config"
+					}
+				],
+				"ngModuleImports":[
+					"AuditLoggingConfigModule"
+				],
+				"providerNames":[
+					"provideAuditLoggingConfig()"
+				]
+			}
+		}
+	]
+}

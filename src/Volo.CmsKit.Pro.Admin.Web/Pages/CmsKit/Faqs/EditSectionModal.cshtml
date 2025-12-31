@@ -1,0 +1,28 @@
+﻿@page
+
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@inherits AdminPageBase
+
+@model EditSectionModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <form abp-model="ViewModel" asp-page="/CmsKit/Faqs/EditSectionModal">
+        <abp-modal-header title="@L["EditSection"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            <label class="mb-1">@L["GroupName"].Value </label>
+            <select asp-for="ViewModel.GroupName" class="form-control mb-2" asp-items="@(new SelectList(Model.GroupNames))"></select>
+            <span asp-validation-for="ViewModel.GroupName" class="text-danger"></span>
+            <abp-input asp-for="ViewModel.Name" />
+            <abp-input asp-for="ViewModel.Order" />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </form>
+</abp-modal>

@@ -1,0 +1,81 @@
+@page "/Gdpr/PersonalData"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inherits AbpGdprComponentBase
+@inject IGdprRequestAppService GdprRequestAppService
+@inject NavigationManager NavigationManager
+@inject IServerUrlProvider ServerUrlProvider
+
+<PageHeader Title="@L["Menu:PersonalData"]" BreadcrumbItems="@BreadcrumbItems">
+</PageHeader>
+
+<Alert Color="Color.Info" Visible>
+    <AlertMessage>
+        <Icon Name="IconName.InfoCircle" />
+    </AlertMessage>
+    <AlertDescription>@L["PersonalDataDescription"]</AlertDescription>
+</Alert>
+
+<Card>
+    <CardBody>
+        <Row>
+            <Column>
+                <div class="my-2 float-end">
+                    <Form>
+                        <Button Color="Color.Danger" Outline Clicked="@DeletePersonalDataAsync">
+                            @L["DeletePersonalData"].Value
+                        </Button>
+                        <SubmitButton Color="Color.Primary" Clicked="@RequestGdprDataAsync" Disabled="@(!IsNewRequestAllowed)">
+                            @L["RequestPersonalData"].Value
+                        </SubmitButton>
+                    </Form>
+                </div>
+            </Column>
+        </Row>
+    </CardBody>
+    
+    <DataGrid TItem="GdprRequestDto"
+              Data="GdprRequests"
+              ReadData="OnDataGridReadAsync"
+              TotalItems="TotalCount"
+              ShowPager="true"
+              Responsive="true"
+              PageSize="PageSize"
+              CurrentPage="CurrentPage">
+        
+        <EmptyTemplate>
+            @L["NoDataAvailable"]
+        </EmptyTemplate>
+        
+        <DataGridColumns>
+            <DataGridColumn TItem="GdprRequestDto"
+                            Field="ReadyTime"
+                            Caption="@L["Action"]">
+                <DisplayTemplate>
+                    @if (Clock.Now > context.ReadyTime)
+                    {
+                        <Button Color="Color.Primary" Clicked="@(() => DownloadPersonalDataAsync(context.Id))">@L["Download"]</Button>
+                    }
+                    else
+                    {
+                        <Badge Color="Color.Warning">@L["Preparing"]</Badge>
+                    }
+                </DisplayTemplate>
+            </DataGridColumn>
+
+            <DataGridColumn TItem="GdprRequestDto"
+                            Field="CreationTime"
+                            HeaderTextAlignment="TextAlignment.Center"
+                            TextAlignment="TextAlignment.Center"
+                            Caption="@L["CreationTime"]">
+            </DataGridColumn>
+
+            <DataGridColumn TItem="GdprRequestDto"
+                            Field="ReadyTime"
+                            HeaderTextAlignment="TextAlignment.Center"
+                            TextAlignment="TextAlignment.Center"
+                            Caption="@L["ReadyTime"]">
+            </DataGridColumn>
+        </DataGridColumns>
+    </DataGrid>
+</Card>

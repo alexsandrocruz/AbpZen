@@ -1,0 +1,129 @@
+{
+  "imports": {
+    "Volo.Payment":{
+      "path" : "../payment/Volo.Payment.abpmdl",
+      "isInstalled" : true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "app": {}
+    }
+  },
+  "packages": {
+    "Volo.Saas.DemoApp": {
+      "path": "app/Volo.Saas.DemoApp/Volo.Saas.DemoApp.abppkg",
+      "folder": "app"
+    },
+    "Volo.Saas.DemoWithPaymentApp": {
+      "path": "app/Volo.Saas.DemoWithPaymentApp/Volo.Saas.DemoWithPaymentApp.abppkg",
+      "folder": "app"
+    },
+    "Volo.Saas.Domain.Shared": {
+      "path": "src/Volo.Saas.Domain.Shared/Volo.Saas.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Domain": {
+      "path": "src/Volo.Saas.Domain/Volo.Saas.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.Application.Contracts": {
+      "path": "src/Volo.Saas.Host.Application.Contracts/Volo.Saas.Host.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.Application": {
+      "path": "src/Volo.Saas.Host.Application/Volo.Saas.Host.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.EntityFrameworkCore": {
+      "path": "src/Volo.Saas.EntityFrameworkCore/Volo.Saas.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.MongoDB": {
+      "path": "src/Volo.Saas.MongoDB/Volo.Saas.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.HttpApi": {
+      "path": "src/Volo.Saas.Host.HttpApi/Volo.Saas.Host.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.HttpApi.Client": {
+      "path": "src/Volo.Saas.Host.HttpApi.Client/Volo.Saas.Host.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.Web": {
+      "path": "src/Volo.Saas.Host.Web/Volo.Saas.Host.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.TestBase": {
+      "path": "test/Volo.Saas.TestBase/Volo.Saas.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.Domain.Tests": {
+      "path": "test/Volo.Saas.Domain.Tests/Volo.Saas.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Saas.EntityFrameworkCore.Tests/Volo.Saas.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.MongoDB.Tests": {
+      "path": "test/Volo.Saas.MongoDB.Tests/Volo.Saas.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.Host.Application.Tests": {
+      "path": "test/Volo.Saas.Host.Application.Tests/Volo.Saas.Host.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.Tenant.Application.Contracts": {
+      "path": "src/Volo.Saas.Tenant.Application.Contracts/Volo.Saas.Tenant.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Application": {
+      "path": "src/Volo.Saas.Tenant.Application/Volo.Saas.Tenant.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.HttpApi": {
+      "path": "src/Volo.Saas.Tenant.HttpApi/Volo.Saas.Tenant.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.HttpApi.Client": {
+      "path": "src/Volo.Saas.Tenant.HttpApi.Client/Volo.Saas.Tenant.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Web": {
+      "path": "src/Volo.Saas.Tenant.Web/Volo.Saas.Tenant.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Application.Tests": {
+      "path": "test/Volo.Saas.Tenant.Application.Tests/Volo.Saas.Tenant.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Saas.Host.Blazor": {
+      "path": "src/Volo.Saas.Host.Blazor/Volo.Saas.Host.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Blazor": {
+      "path": "src/Volo.Saas.Tenant.Blazor/Volo.Saas.Tenant.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.Blazor.Server": {
+      "path": "src/Volo.Saas.Host.Blazor.Server/Volo.Saas.Host.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Host.Blazor.WebAssembly": {
+      "path": "src/Volo.Saas.Host.Blazor.WebAssembly/Volo.Saas.Host.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Blazor.Server": {
+      "path": "src/Volo.Saas.Tenant.Blazor.Server/Volo.Saas.Tenant.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Saas.Tenant.Blazor.WebAssembly": {
+      "path": "src/Volo.Saas.Tenant.Blazor.WebAssembly/Volo.Saas.Tenant.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    }
+  }
+}

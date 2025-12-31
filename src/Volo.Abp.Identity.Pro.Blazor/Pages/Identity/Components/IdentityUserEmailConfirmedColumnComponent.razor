@@ -1,0 +1,16 @@
+﻿@using Volo.Abp.AspNetCore.Components
+
+@inherits AbpComponentBase
+
+@if (Data.As<IdentityUserDto>().EmailConfirmed)
+{
+    <Icon class="text-success" Name="@IconName.Check" />
+}
+else
+{
+    <Icon class="text-danger" Name="@IconName.Times" />
+}
+
+@code{
+	[Parameter] public object Data { get; set; }
+}

@@ -1,0 +1,154 @@
+﻿@page "/language-management/languages"
+@attribute [Authorize(LanguageManagementPermissions.Languages.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.LanguageManagement.Dto;
+@using Volo.Abp.LanguageManagement.Localization;
+@using Microsoft.AspNetCore.Components.Forms;
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@inject AbpBlazorMessageLocalizerHelper<LanguageManagementResource> LH
+
+@inherits AbpCrudPageBase<ILanguageAppService, LanguageDto, Guid, GetLanguagesTextsInput, CreateLanguageDto, UpdateLanguageDto>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Languages"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" class="get-list-input-filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+
+<AbpExtensibleDataGrid TItem="LanguageDto"
+                        Data="Entities"
+                        ReadData="OnDataGridReadAsync"
+                        TotalItems="TotalCount"
+                        ShowPager="true"
+                        PageSize="PageSize"
+                        CurrentPage="@CurrentPage"
+                        Columns="@LanguageManagementTableColumns"
+                        Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="@CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>@L["CreateNewLanguage"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations Mode="ValidationMode.Manual" @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                    <Validation  MessageLocalizer="@LH.Localize" AsyncValidator="@ValidateCultureNameAsync">
+                        <Field>
+                            <FieldLabel>@L["CultureName"] *</FieldLabel>
+                            <Select TValue="string" SelectedValue="@NewEntity.CultureName" class="new-entity-culture-name" SelectedValueChanged="@OnNewLanguageCultureNameChangedAsync">
+                                <ChildContent>
+                                     @foreach (var culture in Cultures)
+                                     {
+                                        <SelectItem Value="@culture.Name">@culture.DisplayName</SelectItem>
+                                     }
+                                </ChildContent>
+                                <Feedback>
+                                    <ValidationError>
+                                        @L["The {0} field is required.", L["CultureName"]]
+                                    </ValidationError>
+                                </Feedback>
+                            </Select>
+                        </Field>
+                    </Validation>
+                <Validation MessageLocalizer="@LH.Localize" AsyncValidator="@ValidateCultureNameAsync">
+                    <Field>
+                        <FieldLabel>@L["UiCultureName"] *</FieldLabel>
+                        <Select TValue="string" SelectedValue="@NewEntity.UiCultureName" class="new-entity-ui-culture-name" SelectedValueChanged="@OnNewLanguageCultureNameChangedAsync">
+                                <ChildContent>
+                                     @foreach (var culture in Cultures)
+                                     {
+                                        <SelectItem Value="@culture.Name">@culture.DisplayName</SelectItem>
+                                     }
+                                </ChildContent>
+                            <Feedback>
+                                <ValidationError>
+                                    @L["The {0} field is required.", L["UiCultureName"]]
+                                </ValidationError>
+                            </Feedback>
+                        </Select>
+                    </Field>
+                </Validation>
+                    <Field>
+                        <FieldLabel>
+                            @L["DisplayName"]
+                            <Tooltip Text="@L["LanguageDisplayNameInfoText"].Value" Class="d-inline">
+                                <i class="bi bi-info-circle"></i>
+                            </Tooltip>
+                        </FieldLabel>
+                        <TextEdit @bind-Text="NewEntity.DisplayName" class="new-entity-display-name" Autofocus="true"/>
+                    </Field>
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="NewEntity.IsEnabled" class="new-entity-is-enabled">@L["IsEnabled"]</Check>
+                    </Field>
+                    <ExtensionProperties TEntityType="CreateLanguageDto" TResourceType="LanguageManagementResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal"/>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                <SubmitButton Type="ButtonType.Button" Clicked="@CreateEntityAsync" />
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="@EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <ModalHeader>
+                <ModalTitle>@L["Edit"] - @EditingEntity.DisplayName</ModalTitle>
+                <CloseButton Clicked="CloseEditModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <EditForm Model="@EditingEntity" OnValidSubmit="UpdateEntityAsync">
+                    <Field>
+                        <FieldLabel>
+                            @L["DisplayName"]
+                            <Tooltip Text="@L["LanguageDisplayNameInfoText"].Value" Class="d-inline">
+                                <i class="bi bi-info-circle"></i>
+                            </Tooltip>
+                        </FieldLabel>
+                        <TextEdit @bind-Text="EditingEntity.DisplayName" Autofocus="true" class="editing-entity-display-name"/>
+                    </Field>
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@EditingEntity.IsEnabled">@L["IsEnabled"]</Check>
+                    </Field>
+                    <ExtensionProperties TEntityType="UpdateLanguageDto" TResourceType="LanguageManagementResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                </EditForm>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                <SubmitButton Type="ButtonType.Button" Clicked="@UpdateEntityAsync" />
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+}

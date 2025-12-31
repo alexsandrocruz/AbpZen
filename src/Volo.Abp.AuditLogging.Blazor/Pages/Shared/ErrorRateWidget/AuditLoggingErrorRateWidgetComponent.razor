@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(AbpAuditLoggingPermissions.AuditLogs.Default)]
+@inherits AbpAuditLoggingComponentBase
+
+<Card>
+    <CardBody>
+        <CardTitle Size="5">@L["ErrorRateInLogs"]</CardTitle>
+        <CardText>
+            <div style="position: relative; height: 300px">
+                <PieChart @ref="PieChart" TItem="long" Options="@Options"></PieChart>
+            </div>
+        </CardText>
+    </CardBody>
+</Card>

@@ -1,0 +1,21 @@
+{
+  "Culture": "sk",
+  "Texts": {
+    "Login": "Prihlásiť",
+    "Appearance": "Vzhľad",
+    "ContainerWidth": "Šírka Nádoby",
+    "ContainerWidth:Boxed": "Krabicové Rozloženie",
+    "ContainerWidth:Fixed": "Pevné rozloženie",
+    "ContainerWidth:Fluid": "Plynulá Šírka",
+    "GeneralSettings": "Všeobecné Nastavenia",
+    "Language": "Jazyk",
+    "Settings": "Nastavenie",
+    "Theme:dark": "Tmavý",
+    "Theme:dim": "Polotmavé",
+    "Theme:light": "Svetlo",
+    "Theme:system": "Systém",
+    "Welcome": "Vitajte",
+    "FilterMenu": "Ponuka filtrovania",
+    "Menu": "Menu"
+  }
+}

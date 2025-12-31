@@ -1,0 +1,135 @@
+{
+  "name": "Volo.Chat.SignalR",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Chat",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.Application.Contracts",
+          "namespace": "Volo.Chat",
+          "name": "ChatApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.SignalR",
+          "namespace": "Volo.Abp.AspNetCore.SignalR",
+          "name": "AbpAspNetCoreSignalRModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EventBus",
+          "namespace": "Volo.Abp.EventBus",
+          "name": "AbpEventBusModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatSignalRModule",
+      "summary": null
+    },
+    {
+      "eventHandlerType": "Distributed",
+      "namespace": "Volo.Chat.Messages",
+      "subscribedEvents": [
+        {
+          "underlyingType": null,
+          "name": "ChatMessageEto",
+          "namespace": "Volo.Chat.Messages",
+          "declaringAssemblyName": "Volo.Chat.Application.Contracts",
+          "fullName": "Volo.Chat.Messages.ChatMessageEto"
+        },
+        {
+          "underlyingType": null,
+          "name": "ChatDeletedMessageEto",
+          "namespace": "Volo.Chat.Messages",
+          "declaringAssemblyName": "Volo.Chat.Application.Contracts",
+          "fullName": "Volo.Chat.Messages.ChatDeletedMessageEto"
+        },
+        {
+          "underlyingType": null,
+          "name": "ChatDeletedConversationEto",
+          "namespace": "Volo.Chat.Messages",
+          "declaringAssemblyName": "Volo.Chat.Application.Contracts",
+          "fullName": "Volo.Chat.Messages.ChatDeletedConversationEto"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDistributedEventHandler<ChatMessageEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<ChatMessageEto>"
+        },
+        {
+          "name": "IEventHandler",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.IEventHandler"
+        },
+        {
+          "name": "IDistributedEventHandler<ChatDeletedMessageEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<ChatDeletedMessageEto>"
+        },
+        {
+          "name": "IDistributedEventHandler<ChatDeletedConversationEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<ChatDeletedConversationEto>"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "eventHandler",
+      "name": "ChatMessageDistributedEventHandler",
+      "summary": null
+    }
+  ]
+}

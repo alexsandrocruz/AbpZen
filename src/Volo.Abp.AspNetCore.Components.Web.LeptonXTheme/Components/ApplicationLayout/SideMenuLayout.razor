@@ -1,0 +1,49 @@
+﻿@inherits LayoutComponentBase
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.Common
+@using Volo.Abp.Ui.Branding
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.SideMenu
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.SideMenu.MainHeader
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.SideMenu.Navigation
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Components
+@using Volo.Abp.Ui.LayoutHooks
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Components.LayoutHooks
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+
+@inject IBrandingProvider BrandingProvider
+
+<div>
+	<div id="lpx-wrapper">
+		<MainHeader />
+
+		<div class="lpx-content-container">
+			<div class="lpx-topbar-container">
+				<div class="lpx-topbar">
+					<Breadcrumbs />
+				</div>
+			</div>
+			<div class="lpx-content-wrapper">
+				<div class="lpx-content">
+					<ContentToolbar />
+					<PageAlert />
+					<UiPageProgress />
+					<LayoutHook Name="@LayoutHooks.Body.First" Layout="@StandardLayouts.Application" />
+					@Body
+					<LayoutHook Name="@LayoutHooks.Body.Last" Layout="@StandardLayouts.Application" />
+					<DynamicLayoutComponent />
+					<UiMessageAlert />
+					<UiNotificationAlert />
+				</div>
+			</div>
+			<footer>
+				<Footer />
+			</footer>
+		</div>
+
+		<MobileNavbar />
+
+		<div class="lpx-toolbar-container">
+			<MainHeaderToolbar />
+		</div>
+	</div>
+</div>

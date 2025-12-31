@@ -1,0 +1,45 @@
+﻿@page "/text-templates"
+@attribute [Authorize(TextTemplateManagementPermissions.TextTemplates.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms;
+@using Volo.Abp.TextTemplateManagement.Authorization
+@using Volo.Abp.TextTemplateManagement.TextTemplates
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@inherits TextTemplateManagementComponentBase
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Menu:TextTemplates"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="TemplateDefinitionDto"
+                       Data="@TemplateDefinitions"
+                       ReadData="@OnDataGridReadAsync"
+                       TotalItems="@TotalCount"
+                       ShowPager="true"
+                       PageSize="@PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@TextTemplateManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>

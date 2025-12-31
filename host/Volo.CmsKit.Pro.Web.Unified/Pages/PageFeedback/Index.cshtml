@@ -1,0 +1,23 @@
+﻿@page
+@using Volo.Abp.GlobalFeatures
+@using Volo.CmsKit.GlobalFeatures
+@using Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.PageFeedbacks
+
+@if(GlobalFeatureManager.Instance.IsEnabled<PageFeedbackFeature>())
+{
+    var options = new PageFeedbackModalViewDto
+    {
+        EntityType = "Post",
+        ModalId = "page-feedback-" + Guid.NewGuid().ToString("N")[..8]
+    };
+    <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#@options.ModalId">
+       Feedback
+     </button>
+    @(await Component.InvokeAsync(typeof(PageFeedbackViewComponent), new PageFeedbackViewDto()
+    {
+        EntityType = "Page",
+        // ReverseButtons = true
+    }))
+    
+    @(await Component.InvokeAsync(typeof(PageFeedbackModalViewComponent), options))
+}

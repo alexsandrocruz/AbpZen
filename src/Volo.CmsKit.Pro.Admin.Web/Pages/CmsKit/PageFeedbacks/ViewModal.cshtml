@@ -1,0 +1,27 @@
+﻿@page
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks
+@inherits AdminPageBase
+
+@model ViewModal
+
+@{
+    Layout = null;
+}
+
+<abp-modal size="@(AbpModalSize.Large)">
+    <abp-modal-header title="@L["View"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <abp-input asp-for="PageFeedback.CreationTime" disabled="true"/>
+        <abp-input asp-for="PageFeedback.EntityType" disabled="true"/>
+        <abp-input asp-for="PageFeedback.EntityId" disabled="true"/>
+        <abp-input asp-for="PageFeedback.Url" disabled="true"/>
+        <abp-input asp-for="PageFeedback.IsUseful" disabled="true"/>
+        <abp-input asp-for="PageFeedback.UserNote" disabled="true"/>
+        <abp-input asp-for="PageFeedback.IsHandled" disabled="true"/>
+        <abp-input asp-for="PageFeedback.AdminNote" disabled="true"/>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+    </abp-modal-footer>
+</abp-modal>

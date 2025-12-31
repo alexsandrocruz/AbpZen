@@ -1,0 +1,17 @@
+{
+  "culture": "ar",
+  "texts": {
+    "Permission:Saas": "ساس",
+    "Permission:TenantManagement": "إدارة المستأجر",
+    "Permission:EditionManagement": "إدارة الإصدار",
+    "Permission:Create": "يخلق",
+    "Permission:Edit": "يحرر",
+    "Permission:Delete": "حذف",
+    "Permission:ManageConnectionStrings": "إدارة سلاسل الاتصال",
+    "Permission:SetPassword": "ضبط كلمة السر",
+    "Permission:ManageFeatures": "إدارة ميزات",
+    "Permission:ViewChangeHistory": "عرض محفوظات التغيير",
+    "Permission:Impersonation": "التمثيل",
+    "CheckYourProviderDashboard": "تحقق من لوحة معلومات مزود الدفع لإلغاء هذا الاشتراك."
+  }
+}

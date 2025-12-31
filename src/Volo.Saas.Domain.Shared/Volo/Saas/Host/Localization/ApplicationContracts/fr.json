@@ -1,0 +1,17 @@
+{
+  "culture": "fr",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Gestion des souscrivants",
+    "Permission:EditionManagement": "Gestion des éditions",
+    "Permission:Create": "Créer",
+    "Permission:Edit": "Éditer",
+    "Permission:Delete": "Effacer",
+    "Permission:ManageConnectionStrings": "Gérer les chaînes de connexion",
+    "Permission:SetPassword": "Définir le mot de passe",
+    "Permission:ManageFeatures": "Gérer les fonctionnalités",
+    "Permission:ViewChangeHistory": "Afficher l'historique des modifications",
+    "Permission:Impersonation": "Imitation",
+    "CheckYourProviderDashboard": "Consultez le tableau de bord de votre fournisseur de paiement pour annuler cet abonnement."
+  }
+}

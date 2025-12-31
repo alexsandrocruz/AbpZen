@@ -1,0 +1,52 @@
+<header>
+  <div class="lpx-header-top">
+    <ng-container
+      *ngTemplateOutlet="logoTemplateRef || defaultLogo"
+    ></ng-container>
+
+    <ng-container
+      *ngTemplateOutlet="topNavbarTemplateRef || defaultTopNavbar"
+    ></ng-container>
+    <div class="lpx-right-menu">
+      <ng-container
+        *ngTemplateOutlet="settingsTemplateRef || defaultSettings"
+      ></ng-container>
+
+      <ng-container
+        *ngTemplateOutlet="toolbarTemplateRef || defaultToolbar"
+      ></ng-container>
+      <lpx-header-user></lpx-header-user>
+    </div>
+  </div>
+
+  <ng-container *ngTemplateOutlet="navbarTemplateRef || defaultNavbar">
+  </ng-container>
+</header>
+
+<ng-template #defaultNavbar>
+  <lpx-top-menu-navbar></lpx-top-menu-navbar>
+</ng-template>
+
+<ng-template #defaultTopNavbar>
+  <nav class="lpx-nav me-auto">
+    @if (menuItems$ | async; as menuItems) {
+      <ul class="lpx-nav-menu">
+        @for (item of menuItems; track $index) {
+          <lpx-top-menu-nav-item [menuItem]="item"></lpx-top-menu-nav-item>
+        }
+      </ul>
+    }
+  </nav>
+</ng-template>
+
+<ng-template #defaultLogo>
+  <lpx-brand-logo></lpx-brand-logo>
+</ng-template>
+
+<ng-template #defaultToolbar>
+  <lpx-header-toolbar></lpx-header-toolbar>
+</ng-template>
+
+<ng-template #defaultSettings>
+  <lpx-settings class="d-flex"> </lpx-settings>
+</ng-template>

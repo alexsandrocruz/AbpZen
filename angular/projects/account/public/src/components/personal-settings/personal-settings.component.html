@@ -1,0 +1,13 @@
+@if (form) {
+  <form [formGroup]="form" (ngSubmit)="submit()" validateOnSubmit>
+    <abp-extensible-form [selectedRecord]="storedProfile"></abp-extensible-form>
+    <abp-button
+      buttonType="submit"
+      iconClass="fa fa-check"
+      buttonClass="btn btn-primary color-white"
+      [disabled]="form?.invalid"
+    >
+      {{ 'AbpIdentity::Save' | abpLocalization }}</abp-button
+    >
+  </form>
+}

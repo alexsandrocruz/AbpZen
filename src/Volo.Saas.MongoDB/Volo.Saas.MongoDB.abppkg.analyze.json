@@ -1,0 +1,114 @@
+{
+  "name": "Volo.Saas.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Saas.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Saas.Domain",
+          "namespace": "Volo.Saas",
+          "name": "SaasDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "namespace": "Volo.Abp.MongoDB",
+          "name": "AbpMongoDbModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.MongoDB",
+          "namespace": "Volo.Abp.FeatureManagement.MongoDB",
+          "name": "AbpFeatureManagementMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "SaasMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.MongoDB",
+      "connectionStringName": "Saas",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.Saas.Tenants.Tenant",
+          "contentType": "databaseCollection",
+          "name": "Tenants",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Saas.Editions.Edition",
+          "contentType": "databaseCollection",
+          "name": "Editions",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "ISaasMongoDbContext",
+          "namespace": "Volo.Saas.MongoDB",
+          "declaringAssemblyName": "Volo.Saas.MongoDB",
+          "fullName": "Volo.Saas.MongoDB.ISaasMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "SaasMongoDbContext",
+      "summary": null
+    }
+  ]
+}

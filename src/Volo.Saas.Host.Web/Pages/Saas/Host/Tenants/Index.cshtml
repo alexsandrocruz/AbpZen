@@ -1,0 +1,94 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageSearchBox
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.Saas.Host
+@using Volo.Saas.Host.Navigation
+@using Volo.Saas.Host.Pages.Saas.Host.Tenants
+@using Volo.Saas.Localization
+@inject IAuthorizationService Authorization
+@model IndexModel
+@inject IHtmlLocalizer<SaasResource> L
+@inject IOptions<AbpSaasHostWebOptions> SaasHostWebOptions
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["Tenants"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Saas"].Value);
+    PageLayout.Content.MenuItemName = SaasHostMenuNames.Tenants;
+}
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/saas-proxy.js" />
+        <abp-script src="/Pages/FeatureManagement/feature-management-modal.js" />
+        <abp-script src="/Pages/Saas/Host/Tenants/ConnectionStringsModal.js" />
+        <abp-script src="/Pages/Saas/Host/Tenants/CreateModal.js" />
+        <abp-script src="/Pages/Saas/Host/Tenants/EditModal.js" />
+        <abp-script src="/Pages/Saas/Host/Tenants/Index.js" />
+        <abp-script src="/Pages/Saas/Host/Tenants/setPassword.js" />
+        @if (SaasHostWebOptions.Value.EnableTenantImpersonation)
+        {
+            <abp-script src="/Pages/Saas/Host/Tenants/enableTenantImpersonation.js" />
+        }
+    </abp-script-bundle>
+}
+@section styles {
+    <abp-style-bundle>
+        <abp-style src="/Pages/Saas/Host/Tenants/ConnectionStringsTable.css" />
+    </abp-style-bundle>
+}
+
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+<div id="TenantsWrapper">
+    <abp-card>
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_8" size-lg="_10">
+                    <div class="mb-3">
+                        @await Component.InvokeAsync(typeof(AbpPageSearchBoxViewComponent))
+                    </div>
+                </abp-column>
+                <abp-column size-md="_4" size-lg="_2" >
+                    <div class="mb-3">
+                        <abp-button id="AdvancedFilterSectionToggler" style="width: 100%;" button-type="Outline_Primary">
+                            @L["Filters"]<i aria-hidden="true" class="fa ms-1 fa-angle-down"></i>
+                        </abp-button>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row id="AdvancedFilterSection" class="mt-3" style="display: none;">
+                <abp-column size-md="_3">
+                    <abp-select id="tenant-edition-option" asp-for="EditionId" asp-items="@Model.EditionsComboboxItems" label="@L["Edition"].Value"></abp-select>
+                </abp-column>
+                <abp-column size-md="_3">
+                    <label for="expirationDateRangePicker" class="form-label" data-bs-toggle="tooltip" title="@L["EditionEndDateToolTip"]">
+                        @L["DisplayName:ExpirationDate"]
+                        <i class="bi bi-info-circle"></i>
+                    </label>
+                    <input type="text" id="expirationDateRangePicker" class="form-control date-range-picker" autocomplete="off">
+                </abp-column>
+
+                <abp-column size-md="_3">
+                    <label for="expirationDateRangePicker" class="form-label">
+                        @L["DisplayName:ActivationEndDate"]
+                    </label>
+                    <input type="text" id="activationEndDateRangePicker" class="form-control date-range-picker" autocomplete="off">
+                </abp-column>
+                <abp-column size-md="_3">
+                    <label class="form-label" for="ActivationState">@L["ActivationState"]</label>
+                    <select class="form-select form-control" id="ActivationState" name="ActivationState">
+                        <option value="">-</option>
+                        <option value="0">@L["Enum:TenantActivationState.Active"]</option>
+                        <option value="1">@L["Enum:TenantActivationState.ActiveWithLimitedTime"]</option>
+                        <option value="2">@L["Enum:TenantActivationState.Passive"]</option>
+                    </select>
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+    <abp-table  class="nowrap"></abp-table>
+</div>

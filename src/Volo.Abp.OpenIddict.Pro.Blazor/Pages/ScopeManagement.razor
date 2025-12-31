@@ -1,0 +1,168 @@
+﻿@page "/openiddict/scopes"
+@using Volo.Abp.OpenIddict.Permissions
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(AbpOpenIddictProPermissions.Scope.Default)]
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.OpenIddict.Scopes
+@using Volo.Abp.OpenIddict.Scopes.Dtos
+@using Volo.Abp.OpenIddict.Localization
+@using Volo.Abp.AuditLogging.Blazor.Components
+@using Microsoft.AspNetCore.Components.Forms;
+@inject AbpBlazorMessageLocalizerHelper<AbpOpenIddictResource> LH
+
+@inherits AbpCrudPageBase<IScopeAppService, ScopeDto, Guid, GetScopeListInput, CreateScopeInput, UpdateScopeInput>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Scopes"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar"/>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true"/>
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="ScopeDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@ScopeManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form Class="form-with-card" id="CreateForm">
+                <ModalHeader>
+                    <ModalTitle>@L["NewScope"].Value</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+
+                    <Validations @ref="@CreateValidationsRef" Model="@CreateInput" ValidateOnLoad="false">
+                        
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Name"] *</FieldLabel>
+                                <TextEdit @bind-Text="CreateInput.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <FieldLabel>@L["DisplayName"]</FieldLabel>
+                            <TextEdit @bind-Text="CreateInput.DisplayName">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="CreateInput.Description">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Resources"]</FieldLabel>
+                            <MemoEdit @bind-Text="CreateInput.Resources">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </MemoEdit>
+                        </Field>
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Form="CreateForm" Clicked="@CreateEntityAsync"/>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form Class="form-with-card" id="EditForm">
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"].Value</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+
+                    <Validations @ref="@EditValidationsRef" Model="@UpdateInput" ValidateOnLoad="false">
+                        
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Name"]</FieldLabel>
+                                <TextEdit @bind-Text="UpdateInput.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <FieldLabel>@L["DisplayName"]</FieldLabel>
+                            <TextEdit @bind-Text="UpdateInput.DisplayName">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="UpdateInput.Description">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Resources"]</FieldLabel>
+                            <MemoEdit @bind-Text="UpdateInput.Resources">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </MemoEdit>
+                        </Field>
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Form="EditForm" Clicked="@UpdateEntityAsync"/>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+<EntityChangeHistoryModal @ref="EntityChangeHistoryModal" />

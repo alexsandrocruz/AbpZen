@@ -1,0 +1,82 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Navigation
+@using Volo.Abp.UI.Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <div class="lpx-avatar-wrapper">
+            <a href="javascript:void(0)" class="lpx-avatar-container" data-lpx-ctx-toggle="user-context-menu">
+                <div class="lpx-avatar ">
+                    <img class="lpx-avatar-img" src="@ProfileImageUrl" alt="@UserName">
+                </div>
+            </a>
+            <div class="lpx-context-menu" data-lpx-context-menu="user-context-menu">
+                <div class="lpx-context-menu--header">
+                    <div class="lpx-user-ctx-header">
+                        <div class="lpx-user-ctx-img">
+                            <div class="lpx-avatar ">
+                                <img class="lpx-avatar-img" src="@ProfileImageUrl" alt="@UserName">
+                            </div>
+                        </div>
+                        <div class="lpx-user-ctx-info">
+                            <span class="lpx-context-menu-user-name">@UserFullName</span>
+                            @if (CurrentTenant.IsAvailable)
+                            {
+                            	<span class="lpx-context-menu-user-tenant">@CurrentTenant.Name</span>
+                            }
+                            <span class="lpx-context-menu-user-email">@UserEmail</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lpx-user-ctx-body">
+                    <ul class="lpx-nav-menu" id="toolbar-body-routes">
+                        @foreach (var menuItem in UserMenu.Items)
+                        {
+                            var customComponentType = menuItem.GetComponentTypeOrDefault();
+
+                            if (customComponentType != null && typeof(ComponentBase).IsAssignableFrom(customComponentType))
+                            {
+                                <DynamicComponent Type="@customComponentType" />
+                            }
+                            else
+                            {
+                                <li class="outer-menu-item" id="@menuItem.ElementId">
+                                    <a class="lpx-menu-item-link lpx-menu-item @menuItem.CssClass" href="@menuItem.Url?.TrimStart('~')" target="@menuItem.Target">
+                                        <span class="lpx-menu-item-icon">
+                                            <i class="lpx-icon @menuItem.Icon" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="lpx-menu-item-text hidden-in-hover-trigger">@menuItem.DisplayName</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="lpx-context-menu--footer">
+                    <div class="lpx-user-ctx-footer">
+                        <ul class="lpx-nav-menu" id="toolbar-footer-routes">
+                            <li class="outer-menu-item" id="">
+                                <a class="lpx-menu-item-link lpx-menu-item"  id="MenuItem_Logout" href="javascript:void(0)" @onclick="BeginSignOut">
+                                    <span class="lpx-menu-item-icon">
+                                        <i class="lpx-icon bi-box-arrow-right" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="lpx-menu-item-text hidden-in-hover-trigger">@L["Logout"]</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="lpx-nav">
+            <ul class="lpx-nav-menu">
+                <li class="outer-menu-item text-center">
+                    <a class="lpx-menu-item-link btn" href="/account/login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,166 @@
+﻿@page "/Cms/UrlShorting"
+@attribute [Authorize(CmsKitProAdminPermissions.UrlShorting.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Admin.UrlShorting
+@using Volo.CmsKit.UrlShorting
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits AbpCrudPageBase<IUrlShortingAdminAppService, ShortenedUrlDto, ShortenedUrlDto, Guid, GetShortenedUrlListInput, CreateShortenedUrlDto, UpdateShortenedUrlDto>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["UrlForwarding"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.ShortenedUrlFilter" Autofocus="true"/>
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="ShortenedUrlDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@UrlForwardingManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["New"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false" Mode="ValidationMode.Manual">
+                        <Validation MessageLocalizer="@LH.Localize" Validator="@ValidationRule.IsNotEmpty">
+                            <Field>
+                                <FieldLabel>@L["Source"] *</FieldLabel>
+                                <TextEdit Text="@NewEntity.Source" TextChanged="OnNewEntitySourceChangedAsync" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize" Validator="@ValidationRule.IsNotEmpty">
+                            <Field>
+                                <FieldLabel>@L["Target"] *</FieldLabel>
+                                <TextEdit Text="@NewEntity.Target" TextChanged="OnNewEntityTargetChangedAsync" Autofocus="false">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                                <FieldHelp>@L["UrlForwarding:EnsureTheUrlIsStartingWithSlashIfSameDomain"]</FieldHelp>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@NewEntity.IsRegex">@L["UrlForwarding:IsRegex"]</Check>
+                        </Field>
+                        @if (NewEntity.IsRegex)
+                        {
+                            <div class="p-3 mt-3 regex-test-area">
+                                <Field>
+                                    <FieldLabel>@L["TestInput"]</FieldLabel>
+                                    <TextEdit Text="@RegexTestInput" TextChanged="(val) => OnRegexTestInputChangedAsync(val, true)" Autofocus="false"/>
+                                </Field>
+                                @if (NewEntity.IsRegex && !RegexTestInput.IsNullOrWhiteSpace())
+                                {
+                                    <Field Class="@RegexOutputCssClass">
+                                        <FieldLabel>@L["TestOutput"]</FieldLabel>
+                                        <TextEdit Class="@RegexOutputCssClass" @bind-Text="@RegexTestOutput" Disabled />
+                                    </Field>
+                                }
+                            </div>
+                        }
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false" Mode="ValidationMode.Manual">
+                        <Field>
+                            <FieldLabel>@L["Source"] *</FieldLabel>
+                            <TextEdit Value="@EditingSource" Autofocus="false" Disabled/> 
+                        </Field>
+                        <Validation MessageLocalizer="@LH.Localize" Validator="@ValidationRule.IsNotEmpty">
+                            <Field>
+                                <FieldLabel>@L["Target"] *</FieldLabel>
+                                <TextEdit Text="@EditingEntity.Target" TextChanged="OnEditingTargetChangedAsync" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                    </Validations>
+                    <Field>
+                        <Check Disabled TValue="bool" Checked="EditingIsRegex">@L["UrlForwarding:IsRegex"]</Check>
+                    </Field>
+                    @if (EditingIsRegex)
+                    {
+                        <div class="p-3 mt-3 regex-test-area">
+                            <Field>
+                                <FieldLabel>@L["TestInput"]</FieldLabel>
+                                <TextEdit Text="@RegexTestInput" TextChanged="(val) => OnRegexTestInputChangedAsync(val, false)" Autofocus="false"/>
+                            </Field>
+                            @if (EditingIsRegex && !RegexTestInput.IsNullOrWhiteSpace())
+                            {
+                                <Field Class="@RegexOutputCssClass">
+                                    <FieldLabel>@L["TestOutput"]</FieldLabel>
+                                    <TextEdit Class="@RegexOutputCssClass" @bind-Text="@RegexTestOutput" Disabled />
+                                </Field>
+                            }
+                        </div>
+                    }
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

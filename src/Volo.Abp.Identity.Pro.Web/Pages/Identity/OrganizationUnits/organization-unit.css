@@ -1,0 +1,32 @@
+.no-height {
+    min-height: 0 !important;
+}
+
+.selectable:hover {
+    cursor: pointer;
+}
+
+.jstree-wholerow-clicked{
+    background: var(--bs-primary) !important;
+    border-radius: 8px;
+}
+
+.jstree-wholerow-hovered{
+    background: var(--bs-secondary) !important;
+    border-radius: 8px;
+}
+
+.jstree-hovered > span {
+    color: var(--bs-white) !important;
+}
+.jstree-node{
+    color: var(--bs-dark);
+}
+
+.jstree-clicked > span  {
+    color: var(--bs-white) !important;
+}
+
+.jstree-wholerow-clicked > i {
+    color: var(--bs-white) !important;
+}

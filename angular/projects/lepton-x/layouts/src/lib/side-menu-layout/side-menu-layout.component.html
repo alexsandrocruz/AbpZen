@@ -1,0 +1,116 @@
+<ng-container *lpxResponsive="'all md-none'">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ng-container>
+<ng-container *lpxResponsive="'md'">
+  <div class="lpx-scroll-container ps" lpxPerfectScrollbar>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </div>
+</ng-container>
+<ng-template #content>
+  @if (layoutService.containerClass$ | async; as containerClass) {
+    <div id="lpx-wrapper" [ngClass]="containerClass">
+      <div class="lpx-sidebar-container" *lpxResponsive="'md'">
+        <div class="lpx-sidebar ps" lpxPerfectScrollbar>
+          <ng-container
+            *ngTemplateOutlet="navbarPanel?.template || defaultNavbar"
+          ></ng-container>
+        </div>
+      </div>
+
+      <div class="lpx-content-container">
+        <div class="lpx-topbar-container">
+          <div class="lpx-topbar">
+            <div class="lpx-breadcrumb-container">
+              <ng-container
+                *ngTemplateOutlet="
+                  breadcrumbPanel?.template || defaultBreadcrumb
+                "
+              ></ng-container>
+            </div>
+            <div class="lpx-topbar-content">
+              <lpx-topbar-content></lpx-topbar-content>
+            </div>
+          </div>
+        </div>
+        <div class="lpx-content-wrapper">
+          <div class="lpx-content">
+            <ng-container
+              *ngTemplateOutlet="contentPanel?.template || defaultContent"
+            ></ng-container>
+            <ng-template #defaultContent>
+              <ng-content></ng-content>
+            </ng-template>
+          </div>
+        </div>
+        <div class="lpx-footbar-container">
+          <ng-container
+            *ngTemplateOutlet="footerPanel?.template || defaultFooter"
+          ></ng-container>
+        </div>
+      </div>
+
+      <ng-container
+        *ngTemplateOutlet="mobileNavbarPanel?.template || defaultMobileNavbar"
+      ></ng-container>
+
+      <div class="lpx-toolbar-container" *lpxResponsive="'md'">
+        <ng-container
+          *ngTemplateOutlet="toolbarPanel?.template || defaultToolbar"
+        ></ng-container>
+        <ng-container
+          *ngTemplateOutlet="currentUserImagePanel?.template || defaultAvatar"
+        ></ng-container>
+        <ng-container
+          *ngTemplateOutlet="settingsPanel?.template || defaultSettings"
+        ></ng-container>
+      </div>
+    </div>
+  }
+</ng-template>
+<ng-template #defaultNavbar>
+  <lpx-navbar>
+    @if (logoPanel?.template) {
+      <ng-template lpx-logo-panel>
+        <ng-container *ngTemplateOutlet="logoPanel!.template"></ng-container>
+      </ng-template>
+    }
+  </lpx-navbar>
+</ng-template>
+<ng-template #defaultBreadcrumb>
+  <lpx-breadcrumb></lpx-breadcrumb>
+</ng-template>
+<ng-template #defaultToolbar>
+  <lpx-toolbar-container></lpx-toolbar-container>
+</ng-template>
+<ng-template #defaultSettings>
+  <lpx-settings></lpx-settings>
+</ng-template>
+<ng-template #defaultFooter>
+  <lpx-footer></lpx-footer>
+</ng-template>
+<ng-template #defaultAvatar>
+  <lpx-avatar></lpx-avatar>
+</ng-template>
+<ng-template #defaultMobileNavbar>
+  <lpx-mobile-navbar *lpxResponsive="'all md-none'">
+    @if (logoPanel?.template) {
+      <ng-template lpx-logo-panel>
+        <ng-container *ngTemplateOutlet="logoPanel!.template"></ng-container>
+      </ng-template>
+    }
+    @if (mobileNavbarSettingsPanel?.template) {
+      <ng-template lpx-mobile-navbar-settings-panel>
+        <ng-container
+          *ngTemplateOutlet="mobileNavbarSettingsPanel!.template"
+        ></ng-container>
+      </ng-template>
+    }
+    @if (mobileNavbarProfilePanel?.template) {
+      <ng-template lpx-mobile-navbar-profile-panel>
+        <ng-container
+          *ngTemplateOutlet="mobileNavbarProfilePanel!.template"
+        ></ng-container>
+      </ng-template>
+    }
+  </lpx-mobile-navbar>
+</ng-template>

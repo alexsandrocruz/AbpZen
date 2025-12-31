@@ -1,0 +1,19 @@
+<abp-button
+  class="d-grid"
+  *abpPermission="fileCreatePermission"
+  [buttonId]="buttonId"
+  iconClass="fa fa-upload me-2"
+  buttonClass="btn btn-primary mb-2"
+  >{{ 'FileManagement::UploadFiles' | abpLocalization }}</abp-button
+>
+
+<abp-button
+  class="d-grid"
+  *abpPermission="directoryCreatePermission"
+  iconClass="fa fa-folder-plus me-2"
+  buttonClass="btn btn-outline-primary mb-4"
+  (click)="folderCreateModal = true"
+  >{{ 'FileManagement::CreateFolder' | abpLocalization }}</abp-button
+>
+
+<abp-create-folder-modal [(visible)]="folderCreateModal"></abp-create-folder-modal>

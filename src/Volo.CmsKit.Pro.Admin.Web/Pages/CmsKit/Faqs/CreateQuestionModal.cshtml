@@ -1,0 +1,33 @@
+﻿@page
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@inherits AdminPageBase
+
+@model CreateQuestionModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-modal size="Large">
+    <form id="CreateQuestionForm" method="post" asp-page="/CmsKit/Faqs/CreateQuestionModal">
+        <abp-modal-header title="@L["CreateNewQuestion"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="ViewModel.SectionId"/>
+            <abp-input asp-for="ViewModel.Title"/>
+            <abp-input asp-for="ViewModel.Order"/>
+
+            <div class="form-group">
+                <label class="control-label">@L["Text"] *</label>
+            </div>
+            <div class="content-editor cms-kit-editor" id="QuestionInputContainer" data-language="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)"></div>
+ 
+            <input type="hidden" asp-for="ViewModel.Text"/>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </form>
+</abp-modal>

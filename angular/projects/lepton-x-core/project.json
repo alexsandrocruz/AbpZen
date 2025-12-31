@@ -1,0 +1,36 @@
+{
+  "name": "lepton-x-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/lepton-x-core/src",
+  "prefix": "lpx",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/libs/lepton-x-core"],
+      "options": {
+        "project": "libs/lepton-x-core/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/lepton-x-core/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/lepton-x-core/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/lepton-x-core"],
+      "options": {
+        "jestConfig": "libs/lepton-x-core/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": []
+}

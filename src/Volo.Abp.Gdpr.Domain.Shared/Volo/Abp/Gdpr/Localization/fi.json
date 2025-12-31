@@ -1,0 +1,28 @@
+{
+  "culture": "fi",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Olet aiemmin pyytänyt henkilötietojen lataamista. Kun annettu pyyntöaika on kulunut, voit luoda uuden.",
+    "Volo.Abp.Gdpr:010002": "Henkilötietojasi valmistellaan edelleen. Voit ladata sen osoitteesta {GdprDataReadyTime}.",
+    "PersonalData": "Henkilökohtaiset tiedot",
+    "Menu:PersonalData": "Henkilökohtaiset tiedot",
+    "PersonalDataDescription": "Tilisi sisältää meille antamasi henkilötiedot. Tällä sivulla voit ladata tai poistaa kyseiset tiedot.",
+    "RequestPersonalData": "Pyydä henkilötietoja",
+    "DeletePersonalData": "Poista henkilötiedot",
+    "CreationTime": "Luomisen aika",
+    "Action": "Toiminta",
+    "Preparing": "Valmistellaan",
+    "Download": "ladata",
+    "ReadyTime": "Valmis Aika",
+    "DeletePersonalDataWarning": "Näiden tietojen poistaminen poistaa tilisi etkä enää kirjaudu sisään sovellukseen! Haluatko varmasti jatkaa?",
+    "PersonalDataDeleteRequestReceived": "Henkilötietojen poistopyyntöäsi käsitellään... Tietojen poistoprosessin päätyttyä tilisi poistetaan, etkä voi enää käyttää sitä.",
+    "PersonalDataPrepareRequestReceived": "Henkilötietopyyntöäsi käsitellään. Voit ladata sen tältä sivulta, kun se on valmis!",
+    "NoDataAvailable": "Tietoja ei ole saatavilla.",
+    "Accept": "Hyväksyä",
+    "CookiePolicy": "Evästekäytäntö",
+    "PrivacyPolicy": "Tietosuojakäytäntö",
+    "ThisWebsiteUsesCookie": "Tämä verkkosivusto käyttää evästeitä varmistaakseen, että saat parhaan mahdollisen käyttökokemuksen.",
+    "CookieConsentAgreePolicies": "Jos jatkat selaamista, hyväksyt {0} ja {1}.",
+    "CookieConsentAgreePolicy": "Jos jatkat selaamista, hyväksyt {0}.",
+    "CanNotGetDownloadToken": "Et voi saada lataustunnusta tälle pyynnölle!"
+  }
+}

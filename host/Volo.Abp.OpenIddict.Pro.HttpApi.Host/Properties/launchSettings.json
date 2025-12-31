@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Volo.Abp.OpenIddict.Pro.HttpApi.Host": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:44327",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

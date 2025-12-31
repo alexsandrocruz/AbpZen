@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Users
+@using Volo.CmsKit.Localization
+
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls.PollsViewModel;
+
+@inject IHtmlLocalizer<CmsKitResource> L
+
+
+<div>
+    <label for="WidgetCode">@L["Polls"].Value</label>
+    <select asp-for="Widget" id="WidgetCode"
+            name="Code"
+            class="auto-complete-select"
+            data-autocomplete-api-url="/api/cms-kit-admin/poll"
+            data-autocomplete-display-property="name"
+            data-autocomplete-value-property="code"
+            data-autocomplete-items-property="items"
+            data-autocomplete-filter-param-name="filter">
+    </select>
+</div>

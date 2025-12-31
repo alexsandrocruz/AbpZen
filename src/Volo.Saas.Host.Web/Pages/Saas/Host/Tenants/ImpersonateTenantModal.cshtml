@@ -1,0 +1,26 @@
+﻿@page
+@using System.Web
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Saas.Host.Pages.Saas.Host.Tenants
+@using Volo.Saas.Localization
+@model ImpersonateTenantModal
+@inject IStringLocalizer<SaasResource> L
+@{
+    Layout = null;
+}
+
+<form method="post" data-ajaxForm="false" action="~/Account/ImpersonateTenant" id="ImpersonationForm">
+    <abp-modal size="Large">
+        <abp-modal-header title="@(L["LoginWithThisTenant"]) - @(HttpUtility.HtmlEncode(@Model.TenantName))"></abp-modal-header>
+        <abp-modal-body>
+            <input type="hidden" value="@Model.TenantId" name="TenantId">
+            <input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl">
+            <abp-input asp-for="DefaultAdminUserName" name="TenantUserName" label="@L["UserName"]"></abp-input>
+        </abp-modal-body>
+        <abp-modal-footer>
+            <button class="btn btn-outline-primary" data-bs-dismiss="modal" type="button">@L["Cancel"]</button>
+            <button class="btn btn-primary"  type="submit">@L["Login"]</button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>

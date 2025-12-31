@@ -1,0 +1,137 @@
+@using Volo.Abp.Account.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Blockquote
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Button
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@inject IHtmlLocalizer<AccountResource> L
+@model Volo.Abp.Account.Public.Web.Pages.Account.Components.ProfileManagementGroup.AuthenticatorApp.AccountProfileAuthenticatorAppGroupViewComponent.AuthenticatorAppModel
+
+@if (Model.HasAuthenticator)
+{
+    <div id="reset-authenticator">
+        <div class="my-3">
+            <h4 class="mb-1">@L["ResetAuthenticator"]</h4>
+            <p class="mb-3">@L["ResetAuthenticator_Information"]</p>
+            <abp-button button-type="Secondary" id="resetAuthenticator">@L["ResetAuthenticator"]</abp-button>
+        </div>
+    </div>
+}
+else
+{
+    <div id="authenticator-app-steps" class="mt-3">
+        <div class=" ">
+            <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-nowrap active text-s tart" id="pills-first-step-tab" data-bs-toggle="pill" data-bs-target="#pills-first-step" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                        <small class="opacity-75">@L["Step", 1]</small>
+                        <p class="m-0">@L["AuthenticatorApp"]</p>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-nowrap disabled text-s tart" id="pills-second-step-tab" data-bs-toggle="pill" data-bs-target="#pills-second-step" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                        <small class="opacity-75">@L["Step", 2]</small>
+                        <p class="m-0">@L["VerifyTheAuthenticator"]</p>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-nowrap disabled text- start" id="pills-third-step-tab" data-bs-toggle="pill" data-bs-target="#pills-third-step" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                        <small class="opacity-75">@L["Step", 3]</small>
+                        <p class="m-0">@L["RecoveryCodes"]</p>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content d-flex" id="pills-tabContent">
+                <div class="tab-pane fade show active w-100" id="pills-first-step" role="tabpanel" aria-labelledby="pills-first-step-tab">
+                    @* STEP 1 *@
+                    <div class="authenticator-step-1">
+                        <h4 class="mb-1">@L["AuthenticatorApp"]</h4>
+                        <p class="mb-3">@L["UseTwoFactorAuthenticatorApp_Information"]</p>
+
+                        <div id="setAuthenticator">
+                            <div class="row g-0">
+                                <div class="col">
+                                    <div class="card border h-100">
+                                        <div class="card-body">
+                                            <h5>@L["UseQrCode"]</h5>
+                                            <div class="d-flex justify-content-center p-3 pb-0">
+                                                <div id="qrCode"></div>
+                                                <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border h-100">
+                                        <div class="card-body">
+                                            <h5>@L["ManuallyEnterCode"]</h5>
+
+                                            <div id="sharedKey" class="bg-light rounded px-3 py-2 mt-4">
+                                                <code class="fs-4 lh-lg">@Model.SharedKey</code>
+                                            </div>
+                                            <button type="button" id="copySharedKey" class="btn btn-outline-primary btn-sm mt-3">@L["CopyToClipboard"]</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end mt-3">
+                                <button class="btn btn-primary px-3" type="button" id="next-btn-step-1">
+                                    @L["NextStep"] <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade w-100" id="pills-second-step" role="tabpanel" aria-labelledby="pills-second-step-tab">
+                    @* STEP 2 *@
+                    <div class="authenticator-step-2" id="step-2">
+                        <h4 class="mb-1">@L["VerifyTheAuthenticator"]</h4>
+                        <p class="mb-3">@L["UseTwoFactorAuthenticatorApp_Code"]</p>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" asp-for="Code" placeholder="@L["Code"]">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <abp-button button-type="Success" id="verifyQRCode">@L["Verify"]</abp-button>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-3">
+                            <button class="btn btn-primary disabled px-3" type="button" id="next-btn-step-2">
+                                @L["NextStep"] <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade w-100" id="pills-third-step" role="tabpanel" aria-labelledby="pills-third-step-tab">
+                    @* STEP 3 *@
+                    <div class="authenticator-step-3">
+                        <h4 class="mb-1">@L["RecoveryCodes"]</h4>
+                        <p class="mb-3">@L["RecoveryCodes_Information"]</p>
+
+                        <ul class="list-group w-100" id="recoveryCodes" style="display: none">
+                            <li class="list-group-item p-3 d-flex justify-content-between align-items-start">
+                                <div class="w-100">
+                                    <div class="text-end">
+                                        <button type="button" id="printRecoverCodes" class="btn btn-outline-primary btn-sm">@L["PrintCodes"]</button>
+                                        <button type="button" id="copyRecoverCodes" class="ms-1 btn btn-outline-primary btn-sm">@L["CopyToClipboard"]</button>
+                                    </div>
+                                    <div class="bg-light rounded px-3 py-3 mt-3 w-100 text-center">
+                                        <div id="recoveryCodesList" class="fs-4 lh-lg"></div>
+                                    </div>
+                                    <div class="text-end">
+                                        <abp-button button-type="Primary" id="recoveryCodeOk" class="mt-3">@L["Done"]</abp-button>
+                                    </div>
+                                </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

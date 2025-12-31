@@ -1,0 +1,17 @@
+@if (!loading) {
+  <ng-container formGroupName="connectionStrings">
+    <abp-connection-strings-form-body [(useSharedDatabase)]="useSharedDatabase" />
+  </ng-container>
+
+  <abp-module-specific-db
+    [(useSharedDatabase)]="useSharedDatabase"
+    [(moduleSpecificDatabase)]="moduleSpecificDatabase"
+    [selected]="selected()"
+  />
+}
+
+@if (loading) {
+  <div class="text-center">
+    <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+  </div>
+}

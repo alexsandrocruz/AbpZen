@@ -1,0 +1,47 @@
+﻿@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.MainMenu
+@using Volo.Abp.LeptonX.Shared.Localization
+@using Volo.Abp.Ui.Branding
+@using Volo.Abp.UI.Navigation
+
+@inject IStringLocalizer<LeptonXResource> L
+@inject IBrandingProvider BrandingProvider
+@inject IMenuManager MenuManager
+
+@{
+	var mainMenu = await MenuManager.GetMainMenuAsync();
+}
+
+<div class="lpx-sidebar-container">
+	<div class="lpx-sidebar lpx-scroll-container" id="lpx-sidebar">
+		<nav class="lpx-nav">
+			<div class="lpx-logo-container">
+				<a href="/">
+					<div class="lpx-brand-logo"></div>
+
+					@if (BrandingProvider.LogoUrl.IsNullOrEmpty())
+					{
+						<div class="lpx-brand-name">@BrandingProvider.AppName</div>
+					}
+				</a>
+				<i class="lpx-icon bi bi-filter-left menu-collapse-icon hidden-in-hover-trigger" aria-hidden="true" data-lpx-toggle="sidebar"></i>
+			</div>
+
+			@if (mainMenu.Items.Count > 0)
+			{
+
+				<div class="lpx-menu-filter hidden-in-hover-trigger" data-lpx-menu-filter="sidebar">
+					<i class="lpx-icon bi bi-filter menu-filter-icon" aria-hidden="true"></i>
+					<input class="menu-filter-input hidden-in-hover-trigger" type="text" placeholder="@L["FilterMenu"]" />
+					<span class="menu-filter-clear hidden">
+						<i class="lpx-icon bi bi-x clear-icon" aria-hidden="true"></i>
+					</span>
+				</div>
+			}
+
+			<ul class="lpx-nav-menu" id="desktop-sidebar">
+				@await Component.InvokeAsync(typeof(MainMenuViewComponent))
+			</ul>
+		</nav>
+	</div>
+</div>

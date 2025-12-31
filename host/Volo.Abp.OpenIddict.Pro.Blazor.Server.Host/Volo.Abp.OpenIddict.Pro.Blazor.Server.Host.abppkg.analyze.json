@@ -1,0 +1,310 @@
+{
+  "name": "Volo.Abp.OpenIddict.Pro.Blazor.Server.Host",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Blazor.Server.Host",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.Application",
+          "namespace": "Volo.Abp.OpenIddict",
+          "name": "AbpOpenIddictProApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.EntityFrameworkCore",
+          "namespace": "Volo.Abp.OpenIddict.EntityFrameworkCore",
+          "name": "AbpOpenIddictProEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.OpenIddict",
+          "namespace": "Volo.Abp.PermissionManagement.OpenIddict",
+          "name": "AbpPermissionManagementDomainOpenIddictModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.HttpApi",
+          "namespace": "Volo.Abp.OpenIddict",
+          "name": "AbpOpenIddictProHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "name": "AbpAspNetCoreMvcUiLeptonThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Swashbuckle",
+          "namespace": "Volo.Abp.Swashbuckle",
+          "name": "AbpSwashbuckleModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Authentication.JwtBearer",
+          "namespace": "Volo.Abp.AspNetCore.Authentication.JwtBearer",
+          "name": "AbpAspNetCoreAuthenticationJwtBearerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Serilog",
+          "namespace": "Volo.Abp.AspNetCore.Serilog",
+          "name": "AbpAspNetCoreSerilogModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Components.Server.LeptonTheme",
+          "namespace": "Volo.Abp.AspNetCore.Components.Server.LeptonTheme",
+          "name": "AbpAspNetCoreComponentsServerLeptonThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Application",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Blazor.Server",
+          "namespace": "Volo.Abp.SettingManagement.Blazor.Server",
+          "name": "AbpSettingManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.EntityFrameworkCore",
+          "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
+          "name": "AbpIdentityProEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Application",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.Identity",
+          "namespace": "Volo.Abp.PermissionManagement.Identity",
+          "name": "AbpPermissionManagementDomainIdentityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Blazor.Server",
+          "namespace": "Volo.Abp.FeatureManagement.Blazor.Server",
+          "name": "AbpFeatureManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Application",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web.OpenIddict",
+          "namespace": "Volo.Abp.Account.Web",
+          "name": "AbpAccountPublicWebOpenIddictModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Admin.Blazor.Server",
+          "namespace": "Volo.Abp.Account.Pro.Admin.Blazor.Server",
+          "name": "AbpAccountAdminBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Admin.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountAdminApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web.Impersonation",
+          "namespace": "Volo.Abp.Account.Public.Web.Impersonation",
+          "name": "AbpAccountPublicWebImpersonationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Blazor.Server",
+          "namespace": "Volo.Abp.Account.Pro.Public.Blazor.Server",
+          "name": "AbpAccountPublicBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Blazor.Server",
+          "namespace": "Volo.Abp.Identity.Pro.Blazor.Server",
+          "name": "AbpIdentityProBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Blazor.Server",
+          "namespace": "Volo.Abp.LeptonTheme.Management.Blazor.Server",
+          "name": "LeptonThemeManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Application",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Domain",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Blazor.Server",
+          "namespace": "Volo.Saas.Host.Blazor.Server",
+          "name": "SaasHostBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.EntityFrameworkCore",
+          "namespace": "Volo.Saas.EntityFrameworkCore",
+          "name": "SaasEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "namespace": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "name": "BlobStoringDatabaseEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Application",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "AbpAuditLoggingApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.Blazor.Server",
+          "namespace": "Volo.Abp.OpenIddict.Pro.Blazor.Server",
+          "name": "AbpOpenIddictProBlazorServerModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpOpenIddictProBlazorHostModule",
+      "summary": null
+    },
+    {
+      "eventHandlerType": "Distributed",
+      "namespace": "Volo.Abp.OpenIddict.Pro.Blazor.Server.Host",
+      "subscribedEvents": [
+        {
+          "underlyingType": null,
+          "name": "TenantCreatedEto",
+          "namespace": "Volo.Abp.MultiTenancy",
+          "declaringAssemblyName": "Volo.Abp.MultiTenancy.Abstractions",
+          "fullName": "Volo.Abp.MultiTenancy.TenantCreatedEto"
+        },
+        {
+          "underlyingType": null,
+          "name": "TenantConnectionStringUpdatedEto",
+          "namespace": "Volo.Abp.MultiTenancy",
+          "declaringAssemblyName": "Volo.Abp.MultiTenancy.Abstractions",
+          "fullName": "Volo.Abp.MultiTenancy.TenantConnectionStringUpdatedEto"
+        },
+        {
+          "underlyingType": null,
+          "name": "ApplyDatabaseMigrationsEto",
+          "namespace": "Volo.Abp.Data",
+          "declaringAssemblyName": "Volo.Abp.Data",
+          "fullName": "Volo.Abp.Data.ApplyDatabaseMigrationsEto"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDistributedEventHandler<TenantCreatedEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<TenantCreatedEto>"
+        },
+        {
+          "name": "IEventHandler",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.IEventHandler"
+        },
+        {
+          "name": "IDistributedEventHandler<TenantConnectionStringUpdatedEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<TenantConnectionStringUpdatedEto>"
+        },
+        {
+          "name": "IDistributedEventHandler<ApplyDatabaseMigrationsEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<ApplyDatabaseMigrationsEto>"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "eventHandler",
+      "name": "TenantDatabaseMigrationHandler",
+      "summary": null
+    }
+  ]
+}

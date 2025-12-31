@@ -1,0 +1,88 @@
+{
+  "imports": {
+    "Volo.Abp.SettingManagement":{
+      "path" : "../../../abp/modules/setting-management/Volo.Abp.SettingManagement.abpmdl",
+      "isInstalled" : true
+    } 
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.LanguageManagement.Web": {
+      "path": "src/Volo.Abp.LanguageManagement.Web/Volo.Abp.LanguageManagement.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Blazor": {
+      "path": "src/Volo.Abp.LanguageManagement.Blazor/Volo.Abp.LanguageManagement.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Blazor.Server": {
+      "path": "src/Volo.Abp.LanguageManagement.Blazor.Server/Volo.Abp.LanguageManagement.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Blazor.WebAssembly": {
+      "path": "src/Volo.Abp.LanguageManagement.Blazor.WebAssembly/Volo.Abp.LanguageManagement.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.HttpApi": {
+      "path": "src/Volo.Abp.LanguageManagement.HttpApi/Volo.Abp.LanguageManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.HttpApi.Client": {
+      "path": "src/Volo.Abp.LanguageManagement.HttpApi.Client/Volo.Abp.LanguageManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Application": {
+      "path": "src/Volo.Abp.LanguageManagement.Application/Volo.Abp.LanguageManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Application.Contracts": {
+      "path": "src/Volo.Abp.LanguageManagement.Application.Contracts/Volo.Abp.LanguageManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Domain": {
+      "path": "src/Volo.Abp.LanguageManagement.Domain/Volo.Abp.LanguageManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.Domain.Shared": {
+      "path": "src/Volo.Abp.LanguageManagement.Domain.Shared/Volo.Abp.LanguageManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.EntityFrameworkCore": {
+      "path": "src/Volo.Abp.LanguageManagement.EntityFrameworkCore/Volo.Abp.LanguageManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.MongoDB": {
+      "path": "src/Volo.Abp.LanguageManagement.MongoDB/Volo.Abp.LanguageManagement.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.LanguageManagement.TestBase": {
+      "path": "test/Volo.Abp.LanguageManagement.TestBase/Volo.Abp.LanguageManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.LanguageManagement.Domain.Tests": {
+      "path": "test/Volo.Abp.LanguageManagement.Domain.Tests/Volo.Abp.LanguageManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.LanguageManagement.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Abp.LanguageManagement.EntityFrameworkCore.Tests/Volo.Abp.LanguageManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.LanguageManagement.MongoDB.Tests": {
+      "path": "test/Volo.Abp.LanguageManagement.MongoDB.Tests/Volo.Abp.LanguageManagement.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.LanguageManagement.Application.Tests": {
+      "path": "test/Volo.Abp.LanguageManagement.Application.Tests/Volo.Abp.LanguageManagement.Application.Tests.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "LanguageManagement",
+    "featureNamePrefix": "LanguageManagement"
+  }
+}

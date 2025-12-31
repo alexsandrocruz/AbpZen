@@ -1,0 +1,150 @@
+{
+  "name": "Volo.Abp.OpenIddict.Pro.Application.Contracts",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.OpenIddict",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.Domain.Shared",
+          "namespace": "Volo.Abp.OpenIddict",
+          "name": "AbpOpenIddictProDomainSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application.Contracts",
+          "namespace": "Volo.Abp.Application",
+          "name": "AbpDddApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Authorization",
+          "namespace": "Volo.Abp.Authorization",
+          "name": "AbpAuthorizationModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpOpenIddictProApplicationContractsModule",
+      "summary": null
+    },
+    {
+      "displayName": "Application",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Application",
+      "summary": null
+    },
+    {
+      "displayName": "Edit",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Application.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Application.Delete",
+      "summary": null
+    },
+    {
+      "displayName": "Create",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Application.Create",
+      "summary": null
+    },
+    {
+      "displayName": "Manage permissions",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Application.ManagePermissions",
+      "summary": null
+    },
+    {
+      "displayName": "View change history",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "AuditLogging.ViewChangeHistory:Volo.Abp.OpenIddict.Pro.Applications.Application",
+      "summary": null
+    },
+    {
+      "displayName": "Scope",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Scope",
+      "summary": null
+    },
+    {
+      "displayName": "Edit",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Scope.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Scope.Delete",
+      "summary": null
+    },
+    {
+      "displayName": "Create",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "OpenIddictPro.Scope.Create",
+      "summary": null
+    },
+    {
+      "displayName": "View change history",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "AuditLogging.ViewChangeHistory:Volo.Abp.OpenIddict.Pro.Scopes.Scope",
+      "summary": null
+    }
+  ]
+}

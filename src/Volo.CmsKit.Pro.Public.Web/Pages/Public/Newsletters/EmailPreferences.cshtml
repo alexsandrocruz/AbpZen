@@ -1,0 +1,81 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Pro.Public.Web.Pages.Public.Newsletters
+@model Volo.CmsKit.Pro.Public.Web.Pages.Public.Newsletters.EmailPreferencesModel
+@inject IHtmlLocalizer<CmsKitResource> L
+@inject IStringLocalizerFactory LocalizerFactory
+
+@section scripts {
+    <abp-script-bundle name="@typeof(EmailPreferencesModel).FullName">
+        <abp-script src="/client-proxies/cms-kit-pro-common-proxy.js" />
+        <abp-script src="/Pages/Public/Newsletters/EmailPreferences.js"/>
+    </abp-script-bundle>
+}
+
+<div id="newsletter-manage" data-source="@Model.Source" data-emailaddress="@Model.EmailAddress" data-securitycode="@Model.SecurityCode" class="col col-sm-12 offset-lg-2 col-lg-8 offset-md-2 col-md-8 p-5">
+    @if (Model.NewsletterPreferenceDetailsViewModels.Count > 0 && Model.NewsletterPreferenceDetailsViewModels.Any(n => n.IsSelectedByEmailAddress))
+    {
+        <h3 class="display-5">@L["UpdateYourEmailPreferences"]</h3>
+
+        <small>@L["EmailAddressPermissionManagement", Model.EmailAddress]</small>
+        <br/>
+        <br/>
+        <form id="newsletterUpdate">
+            <div class="mb-3 form-check">
+                <input type="checkbox" id="selectAll" class="form-check-input"/>
+                <label for="selectAll" class="form-check-label">@L["SelectAll"]</label>
+            </div>
+            @foreach (var newsletterPreference in Model.NewsletterPreferenceDetailsViewModels)
+            {
+                <div class="mb-3 form-check">
+                    <input id="newsletter-manage-@newsletterPreference.Preference" type="checkbox" @(newsletterPreference.IsSelectedByEmailAddress == true ? "checked" : "") data-preference="@newsletterPreference.Preference" class="form-check-input newsletter-preference-check"/>
+                    <label for="newsletter-manage-@newsletterPreference.Preference" class="form-check-label">@newsletterPreference.DisplayPreference</label>
+                    <br />
+                    &ensp;<label for="newsletter-manage-@newsletterPreference.Preference"><small for="newsletter-manage-@newsletterPreference.Preference" class="text-muted">@newsletterPreference.DisplayDefinition.TruncateWithPostfix(256)</small></label>
+                </div>
+            }
+            <abp-button class="mb-2 mt-2" button-type="Primary" type="submit" text=@L["SaveChanges"].Value />
+        </form>
+    }
+    else
+    {
+        <div>
+       <h3 class="display-5">@L["SubscribeToNewsletter"]</h3>
+
+        <small>@L["SubscribeWithEmail", Model.EmailAddress]</small>
+        <br/>
+        <br/>
+        <form id="newsletterSubscribe" data-source="@Model.Source">
+            <div class="mb-3 form-check">
+                <input type="checkbox" id="selectAll" class="form-check-input"/>
+                <label for="selectAll" class="form-check-label" style="color: inherit;">@L["SelectAll"]</label>
+            </div>
+            <div>
+                @foreach (var newsletterPreference in Model.NewsletterPreferenceDetailsViewModels)
+                {
+                    <div class="mb-3 form-check">
+                        <input id="newsletter-manage-@newsletterPreference.Preference" type="checkbox" @(newsletterPreference.IsSelectedByEmailAddress == true ? "checked" : "") data-preference="@newsletterPreference.Preference" class="form-check-input newsletter-preference-check"/>
+                        <label for="newsletter-manage-@newsletterPreference.Preference" class="form-check-label" style="color: inherit;">@newsletterPreference.DisplayPreference</label>
+                        <br />
+                        &ensp;<label for="newsletter-manage-@newsletterPreference.Preference" style="color: inherit;"><small for="newsletter-manage-@newsletterPreference.Preference" class="text-muted">@newsletterPreference.DisplayDefinition.TruncateWithPostfix(256) </small></label>
+                    </div>
+                }
+            </div>
+            <abp-button disabled="@(true)" id="subscribeNewsletterButton" class="mb-2 mt-2" button-type="Primary" type="submit" text=@L["Subscribe"].Value />
+            <p></p>
+            
+            @if (Model.PrivacyPolicyConfirmationMessage != null)
+            {
+                @Html.Raw(Model.PrivacyPolicyConfirmationMessage.Localize(LocalizerFactory))
+            }
+            
+        </form>
+            <hr>
+            <p></p>
+            <p>@L["UserDoesNotHaveAnyNewsletterSubscription"]</p>
+            <p>@L["ManageEmailPreferencesForSubscribedNewsletters"]</p>
+        </div>
+    }
+</div>

@@ -1,0 +1,9 @@
+﻿@if (Menu != null)
+{
+	@foreach (var menuItem in Menu.Items)
+	{
+		<li class="outer-menu-item">
+			<MainMenuItem Menu="@Menu" MenuItem="@menuItem" />
+		</li>
+	}
+}

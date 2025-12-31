@@ -1,0 +1,1161 @@
+{
+  "modules": {
+    "fileManagement": {
+      "rootPath": "fileManagement",
+      "remoteServiceName": "FileManagement",
+      "controllers": {
+        "Volo.FileManagement.Files.FileDescriptorController": {
+          "controllerName": "FileDescriptor",
+          "controllerGroupName": "FileDescriptors",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.FileManagement.Files.FileDescriptorController",
+          "interfaces": [
+            {
+              "type": "Volo.FileManagement.Files.IFileDescriptorAppService",
+              "name": "IFileDescriptorAppService",
+              "methods": [
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "directoryId",
+                      "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                      "type": "System.Guid?",
+                      "typeSimple": "string?",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Files.FileDescriptorDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Files.FileDescriptorDto>"
+                  }
+                },
+                {
+                  "name": "RenameAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Files.RenameFileInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Files.RenameFileInput",
+                      "typeSimple": "Volo.FileManagement.Files.RenameFileInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+                  }
+                },
+                {
+                  "name": "DownloadAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "token",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Content.IRemoteStreamContent",
+                    "typeSimple": "Volo.Abp.Content.IRemoteStreamContent"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "directoryId",
+                      "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                      "type": "System.Guid?",
+                      "typeSimple": "string?",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "inputWithStream",
+                      "typeAsString": "Volo.FileManagement.Files.CreateFileInputWithStream, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Files.CreateFileInputWithStream",
+                      "typeSimple": "Volo.FileManagement.Files.CreateFileInputWithStream",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+                  }
+                },
+                {
+                  "name": "MoveAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Files.MoveFileInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Files.MoveFileInput",
+                      "typeSimple": "Volo.FileManagement.Files.MoveFileInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+                  }
+                },
+                {
+                  "name": "GetPreInfoAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "System.Collections.Generic.List`1[[Volo.FileManagement.Files.FileUploadPreInfoRequest, Volo.FileManagement.Application.Contracts, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib",
+                      "type": "System.Collections.Generic.List<Volo.FileManagement.Files.FileUploadPreInfoRequest>",
+                      "typeSimple": "[Volo.FileManagement.Files.FileUploadPreInfoRequest]",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.FileManagement.Files.FileUploadPreInfoDto>",
+                    "typeSimple": "[Volo.FileManagement.Files.FileUploadPreInfoDto]"
+                  }
+                },
+                {
+                  "name": "GetContentAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Byte[]",
+                    "typeSimple": "[number]"
+                  }
+                },
+                {
+                  "name": "GetDownloadTokenAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Files.DownloadTokenResultDto",
+                    "typeSimple": "Volo.FileManagement.Files.DownloadTokenResultDto"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/file-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+              },
+              "allowAnonymous": true,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "GetListAsyncByDirectoryId": {
+              "uniqueName": "GetListAsyncByDirectoryId",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/file-descriptor",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "directoryId",
+                  "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "directoryId",
+                  "name": "directoryId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Files.FileDescriptorDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Files.FileDescriptorDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "CreateAsyncByDirectoryIdAndInputWithStream": {
+              "uniqueName": "CreateAsyncByDirectoryIdAndInputWithStream",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/file-descriptor/upload",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "directoryId",
+                  "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "inputWithStream",
+                  "typeAsString": "Volo.FileManagement.Files.CreateFileInputWithStream, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Files.CreateFileInputWithStream",
+                  "typeSimple": "Volo.FileManagement.Files.CreateFileInputWithStream",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "directoryId",
+                  "name": "directoryId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "inputWithStream",
+                  "name": "Name",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "inputWithStream"
+                },
+                {
+                  "nameOnMethod": "inputWithStream",
+                  "name": "File",
+                  "jsonName": null,
+                  "type": "Volo.Abp.Content.IRemoteStreamContent",
+                  "typeSimple": "Volo.Abp.Content.IRemoteStreamContent",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "FormFile",
+                  "descriptorName": "inputWithStream"
+                },
+                {
+                  "nameOnMethod": "inputWithStream",
+                  "name": "OverrideExisting",
+                  "jsonName": null,
+                  "type": "System.Boolean",
+                  "typeSimple": "boolean",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "inputWithStream"
+                },
+                {
+                  "nameOnMethod": "inputWithStream",
+                  "name": "ExtraProperties",
+                  "jsonName": null,
+                  "type": "Volo.Abp.Data.ExtraPropertyDictionary",
+                  "typeSimple": "{string:object}",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "inputWithStream"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "MoveAsyncByInput": {
+              "uniqueName": "MoveAsyncByInput",
+              "name": "MoveAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/file-descriptor/move",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Files.MoveFileInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Files.MoveFileInput",
+                  "typeSimple": "Volo.FileManagement.Files.MoveFileInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.FileManagement.Files.MoveFileInput",
+                  "typeSimple": "Volo.FileManagement.Files.MoveFileInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "GetPreInfoAsyncByInput": {
+              "uniqueName": "GetPreInfoAsyncByInput",
+              "name": "GetPreInfoAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/file-descriptor/pre-upload-info",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "System.Collections.Generic.List`1[[Volo.FileManagement.Files.FileUploadPreInfoRequest, Volo.FileManagement.Application.Contracts, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib",
+                  "type": "System.Collections.Generic.List<Volo.FileManagement.Files.FileUploadPreInfoRequest>",
+                  "typeSimple": "[Volo.FileManagement.Files.FileUploadPreInfoRequest]",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "System.Collections.Generic.List<Volo.FileManagement.Files.FileUploadPreInfoRequest>",
+                  "typeSimple": "[Volo.FileManagement.Files.FileUploadPreInfoRequest]",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.FileManagement.Files.FileUploadPreInfoDto>",
+                "typeSimple": "[Volo.FileManagement.Files.FileUploadPreInfoDto]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "GetContentAsyncById": {
+              "uniqueName": "GetContentAsyncById",
+              "name": "GetContentAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/file-descriptor/content",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Byte[]",
+                "typeSimple": "[number]"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "GetDownloadTokenAsyncById": {
+              "uniqueName": "GetDownloadTokenAsyncById",
+              "name": "GetDownloadTokenAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/file-descriptor/download/{id}/token",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Files.DownloadTokenResultDto",
+                "typeSimple": "Volo.FileManagement.Files.DownloadTokenResultDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "RenameAsyncByIdAndInput": {
+              "uniqueName": "RenameAsyncByIdAndInput",
+              "name": "RenameAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/file-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Files.RenameFileInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Files.RenameFileInput",
+                  "typeSimple": "Volo.FileManagement.Files.RenameFileInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.FileManagement.Files.RenameFileInput",
+                  "typeSimple": "Volo.FileManagement.Files.RenameFileInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Files.FileDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Files.FileDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/file-management/file-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            },
+            "DownloadAsyncByIdAndToken": {
+              "uniqueName": "DownloadAsyncByIdAndToken",
+              "name": "DownloadAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/file-descriptor/download/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "token",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "token",
+                  "name": "token",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Content.IRemoteStreamContent",
+                "typeSimple": "Volo.Abp.Content.IRemoteStreamContent"
+              },
+              "allowAnonymous": true,
+              "implementFrom": "Volo.FileManagement.Files.IFileDescriptorAppService"
+            }
+          }
+        },
+        "Volo.FileManagement.Directories.DirectoryDescriptorController": {
+          "controllerName": "DirectoryDescriptor",
+          "controllerGroupName": "DirectoryDescriptors",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.FileManagement.Directories.DirectoryDescriptorController",
+          "interfaces": [
+            {
+              "type": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService",
+              "name": "IDirectoryDescriptorAppService",
+              "methods": [
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "parentId",
+                      "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                      "type": "System.Guid?",
+                      "typeSimple": "string?",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Directories.DirectoryDescriptorInfoDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Directories.DirectoryDescriptorInfoDto>"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Directories.CreateDirectoryInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                      "typeSimple": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+                  }
+                },
+                {
+                  "name": "RenameAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Directories.RenameDirectoryInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                      "typeSimple": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+                  }
+                },
+                {
+                  "name": "GetContentAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Directories.DirectoryContentRequestInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Directories.DirectoryContentRequestInput",
+                      "typeSimple": "Volo.FileManagement.Directories.DirectoryContentRequestInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.FileManagement.Directories.DirectoryContentDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.FileManagement.Directories.DirectoryContentDto>"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "MoveAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.FileManagement.Directories.MoveDirectoryInput, Volo.FileManagement.Application.Contracts",
+                      "type": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                      "typeSimple": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                    "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/directory-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "GetListAsyncByParentId": {
+              "uniqueName": "GetListAsyncByParentId",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/directory-descriptor/sub-directories",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "parentId",
+                  "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "parentId",
+                  "name": "parentId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Directories.DirectoryDescriptorInfoDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.ListResultDto<Volo.FileManagement.Directories.DirectoryDescriptorInfoDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/directory-descriptor",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Directories.CreateDirectoryInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.CreateDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "RenameAsyncByIdAndInput": {
+              "uniqueName": "RenameAsyncByIdAndInput",
+              "name": "RenameAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/directory-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Directories.RenameDirectoryInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.RenameDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "GetContentAsyncByInput": {
+              "uniqueName": "GetContentAsyncByInput",
+              "name": "GetContentAsync",
+              "httpMethod": "GET",
+              "url": "api/file-management/directory-descriptor",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Directories.DirectoryContentRequestInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Directories.DirectoryContentRequestInput",
+                  "typeSimple": "Volo.FileManagement.Directories.DirectoryContentRequestInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Id",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.FileManagement.Directories.DirectoryContentDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.FileManagement.Directories.DirectoryContentDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/file-management/directory-descriptor/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            },
+            "MoveAsyncByInput": {
+              "uniqueName": "MoveAsyncByInput",
+              "name": "MoveAsync",
+              "httpMethod": "POST",
+              "url": "api/file-management/directory-descriptor/move",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.FileManagement.Directories.MoveDirectoryInput, Volo.FileManagement.Application.Contracts",
+                  "type": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                  "typeSimple": "Volo.FileManagement.Directories.MoveDirectoryInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.FileManagement.Directories.DirectoryDescriptorDto",
+                "typeSimple": "Volo.FileManagement.Directories.DirectoryDescriptorDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.FileManagement.Directories.IDirectoryDescriptorAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

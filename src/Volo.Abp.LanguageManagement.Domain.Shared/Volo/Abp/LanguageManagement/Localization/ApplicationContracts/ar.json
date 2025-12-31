@@ -1,0 +1,13 @@
+{
+  "culture": "ar",
+  "texts": {
+    "Permission:LanguageManagement": "إدارة اللغة",
+    "Permission:LanguageTexts": "نصوص اللغة",
+    "Permission:LanguageTextsEdit": "تحرير نصوص اللغة",
+    "Permission:Languages": "اللغات",
+    "Permission:LanguagesEdit": "تحرير اللغة",
+    "Permission:LanguagesCreate": "إنشاء لغة",
+    "Permission:LanguagesChangeDefault": "تغيير اللغة الافتراضية",
+    "Permission:LanguagesDelete": "حذف اللغة"
+  }
+}

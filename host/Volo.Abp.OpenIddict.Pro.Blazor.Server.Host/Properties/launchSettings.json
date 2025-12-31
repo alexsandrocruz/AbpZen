@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Volo.Abp.OpenIddict.Pro.Blazor.Server.Host": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:44313/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

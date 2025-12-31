@@ -1,0 +1,28 @@
+{
+  "culture": "tr",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Daha önce kişisel verileri indirme talebinde bulundunuz. Verilen istek süresi geçtikten sonra yeni bir istekte bulunabilirsiniz.",
+    "Volo.Abp.Gdpr:010002": "Kişisel verileriniz hazırlanmaya devam etmektedir. {GdprDataReadyTime}'da bu verileri indirebilirsiniz.",
+    "PersonalData": "Kişisel Veri",
+    "Menu:PersonalData": "Kişisel veri",
+    "PersonalDataDescription": "Hesabınız, bize verdiğiniz kişisel verileri içerir. Bu sayfa, bu verileri indirmenize veya silmenize izin verir.",
+    "RequestPersonalData": "Kişisel Veri Talep Et",
+    "DeletePersonalData": "Kişisel Veri Sil",
+    "CreationTime": "Oluşturulma Zamanı",
+    "Action": "Aksiyon",
+    "Preparing": "Hazırlanıyor",
+    "Download": "İndir",
+    "ReadyTime": "Hazır Olma Zamanı",
+    "DeletePersonalDataWarning": "Bu verileri silmek, hesabınızın silinmesine sebep olacak ve artık uygulamaya giriş yapmayacaksınız! Devam etmek istediğinizden emin misiniz?",
+    "PersonalDataDeleteRequestReceived": "Kişisel veri silme talebiniz işleniyor... Veri silme işleminin sonunda hesabınız silinecek ve artık kullanamayacaksınız.",
+    "PersonalDataPrepareRequestReceived": "Kişisel veri hazırlama talebiniz işleniyor. Hazır olduğunda bu sayfadan indirebilirsiniz!",
+    "NoDataAvailable": "Veri bulunmuyor.",
+    "Accept": "Kabul Et",
+    "CookiePolicy": "Çerez Politikası",
+    "PrivacyPolicy": "Gizlilik Politikası",
+    "ThisWebsiteUsesCookie": "Bu web sitesi, web sitesinde en iyi deneyimi yaşamanızı sağlamak için çerezleri kullanır.",
+    "CookieConsentAgreePolicies": "Göz atmaya devam ederseniz, {0} ve {1} şartlarını kabul etmiş olursunuz.",
+    "CookieConsentAgreePolicy": "Göz atmaya devam ederseniz, {0} şartını kabul etmiş olursunuz.",
+    "CanNotGetDownloadToken": "Bu istek için indirme jetonu alamazsınız!"
+  }
+}

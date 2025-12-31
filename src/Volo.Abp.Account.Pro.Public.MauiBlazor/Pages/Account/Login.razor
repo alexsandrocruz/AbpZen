@@ -1,0 +1,63 @@
+﻿@page "/Account/Login"
+
+@inject IStringLocalizer<AccountResource> AccountStringLocalizer
+@inherits AbpAccountPublicMauiBlazorComponentBase
+@using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Theming
+@inject IThemeManager ThemeManager
+@layout NullLayout
+
+@if (OAuthConfigOptions.Value.GrantType == "password")
+{
+    <LayoutView Layout="ThemeManager.CurrentTheme.GetAccountLayout()">
+        <div class="account-module-form">
+            <Form>
+                <Validations @ref="@LoginValidationsRef" Model="@LoginInput" ValidateOnLoad="false">
+                    <Validation>
+                        <div class="form-floating mb-2">
+                            <TextEdit @bind-Text="@LoginInput.UserNameOrEmailAddress" Placeholder="name@example.com">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                            <Label>@AccountStringLocalizer["UserNameOrEmailAddress"] *</Label>
+                        </div>
+                    </Validation>
+                    <Validation>
+                        <div class="form-floating mb-2">
+                            <TextEdit Role="@TextRole.Password" @bind-Text="@LoginInput.Password" Placeholder="Password">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                            <Label>@AccountStringLocalizer["Password"] *</Label>
+                        </div>
+                    </Validation>
+                </Validations>
+
+                <div class="d-grid gap-2">
+                    <Button Color="Color.Primary" Clicked="@LoginAsync" class="mb-1">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                        @AccountStringLocalizer["Login"]
+                    </Button>
+                    <Button Color="Color.Primary" Clicked="@Cancel" class="mb-3">
+                        <i class="bi bi-box-arrow-in-left me-1"></i>
+                        @AccountStringLocalizer["Cancel"]
+                    </Button>
+                </div>
+            </Form>
+        </div>
+    </LayoutView>
+}
+else if (OAuthConfigOptions.Value.GrantType == "code")
+{
+    <LayoutView Layout="ThemeManager.CurrentTheme.GetApplicationLayout()">
+        @(AccountStringLocalizer["SignIn"] + "...")
+
+         <div class="mt-2">
+            <Button Color="Color.Primary" Clicked="@Cancel" class="mb-3">@AccountStringLocalizer["Cancel"]</Button>
+        </div>
+    </LayoutView>
+}

@@ -1,0 +1,41 @@
+@if (getInterpolationParams(entityChange.changeTime | date: 'medium'); as params) {
+  <div class="mb-3 border border-dark rounded">
+    <div class="d-grid">
+      <button
+        class="btn btn-{{ color }} d-flex justify-content-between text-break"
+        type="button"
+        (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+        [attr.aria-controls]="uuid"
+      >
+        {{ 'AbpAuditLogging::DaysAgoWithUserTitle' | abpLocalization: params }}
+        <i
+          class="fa align-self-center"
+          [ngClass]="isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"
+        ></i>
+      </button>
+    </div>
+    <div [id]="uuid" [@collapse]="isCollapsed ? 'collapsed' : 'expanded'">
+      <div class="m-3">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>{{ 'AbpAuditLogging::PropertyName' | abpLocalization }}</th>
+              <th>{{ 'AbpAuditLogging::OriginalValue' | abpLocalization }}</th>
+              <th>{{ 'AbpAuditLogging::NewValue' | abpLocalization }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (prop of entityChange.propertyChanges; track prop.id) {
+              <tr>
+                <td>{{ prop.propertyName }}</td>
+                <td>{{ prop.originalValue }}</td>
+                <td [style.color]="getPropColor(prop)">{{ prop.newValue }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+}

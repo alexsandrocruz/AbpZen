@@ -1,0 +1,170 @@
+<abp-page
+  [title]="'AbpIdentity::OrganizationUnits' | abpLocalization"
+  [toolbar]="organizationUnits"
+>
+  <div class="row">
+    <div *abpPermission="'AbpIdentity.OrganizationUnits.ManageOU'" class="col-12 col-lg-6 col-xl-5">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <h5>
+            {{ 'AbpIdentity::OrganizationTree' | abpLocalization }}
+          </h5>
+          <button class="btn btn-sm btn-primary px-2" (click)="add()">
+            <i class="fas fa-plus me-1" aria-hidden="true"></i>
+            {{ 'AbpIdentity::AddRootUnit' | abpLocalization }}
+          </button>
+        </div>
+        <div class="card-body" [abpLoading]="loading">
+          <abp-tree
+            [nodes]="nodes"
+            [(expandedKeys)]="expandedKeys"
+            [selectedNode]="selectedUnit"
+            (selectedNodeChange)="setSelectedUnit($event)"
+            [draggable]="true"
+            (dropOver)="onDrop($event)"
+          >
+            <ng-template abpTreeNodeTemplate let-node>
+              <i class="fas fa-folder fs-15px text-primary me-1" aria-hidden="true"></i>
+              {{ node.title }}
+            </ng-template>
+
+            <ng-template #menu let-node>
+              <li class="pointer" ngbDropdownItem (click)="edit(node.origin.entity)">
+                {{ 'AbpUi::Edit' | abpLocalization }}
+              </li>
+              <li class="pointer" ngbDropdownItem (click)="addSubUnit(node.origin.entity)">
+                {{ 'AbpIdentity::AddSubUnit' | abpLocalization }}
+              </li>
+              <li class="pointer" ngbDropdownItem (click)="moveAllUsers(node.origin.entity)">
+                {{ 'AbpIdentity::MoveAllUsers' | abpLocalization }}
+              </li>
+              <li class="pointer" ngbDropdownItem (click)="delete(node.origin.entity)">
+                {{ 'AbpUi::Delete' | abpLocalization }}
+              </li>
+            </ng-template>
+          </abp-tree>
+          @if (!loading && !nodes?.length) {
+            <p class="text-muted">
+              {{ 'AbpIdentity::NoOrganizationUnits' | abpLocalization }}
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div
+      *abpPermission="
+        'AbpIdentity.OrganizationUnits.ManageMembers || AbpIdentity.OrganizationUnits.ManageRoles'
+      "
+      class="col-12 col-lg-6 col-xl-7 card"
+    >
+      <div class="card-header">
+        <ul ngbNav #nav="ngbNav" class="nav-tabs">
+          <li ngbNavItem *abpPermission="'AbpIdentity.OrganizationUnits.ManageMembers'">
+            <a ngbNavLink>
+              {{ 'AbpIdentity::Members' | abpLocalization }}
+              @if (selectedUnit) {
+                ({{ selectedUnit.userCount }})
+              }
+            </a>
+            <ng-template ngbNavContent>
+              @if (selectedUnit) {
+                <abp-organization-members
+                  *abpReplaceableTemplate="{
+                    inputs: {
+                      selectedOrganizationUnit: { value: selectedUnit },
+                    },
+                    componentKey: organizationMembersKey,
+                  }"
+                  [selectedOrganizationUnit]="selectedUnit"
+                  (onAdded)="get()"
+                  (onDeleted)="get()"
+                ></abp-organization-members>
+              } @else {
+                <p class="text-muted">
+                  {{ 'AbpIdentity::SelectAnOrganizationUnitToSeeMembers' | abpLocalization }}
+                </p>
+              }
+            </ng-template>
+          </li>
+          <li ngbNavItem *abpPermission="'AbpIdentity.OrganizationUnits.ManageRoles'">
+            <a ngbNavLink>
+              {{ 'AbpIdentity::Roles' | abpLocalization }}
+              @if (selectedUnit) {
+                ({{ selectedUnit.roles.length }})
+              }
+            </a>
+            <ng-template ngbNavContent>
+              @if (selectedUnit) {
+                <abp-organization-roles
+                  *abpReplaceableTemplate="{
+                    inputs: {
+                      selectedOrganizationUnit: { value: selectedUnit },
+                    },
+                    componentKey: organizationRolesKey,
+                  }"
+                  (onAdded)="get()"
+                  (onDeleted)="get()"
+                  [selectedOrganizationUnit]="selectedUnit"
+                ></abp-organization-roles>
+              } @else {
+                <p class="text-muted">
+                  {{ 'AbpIdentity::SelectAnOrganizationUnitToSeeRoles' | abpLocalization }}
+                </p>
+              }
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body pt-0">
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [(visible)]="isNodeModalVisible" [busy]="isModalBusy">
+  <ng-template #abpHeader>
+    <h3>
+      @if (nodeId) {
+        {{ 'AbpIdentity::EditOrganizationUnit' | abpLocalization }}
+        @if (selectedUnit.displayName) {
+          - {{ selectedUnit.displayName }}
+        }
+      } @else {
+        {{ 'AbpIdentity::NewOrganizationUnit' | abpLocalization }}
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    @if (nodeForm.get('parentId').value; as parentId) {
+      <div class="mb-3">
+        <strong>{{
+          'AbpIdentity::OrganizationUnit:Parent{0}' | abpLocalization: getParentName(parentId)
+        }}</strong>
+      </div>
+    }
+    <form [formGroup]="nodeForm" (ngSubmit)="save()" validateOnSubmit>
+      <abp-extensible-form [selectedRecord]="selectedUnit"></abp-extensible-form>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" (click)="save()" [disabled]="nodeForm?.invalid">{{
+      'AbpUi::Save' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>
+
+<abp-delete-organization-unit
+  *abpVisible="deleteOrganizationUnitService.visible()"
+  (deleted)="onOUDeleted()"
+/>
+<abp-move-all-users-of-unit
+  *abpVisible="moveAllUsersOfUnitModalService.visible()"
+  (moved)="onOUMoved()"
+/>

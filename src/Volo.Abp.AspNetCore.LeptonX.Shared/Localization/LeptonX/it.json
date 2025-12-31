@@ -1,0 +1,21 @@
+{
+  "Culture": "it",
+  "Texts": {
+    "Login": "Accedi",
+    "Appearance": "Aspetto esteriore",
+    "ContainerWidth": "Larghezza contenitore",
+    "ContainerWidth:Boxed": "Disposizione in Scatola",
+    "ContainerWidth:Fixed": "Disposizione fissa",
+    "ContainerWidth:Fluid": "Fluido",
+    "GeneralSettings": "Impostazioni Generali",
+    "Language": "Lingua",
+    "Settings": "Impostazioni",
+    "Theme:dark": "Scuro",
+    "Theme:dim": "Semi-Scuro",
+    "Theme:light": "Luce",
+    "Theme:system": "Sistema",
+    "Welcome": "Benarrivato",
+    "FilterMenu": "Menu filtro",
+    "Menu": "Menu"
+  }
+}

@@ -1,0 +1,168 @@
+@using Microsoft.Extensions.Localization
+@using global::Localization.Resources.AbpUi
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+@inject IStringLocalizer<AbpUiResource> UiL;
+
+@if (Options.Value.EnableDelegatedImpersonation)
+{
+    <li class="outer-menu-item">
+        <a class="lpx-menu-item-link dropdown-item">
+            <span class="lpx-menu-item-icon">
+                <i class="lpx-icon fa fa-users" aria-hidden="true"></i>
+            </span>
+            <span class="lpx-menu-item-text hidden-in-hover-trigger" @onclick="OpenModalAsync">@L["AuthorityDelegation"]</span>
+        </a>
+    </li>
+
+    <div class="account_authority_delegation_modals">
+
+        <Modal @ref="_modal" RenderMode="ModalRenderMode.LazyReload" Closing="@ClosingModal">
+            <ModalContent Size="ModalSize.Large" Centered="true">
+                <ModalHeader>
+                    <ModalTitle>@L["AuthorityDelegation"]</ModalTitle>
+                    <CloseButton Clicked="CloseModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChangedAsync">
+                        <Items>
+                            <Tab Name="delegated-users">@L["DelegatedUsers"]</Tab>
+                            <Tab Name="my-delegated-users">@L["MyDelegatedUsers"]</Tab>
+                        </Items>
+                        <Content>
+                            <TabPanel Name="delegated-users">
+                                <div class="text-end mb-3">
+                                    <Button Color="Color.Primary" Clicked="OpenDelegateNewUserModalAsync">@L["DelegateNewUser"]</Button>
+                                </div>
+                                <DataGrid TItem="UserDelegationDto"
+                                          Data="DelegatedUsers?.Items"
+                                          TotalItems="DelegatedUsers?.Items.Count"
+                                          ShowPager="true"
+                                          PageSize="PageSize">
+                                    <DataGridColumns>
+                                        <DataGridColumn Caption="@UiL["Actions"]">
+                                            <DisplayTemplate>
+                                                <Button Color="Color.Primary" Clicked="() => OpenDeleteConfirmationModalAsync(context.Id, context.UserName)">@UiL["Delete"]</Button>
+                                            </DisplayTemplate>
+                                        </DataGridColumn>
+                                        <DataGridColumn TItem="UserDelegationDto" Caption="@L["Status"]">
+                                            <DisplayTemplate>
+                                                @{
+                                                    var status = GetStatus(context);
+                                                    var badge = GetStatusBadge(status);
+                                                }
+                                                <span class="badge bg-@badge">@L["Status" + status]</span>
+                                            </DisplayTemplate>
+                                        </DataGridColumn>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.UserName)" Caption="@L["UserName"]"/>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.StartTime)" Caption="@L["StartTime"]"/>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.EndTime)" Caption="@L["EndTime"]"/>
+                                    </DataGridColumns>
+                                    <EmptyTemplate>
+                                        @UiL["NoDataAvailableInDatatable"]
+                                    </EmptyTemplate>
+                                </DataGrid>
+                            </TabPanel>
+                            <TabPanel Name="my-delegated-users">
+                                <DataGrid TItem="UserDelegationDto"
+                                          Data="MyDelegatedUsers?.Items"
+                                          TotalItems="MyDelegatedUsers?.Items.Count"
+                                          ShowPager="true"
+                                          PageSize="PageSize">
+                                    <DataGridColumns>
+                                        <DataGridEntityActionsColumn TItem="UserDelegationDto">
+                                            <DisplayTemplate>
+                                                <EntityActions Type="ActionType.Button" TItem="UserDelegationDto">
+                                                    <EntityAction TItem="UserDelegationDto"
+                                                                  Text="@L["Login"]"
+                                                                  Disabled="@(!IsActive(context))"
+                                                                  Clicked="() => DelegatedImpersonate(context)">
+                                                    </EntityAction>
+                                                </EntityActions>
+                                            </DisplayTemplate>
+                                        </DataGridEntityActionsColumn>
+                                        <DataGridColumn TItem="UserDelegationDto" Caption="@L["Status"]">
+                                            <DisplayTemplate>
+                                                @{
+                                                    var status = GetStatus(context);
+                                                    var badge = GetStatusBadge(status);
+                                                }
+                                                <span class="badge bg-@badge">@L["Status" + status]</span>
+                                            </DisplayTemplate>
+                                        </DataGridColumn>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.UserName)" Caption="@L["UserName"]"/>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.StartTime)" Caption="@L["StartTime"]"/>
+                                        <DataGridColumn TItem="UserDelegationDto" Field="@nameof(UserDelegationDto.EndTime)" Caption="@L["EndTime"]"/>
+                                    </DataGridColumns>
+                                    <EmptyTemplate>
+                                        @UiL["NoDataAvailableInDatatable"]
+                                    </EmptyTemplate>
+                                </DataGrid>
+                            </TabPanel>
+                        </Content>
+                    </Tabs>
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+
+        <Modal @ref="_delegateNewUserModal" RenderMode="ModalRenderMode.LazyReload" Closing="@ClosingModal">
+            <ModalContent Size="ModalSize.Default" Centered="true">
+                <ModalHeader>
+                    <ModalTitle>@L["DelegateNewUser"]</ModalTitle>
+                    <CloseButton Clicked="CloseDelegateNewUserModal"/>
+                </ModalHeader>
+                <ModalBody>
+                    <Field Class="mb-3">
+                        <FieldLabel>@L["UserName"] *</FieldLabel>
+                        <Autocomplete TItem="UserLookupDto"
+                                      TValue="Guid"
+                                      Data="@Users?.Items"
+                                      ReadData="@GetUserLookupAsync"
+                                      TextField="@((item) => item.UserName)"
+                                      ValueField="@((item) => item.Id)"
+                                      @bind-SelectedValue="@DelegateNewUserInput.TargetUserId">
+                        </Autocomplete>
+                    </Field>
+                    <Field Class="mb-3">
+                        <FieldLabel>@L["DelegationDateRange"]</FieldLabel>
+                        <DatePicker TValue="DateTime?"
+                                    SelectionMode="DateInputSelectionMode.Range"
+                                    InputMode="DateInputMode.DateTime"
+                                    Placeholder="@string.Empty"
+                                    @bind-Dates="DelegateNewUserDataRange"/>
+                    </Field>
+
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Secondary" Clicked="CloseDelegateNewUserModal">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@DelegateNewUserAsync"/>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+
+    <Modal @ref="_deleteConfirmationModal" RenderMode="ModalRenderMode.LazyReload" Closing="ClosingDeleteConfirmationModal">
+        <ModalContent Centered="true">
+            <ModalBody>
+                <DisplayHeading Size="DisplayHeadingSize.Is2" TextAlignment="TextAlignment.Center">
+                    <Icon Name="@IconName.QuestionCircle" />
+                </DisplayHeading>
+                <Paragraph TextAlignment="TextAlignment.Center" Margin="Margin.Is0.FromBottom">
+                    @DeleteConfirmationMessage
+                </Paragraph>
+            </ModalBody>
+            <ModalFooter class="d-flex justify-content-center">
+                <Button Color="Color.Danger" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="@CloseConfirmationModal">
+                    @UiL["Cancel"]
+                </Button>
+                <Button Color="Color.Primary" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="@DeleteDelegatedUsersAsync">
+                    @UiL["Ok"]
+                </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    </div>
+
+    <form method="post" action="Account/DelegatedImpersonate" id="DelegatedImpersonationForm" hidden>
+        <input type="hidden" id="UserDelegationId" name="UserDelegationId" />
+    </form>
+}

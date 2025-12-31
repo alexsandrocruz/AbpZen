@@ -1,0 +1,113 @@
+{
+  "imports": {
+    "Volo.Abp.SettingManagement":{
+      "path" : "../../../abp/modules/setting-management/Volo.Abp.SettingManagement.abpmdl",
+      "isInstalled" : true
+    } 
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Volo.FileManagement.Web.Unified": {
+      "path": "host/Volo.FileManagement.Web.Unified/Volo.FileManagement.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.Web.Host": {
+      "path": "host/Volo.FileManagement.Web.Host/Volo.FileManagement.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.Blazor.Host": {
+      "path": "host/Volo.FileManagement.Blazor.Host/Volo.FileManagement.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.IdentityServer": {
+      "path": "host/Volo.FileManagement.IdentityServer/Volo.FileManagement.IdentityServer.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.HttpApi.Host": {
+      "path": "host/Volo.FileManagement.HttpApi.Host/Volo.FileManagement.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.Host.Shared": {
+      "path": "host/Volo.FileManagement.Host.Shared/Volo.FileManagement.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Volo.FileManagement.Web": {
+      "path": "src/Volo.FileManagement.Web/Volo.FileManagement.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Blazor": {
+      "path": "src/Volo.FileManagement.Blazor/Volo.FileManagement.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Blazor.WebAssembly": {
+      "path": "src/Volo.FileManagement.Blazor.WebAssembly/Volo.FileManagement.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Blazor.Server": {
+      "path": "src/Volo.FileManagement.Blazor.Server/Volo.FileManagement.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.HttpApi": {
+      "path": "src/Volo.FileManagement.HttpApi/Volo.FileManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.HttpApi.Client": {
+      "path": "src/Volo.FileManagement.HttpApi.Client/Volo.FileManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Application": {
+      "path": "src/Volo.FileManagement.Application/Volo.FileManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Application.Contracts": {
+      "path": "src/Volo.FileManagement.Application.Contracts/Volo.FileManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Domain": {
+      "path": "src/Volo.FileManagement.Domain/Volo.FileManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.Domain.Shared": {
+      "path": "src/Volo.FileManagement.Domain.Shared/Volo.FileManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.EntityFrameworkCore": {
+      "path": "src/Volo.FileManagement.EntityFrameworkCore/Volo.FileManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.MongoDB": {
+      "path": "src/Volo.FileManagement.MongoDB/Volo.FileManagement.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.FileManagement.TestBase": {
+      "path": "test/Volo.FileManagement.TestBase/Volo.FileManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.FileManagement.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.FileManagement.EntityFrameworkCore.Tests/Volo.FileManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.FileManagement.MongoDB.Tests": {
+      "path": "test/Volo.FileManagement.MongoDB.Tests/Volo.FileManagement.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.FileManagement.Domain.Tests": {
+      "path": "test/Volo.FileManagement.Domain.Tests/Volo.FileManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.FileManagement.Application.Tests": {
+      "path": "test/Volo.FileManagement.Application.Tests/Volo.FileManagement.Application.Tests.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "FileManagement",
+    "featureNamePrefix": "FileManagement"
+  }
+}

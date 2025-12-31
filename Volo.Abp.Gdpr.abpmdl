@@ -1,0 +1,82 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.Gdpr.Web": {
+      "path": "src/Volo.Abp.Gdpr.Web/Volo.Abp.Gdpr.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Blazor": {
+      "path": "src/Volo.Abp.Gdpr.Blazor/Volo.Abp.Gdpr.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Blazor.Server": {
+      "path": "src/Volo.Abp.Gdpr.Blazor.Server/Volo.Abp.Gdpr.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Blazor.WebAssembly": {
+      "path": "src/Volo.Abp.Gdpr.Blazor.WebAssembly/Volo.Abp.Gdpr.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.HttpApi": {
+      "path": "src/Volo.Abp.Gdpr.HttpApi/Volo.Abp.Gdpr.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.HttpApi.Client": {
+      "path": "src/Volo.Abp.Gdpr.HttpApi.Client/Volo.Abp.Gdpr.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Application": {
+      "path": "src/Volo.Abp.Gdpr.Application/Volo.Abp.Gdpr.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Application.Contracts": {
+      "path": "src/Volo.Abp.Gdpr.Application.Contracts/Volo.Abp.Gdpr.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Domain": {
+      "path": "src/Volo.Abp.Gdpr.Domain/Volo.Abp.Gdpr.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Domain.Shared": {
+      "path": "src/Volo.Abp.Gdpr.Domain.Shared/Volo.Abp.Gdpr.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.EntityFrameworkCore": {
+      "path": "src/Volo.Abp.Gdpr.EntityFrameworkCore/Volo.Abp.Gdpr.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.MongoDB": {
+      "path": "src/Volo.Abp.Gdpr.MongoDB/Volo.Abp.Gdpr.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Gdpr.Application.Tests": {
+      "path": "test/Volo.Abp.Gdpr.Application.Tests/Volo.Abp.Gdpr.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.Gdpr.Domain.Tests": {
+      "path": "test/Volo.Abp.Gdpr.Domain.Tests/Volo.Abp.Gdpr.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.Gdpr.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Abp.Gdpr.EntityFrameworkCore.Tests/Volo.Abp.Gdpr.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.Gdpr.MongoDB.Tests": {
+      "path": "test/Volo.Abp.Gdpr.MongoDB.Tests/Volo.Abp.Gdpr.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.Gdpr.TestBase": {
+      "path": "test/Volo.Abp.Gdpr.TestBase/Volo.Abp.Gdpr.TestBase.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "Gdpr",
+    "featureNamePrefix": "Gdpr"
+  }
+}

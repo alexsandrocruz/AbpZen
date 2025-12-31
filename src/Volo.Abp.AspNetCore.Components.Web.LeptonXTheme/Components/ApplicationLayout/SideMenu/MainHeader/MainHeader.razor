@@ -1,0 +1,35 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.SideMenu.Navigation
+@using Volo.Abp.LeptonX.Shared.Localization
+
+@inherits AbpComponentBase
+
+@{
+	LocalizationResource = typeof(LeptonXResource);
+}
+
+<div class="lpx-sidebar-container">
+	<div class="lpx-sidebar overflow-auto" id="lpx-sidebar">
+		<nav class="lpx-nav">
+			<div class="lpx-logo-container">
+				<MainHeaderBranding />
+				<i class="lpx-icon bi bi-filter-left menu-collapse-icon hidden-in-hover-trigger" aria-hidden="true" data-lpx-toggle="sidebar">
+				</i>
+			</div>
+
+			@if (Menu != null && Menu.Items.Count > 0)
+			{
+				<div class="lpx-menu-filter hidden-in-hover-trigger" data-lpx-menu-filter="sidebar">
+					<i class="lpx-icon bi bi-filter menu-filter-icon" aria-hidden="true"></i>
+					<input class="menu-filter-input hidden-in-hover-trigger" type="text" placeholder="@L["FilterMenu"]" />
+					<span class="menu-filter-clear hidden">
+						<i class="lpx-icon bi bi-x clear-icon" aria-hidden="true"></i>
+					</span>
+				</div>
+			}
+
+			<ul class="lpx-nav-menu" id="desktop-sidebar">
+				<MainMenu />
+			</ul>
+		</nav>
+	</div>
+</div>

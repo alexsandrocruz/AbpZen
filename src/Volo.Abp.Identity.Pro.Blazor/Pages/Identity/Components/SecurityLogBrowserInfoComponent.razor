@@ -1,0 +1,17 @@
+﻿@using System;
+@using Volo.Abp.Identity
+
+@{
+    var browserInfo = Data.As<IdentitySecurityLogDto>().BrowserInfo;
+}
+
+@if (browserInfo?.Length > 20)
+{
+    <Tooltip Text="@browserInfo" Placement="TooltipPlacement.Top">
+        @(browserInfo[..20])...
+    </Tooltip>
+}
+else
+{
+    <span>@browserInfo</span>
+}

@@ -1,0 +1,16 @@
+﻿@inherits CmsKitProComponentBase
+
+<div>
+    <Field>
+        <FieldLabel>@L["Polls"]</FieldLabel>
+        <FieldBody>
+            <Select name="code" @bind-SelectedValue="@Model.Widget">
+                <SelectItem></SelectItem>
+                @foreach (var item in Model.Widgets)
+                {
+                    <SelectItem Value="@item.Value">@item.Key</SelectItem>
+                }
+            </Select>
+        </FieldBody>
+    </Field>
+</div>

@@ -1,0 +1,164 @@
+{
+  "name": "Volo.Chat.Web.Unified",
+  "hash": "a61906ad9a01f57d4847926e9ee869ae",
+  "contents": [
+    {
+      "namespace": "Volo.Chat",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.HttpApi",
+          "namespace": "Volo.Chat",
+          "name": "ChatHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.Web",
+          "namespace": "Volo.Chat.Web",
+          "name": "ChatWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.Application",
+          "namespace": "Volo.Chat",
+          "name": "ChatApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.EntityFrameworkCore",
+          "namespace": "Volo.Chat.EntityFrameworkCore",
+          "name": "ChatEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.SignalR",
+          "namespace": "Volo.Chat",
+          "name": "ChatSignalRModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.HttpApi",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web",
+          "namespace": "Volo.Abp.Account.Public.Web",
+          "name": "AbpAccountPublicWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "namespace": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "name": "AbpEntityFrameworkCoreSqlServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Application",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Application",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.HttpApi",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Web",
+          "namespace": "Volo.Abp.Identity.Web",
+          "name": "AbpIdentityWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.EntityFrameworkCore",
+          "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
+          "name": "AbpIdentityProEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.Identity",
+          "namespace": "Volo.Abp.PermissionManagement.Identity",
+          "name": "AbpPermissionManagementDomainIdentityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.HttpApi",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Web",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.EntityFrameworkCore",
+          "namespace": "Volo.Saas.EntityFrameworkCore",
+          "name": "SaasEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Application",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.HttpApi",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Web",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX",
+          "name": "AbpAspNetCoreMvcUiLeptonXThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "namespace": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "name": "BlobStoringDatabaseEntityFrameworkCoreModule"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatWebUnifiedModule",
+      "summary": null
+    }
+  ]
+}

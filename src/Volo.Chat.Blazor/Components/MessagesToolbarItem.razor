@@ -1,0 +1,119 @@
+﻿@using Microsoft.JSInterop
+@attribute [Authorize(ChatPermissions.Messaging)]
+@attribute [RequiresFeature(ChatFeatures.Enable)]
+@inherits AbpComponentBase
+@implements IAsyncDisposable
+@using Microsoft.AspNetCore.SignalR.Client
+@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.Features
+@using Volo.Chat.Authorization
+@using Volo.Chat.Users
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Chat.Messages
+@using Volo.Chat.Localization
+
+<Tooltip Text="@L["Menu:Chat"]" Class="w-100 b-tooltip-inline d-flex align-items-center justify-content-center" Placement="TooltipPlacement.Left">
+    <a class="lpx-menu-item-link nav-link" @onclick="NavigateToChat">
+        <i class="fas fa-comments"></i>
+        @if (TotalUnreadMessageCount > 0)
+        {
+            <span class="badge bg-info" style="top: -10px; left:-5px">@TotalUnreadMessageCount</span>
+        }
+    </a>
+</Tooltip>
+@code {
+    [Inject]
+    protected IContactAppService ContactAppService { get; set; }
+
+    [Inject]
+    protected IJSRuntime JsRuntime { get; set; }
+
+    [Inject]
+    protected NavigationManager Navigation { get; set; }
+
+    [Inject]
+    protected IChatHubConnectionService ChatHubConnectionService { get; set; }
+
+    protected HubConnection HubConnection;
+
+    public int TotalUnreadMessageCount { get; set; }
+
+    public MessagesToolbarItem()
+    {
+        LocalizationResource = typeof(ChatResource);
+    }
+
+    private void NavigateToChat()
+    {
+        TotalUnreadMessageCount = 0;
+        var url = "/Chat";
+        Navigation.NavigateTo(url);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        TotalUnreadMessageCount = await ContactAppService.GetTotalUnreadMessageCountAsync();
+        
+        await SetChatHubConnectionAsync();
+            
+        HubConnection.On<ChatMessageRdto>("ReceiveMessage", async message =>
+        {
+            await ChatHubConnectionService.ReceivedMessageAsync(message);
+            TotalUnreadMessageCount++;
+            if (!IsChatPageOpened())
+            {
+                var senderTitle = !message.SenderName.IsNullOrWhiteSpace() ?
+                    (message.SenderName +" " + message.SenderSurname).Trim()
+                    : message.SenderSurname ?? message.SenderUsername;
+                
+                var shortMessage = message.Text.Length > 50 ? message.Text.Substring(0, 49) + "..." : message.Text;
+                
+                if(ChatHubConnectionService.LastNotificationMessageId == message.Id)
+                {
+                    return;
+                }
+                
+                ChatHubConnectionService.LastNotificationMessageId = message.Id;
+                
+                await Notify.Info(
+                    title: L["NewChatMessage"] ,
+                    message:senderTitle + ": " + shortMessage + TotalUnreadMessageCount
+                );
+            }
+                
+            await InvokeAsync(StateHasChanged);
+        });
+
+        HubConnection.On<Guid>("DeleteMessage", async messageId =>
+        {
+            await ChatHubConnectionService.DeletedMessageAsync(messageId);
+            await InvokeAsync(StateHasChanged);
+        });
+
+        HubConnection.On<Guid>("DeleteConversation", async messageId =>
+        {
+            await ChatHubConnectionService.DeletedConversationAsync(messageId);
+            await InvokeAsync(StateHasChanged);
+        });
+
+        await HubConnection.StartAsync();
+    }
+
+    protected virtual Task SetChatHubConnectionAsync()
+    {
+        return Task.CompletedTask;
+    }
+    
+    private bool IsChatPageOpened()
+    {
+        return Navigation.Uri.Contains("/Chat");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (HubConnection is not null)
+        {
+            await HubConnection.DisposeAsync();
+        }
+    }
+}

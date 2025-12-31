@@ -1,0 +1,206 @@
+﻿@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX
+@using Volo.Abp.LeptonX.Shared.Localization;
+@using Volo.Abp.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetScripts
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetStyles
+@using Volo.Abp.Ui.Branding
+@using Volo.Abp.AspNetCore.Mvc.AntiForgery
+@using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy.Localization
+@using Volo.Abp.AspNetCore.MultiTenancy
+@using Volo.Abp.MultiTenancy
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.Common.PageAlerts
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.Toolbar.LanguageSwitch
+@using Microsoft.AspNetCore.Http.Extensions
+@using Volo.Abp.Ui.LayoutHooks
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IBrandingProvider BrandingProvider
+@inject LeptonXStyleProvider LeptonXStyleProvider
+@inject IStringLocalizer<AbpUiMultiTenancyResource> MultiTenancyStringLocalizer
+@inject IStringLocalizer<LeptonXResource> L
+@inject ITenantResolveResultAccessor TenantResolveResultAccessor
+@inject IOptions<AbpMultiTenancyOptions> MultiTenancyOptions
+@inject ICurrentTenant CurrentTenant
+@inject ThemeLanguageInfoProvider ThemeLanguageInfoProvider
+@inject Volo.Abp.AspNetCore.Mvc.UI.Layout.IPageLayout PageLayout
+
+@{
+    AbpAntiForgeryManager.SetCookie();
+    var langDir = CultureHelper.IsRtl ? "rtl" : string.Empty;
+    var title = $"{ViewBag.Title ?? PageLayout.Content.Title} | {BrandingProvider.AppName}".Trim('|', ' ');
+
+
+    var languageInfo = await ThemeLanguageInfoProvider.GetLanguageSwitchViewComponentModel();
+    var returnUrl = System.Net.WebUtility.UrlEncode(Context.Request.GetEncodedPathAndQuery());
+
+    var logoUrl = BrandingProvider.LogoUrl == null ? null : "--lpx-logo: url(" + BrandingProvider.LogoUrl + ");";
+    var logoReverseUrl = BrandingProvider.LogoReverseUrl == null ? null : "--lpx-logo: url(" + BrandingProvider.LogoReverseUrl + ");";
+    var selectedStyle = await LeptonXStyleProvider.GetSelectedStyleAsync();
+
+    var selectedStyleFileName = CultureHelper.IsRtl ? selectedStyle + ".rtl" : selectedStyle;
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.Name" dir="@langDir">
+
+<head>
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Head.First, StandardLayouts.Account)
+
+    <title>@title</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="@ViewBag.MetaDescription">
+
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml">
+
+    <abp-style-bundle name="@LeptonXThemeBundles.Styles.Global" />
+
+    <link href="~/Themes/LeptonX/Global/side-menu/css/bootstrap-@(selectedStyleFileName).css" type="text/css"
+          rel="stylesheet" id="lpx-theme-bootstrap-@selectedStyle" />
+    <link href="~/Themes/LeptonX/Global/side-menu/css/@(selectedStyleFileName).css" type="text/css" rel="stylesheet"
+          id="lpx-theme-color-@selectedStyle" />
+
+    @await Component.InvokeAsync(typeof(WidgetStylesViewComponent))
+    @await RenderSectionAsync("styles", false)
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Head.Last, StandardLayouts.Account)
+
+    <style>
+        .lpx-login-bg {
+            background-image: url('/LeptonX/images/login-pages/login-bg-img-@(selectedStyle).svg') !important;
+        }
+
+        :root .lpx-theme-light {
+            @logoUrl
+        }
+        :root .lpx-theme-dark {
+            @logoReverseUrl
+        }
+
+        :root .lpx-theme-dim {
+            @logoReverseUrl
+        }
+    </style>
+</head>
+
+<body class="abp-account-layout lpx-theme-@selectedStyle">
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.First, StandardLayouts.Account)
+
+
+    <div class="container-fluid p-0" style="overflow-x: hidden">
+        @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.First, StandardLayouts.Account)
+        <div class="lpx-login-area">
+            <div class="lpx-login-bg">
+                <div class="d-flex flex-column justify-content-center min-vh-100">
+
+                    <div class="row">
+                        <div class="col-xxl-5 col-lg-7 col-md-8 col-11 mx-auto position-relative py-4">
+
+                            @if (BrandingProvider.LogoUrl.IsNullOrEmpty())
+                            {
+                                <div class="lpx-logo-container lpx-login-brand-text">
+                                    <div class="lpx-brand-logo lpx-login-logo mx-auto"></div>
+                                    <div class="lpx-brand-name lpx-login-name mx-auto">@BrandingProvider.AppName</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="lpx-brand-logo lpx-login-logo mb-3 mx-auto"></div>
+                            }
+
+                            <div class="card mx-auto" style="max-width: 30rem;">
+                                <div class="card-body p-3 p-sm-4">
+                                    @if (languageInfo.Languages.Count > 1)
+                                    {
+                                        <div class="align-items-start d-flex justify-content-between mb-2">
+                                            <h2 class="lpx-main-title lpx-login-title m-0 me-auto"> @PageLayout.Content.Title @* TODO: Find a better text here. *@</h2>
+                                            <div class="dropdown btn-group ms-auto" aria-labelledby="languageDropdown">
+
+                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-translate me-1"></i> @languageInfo.CurrentLanguage.DisplayName
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1" style="">
+                                                    @foreach (var language in languageInfo.Languages)
+                                                    {
+                                                        var twoLetterLanguageName = new CultureInfo(language.CultureName).TwoLetterISOLanguageName.ToUpperInvariant();
+                                                        var url = Url.Content($"~/Abp/Languages/Switch?culture={language.CultureName}&uiCulture={language.UiCultureName}&returnUrl={returnUrl}");
+                                                        <li>
+                                                            <a href="@url" class="dropdown-item" data-lpx-language-option="@twoLetterLanguageName">@language.DisplayName / @twoLetterLanguageName</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+                                    }
+
+                                    @await Component.InvokeAsync(typeof(PageAlertsViewComponent))
+
+                                    @if (MultiTenancyOptions.Value.IsEnabled &&
+                                         (TenantResolveResultAccessor.Result?.AppliedResolvers?.Contains(CookieTenantResolveContributor.ContributorName)
+                                          == true ||
+                                          TenantResolveResultAccessor.Result?.AppliedResolvers?.Contains(QueryStringTenantResolveContributor.ContributorName)
+                                          == true))
+                                    {
+                                        <div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span style="font-size: .8em;"
+                                                          class="text-uppercase text-muted">@MultiTenancyStringLocalizer["Tenant"]</span><br/>
+                                                    <h6 class="m-0 d-inline-block">
+                                                        @if (CurrentTenant.Id == null)
+                                                        {
+                                                            <span>
+                                                                @MultiTenancyStringLocalizer["NotSelected"]
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <strong>
+                                                                @(CurrentTenant.Name ??
+                                                                  CurrentTenant.Id.Value.ToString())
+                                                            </strong>
+                                                        }
+                                                    </h6>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a id="AbpTenantSwitchLink" href="javascript:;"
+                                                       class="btn btn-sm btn-outline-primary">@MultiTenancyStringLocalizer["Switch"]</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+
+                                    }
+
+                                    @RenderBody()
+
+                                </div>
+                                @* @await Html.PartialAsync("~/Themes/LeptonX/Layouts/Account/_Footer.cshtml") *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.Last, StandardLayouts.Account)
+    </div>
+
+    <abp-script-bundle name="@LeptonXThemeBundles.Scripts.Global" />
+    <script src="~/Abp/ApplicationLocalizationScript?cultureName=@CultureInfo.CurrentUICulture.Name"></script>
+    <script type="text/javascript" src="~/Abp/ApplicationConfigurationScript"></script>
+    <script type="text/javascript" src="~/Abp/ServiceProxyScript"></script>
+    @await Component.InvokeAsync(typeof(WidgetScriptsViewComponent))
+    @await RenderSectionAsync("scripts", false)
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.Last, StandardLayouts.Account)
+</body>
+
+</html>

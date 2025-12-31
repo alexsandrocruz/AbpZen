@@ -1,0 +1,171 @@
+@page
+@using System.Web;
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Data
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.Identity.Web.Pages.Identity.Users
+@using Volo.Abp.Localization
+@using Volo.Abp.ObjectExtending
+@model ViewDetailsModalModel
+@inject IHtmlLocalizer<IdentityResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <abp-modal-header title="@(L["ViewDetails"].Value) - @(HttpUtility.HtmlEncode(Model.UserInfo.UserName))"></abp-modal-header>
+    <abp-modal-body>
+        <abp-tabs name="view-details-modal-tabs">
+            <abp-tab title="@L["UserInformation"].Value">
+                <abp-table striped-rows="true" class="align-middle" >
+                    <tbody>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:UserName"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.UserName)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:Name"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.Name)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:Surname"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.Surname)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:Email"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.Email)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["Roles"]</td>
+                            <td>@(Model.UserInfo.RoleNames.Any() ? Model.UserInfo.RoleNames.JoinAsString(",") : DefaultEmptyValue)</td>
+                        </tr>
+                        @foreach (var propertyInfo in ObjectExtensionManager.Instance.GetProperties<EditModalModel.UserInfoViewModel>())
+                        {
+                            if (!propertyInfo.Name.EndsWith("_Text"))
+                            {
+                                <tr>
+                                    <td class="col-5">@propertyInfo.GetLocalizedDisplayName(StringLocalizerFactory)</td>
+                                    <td>@ConvertUserFriendlyFormat(Model.UserInfo.GetProperty(propertyInfo.Name)?.ToString())</td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <td class="col-5">@L["DisplayName:PhoneNumber"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.PhoneNumber)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:IsActive"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.IsActive)</td>
+                        </tr>     
+                        <tr>
+                            <td class="col-5">@L["DisplayName:ShouldChangePasswordOnNextLogin"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.ShouldChangePasswordOnNextLogin)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["DisplayName:LockoutEnabled"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.LockoutEnabled)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["IsExternal"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.IsExternal)</td>
+                        </tr>
+                    </tbody>
+                </abp-table>
+            </abp-tab> 
+            <abp-tab name="OrganizationUnits" title="@L.GetString("OrganizationUnits{0}", Model.OrganizationUnits.Count(r => r.IsAssigned))">
+                @if(Model.OrganizationUnits.Any(r => r.IsAssigned))
+                {
+                    <div id="JsTreeCheckable" class="tree jstree jstree-2 jstree-default jstree-checkbox-no-clicked" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j2_1" aria-busy="false" aria-selected="false">
+                        <ul class="jstree-container-ul jstree-children" role="group">
+                            @for (int i = 0; i < Model.OrganizationUnitTreeRootNode.Children.Count; i++)
+                            {
+                                @await Html.PartialAsync("OrganizationUnitTreeNode", new OrganizationUnitTreeNodeModel
+                                {
+                                    Depth = 0,
+                                    Node = Model.OrganizationUnitTreeRootNode.Children[i],
+                                    OrganizationUnits = Model.OrganizationUnits
+                                })
+                            }
+                        </ul>
+                    </div>
+
+                    @for (var i = 0; i < Model.OrganizationUnits.Length; i++)
+                    {
+                        var organizationUnits = Model.OrganizationUnits[i];
+                        <input readonly="readonly" asp-for="@organizationUnits.IsAssigned" abp-id-name="@Model.OrganizationUnits[i].IsAssigned" />
+                    }
+                }
+                else 
+                {
+                    <p class="text-muted">@L["NoOrganizationUnits"]</p>
+                }
+            </abp-tab>
+            <abp-tab title="@L["General"].Value">
+                <abp-table striped-rows="true" >
+                    <tbody>
+                        <tr>
+                            <td class="col-5">@L["CreatedBy"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.CreatedBy)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["CreationTime"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.CreationTime)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["ModifiedBy"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.ModifiedBy)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["ModificationTime"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.LastModificationTime)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["PasswordUpdateTime"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.LastPasswordChangeTime)</td>
+                        </tr>                    
+                        <tr>
+                            <td class="col-5">@L["LockoutEndTime"]</td>
+                            <td>@ConvertUserFriendlyFormat(Model.UserInfo.LockoutEnd)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-5">@L["FailedAccessCount"]</td>
+                            <td>@Model.UserInfo.AccessFailedCount</td>
+                        </tr>                    
+                    </tbody>
+                </abp-table>
+            </abp-tab>
+        </abp-tabs>
+    </abp-modal-body>
+    <abp-modal-footer>
+        <button class="btn btn-secondary w-100" data-bs-dismiss="modal" type="button">@L["Close"]</button>
+    </abp-modal-footer>
+</abp-modal>
+
+@functions
+{
+    const string DateTimeFormat = "MMMM dd, yyyy — HH:mm";
+    const string DefaultEmptyValue = "-";
+
+    string ConvertUserFriendlyFormat(DateTime? dateTime)
+    {
+        return dateTime == null ? DefaultEmptyValue : dateTime.Value.ToUniversalTime().ToString(DateTimeFormat);
+    }
+
+    string ConvertUserFriendlyFormat(DateTimeOffset? dateTime)
+    {
+        return dateTime == null ? DefaultEmptyValue : dateTime.Value.UtcDateTime.ToString(DateTimeFormat);
+    }
+
+    string ConvertUserFriendlyFormat(string value)
+    {
+        return value.IsNullOrWhiteSpace() ? DefaultEmptyValue : value;
+    }
+    
+    string ConvertUserFriendlyFormat(bool value)
+    {
+        return value ? L["Yes"].Value : L["No"].Value;
+    }
+}

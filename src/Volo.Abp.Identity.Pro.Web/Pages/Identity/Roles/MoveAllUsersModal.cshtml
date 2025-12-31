@@ -1,0 +1,32 @@
+@page
+@using System.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.Identity.Web.Pages.Identity.Users
+@model Volo.Abp.Identity.Web.Pages.Identity.Roles.MoveAllUsersModal
+@inject IHtmlLocalizer<IdentityResource> L
+@{
+    Layout = null;
+}
+
+<form method="post"  asp-page="/Identity/Roles/MoveAllUsersModal" autocomplete="off">
+    <abp-modal>
+        <abp-modal-header title="@(L["MoveAllUsers"].Value) - @(HttpUtility.HtmlEncode(@Model.Role.CurrentRoleName))"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="@Model.Role.CurrentRoleId" type="hidden"></abp-input>
+
+            <p id="MoveAllUsersWithRoleTo">@L.GetHtml("MoveAllUsersWithRoleTo", Model.Role.CurrentRoleName)</p>
+
+            <select name="Role.TargetRoleId" id="Role_TargetRoleId" class="form-select">
+                <option value="" selected>@L["UnassignRole"].Value</option>
+                @foreach (var role in Model.Role.TargetRoles)
+                {
+                    <option value="@role.Key">@role.Value</option>
+                }
+            </select>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

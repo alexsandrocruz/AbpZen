@@ -1,0 +1,17 @@
+{
+  "culture": "sk",
+  "texts": {
+    "Permission:Saas": "SaaS",
+    "Permission:TenantManagement": "Správa tenantov",
+    "Permission:EditionManagement": "Správa edícií",
+    "Permission:Create": "Vytvoriť",
+    "Permission:Edit": "Upraviť",
+    "Permission:Delete": "Zmazať",
+    "Permission:ManageConnectionStrings": "Správa connection stringov",
+    "Permission:SetPassword": "Nastaviť heslo",
+    "Permission:ManageFeatures": "Správa funkcií",
+    "Permission:ViewChangeHistory": "Zobraziť históriu zmien",
+    "Permission:Impersonation": "Odcudzenie identity",
+    "CheckYourProviderDashboard": "Ak chcete zrušiť toto predplatné, skontrolujte informačný panel poskytovateľa platieb."
+  }
+}

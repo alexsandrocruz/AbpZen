@@ -1,0 +1,85 @@
+{
+  "name": "Volo.CmsKit.Pro.Public.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.Pro.Public.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Public.Application.Contracts",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProPublicApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Public.Web",
+          "namespace": "Volo.CmsKit.Public.Web",
+          "name": "CmsKitPublicWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Common.Web",
+          "namespace": "Volo.CmsKit.Pro.Web",
+          "name": "CmsKitProCommonWebModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProPublicWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Public.Web.Pages.Public.Newsletters",
+      "contentType": "webPage",
+      "name": "EmailPreferencesModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Public.Web.Pages.Public.Newsletters",
+      "contentType": "webPage",
+      "name": "SuccessModalModel",
+      "summary": null
+    }
+  ]
+}

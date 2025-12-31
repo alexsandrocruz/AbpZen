@@ -1,0 +1,30 @@
+{
+  "culture": "tr",
+  "texts": {
+    "Appearance": "Görünüm",
+    "ContainerWidth": "Düzen",
+    "ContainerWidth:Boxed": "Kutulu Düzen",
+    "ContainerWidth:Fixed": "Sabit Düzen",
+    "ContainerWidth:Fluid": "Akışkan Düzen",
+    "GeneralSettings": "Genel Ayarlar",
+    "Language": "Dil",
+    "Login": "Giriş ",
+    "Settings": "Ayarlar",
+    "Theme:dark": "Koyu",
+    "Theme:dim": "Yarı Koyu",
+    "Theme:light": "Açık",
+    "Theme:system": "Sistem",
+    "Welcome": "Hoşgeldiniz",
+    "FilterMenu": "Menü bul",
+    "Authentication:YouAreLoggedOut": "Çıkış Yaptınız.",
+    "GivenTenantIsNotExist": "İstenilen müşteri bulunamadı: {0}",
+    "GivenTenantIsNotAvailable": "İstenilen müşteri bulunamadı: {0}",
+    "Tenant": "Müşteri",
+    "Switch": "değiştir",
+    "Name": "İsim",
+    "SwitchTenantHint": "Host tarafına geçmek için isim alanını boş bırakın.",
+    "SwitchTenant": "Müşteri değiştir",
+    "NotSelected": "Seçili değil",
+    "Menu": "Menü"
+  }
+}

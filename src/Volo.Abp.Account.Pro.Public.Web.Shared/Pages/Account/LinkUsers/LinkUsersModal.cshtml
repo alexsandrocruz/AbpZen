@@ -1,0 +1,60 @@
+﻿@page
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@using Volo.Abp.Account.LinkUsers
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.MultiTenancy
+@using Volo.Abp.Users
+@model Volo.Abp.Account.Pro.Public.Web.Shared.Pages.Account.LinkUsers.LinkUsersModalModel
+@inject IHtmlLocalizer<AccountResource> L
+@inject ICurrentUser CurrentUser
+@inject ICurrentTenant CurrentTenant
+@inject IOptions<AbpAccountLinkUserOptions> LinkUserOptions
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@L["LinkedAccounts"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <div class="text-end mb-3">
+            <abp-button button-type="Primary" id="CreateLinkUser" text="@L["NewLinkAccount"].Value"/>
+        </div>
+
+        @{
+            var returnUrl = Model.ReturnUrl ?? Url.Content("~/");
+            var returnUrlHash = Model.ReturnUrlHash;
+            var action = Url.Content("~/Account/LinkLogin");
+            if (!LinkUserOptions.Value.LoginUrl.IsNullOrEmpty())
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    action = LinkUserOptions.Value.LoginUrl.EnsureEndsWith('/') + "Account/LinkLogin";
+                    action += "?access_token=" + accessToken;
+                    returnUrl = $"{Request.Scheme}{Uri.SchemeDelimiter}{Request.Host}/Account/Challenge";
+                    returnUrlHash = "";
+                }
+            }
+
+            var linkUserLoginUrl = LinkUserOptions.Value.LoginUrl?.EnsureEndsWith('/') ?? "/";
+        }
+        <form method="post" data-ajaxForm="false" action="@action" id="linkUserLoginForm">
+            <input type="hidden" id="LinkUserLoginUrl" value="@linkUserLoginUrl"/>
+            <input type="hidden" name="SourceLinkUserId" value="@CurrentUser.Id">
+            <input type="hidden" name="SourceLinkTenantId" value="@CurrentTenant.Id">
+            <input type="hidden" name="SourceLinkToken">
+            <input type="hidden" name="TargetLinkUserId">
+            <input type="hidden" name="TargetLinkTenantId">
+            <input type="hidden" name="ReturnUrl" value="@returnUrl">
+            <input type="hidden" name="ReturnUrlHash" value="@returnUrlHash">
+        </form>
+
+        <abp-table  id="MyLinkUsersTable" class="nowrap"></abp-table>
+    </abp-modal-body>
+</abp-modal>
+
+<abp-script src="/Pages/Account/LinkUsers/LinkUsersModal.js" />

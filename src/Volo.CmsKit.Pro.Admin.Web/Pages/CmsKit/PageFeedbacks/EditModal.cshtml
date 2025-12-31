@@ -1,0 +1,35 @@
+﻿@page
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks
+@inherits AdminPageBase
+
+@model EditModalModel
+
+@{
+    Layout = null;
+}
+
+<form method="post" asp-page="/CmsKit/PageFeedbacks/EditModal">
+    <abp-modal size="@(AbpModalSize.Large)">
+        <abp-modal-header title="@L["Edit"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            @* Readonly fields *@
+            <abp-input asp-for="ViewModel.CreationTime" disabled="true" />
+            <abp-input asp-for="ViewModel.EntityType" disabled="true" />
+            <abp-input asp-for="ViewModel.EntityId" disabled="true" />
+            <abp-input asp-for="ViewModel.Url" disabled="true" />
+            <abp-input asp-for="ViewModel.IsUseful" disabled="true" />
+            <abp-input asp-for="ViewModel.UserNote" disabled="true" />
+            
+            @* Editable fields *@
+            <abp-input asp-for="ViewModel.IsHandled" />
+            <abp-input asp-for="ViewModel.AdminNote" />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.None)">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Cancel"]</button>
+            <button type="submit" class="btn btn-primary" id="UpdatePoll" data-busy-text="@L["Save"].Value">@L["Save"]</button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>

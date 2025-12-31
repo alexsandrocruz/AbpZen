@@ -1,0 +1,109 @@
+{
+  "imports": {
+    "Volo.Abp.PermissionManagement":{
+      "path" : "../../../abp/modules/permission-management/Volo.Abp.PermissionManagement.abpmdl",
+      "isInstalled" : true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.OpenIddict.Pro.Web.Unified": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.Web.Unified/Volo.Abp.OpenIddict.Pro.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.Web.Host": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.Web.Host/Volo.Abp.OpenIddict.Pro.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.Blazor.Host": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.Blazor.Host/Volo.Abp.OpenIddict.Pro.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.Blazor.Server.Host": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.Blazor.Server.Host/Volo.Abp.OpenIddict.Pro.Blazor.Server.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.OpenIddict": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.OpenIddict/Volo.Abp.OpenIddict.Pro.OpenIddict.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.Host.Shared": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.Host.Shared/Volo.Abp.OpenIddict.Pro.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Volo.Abp.OpenIddict.Pro.Web": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Web/Volo.Abp.OpenIddict.Pro.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Domain": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Domain/Volo.Abp.OpenIddict.Pro.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Domain.Shared": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Domain.Shared/Volo.Abp.OpenIddict.Pro.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Blazor": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Blazor/Volo.Abp.OpenIddict.Pro.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Blazor.Server": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Blazor.Server/Volo.Abp.OpenIddict.Pro.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Blazor.WebAssembly": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Blazor.WebAssembly/Volo.Abp.OpenIddict.Pro.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.HttpApi": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.HttpApi/Volo.Abp.OpenIddict.Pro.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.HttpApi.Client": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.HttpApi.Client/Volo.Abp.OpenIddict.Pro.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Application": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Application/Volo.Abp.OpenIddict.Pro.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.Application.Contracts": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.Application.Contracts/Volo.Abp.OpenIddict.Pro.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.EntityFrameworkCore": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.EntityFrameworkCore/Volo.Abp.OpenIddict.Pro.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.MongoDB": {
+      "path": "src/Volo.Abp.OpenIddict.Pro.MongoDB/Volo.Abp.OpenIddict.Pro.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.OpenIddict.Pro.TestBase": {
+      "path": "test/Volo.Abp.OpenIddict.Pro.TestBase/Volo.Abp.OpenIddict.Pro.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.OpenIddict.Pro.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Abp.OpenIddict.Pro.EntityFrameworkCore.Tests/Volo.Abp.OpenIddict.Pro.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.OpenIddict.Pro.MongoDB.Tests": {
+      "path": "test/Volo.Abp.OpenIddict.Pro.MongoDB.Tests/Volo.Abp.OpenIddict.Pro.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.OpenIddict.Pro.Application.Tests": {
+      "path": "test/Volo.Abp.OpenIddict.Pro.Application.Tests/Volo.Abp.OpenIddict.Pro.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Abp.OpenIddict.Pro.HttpApi.Host": {
+      "path": "host/Volo.Abp.OpenIddict.Pro.HttpApi.Host/Volo.Abp.OpenIddict.Pro.HttpApi.Host.abppkg",
+      "folder": "host"
+    }
+  }
+}

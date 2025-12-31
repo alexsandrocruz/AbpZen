@@ -1,0 +1,92 @@
+<div>
+  @if (directories) {
+    <abp-tree
+      [(nodes)]="directories"
+      [(expandedKeys)]="service.extendedKeys"
+      [draggable]="true"
+      (dropOver)="onDrop($event)"
+      (selectedNodeChange)="onNodeClick($event)"
+      (nzExpandChange)="onExpandedKeysChange($event)"
+      [selectedNode]="selectedNode"
+    >
+      <ng-template abp-tree-expanded-icon-template let-node let-origin="origin">
+        <i
+          class="far"
+          [class.fa-plus-square]="!node.isExpanded && origin?.entity?.hasChildren"
+          [class.fa-minus-square]="node.isExpanded && node.children.length"
+        ></i>
+      </ng-template>
+
+      <ng-template abp-tree-node-template let-node>
+        <i class="fa fa-folder text-primary me-2" aria-hidden="true"></i>
+        @if (node.origin.entity.isRoot) {
+          {{ 'FileManagement::AllFiles' | abpLocalization }}
+        } @else {
+          {{ node.title }}
+        }
+      </ng-template>
+
+      <ng-container *abpPermission="contextMenuPolicy">
+        <ng-template #menu let-node>
+          <li
+            *abpPermission="createPolicy"
+            class="pointer"
+            ngbDropdownItem
+            (click)="onCreate(node.origin.entity)"
+          >
+            {{ 'FileManagement::CreateFolder' | abpLocalization }}
+          </li>
+          @if (node.origin.entity.id !== rootId) {
+            <li
+              *abpPermission="updatePolicy"
+              class="pointer"
+              ngbDropdownItem
+              (click)="onRename(node.origin.entity)"
+            >
+              {{ 'FileManagement::Rename' | abpLocalization }}
+            </li>
+          }
+          @if (node.origin.entity.id !== rootId) {
+            <li
+              *abpPermission="updatePolicy"
+              class="pointer"
+              ngbDropdownItem
+              (click)="onMove(node)"
+            >
+              {{ 'FileManagement::Move' | abpLocalization }}
+            </li>
+          }
+          @if (node.origin.entity.id !== rootId) {
+            <li
+              *abpPermission="deletePolicy"
+              class="pointer"
+              ngbDropdownItem
+              (click)="onDelete(node.origin.entity)"
+            >
+              {{ 'FileManagement::Delete' | abpLocalization }}
+            </li>
+          }
+        </ng-template>
+      </ng-container>
+    </abp-tree>
+  }
+</div>
+
+<abp-create-folder-modal
+  [(visible)]="createModalVisible"
+  [parentId]="createModalParentId"
+></abp-create-folder-modal>
+
+<abp-rename-modal
+  [(visible)]="renameModalVisible"
+  [(contentToRename)]="contentToRename"
+  (contentRenamed)="onContentRenamed($event)"
+></abp-rename-modal>
+
+<abp-move-file-modal
+  [(visible)]="moveModalVisible"
+  (contentSaved)="afterFolderMoved()"
+  [fileToMove]="folderToMove"
+  [oldParentId]="parentOfFolderToMove"
+>
+</abp-move-file-modal>

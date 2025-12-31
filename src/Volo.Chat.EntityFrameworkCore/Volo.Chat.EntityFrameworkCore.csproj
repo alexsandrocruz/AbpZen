@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>Volo.Chat.EntityFrameworkCore</AssemblyName>
+    <PackageId>Volo.Chat.EntityFrameworkCore</PackageId>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.Chat.Domain\Volo.Chat.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.Users.EntityFrameworkCore" VersionOverride="9.0.4" />
+
+  </ItemGroup>
+
+</Project>

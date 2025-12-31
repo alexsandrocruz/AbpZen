@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Volo\CmsKit\Templates\*.tpl" />
+    <EmbeddedResource Include="Volo\CmsKit\Templates\*.tpl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.CmsKit.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Emailing" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TextTemplating" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Domain.Shared\Volo.CmsKit.Pro.Domain.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

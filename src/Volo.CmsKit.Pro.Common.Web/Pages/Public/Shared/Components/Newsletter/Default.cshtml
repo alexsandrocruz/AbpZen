@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@inject IHtmlLocalizer<CmsKitResource> L
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Newsletter.NewsletterViewModel
+
+<div class="cms-newsletter-area container" data-preference="@Model.Preference" data-source="@Model.Source" data-get-preferences-later="@Model.RequestAdditionalPreferencesLater">
+    <form id="newsletter-form-@Model.NormalizedSource" class="newsletter-form">
+        <div class="input-group mb-3">
+            <input id="newsletter-email-input-@Model.NormalizedSource" type="email" required class="form-control" name="newsletterEmail" placeholder="@L["EmailAddress"]" aria-label="Subscription" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="submit" id="newsletter-submit-button-@Model.NormalizedSource">@L["Subscribe"]</button>
+        </div>
+        <div class="mb-3 form-check">
+             @if (Model.PrivacyPolicyConfirmation != null)
+             {
+                 <input id="privacy-policy-checkbox-@Model.NormalizedSource" type="checkbox" data-val="false" required class="form-check-input ">
+                 <label class="form-check-label" for="privacy-policy-checkbox-@Model.NormalizedSource">
+                     @Html.Raw(@Model.PrivacyPolicyConfirmation)
+                 </label>
+             }
+        </div>
+        @if (!Model.RequestAdditionalPreferencesLater && Model.AdditionalPreferences.Count > 0)
+        {
+            <div id="additional-preference">
+                @for (var i = 0; i < Model.AdditionalPreferences.Count; i++)
+                {
+                    <div class="mb-3 form-check" data-additional-preference="@Model.AdditionalPreferences[i]">
+                        <input id="additional-@Model.AdditionalPreferences[i]-@Model.NormalizedSource" type="checkbox" data-val="false" class="form-check-input ">
+                        <label class="form-check-label" for="additional-@Model.AdditionalPreferences[i]-@Model.NormalizedSource">
+                            @Html.Raw(@Model.DisplayAdditionalPreferences[i])
+                        </label>
+                    </div>
+                }
+            </div>
+        }
+    </form>
+</div>

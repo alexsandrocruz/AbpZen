@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.PageFeedbacks
+@inject IHtmlLocalizer<CmsKitResource> L
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.PageFeedbacks.PageFeedbackModalViewDto
+@{
+    ViewBag.PageFeedbackModalId = Model.ModalId;
+}
+
+<abp-modal id="@Model.ModalId" size="Large">
+    <abp-modal-header>
+        @if (Model.HeaderVisible)
+        {
+            <h5 class="modal-title">
+                @(Model.HeaderText.IsNullOrWhiteSpace()
+                    ? L["PageFeedback:Header"].Value
+                    : Model.HeaderText)
+            </h5>
+            Model.HeaderVisible = false;
+        }
+    </abp-modal-header>
+    <abp-modal-body>
+        @(await Component.InvokeAsync(typeof(PageFeedbackViewComponent), Model))
+    </abp-modal-body>
+    <abp-modal-footer></abp-modal-footer>
+</abp-modal>

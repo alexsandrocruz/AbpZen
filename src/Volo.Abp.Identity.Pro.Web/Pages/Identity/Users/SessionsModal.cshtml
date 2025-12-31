@@ -1,0 +1,23 @@
+@page
+@using System.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Table
+@using Volo.Abp.Identity.Localization
+@model Volo.Abp.Identity.Web.Pages.Identity.Users.SessionsModal
+@inject IHtmlLocalizer<IdentityResource> L
+@{
+    Layout = null;
+}
+
+ <abp-modal size="ExtraLarge" id="UserSessionModal">
+    <abp-modal-header title="@(L["Sessions"].Value) - @(HttpUtility.HtmlEncode(Model.UserInfo.UserName))"></abp-modal-header>
+    <abp-modal-body>
+        <div id="IdentityUserSessionWrapper">
+            <input asp-for="UserId" type="hidden" />
+            <abp-table striped-rows="true" class="nowrap" id="IdentityUserSessionsTable"></abp-table>
+        </div>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)"></abp-modal-footer>
+</abp-modal>

@@ -1,0 +1,35 @@
+{
+  "name": "payment",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/payment/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/payment"],
+      "options": {
+        "tsConfig": "packages/payment/tsconfig.lib.json",
+        "project": "packages/payment/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/payment/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/payment"],
+      "options": {
+        "jestConfig": "packages/payment/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["commercial-ui"]
+}

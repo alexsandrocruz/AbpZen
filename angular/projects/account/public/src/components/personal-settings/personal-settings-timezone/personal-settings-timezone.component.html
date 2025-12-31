@@ -1,0 +1,16 @@
+<div class="mb-3">
+  <label class="form-label"
+    >{{ 'AbpSettingManagement::Menu:TimeZone' | abpLocalization }}<span class="ms-1"></span>
+  </label>
+  <div>
+    <select class="form-select form-control" [formControlName]="name" name="timezone">
+      @if (timeZones$ | async; as timezones) {
+        @for (item of timezones; track item.value) {
+          <option [ngValue]="item.value">
+            {{ item.name }}
+          </option>
+        }
+      }
+    </select>
+  </div>
+</div>

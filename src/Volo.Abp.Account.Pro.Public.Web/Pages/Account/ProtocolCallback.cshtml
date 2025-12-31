@@ -1,0 +1,21 @@
+@page "/Account/ProtocolCallback/{protocol}"
+@model Volo.Abp.Account.Public.Web.Pages.Account.ProtocolCallbackModel
+@inject Volo.Abp.AspNetCore.Mvc.UI.Layout.IPageLayout PageLayout
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@inject IHtmlLocalizer<AccountResource> L
+@{
+    PageLayout.Content.Title = L["ProtocolCallbackTitle"].Value;
+}
+
+<div class="text-center">
+    <h3>@L["ProtocolCallbackHeader"]</h3>
+    <p>@L["ProtocolCallbackDescription"]</p>
+    <a href="@Html.Raw(Model.RedirectUri)" class="btn btn-primary" type="button">@L["ProceedToApp"]</a>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.href = '@Html.Raw(Model.RedirectUri)';
+    }, 1000);
+</script>

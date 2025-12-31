@@ -1,0 +1,114 @@
+{
+  "name": "Volo.Abp.AuditLogging.Application.Contracts",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.AuditLogging",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application.Contracts",
+          "namespace": "Volo.Abp.Application",
+          "name": "AbpDddApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Authorization.Abstractions",
+          "namespace": "Volo.Abp.Authorization",
+          "name": "AbpAuthorizationAbstractionsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Domain.Shared",
+          "namespace": "Volo.Abp.AuditLogging",
+          "name": "AbpAuditLoggingDomainSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Features",
+          "namespace": "Volo.Abp.Features",
+          "name": "AbpFeaturesModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAuditLoggingApplicationContractsModule",
+      "summary": null
+    },
+    {
+      "displayName": "Audit logs",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "AuditLogging.AuditLogs",
+      "summary": null
+    },
+    {
+      "displayName": "Permission:SettingManagement",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "AuditLogging.AuditLogs.SettingManagement",
+      "summary": null
+    },
+    {
+      "valueType": "ToggleStringValueType",
+      "defaultValue": "true",
+      "displayName": "Enable audit logging page",
+      "description": "Enable audit logging page in the application.",
+      "isAvailableToHost": true,
+      "isVisibleToClients": true,
+      "contentType": "feature",
+      "name": "AuditLogging.Enable",
+      "summary": null
+    },
+    {
+      "valueType": "ToggleStringValueType",
+      "defaultValue": "false",
+      "displayName": "Enable audit log setting management",
+      "description": "Enable the configuration of the audit log setting management within the application.",
+      "isAvailableToHost": true,
+      "isVisibleToClients": true,
+      "contentType": "feature",
+      "name": "AuditLogging.SettingManagement",
+      "summary": null
+    }
+  ]
+}

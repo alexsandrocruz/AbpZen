@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.Abp.TextTemplateManagement": {
+      "path": "Volo.Abp.TextTemplateManagement.abpmdl"
+    }
+  }
+}

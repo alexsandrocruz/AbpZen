@@ -1,0 +1,35 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.Account.AuthorityDelegation
+@using Volo.Abp.Account.Localization
+@model Volo.Abp.Account.Pro.Public.Web.Shared.Pages.Account.AuthorityDelegation.AuthorityDelegationModal
+@inject IHtmlLocalizer<AccountResource> L
+@inject IOptions<AbpAccountAuthorityDelegationOptions> Options
+@{
+    Layout = null;
+}
+
+@if (Options.Value.EnableDelegatedImpersonation)
+{
+    <abp-modal id="AuthorityDelegationModal" size="Large">
+        <abp-modal-header title="@L["AuthorityDelegation"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-tabs>
+                <abp-tab title="@L["DelegatedUsers"].Value">
+                    <div class="text-end mb-3">
+                        <abp-button button-type="Primary" id="DelegateNewUser" text="@L["DelegateNewUser"].Value"/>
+                    </div>
+                    <abp-table  id="DelegateNewUsersTable" class="nowrap"></abp-table>
+                </abp-tab>
+                <abp-tab title="@L["MyDelegatedUsers"].Value">
+                    <abp-table  id="MyDelegatedUsersTable" class="nowrap"></abp-table>
+                     <form method="post" data-ajaxForm="false" action="~/Account/DelegatedImpersonate" id="DelegatedImpersonationForm">
+                        <input type="hidden" name="UserDelegationId">
+                    </form>
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+    </abp-modal>
+    <abp-script src="/Pages/Account/AuthorityDelegation/AuthorityDelegationModal.js"/>
+}

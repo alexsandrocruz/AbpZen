@@ -1,0 +1,73 @@
+<div id="lpx-wrapper">
+  <lpx-header
+    [navbarTemplateRef]="navbarPanel?.template"
+    [toolbarTemplateRef]="toolbar?.template"
+    [topNavbarTemplateRef]="topNavbar?.template"
+    [settingsTemplateRef]="settingsPanel?.template"
+    [logoTemplateRef]="logo?.template"
+  ></lpx-header>
+  <div class="lpx-topbar-container">
+    <div class="lpx-topbar">
+      <ng-container
+        *ngTemplateOutlet="breadcrumb?.template || defaultBreadcrumb"
+      >
+      </ng-container>
+      <div class="lpx-topbar-content">
+        <lpx-topbar-content></lpx-topbar-content>
+      </div>
+    </div>
+  </div>
+  <div class="lpx-content-container">
+    <div class="lpx-content">
+      <ng-container
+        *ngTemplateOutlet="contentPanel?.template || defaultContent"
+      ></ng-container>
+      <ng-template #defaultContent>
+        <ng-content></ng-content>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-container
+    *ngTemplateOutlet="mobileNavbar?.template || defaultMobileNavbar"
+  >
+  </ng-container>
+  <ng-template #defaultMobileNavbar>
+    <lpx-mobile-navbar *lpxResponsive="'all md-none'">
+      @if (logo?.template) {
+        <ng-template lpx-logo-panel>
+          <ng-container *ngTemplateOutlet="logo!.template"></ng-container>
+        </ng-template>
+      }
+      @if (mobileNavbarSettingsPanel?.template) {
+        <ng-template lpx-mobile-navbar-settings-panel>
+          <ng-container
+            *ngTemplateOutlet="mobileNavbarSettingsPanel!.template"
+          ></ng-container>
+        </ng-template>
+      }
+      @if (mobileNavbarProfilePanel?.template) {
+        <ng-template lpx-mobile-navbar-profile-panel>
+          <ng-container
+            *ngTemplateOutlet="mobileNavbarProfilePanel!.template"
+          ></ng-container>
+        </ng-template>
+      }
+    </lpx-mobile-navbar>
+  </ng-template>
+</div>
+
+<ng-template #defaultBreadcrumb>
+  <div class="lpx-breadcrumb-wrapper d-flex">
+    <nav class="lpx-breadcrumb-container">
+      <lpx-breadcrumb></lpx-breadcrumb>
+    </nav>
+  </div>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="footer?.template || defaultFooter">
+</ng-container>
+
+<ng-template #defaultFooter>
+  <lpx-footer></lpx-footer>
+</ng-template>

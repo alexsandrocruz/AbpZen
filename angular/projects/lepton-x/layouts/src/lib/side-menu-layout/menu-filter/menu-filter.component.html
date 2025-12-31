@@ -1,0 +1,16 @@
+<div class="lpx-menu-filter">
+  <lpx-icon iconClass="filter" class="menu-filter-icon"></lpx-icon>
+  <!-- TODO: PROVIDE API -->
+  <input
+    class="menu-filter-input hidden-in-hover-trigger"
+    type="text"
+    [(ngModel)]="service.menuFilter"
+    [placeholder]="menuFilterText | lpxTranslate | async"
+  />
+  <span
+    (click)="service.clearFilter()"
+    class="menu-filter-clear hidden-in-hover-trigger"
+    [class.hidden]="!service.menuFilter"
+    ><lpx-icon class="clear-icon" iconClass="x"></lpx-icon
+  ></span>
+</div>

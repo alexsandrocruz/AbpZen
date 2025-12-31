@@ -1,0 +1,37 @@
+<div class="lpx-toolbar">
+  @if (userProfileService.user$ | async; as user) {
+    <ng-content></ng-content>
+    <nav class="lpx-toolbar">
+      <ul class="lpx-nav-menu">
+        @if (authService.isUserExists$ | async) {
+          <li
+            #profileLink
+            class="outer-menu-item lpx-user-menu"
+            (click)="profileClick.emit()"
+          >
+            <a class="lpx-menu-item-link">
+              <lpx-avatar [avatar]="user.avatar"></lpx-avatar>
+              <span class="lpx-menu-item-text">{{ user.userName }}</span>
+            </a>
+          </li>
+        } @else {
+          <li class="outer-menu-item lpx-user-menu text-center">
+            <a class="lpx-menu-item-link" (click)="navigateToLogin()">
+              <i class="bi bi-box-arrow-right"></i>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <ng-container
+        *ngTemplateOutlet="
+          itemsTmp || defaultItemsTmp;
+          context: { $implicit: toolbarService.items$ | async }
+        "
+      ></ng-container>
+    </nav>
+  }
+  <ng-template #defaultItemsTmp let-items>
+    <lpx-toolbar-items [items]="items"></lpx-toolbar-items>
+  </ng-template>
+</div>

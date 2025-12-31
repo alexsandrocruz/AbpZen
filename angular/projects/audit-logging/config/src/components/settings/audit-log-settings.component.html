@@ -1,0 +1,23 @@
+<div id="AuditLogSettingsForm" class="row abp-md-form">
+  <div class="col-md-12">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs">
+      @if (!isTenant) {
+        <li ngbNavItem>
+          <a ngbNavLink>{{ 'AbpAuditLogging::AuditLogSettingsGlobal' | abpLocalization }}</a>
+
+          <ng-template ngbNavContent>
+            <abp-audit-log-settings-global [isTenant]="isTenant" />
+          </ng-template>
+        </li>
+      }
+
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'AbpAuditLogging::AuditLogSettingsGeneral' | abpLocalization }}</a>
+        <ng-template ngbNavContent>
+          <abp-audit-log-settings-general [isTenant]="isTenant" />
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

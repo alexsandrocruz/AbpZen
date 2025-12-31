@@ -1,0 +1,141 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.Account.Public.Web.Security.Recaptcha
+@using Volo.Abp.Account.Settings
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.Zxcvbn
+@using Volo.Abp.Settings
+@model Volo.Abp.Account.Public.Web.Pages.Account.RegisterModel
+@inject IHtmlLocalizer<AccountResource> L
+@inject Volo.Abp.AspNetCore.Mvc.UI.Layout.IPageLayout PageLayout
+@inject ISettingProvider SettingProvider
+@{
+    PageLayout.Content.Title = L["Register"].Value;
+    var reCaptchaVersion = await SettingProvider.GetAsync<int>(AccountSettingNames.Captcha.Version);
+}
+
+@if (Model.EnableLocalRegister)
+{
+    @section scripts
+    {
+        <abp-script-bundle name="@typeof(Volo.Abp.Account.Public.Web.Pages.Account.RegisterModel).FullName">
+            <abp-script type="@typeof(ZxcvbnScriptContributor)"/>
+            <abp-script src="/Pages/Account/PasswordComplexityIndicator.js"/>
+            <abp-script src="/Pages/Account/Register.js"/>
+        </abp-script-bundle>
+
+        @if (Model.UseCaptcha)
+        {
+            if (reCaptchaVersion == 3)
+            {
+                <recaptcha-script-v3/>
+                <recaptcha-script-v3-js action="register" execute="false" />
+            }
+            else
+            {
+                <recaptcha-script-v2/>
+            }
+        }
+    }
+}
+
+<div class="account-module-form">
+
+    @if (Model.EnableLocalLogin)
+    {
+        <h5 class="mb-2">@L["AlreadyRegistered"] <a class="text-decoration-none" href="@Url.Page("./Login", new { returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash })">@L["Login"]</a></h5>
+    }
+
+    <form method="post" id="registerForm">
+        @if (Model.EnableLocalRegister && Model.UseCaptcha)
+        {
+            <div class="mb-2">
+                <input type="hidden" data-captcha="true" name="@RecaptchaValidatorBase.RecaptchaResponseKey" id="@RecaptchaValidatorBase.RecaptchaResponseKey"/>
+            </div>
+        }
+
+        @if (Model.EnableLocalRegister || Model.IsExternalLogin)
+        {
+            <div class="form-floating mb-2">
+                <input asp-for="Input.UserName" type="text" class="form-control" placeholder="name@example.com" auto-focus="true">
+                @Html.LabelFor(m => m.Input.UserName)
+                <span asp-validation-for="Input.UserName" />
+            </div>
+        }
+
+        @if (Model.EnableLocalRegister || Model.IsExternalLogin)
+        {
+            <div class="form-floating mb-2">
+                <input asp-for="Input.EmailAddress" type="email" class="form-control" placeholder="name@example.com" auto-focus="true">
+                @Html.LabelFor(m => m.Input.EmailAddress)
+                <span asp-validation-for="Input.EmailAddress" />
+            </div>
+        }
+
+        @if (Model.EnableLocalRegister)
+        {
+            @if (!Model.IsExternalLogin)
+            {
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.Password" id="password-input" type="password" class="form-control" placeholder="Password">
+                    @Html.LabelFor(m => m.Input.Password)
+                    <i id="PasswordVisibilityButton" class="bi bi-eye-slash show-pass-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" aria-label="@L["ShowPassword"]" data-bs-original-title="@L["ShowPassword"]"></i>
+                    <i id="capslockicon" class="bi bi-capslock caps-lock-icon" style="display: none;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" aria-label="<i class='bi bi-exclamation-circle'></i> @L["CapsLockOn"]!" data-bs-original-title="<i class='bi bi-exclamation-circle'></i> @L["CapsLockOn"]!"></i>
+                    <span asp-validation-for="Input.Password" />
+                </div>
+            }
+
+            @if (reCaptchaVersion == 2)
+            {
+                <script>
+                    recaptchaCallback = function (token) {
+                        $('form button[type=submit]').removeAttr("disabled");
+                        $('#@RecaptchaValidatorBase.RecaptchaResponseKey').val(token)
+                    };
+                </script>
+                <div class="mb-3">
+                    <recaptcha-div-v2 callback="recaptchaCallback"/>
+                </div>
+            }
+        }
+
+        @if (Model.EnableLocalRegister || Model.IsExternalLoginOnly || Model.IsExternalLogin)
+        {
+            <div class="d-grid gap-2">
+                <abp-button button-type="Primary" type="submit" class="mt-2 mb-3" disabled="Model.EnableLocalRegister">@L["Register"]</abp-button>
+            </div>
+        }
+
+    </form>
+
+    @if (!Model.IsExternalLogin && Model.VisibleExternalProviders.Any())
+    {
+        if(Model.EnableLocalRegister)
+        {
+            <hr/>
+            @L["OrRegisterWith"]
+            <br/>
+        }
+        else
+        {
+            @L["RegisterWithOneOfTheFollowingProviders"]
+        }
+
+        <form asp-page="./Login" asp-page-handler="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" asp-route-returnUrlHash="@Model.ReturnUrlHash" method="post">
+            @foreach (var provider in Model.VisibleExternalProviders)
+            {
+                <button type="submit"
+                        class="mt-2 me-2 btn btn-outline-primary btn-sm"
+                        name="provider"
+                        value="@provider.AuthenticationScheme"
+                        data-busy-text="@L["ProcessingWithThreeDot"]">
+                    @if (provider.Icon != null)
+                    {
+                        <i class="@provider.Icon"></i>
+                    }
+                    <span>@provider.DisplayName</span>
+                </button>
+            }
+        </form>
+    }
+</div>

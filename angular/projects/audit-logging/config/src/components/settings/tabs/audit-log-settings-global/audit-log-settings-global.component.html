@@ -1,0 +1,76 @@
+<div [formGroup]="form" (keyup.enter)="submit()">
+  <div class="mb-2 custom-checkbox custom-control form-check">
+    <input
+      type="checkbox"
+      id="IsPeriodicDeleterEnabled"
+      name="IsPeriodicDeleterEnabled"
+      class="form-check-input"
+      formControlName="isPeriodicDeleterEnabled"
+    />
+    <label class="form-check-label" for="IsPeriodicDeleterEnabled">
+      {{ 'AbpAuditLogging::DisplayName:IsPeriodicDeleterEnabled' | abpLocalization }}
+    </label>
+
+    <div>
+      <span class="form-text text-muted mb-3">
+        {{ 'AbpAuditLogging::Description:IsPeriodicDeleterEnabled' | abpLocalization }}
+      </span>
+    </div>
+  </div>
+
+  @if (form.value.isPeriodicDeleterEnabled) {
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="IsExpiredDeleterEnabled"
+        name="IsExpiredDeleterEnabled"
+        class="form-check-input"
+        formControlName="isExpiredDeleterEnabled"
+      />
+      <label class="form-label" for="IsExpiredDeleterEnabled">
+        {{ 'AbpAuditLogging::DisplayName:GlobalIsExpiredDeleterEnabled' | abpLocalization }}
+      </label>
+      <div>
+        <small class="form-text text-muted">{{
+          'AbpAuditLogging::Description:GlobalIsExpiredDeleterEnabled' | abpLocalization
+        }}</small>
+      </div>
+    </div>
+
+    @if (form.value.isExpiredDeleterEnabled) {
+      <div class="mb-3 period-group">
+        <div class="input-group w-75">
+          <label class="input-group-text" for="ExpiredDeleterPeriod">
+            {{ 'AbpAuditLogging::DisplayName:ExpiredDeleterPeriod' | abpLocalization }}
+          </label>
+          <input
+            type="number"
+            id="ExpiredDeleterPeriod"
+            name="ExpiredDeleterPeriod"
+            class="form-control text-center valid"
+            formControlName="expiredDeleterPeriod"
+          />
+          <span class="input-group-text">
+            {{ 'AbpAuditLogging::ExpiredDeleterPeriodUnit' | abpLocalization }}
+          </span>
+        </div>
+        <p class="text-muted mt-1 ms-1 fst-italic">
+          {{
+            'AbpAuditLogging::AuditLogsBeforeXWillBeDeleted'
+              | abpLocalization
+                : (getDateBeforeToday(form.controls.expiredDeleterPeriod.value)
+                    | date: 'MM/dd/yyyy')
+          }}
+        </p>
+      </div>
+    }
+  }
+</div>
+
+<hr class="my-3" />
+
+<div>
+  <abp-button (click)="submit()" iconClass="fa fa-save" [loading]="loading">
+    {{ 'AbpAccount::Save' | abpLocalization }}
+  </abp-button>
+</div>

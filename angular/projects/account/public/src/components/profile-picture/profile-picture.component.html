@@ -1,0 +1,116 @@
+@if (profileLoaded) {
+<div class="row">
+  <div class="col">
+    <div class="mb-3">
+      <label class="form-label">{{ 'AbpAccount::CurrentProfilePicture' | abpLocalization }}</label>
+      <br />
+      <img
+        class="current-profile-picture"
+        [src]="(profilePicture$ | async)?.source"
+        alt="current-profile-picture"
+      />
+    </div>
+  </div>
+</div>
+<hr />
+
+<div class="row">
+  <div class="col">
+    <div class="form-check mb-2">
+      <input
+        type="radio"
+        name="pptype"
+        id="Radio_UseDefault"
+        class="form-check-input pp-type-selector"
+        [value]="0"
+        [(ngModel)]="profilePictureType"
+      />
+      <label class="form-check-label" for="Radio_UseDefault">{{
+        'AbpAccount::UseDefault' | abpLocalization
+      }}</label>
+    </div>
+    <div class="form-check mb-2">
+      <input
+        type="radio"
+        name="pptype"
+        id="Radio_UseGravatar"
+        class="form-check-input pp-type-selector"
+        [value]="1"
+        [(ngModel)]="profilePictureType"
+      />
+      <label class="form-check-label" for="Radio_UseGravatar">{{
+        'AbpAccount::DisplayName:UseGravatar' | abpLocalization
+      }}</label>
+      <small class="d-block form-text text-muted">{{
+        'AbpAccount::Description:UseGravatar' | abpLocalization
+      }}</small>
+    </div>
+    <div class="form-check mb-2">
+      <input
+        type="radio"
+        name="pptype"
+        id="Radio_UploadFile"
+        class="form-check-input pp-type-selector"
+        [value]="2"
+        [(ngModel)]="profilePictureType"
+      />
+      <label class="form-check-label" for="Radio_UploadFile">{{
+        'AbpAccount::UploadFile' | abpLocalization
+      }}</label>
+    </div>
+  </div>
+</div>
+
+@if (profilePictureType === 2) {
+<div class="row" id="UploadPPContainer">
+  <div class="col">
+    <h3>{{ 'AbpAccount::ChangeProfilePicture' | abpLocalization }}</h3>
+    <div class="mb-3">
+      <label for="UploadProfilePictureInfo_Picture" class="form-label">{{
+        'AbpAccount::SelectNewImage' | abpLocalization
+      }}</label
+      ><input
+        #uploadFile
+        accept="image/*"
+        type="file"
+        class="form-control"
+        id="UploadProfilePictureInfo_Picture"
+        (change)="onSelectImage($event.target.files[0])"
+      />
+    </div>
+
+    @if (selectedImage) {
+    <div class="general-image-container">
+      <img #selectedImgRef class="selected-image" alt="selected-image" [src]="selectedImage" />
+    </div>
+
+    <div id="CursorInfo" class="mt-2">
+      {{ 'AbpAccount::MoveCursorOnExamples' | abpLocalization }}
+    </div>
+
+    <div class="image-process-section">
+      <ul class="sample-images clearfix mt-2">
+        <li class="big"><img #preview alt="selected-image-preview-big" /></li>
+        <li class="medium"><img #preview alt="selected-image-preview-medium" /></li>
+        <li class="small"><img #preview alt="selected-image-preview-small" /></li>
+      </ul>
+    </div>
+    }
+  </div>
+</div>
+}
+
+<div class="mt-2 row">
+  <div class="col">
+    <button
+      class="btn btn-primary"
+      (click)="submit()"
+      [disabled]="inProgress || (profilePictureType === 2 && !selectedImage)"
+    >
+      {{ 'AbpAccount::SaveChanges' | abpLocalization }}
+    </button>
+  </div>
+</div>
+} @else {
+<div [abpLoading]="!profileLoaded"></div>
+}

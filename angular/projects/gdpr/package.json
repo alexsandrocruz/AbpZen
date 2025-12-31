@@ -1,0 +1,32 @@
+{
+  "name": "@volo/abp.ng.gdpr",
+  "version": "9.0.4",
+  "dependencies": {
+    "@abp/ng.components": "~9.0.4",
+    "@abp/ng.theme.shared": "~9.0.4",
+    "@volo/abp.commercial.ng.ui": "^9.0.4",
+    "tslib": "^2.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://abp.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/volo.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

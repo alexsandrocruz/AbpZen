@@ -1,0 +1,50 @@
+@using Volo.Chat.Messages
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+
+@if (Settings != null)
+{
+    <Row>
+        <Column>
+            <Form>
+                <Row>
+                    <Column>
+                        <Field>
+                            <FieldLabel>@L["DisplayName:Abp.Chat.DeletingMessages"]</FieldLabel>
+                            <Select TValue="ChatDeletingMessages" @bind-SelectedValue="@Settings.ChatSettings.DeletingMessages">
+                                <SelectItem Value="@ChatDeletingMessages.Enabled">@L["Enabled"]</SelectItem>
+                                <SelectItem Value="@ChatDeletingMessages.Disabled">@L["Disabled"]</SelectItem>
+                                <SelectItem Value="@ChatDeletingMessages.EnabledWithDeletionPeriod">@L["EnabledWithDeletionPeriod"]</SelectItem>
+                            </Select>
+                        </Field>
+
+                        @if (Settings.ChatSettings.DeletingMessages == ChatDeletingMessages.EnabledWithDeletionPeriod)
+                        {
+                            <Field>
+                                <FieldLabel>@L["DisplayName:Abp.Chat.MessageDeletionPeriod"]</FieldLabel>
+                                <NumericEdit TValue="int" @bind-Value="@Settings.ChatSettings.MessageDeletionPeriod" Min="1"/>
+                            </Field>
+                        }
+
+                        @if (Settings.ChatSettings.DeletingMessages == ChatDeletingMessages.Enabled)
+                        {
+                            <Field>
+                                <FieldLabel>@L["DisplayName:Abp.Chat.DeletingConversations"]</FieldLabel>
+                                <Select TValue="ChatDeletingConversations" @bind-SelectedValue="@Settings.ChatSettings.DeletingConversations">
+                                    <SelectItem Value="@ChatDeletingConversations.Enabled">@L["Enabled"]</SelectItem>
+                                    <SelectItem Value="@ChatDeletingConversations.Disabled">@L["Disabled"]</SelectItem>
+                                </Select>
+                            </Field>
+                        }
+                    </Column>
+                </Row>
+                <hr class="my-4"/>
+                
+                <Row>
+                    <Column>
+                        <SubmitButton Clicked="@UpdateSettingsAsync"/>
+                    </Column>
+                </Row>
+            </Form>
+        </Column>
+    </Row>
+}

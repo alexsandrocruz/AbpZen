@@ -1,0 +1,33 @@
+﻿@page
+@using Volo.Abp.GlobalFeatures
+@using Volo.CmsKit.GlobalFeatures
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls
+@using Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Poll
+@model Volo.CmsKit.Pro.Pages.Poll.Index
+
+<abp-row>
+    <abp-column size-md="_4">
+        @if (GlobalFeatureManager.Instance.IsEnabled<PollsFeature>())
+        {
+            @await Component.InvokeAsync(typeof(PollViewComponent), new
+            {
+                widgetName = "poll-left"
+            })
+        }
+    </abp-column>
+    <abp-column size-md="_4">
+        @if (GlobalFeatureManager.Instance.IsEnabled<PollsFeature>())
+        {
+            @await Component.InvokeAsync(typeof(PollViewComponent), new
+            {
+                widgetName = "poll-right"
+            })
+        }
+    </abp-column>
+     <abp-column size-md="_4">
+        @if (GlobalFeatureManager.Instance.IsEnabled<PollsFeature>())
+        {
+            @await Component.InvokeAsync(typeof(PollsViewComponent))
+        }
+    </abp-column>
+</abp-row>

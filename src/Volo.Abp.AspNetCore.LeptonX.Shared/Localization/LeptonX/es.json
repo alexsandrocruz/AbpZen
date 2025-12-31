@@ -1,0 +1,21 @@
+{
+  "Culture": "es",
+  "Texts": {
+    "Login": "Iniciar sesión",
+    "Appearance": "Apariencia",
+    "ContainerWidth": "Ancho del contenedor",
+    "ContainerWidth:Boxed": "Diseño en caja",
+    "ContainerWidth:Fixed": "Diseño fijo",
+    "ContainerWidth:Fluid": "Fluido",
+    "GeneralSettings": "Configuración general",
+    "Language": "Idioma",
+    "Settings": "Ajustes",
+    "Theme:dark": "Oscuro",
+    "Theme:dim": "Semioscuro",
+    "Theme:light": "Ligero",
+    "Theme:system": "Sistema",
+    "Welcome": "Bienvenido",
+    "FilterMenu": "Menú de filtro",
+    "Menu": "Menú"
+  }
+}

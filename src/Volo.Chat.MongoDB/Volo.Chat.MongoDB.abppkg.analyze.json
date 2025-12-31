@@ -1,0 +1,126 @@
+{
+  "name": "Volo.Chat.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Chat.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.Domain",
+          "namespace": "Volo.Chat",
+          "name": "ChatDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Users.MongoDB",
+          "namespace": "Volo.Abp.Users.MongoDB",
+          "name": "AbpUsersMongoDbModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "namespace": "Volo.Abp.MongoDB",
+          "name": "AbpMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Chat.MongoDB",
+      "connectionStringName": "Chat",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.Chat.Messages.Message",
+          "contentType": "databaseCollection",
+          "name": "ChatMessages",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Chat.Users.ChatUser",
+          "contentType": "databaseCollection",
+          "name": "ChatUsers",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Chat.Messages.UserMessage",
+          "contentType": "databaseCollection",
+          "name": "ChatUserMessages",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Chat.Conversations.Conversation",
+          "contentType": "databaseCollection",
+          "name": "ChatConversations",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "IChatMongoDbContext",
+          "namespace": "Volo.Chat.MongoDB",
+          "declaringAssemblyName": "Volo.Chat.MongoDB",
+          "fullName": "Volo.Chat.MongoDB.IChatMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "ChatMongoDbContext",
+      "summary": null
+    }
+  ]
+}

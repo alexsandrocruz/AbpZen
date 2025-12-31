@@ -1,0 +1,42 @@
+<ng-container *abpReplaceableTemplate="{ componentKey: errorComponentKey }">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-md-11 mx-auto">
+        <div
+          class="d-flex flex-column justify-content-center min-vh-100 align-items-center"
+        >
+          <div class="card">
+            <div class="card-body p-lg-5">
+              <div class="row">
+                <div class="col-auto d-flex align-items-center">
+                  <i
+                    class="bi bi-emoji-frown text-primary mb-3 mb-md-0 mx-3 mx-md-4"
+                    style="font-size: 12em"
+                  ></i>
+                </div>
+                <div class="col flex-center ps-lg-4">
+                  <div class="status-content">
+                    <h1 class="fw-bolder display-1 text-brand">
+                      {{ status() }}
+                    </h1>
+                    <h2 class="mb-0">{{ statusText() | abpLocalization }}</h2>
+                    <h5 class="text-muted">{{ detail() | abpLocalization }}</h5>
+
+                    @if (lastNavigation() && status() !== 403) {
+                      <a class="btn btn-primary soft me-2" (click)="goBack()">
+                        {{ 'AbpUi::GoBack' | abpLocalization }}
+                      </a>
+                    }
+                    <a class="btn btn-primary" (click)="goHome()">
+                      {{ 'AbpUi::GoHomePage' | abpLocalization }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

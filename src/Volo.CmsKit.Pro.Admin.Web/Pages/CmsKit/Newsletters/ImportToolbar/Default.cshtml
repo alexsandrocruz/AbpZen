@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@inject IHtmlLocalizer<CmsKitResource> L
+
+<abp-dropdown>
+    <abp-dropdown-button size="Small" button-type="Outline_Primary" text="@L["Import"].Value" />
+    <abp-dropdown-menu>
+        <abp-dropdown-item style="cursor: pointer" id="FromCsvButton">@L["FromCSV"]</abp-dropdown-item>
+    </abp-dropdown-menu>
+</abp-dropdown>

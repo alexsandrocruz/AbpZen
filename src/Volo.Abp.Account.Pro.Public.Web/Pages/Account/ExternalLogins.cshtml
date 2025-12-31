@@ -1,0 +1,69 @@
+@page
+@using Volo.Abp.Account.Public.Web.Pages.Account
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@inject IThemeManager ThemeManager
+@inject IHtmlLocalizer<AccountResource> L
+@inject IPageLayout PageLayout
+@model ExternalLoginsModel;
+@{
+    Layout = ThemeManager.CurrentTheme.GetApplicationLayout();
+    PageLayout.Content.Title = L["ExternalLogins"].Value;
+}
+
+@section scripts {
+<abp-script-bundle name="@typeof(ExternalLoginsModel).FullName">
+    <abp-script src="/Pages/Account/ExternalLogins.js"/>
+</abp-script-bundle>
+}
+
+<abp-card>
+    <abp-card-body>
+        <div class="text-end mb-3">
+            <abp-button button-type="Primary" size="Small" text="@L["NewExternalLogin"].Value" data-bs-toggle="modal" data-bs-target="#externalLoginsModal"/>
+        </div>
+        <abp-table striped-rows="true" id="ExternalLoginsTable" class="nowrap"></abp-table>
+    </abp-card-body>
+</abp-card>
+
+<div class="modal" id="externalLoginsModal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@L["NewExternalLogin"].Value</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Model.VisibleExternalProviders.Any())
+                {
+                    <p>@L["ClickToLoginWithYourExternalAccount"].Value</p>
+                    <form id="newExternalLoginForm" asp-page="./Login" asp-page-handler="NewExternalLogin" asp-route-returnUrl="/Account/ExternalLogins" method="post">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <button type="submit"
+                                    class="mt-2 me-2 btn btn-outline-primary btn-sm"
+                                    name="provider"
+                                    value="@provider.AuthenticationScheme"
+                                    data-busy-text="@L["ProcessingWithThreeDot"]">
+                                @if (provider.Icon != null)
+                                {
+                                    <i class="@provider.Icon"></i>
+                                }
+                                <span>@provider.DisplayName</span>
+                            </button>
+                        }
+                    </form>
+                }
+                else
+                {
+                    <p>@L["YouHaveNoExternalLoginProviderToSignIn"].Value</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Close"].Value</button>
+            </div>
+        </div>
+    </div>
+</div>

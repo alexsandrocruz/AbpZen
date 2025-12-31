@@ -1,0 +1,13 @@
+{
+  "culture": "ru",
+  "texts": {
+    "Permission:LanguageManagement": "Управление языками",
+    "Permission:LanguageTexts": "Языковые тексты",
+    "Permission:LanguageTextsEdit": "Редактировать языковые тексты",
+    "Permission:Languages": "Языки",
+    "Permission:LanguagesEdit": "Изменить язык",
+    "Permission:LanguagesCreate": "Создать язык",
+    "Permission:LanguagesChangeDefault": "Изменить язык по умолчанию",
+    "Permission:LanguagesDelete": "Удалить язык"
+  }
+}

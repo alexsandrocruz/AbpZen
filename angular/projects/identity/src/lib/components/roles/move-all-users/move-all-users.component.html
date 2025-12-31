@@ -1,0 +1,30 @@
+<abp-modal [visible]="visible" (visibleChange)="onVisibleChange($event)" [suppressUnsavedChangesWarning]="true">
+  <ng-template #abpHeader>
+      <h5 class="modal-title">
+        {{'AbpIdentity::MoveAllUsers' | abpLocalization}}
+      </h5>
+  </ng-template>
+  <ng-template #abpBody>
+      <p [innerHTML]="'AbpIdentity::MoveAllUsersWithRoleTo' | abpLocalization: name"></p>
+      <form [formGroup]="form" id="role-move-users-form" (ngSubmit)="save()">
+        <select class="form-select mt-2" formControlName="role">
+            <option value="" selected>{{ (loading() ? 'AbpUi::LoadingWithThreeDot': "AbpIdentity::UnassignRole") | abpLocalization}}</option>
+            @for (item of roles(); track $index) {
+              <option [value]="item.id">{{item.name}}</option>
+            }
+        </select>
+      </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+      <button abpClose type="button" class="btn btn-outline-primary">
+          {{ 'AbpUi::Cancel' | abpLocalization }}
+      </button>
+      <button type="submit" class="btn btn-primary" [loading]="loading()"
+      [disabled]="form.invalid && form.touched"
+      form="role-move-users-form" >
+          <i class="fa fa-check me-1" aria-hidden="true"></i>
+          {{ 'AbpUi::Save' | abpLocalization }}
+      </button>
+  </ng-template>
+</abp-modal>

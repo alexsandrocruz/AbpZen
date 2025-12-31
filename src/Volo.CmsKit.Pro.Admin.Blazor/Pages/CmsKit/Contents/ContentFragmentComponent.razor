@@ -1,0 +1,17 @@
+﻿@using Volo.Abp.Data
+
+<div id="content">
+    @foreach (var contentFragment in ContentDto.ContentFragments)
+    {
+        if (contentFragment.Type == "Markdown")
+        {
+            @((MarkupString)RenderMarkdown(contentFragment.GetProperty<string>("Content")));
+        }
+        else if (contentFragment.Type == "Widget")
+        {
+            var parameters = new Dictionary<string, object>(contentFragment.ExtraProperties);
+            parameters.Remove("Type");
+            <DynamicComponent Type="@Options.Value.FindComponentType(contentFragment.GetProperty<string>("Type"))" Parameters="parameters"></DynamicComponent>
+        }
+    }
+</div>

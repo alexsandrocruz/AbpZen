@@ -1,0 +1,14 @@
+<abp-page [title]="'AbpGdpr::PersonalData' | abpLocalization" [toolbar]="data.items">
+  <div class="mt-2">
+    <p class="alert alert-info">{{ 'AbpGdpr::PersonalDataDescription' | abpLocalization }}</p>
+  </div>
+  <div class="mt-4">
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>

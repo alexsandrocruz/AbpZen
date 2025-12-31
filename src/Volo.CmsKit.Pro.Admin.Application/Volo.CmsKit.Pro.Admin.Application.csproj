@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.CmsKit.Admin.Application" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Common.Application\Volo.CmsKit.Pro.Common.Application.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Domain\Volo.CmsKit.Pro.Domain.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.Application.Contracts\Volo.CmsKit.Pro.Admin.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" />
+  </ItemGroup>
+
+</Project>

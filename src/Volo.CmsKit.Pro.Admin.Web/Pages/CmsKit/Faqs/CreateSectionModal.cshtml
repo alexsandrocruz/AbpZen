@@ -1,0 +1,40 @@
+﻿@page
+
+@using Volo.Abp.AspNetCore.Mvc.UI.Alerts
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@inject IAlertManager AlertManager
+@inherits AdminPageBase
+
+@model CreateSectionModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <form abp-model="ViewModel" asp-page="/CmsKit/Faqs/CreateSectionModal">
+        <abp-modal-header title="@L["CreateSection"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-alerts>
+                @foreach(var alert in AlertManager.Alerts)
+                {
+                    <abp-alert alert-type="@alert.Type" dismissible="@alert.Dismissible">
+                        <h6 class="alert-heading">
+                            @alert.Title
+                        </h6>
+                        <p>
+                            @alert.Text
+                        </p>
+                    </abp-alert>
+                }
+            </abp-alerts>
+            <abp-select asp-for="ViewModel.GroupName" asp-items="@(new SelectList(Model.GroupNames))"></abp-select>
+            <span asp-validation-for="ViewModel.GroupName" class="text-danger"></span>
+            <abp-input asp-for="ViewModel.Name" class/>
+            <abp-input asp-for="ViewModel.Order" value="0"/>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </form>
+</abp-modal>

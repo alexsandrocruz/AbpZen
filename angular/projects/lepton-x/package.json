@@ -1,0 +1,38 @@
+{
+  "name": "@volosoft/ngx-lepton-x",
+  "version": "4.0.5",
+  "dependencies": {
+    "@volo/ngx-lepton-x.core": "4.0.5",
+    "perfect-scrollbar": "^1.5.5",
+    "bootstrap-icons": "~1.7.2",
+    "tslib": "^2.3.0",
+    "@floating-ui/dom": "~1.2.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./assets/*": {
+      "default": "./assets/*"
+    }
+  },
+  "homepage": "https://www.leptontheme.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/lepton.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

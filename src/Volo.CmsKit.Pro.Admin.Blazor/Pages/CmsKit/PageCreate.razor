@@ -1,0 +1,76 @@
+﻿@page "/Cms/Pages/Create"
+@attribute [Authorize(CmsKitAdminPermissions.Pages.Create)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.CmsKit.Admin.Pages
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Pages"]" BreadcrumbItems="@BreadcrumbItems">
+
+</PageHeader>
+
+<Card>
+    <CardBody>
+        <Form>
+            <Validations @ref="@ValidationsRef" Model="@Page" ValidateOnLoad="false">
+                <Validation MessageLocalizer="@LH.Localize">
+                    <Field>
+                        <FieldLabel>@L["Title"] *</FieldLabel>
+                        <TextEdit @bind-Text="Page.Title" Autofocus="true">
+                            <Feedback>
+                                <ValidationError/>
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+                <Validation MessageLocalizer="@LH.Localize">
+                    <Field>
+                        <FieldLabel>@L["Slug"] *</FieldLabel>
+                        <Tooltip Text="@L["PageSlugInformation"]">
+                            <TextEdit @bind-Text="Page.Slug" Autofocus="false">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Tooltip>
+                    </Field>
+                </Validation>
+                <ExtensionProperties TEntityType="CreatePageInputDto" TResourceType="CmsKitResource" Entity="@Page" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+            </Validations>
+            
+            <Tabs @bind-SelectedTab="@SelectedTab">
+                <Items>
+                    <Tab Name="content">@L["Content"]</Tab>
+                    <Tab Name="script">@L["Script"]</Tab>
+                    <Tab Name="style">@L["Style"]</Tab>
+                </Items>
+                <Content>
+                    <TabPanel Name="content">
+                        <DynamicWidgetMarkdown @bind-Value="@Page.Content"></DynamicWidgetMarkdown>
+                    </TabPanel>
+                    <TabPanel Name="script">
+                        <Markdown @bind-Value="@Page.Script" LineNumbers="true" HideIcons="@HideIcons" AutoDownloadFontAwesome="false" UploadImage="false">
+                            <Toolbar>
+                                <MarkdownToolbarButton Action="MarkdownAction.Bold"/>
+                            </Toolbar>
+                        </Markdown>
+                    </TabPanel>
+                    <TabPanel Name="style">
+                        <Markdown @bind-Value="@Page.Style" LineNumbers="true" HideIcons="@HideIcons" AutoDownloadFontAwesome="false" UploadImage="false">
+                            <Toolbar>
+                                <MarkdownToolbarButton Action="MarkdownAction.Bold" />
+                            </Toolbar>   
+                        </Markdown>
+                    </TabPanel>
+                </Content>
+            </Tabs>
+        </Form>
+    </CardBody>
+    <CardFooter>
+         <Button Color="Color.Primary" Clicked="@CreatePageAsync">@L["Submit"]</Button>
+    </CardFooter>
+</Card>

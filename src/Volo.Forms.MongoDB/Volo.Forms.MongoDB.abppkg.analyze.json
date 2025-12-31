@@ -1,0 +1,145 @@
+{
+  "name": "Volo.Forms.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Forms.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Forms.Domain",
+          "namespace": "Volo.Forms",
+          "name": "FormsDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "namespace": "Volo.Abp.MongoDB",
+          "name": "AbpMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "FormsMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.MongoDB",
+      "connectionStringName": "Forms",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.Forms.Forms.Form",
+          "contentType": "databaseCollection",
+          "name": "Forms",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Questions.QuestionBase",
+          "contentType": "databaseCollection",
+          "name": "Questions",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Choices.Choice",
+          "contentType": "databaseCollection",
+          "name": "Choices",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Questions.ChoosableItems.Checkbox",
+          "contentType": "databaseCollection",
+          "name": "Checkboxes",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Questions.ChoosableItems.ChoiceMultiple",
+          "contentType": "databaseCollection",
+          "name": "ChoiceMultiples",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Questions.ChoosableItems.DropdownList",
+          "contentType": "databaseCollection",
+          "name": "DropdownLists",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Questions.ShortText",
+          "contentType": "databaseCollection",
+          "name": "ShortTexts",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.Forms.Responses.FormResponse",
+          "contentType": "databaseCollection",
+          "name": "FormResponses",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "IFormsMongoDbContext",
+          "namespace": "Volo.Forms.MongoDB",
+          "declaringAssemblyName": "Volo.Forms.MongoDB",
+          "fullName": "Volo.Forms.MongoDB.IFormsMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "FormsMongoDbContext",
+      "summary": null
+    }
+  ]
+}

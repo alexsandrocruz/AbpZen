@@ -1,0 +1,50 @@
+﻿@page
+@using Localization.Resources.AbpUi
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Localization
+@using Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Newsletter
+@inject IStringLocalizer<AbpUiResource> Localizer
+@model Volo.CmsKit.Pro.Pages.Newsletter.Index
+
+<div class="container">  
+    <div class="card">
+        <div class="card-header">Newsletter - <strong>Privacy Policy Exist (widget invoke parameter)</strong></div> 
+        <div class="card-body">   
+            @{
+                var privacyPolicyMessage = new LocalizableString(typeof(AbpUiResource), "I agree to the <a href=\"https://commercial.abp.io/Privacy\">Privacy Policy</a>.");
+                @await Component.InvokeAsync(typeof(NewsletterViewComponent), new
+                {
+                    preference = "ExamplePreference1",
+                    source = "ExampleSource1",
+                    privacyPolicyConfirmation = privacyPolicyMessage
+                }) 
+            }
+        </div>         
+    </div>    
+    <div class="card">
+        <div class="card-header">Newsletter - <strong>Privacy Policy Default (newsletter option) and requestAdditionalPreferencesLater = true</strong></div> 
+        <div class="card-body">   
+            @{
+                @await Component.InvokeAsync(typeof(NewsletterViewComponent), new
+                {
+                    preference = "ExamplePreference2",
+                    source = "ExampleSource2",
+                    requestAdditionalPreferencesLater = true
+                }) 
+            }
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">Newsletter - <strong>Privacy Policy Not Exist</strong></div> 
+        <div class="card-body">   
+            @{
+                @await Component.InvokeAsync(typeof(NewsletterViewComponent), new
+                {
+                    preference = "ExamplePreference3",
+                    source = "ExampleSource3",
+                    requestAdditionalPreferencesLater = true
+                }) 
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.FileManagement": {
+      "path": "Volo.FileManagement.abpmdl"
+    }
+  }
+}

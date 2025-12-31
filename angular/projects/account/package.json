@@ -1,0 +1,35 @@
+{
+  "name": "@volo/abp.ng.account",
+  "version": "9.0.4",
+  "homepage": "https://abp.io",
+  "dependencies": {
+    "@abp/ng.components": "~9.0.4",
+    "@abp/ng.setting-management": "~9.0.4",
+    "@abp/ng.theme.shared": "~9.0.4",
+    "@volo/abp.commercial.ng.ui": "^9.0.4",
+    "angularx-qrcode": "^17.0.0",
+    "cropperjs": "^1.5.12",
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/volo.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

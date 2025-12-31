@@ -1,0 +1,189 @@
+{
+  "name": "Volo.Payment.DemoApp",
+  "hash": "2f50e578e75a1c25e2284be180ec702d",
+  "contents": [
+    {
+      "namespace": "Volo.Payment.DemoApp",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.Web",
+          "namespace": "Volo.Payment.Admin.Web",
+          "name": "AbpPaymentAdminWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.Application",
+          "namespace": "Volo.Payment.Admin",
+          "name": "AbpPaymentAdminApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.HttpApi",
+          "namespace": "Volo.Payment.Admin",
+          "name": "AbpPaymentAdminHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.EntityFrameworkCore",
+          "namespace": "Volo.Payment.EntityFrameworkCore",
+          "name": "AbpPaymentEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Payu.Domain",
+          "namespace": "Volo.Payment.Payu",
+          "name": "AbpPaymentPayuDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Payu.Web",
+          "namespace": "Volo.Payment.Payu",
+          "name": "AbpPaymentPayuWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Iyzico.Domain",
+          "namespace": "Volo.Payment.Iyzico",
+          "name": "AbpPaymentIyzicoDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Iyzico.Web",
+          "namespace": "Volo.Payment.Iyzico",
+          "name": "AbpPaymentIyzicoWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.TwoCheckout.Domain",
+          "namespace": "Volo.Payment.TwoCheckout",
+          "name": "AbpPaymentTwoCheckoutDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.TwoCheckout.Web",
+          "namespace": "Volo.Payment.TwoCheckout",
+          "name": "AbpPaymentTwoCheckoutWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.PayPal.Domain",
+          "namespace": "Volo.Payment.PayPal",
+          "name": "AbpPaymentPayPalDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.PayPal.Web",
+          "namespace": "Volo.Payment.PayPal",
+          "name": "AbpPaymentPayPalWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Stripe.Domain",
+          "namespace": "Volo.Payment.Stripe",
+          "name": "AbpPaymentStripeDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Stripe.Web",
+          "namespace": "Volo.Payment.Stripe",
+          "name": "AbpPaymentStripeWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.EntityFrameworkCore",
+          "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
+          "name": "AbpIdentityEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "namespace": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "name": "AbpEntityFrameworkCoreSqlServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Swashbuckle",
+          "namespace": "Volo.Abp.Swashbuckle",
+          "name": "AbpSwashbuckleModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Web",
+          "namespace": "Volo.Abp.Account.Web",
+          "name": "AbpAccountWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Web",
+          "namespace": "Volo.Abp.Identity.Web",
+          "name": "AbpIdentityWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Application",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.HttpApi",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Application",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Web",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.HttpApi",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Application",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.Identity",
+          "namespace": "Volo.Abp.PermissionManagement.Identity",
+          "name": "AbpPermissionManagementDomainIdentityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic",
+          "name": "AbpAspNetCoreMvcUiBasicThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Serilog",
+          "namespace": "Volo.Abp.AspNetCore.Serilog",
+          "name": "AbpAspNetCoreSerilogModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EventBus.RabbitMQ",
+          "namespace": "Volo.Abp.EventBus.RabbitMq",
+          "name": "AbpEventBusRabbitMqModule"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "DemoAppModule",
+      "summary": null
+    }
+  ]
+}

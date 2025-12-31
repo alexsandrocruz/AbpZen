@@ -1,0 +1,13 @@
+{
+  "culture": "sk",
+  "texts": {
+    "Permission:LanguageManagement": "Správa jazykov",
+    "Permission:LanguageTexts": "Texty jazykov",
+    "Permission:LanguageTextsEdit": "Úprava textov jazykov",
+    "Permission:Languages": "Jazyky",
+    "Permission:LanguagesEdit": "Upraviť jazyk",
+    "Permission:LanguagesCreate": "Vytvoriť jazyk",
+    "Permission:LanguagesChangeDefault": "Zmeniť predvolený jazyk",
+    "Permission:LanguagesDelete": "Vymazať jazyk"
+  }
+}

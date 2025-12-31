@@ -1,0 +1,110 @@
+{
+  "name": "Volo.Payment.Admin.Blazor",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Payment.Admin.Blazor",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Payment.Admin.Application.Contracts",
+          "namespace": "Volo.Payment.Admin",
+          "name": "AbpPaymentAdminApplicationContractsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpPaymentAdminBlazorModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "Index",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "Products",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "IndexTotalPriceCellComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "ProductsTotalPriceCellComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Requests",
+      "contentType": "webPage",
+      "name": "ProductsUnitPriceCellComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Plans",
+      "contentType": "webPage",
+      "name": "GatewayPlanManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Payment.Admin.Blazor.Pages.Payment.Plans",
+      "contentType": "webPage",
+      "name": "PlanManagement",
+      "summary": null
+    }
+  ]
+}

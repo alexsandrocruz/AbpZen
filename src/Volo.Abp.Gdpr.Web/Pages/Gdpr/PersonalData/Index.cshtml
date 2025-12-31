@@ -1,0 +1,39 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.Gdpr.Localization
+@model Pages.Gdpr.PersonalData.Index
+@inject PageLayout PageLayout
+@inject IHtmlLocalizer<AbpGdprResource> L
+
+@{
+    PageLayout.Content.Title = L["PersonalData"].Value;
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(Index).FullName">
+        <abp-script src="/client-proxies/gdpr-proxy.js" />
+        <abp-script src="/Pages/Gdpr/PersonalData/Index.js" />
+    </abp-script-bundle>
+}
+
+<div id="PersonalDataWrapper">
+    <p class="alert alert-info"><i class="fas fa-info-circle"></i> @L["PersonalDataDescription"]</p>
+    
+    <abp-card>
+        <abp-card-body>
+            <abp-row>
+                <abp-column>
+                    <div class="my-2 float-end">
+                        <form method="post" id="PersonalDataForm">
+                            <abp-button class="btn btn-outline-danger" id="PersonalDataDeleteBtn" type="button" text="@L["DeletePersonalData"].Value"/>
+                            <abp-button text="@L["RequestPersonalData"].Value" class="btn btn-primary" type="submit" disabled="@(!Model.IsNewRequestAllowed)"/>
+                        </form>
+                    </div>
+                </abp-column>
+            </abp-row>
+            
+            <abp-table  id="PersonalDataTable" class="nowrap"></abp-table>
+        </abp-card-body>
+    </abp-card>
+</div>

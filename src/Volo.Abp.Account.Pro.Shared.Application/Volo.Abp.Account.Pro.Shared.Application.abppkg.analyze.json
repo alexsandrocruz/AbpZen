@@ -1,0 +1,258 @@
+{
+  "name": "Volo.Abp.Account.Pro.Shared.Application",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Account",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Shared.Application.Contracts",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountSharedApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Emailing",
+          "namespace": "Volo.Abp.Emailing",
+          "name": "AbpEmailingModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Domain",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityProDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Domain",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application",
+          "namespace": "Volo.Abp.Application",
+          "name": "AbpDddApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.UI.Navigation",
+          "namespace": "Volo.Abp.UI.Navigation",
+          "name": "AbpUiNavigationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Json",
+          "namespace": "Volo.Abp.Json",
+          "name": "AbpJsonModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAccountSharedApplicationModule",
+      "summary": null
+    },
+    {
+      "defaultValue": "true",
+      "displayName": "Enable self registration",
+      "description": "Users can create accounts themselves.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.IsSelfRegistrationEnabled",
+      "summary": null
+    },
+    {
+      "defaultValue": "true",
+      "displayName": "Allow to register and log in with local username and password",
+      "description": "Indicates if Server will allow to register and log in with local username and password.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.EnableLocalLogin",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Prevent email enumeration",
+      "description": "The 'Forgot my password' screen will not return whether the given email is registered in the system or not.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.PreventEmailEnumeration",
+      "summary": null
+    },
+    {
+      "defaultValue": "true",
+      "displayName": "Remember browser",
+      "description": "",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.TwoFactorLogin.IsRememberBrowserEnabled",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Use captcha on user login",
+      "description": "Use captcha on user login",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.UseCaptchaOnLogin",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Use captcha on user registration",
+      "description": "Use captcha on user registration",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.UseCaptchaOnRegistration",
+      "summary": null
+    },
+    {
+      "defaultValue": "https://www.google.com/",
+      "displayName": "Verification URL",
+      "description": "The base URL of the Google service. Example URLs: https://www.google.com/, https://www.recaptcha.net/",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.VerifyBaseUrl",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Site key",
+      "description": "It is used to invoke reCAPTCHA service on your site. Leave empty to use the default value in the website configuration code.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.SiteKey",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Site secret",
+      "description": "It authorizes communication between your website and the reCAPTCHA server to verify the user's response. Leave empty to use the default value in website configuration code.",
+      "isVisibleToClient": false,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.SiteSecret",
+      "summary": null
+    },
+    {
+      "defaultValue": "3",
+      "displayName": "Version",
+      "description": "reCAPTCHA v3 verifies requests with a score, reCAPTCHA v2 verifies requests with a challenge.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.Version",
+      "summary": null
+    },
+    {
+      "defaultValue": "0.5",
+      "displayName": "Score",
+      "description": "It is the numeric threshold value from 0.0 to 1.0. The lower threshold values will allow spammers to pass the verification. By default, you can use a threshold of 0.5.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.Captcha.Score",
+      "summary": null
+    },
+    {
+      "defaultValue": "False",
+      "displayName": "Use Gravatar",
+      "description": "Use Gravatar service for your profile picture.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.ProfilePictureSource",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Abp.Account.ExternalProviders",
+      "description": "",
+      "isVisibleToClient": false,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.ExternalProviders",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Require Local Password on Social Account Linking",
+      "description": "Users who register via both local registration and external/social login using the same email address will be required to enter their local password on the first external/social login.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.VerifyPasswordDuringExternalLogin",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Abp.Account.ExternalLoginPasswordVerified",
+      "description": "",
+      "isVisibleToClient": false,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.ExternalLoginPasswordVerified",
+      "summary": null
+    }
+  ]
+}

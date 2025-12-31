@@ -1,0 +1,16 @@
+﻿@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars
+@using Volo.Abp.LeptonX.Shared;
+
+@inject IToolbarManager ToolbarManager
+
+@{
+    var toolbar = await ToolbarManager.GetAsync(StandardToolbars.Main);
+    var leptonxToolbar = await ToolbarManager.GetAsync(LeptonXToolbars.Main);
+    toolbar.Items.AddRange(leptonxToolbar.Items);
+}
+<div class="lpx-right-menu" id="lpx-top-menu-right">
+    @foreach (var item in toolbar.Items)
+    {
+        @await Component.InvokeAsync(item.ComponentType)
+    }
+</div>

@@ -1,0 +1,15 @@
+﻿@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.LanguageManagement.Dto
+@inherits AbpComponentBase
+@{
+    var language = Data.As<LanguageDto>();
+}
+
+@if (language.IsDefaultLanguage)
+{
+    <strong>@(language.DisplayName)(@L["DefaultLanguage"])</strong>
+}
+else
+{
+    @(language.DisplayName)
+}

@@ -1,0 +1,203 @@
+{
+  "name": "Volo.Abp.TextTemplateManagement.Web.Unified",
+  "hash": "bc11c4f7035dc563a38d55bda2a8a15d",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.TextTemplateManagement",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.Web",
+          "namespace": "Volo.Abp.TextTemplateManagement.Web",
+          "name": "TextTemplateManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.Application",
+          "namespace": "Volo.Abp.TextTemplateManagement",
+          "name": "TextTemplateManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.TextTemplateManagement.EntityFrameworkCore",
+          "name": "TextTemplateManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.TextTemplateManagement.HttpApi",
+          "namespace": "Volo.Abp.TextTemplateManagement",
+          "name": "TextTemplateManagementHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web",
+          "namespace": "Volo.Abp.Account.Public.Web",
+          "name": "AbpAccountPublicWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "namespace": "Volo.Abp.EntityFrameworkCore.SqlServer",
+          "name": "AbpEntityFrameworkCoreSqlServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Application",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Application",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Web",
+          "namespace": "Volo.Abp.Identity.Web",
+          "name": "AbpIdentityWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.EntityFrameworkCore",
+          "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
+          "name": "AbpIdentityProEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.Identity",
+          "namespace": "Volo.Abp.PermissionManagement.Identity",
+          "name": "AbpPermissionManagementDomainIdentityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Web",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Application",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.LeptonTheme.Management.Domain",
+          "namespace": "Volo.Abp.LeptonTheme.Management",
+          "name": "LeptonThemeManagementDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Web",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.EntityFrameworkCore",
+          "namespace": "Volo.Saas.EntityFrameworkCore",
+          "name": "SaasEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.HttpApi",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton",
+          "name": "AbpAspNetCoreMvcUiLeptonThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Application",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Web",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "namespace": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "name": "BlobStoringDatabaseEntityFrameworkCoreModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "TextTemplateManagementWebUnifiedModule",
+      "summary": null
+    }
+  ]
+}

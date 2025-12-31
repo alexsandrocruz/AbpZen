@@ -1,0 +1,17 @@
+{
+  "culture": "it",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Gestione tenant",
+    "Permission:EditionManagement": "Gestione delle edizioni",
+    "Permission:Create": "Crea",
+    "Permission:Edit": "Modifica",
+    "Permission:Delete": "Elimina",
+    "Permission:ManageConnectionStrings": "Gestisci le stringhe di connessione",
+    "Permission:SetPassword": "Impostare la password",
+    "Permission:ManageFeatures": "Gestisci le funzionalità",
+    "Permission:ViewChangeHistory": "Visualizza la cronologia delle modifiche",
+    "Permission:Impersonation": "Impersonificazione",
+    "CheckYourProviderDashboard": "Controlla il cruscotto del tuo fornitore di pagamento per cancellare questa sottoscrizione."
+  }
+}

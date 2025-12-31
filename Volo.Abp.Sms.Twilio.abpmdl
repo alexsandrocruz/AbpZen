@@ -1,0 +1,18 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.Sms.Twilio": {
+      "path": "src/Volo.Abp.Sms.Twilio/Volo.Abp.Sms.Twilio.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.Sms.Twilio.ConsoleTest": {
+      "path": "test/Volo.Abp.Sms.Twilio.ConsoleTest/Volo.Abp.Sms.Twilio.ConsoleTest.abppkg",
+      "folder": "test"
+    }
+  }
+}

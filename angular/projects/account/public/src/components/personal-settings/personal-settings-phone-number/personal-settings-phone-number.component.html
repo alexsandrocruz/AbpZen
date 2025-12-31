@@ -1,0 +1,51 @@
+<div class="mb-3">
+  <label [attr.for]="id" class="form-label">{{ displayName | abpLocalization }}</label>
+  <div class="input-group" validationTarget validationStyle>
+    <input type="text" [attr.id]="id" class="form-control" [formControlName]="name" />
+    @if (initialValue && isEnablePhoneNumberConfirmation) {
+      <div class="input-group-append">
+        <abp-personal-settings-verify-button
+          [verified]="isVerified"
+          [edited]="isValueChanged$ | async"
+          (btnClick)="initPhoneNumberConfirmation()"
+        ></abp-personal-settings-verify-button>
+      </div>
+    }
+  </div>
+</div>
+
+<abp-modal [(visible)]="modalVisible" [busy]="modalBusy" [options]="{ size: 'sm' }">
+  <ng-template #abpHeader>
+    <h5>{{ 'AbpAccount::Verify' | abpLocalization }}</h5>
+  </ng-template>
+  <ng-template #abpBody>
+    <form (ngSubmit)="confirmPhoneNumber()">
+      <div class="mt-2">
+        <p>
+          {{ 'AbpAccount::ConfirmationTokenSentMessage' | abpLocalization: formControl.value }}
+        </p>
+        <div class="mb-3">
+          <label class="form-label" for="confirm-phone-number">{{
+            'AbpAccount::PhoneConfirmationToken' | abpLocalization
+          }}</label>
+          <input
+            [(ngModel)]="token"
+            id="confirm-phone-number"
+            name="confirm-phone-number"
+            class="form-control"
+            type="text"
+            autofocus
+          />
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-primary">
+      {{ 'AbpAccount::Cancel' | abpLocalization }}
+    </button>
+    <abp-button type="abp-button" iconClass="fa fa-check" (click)="confirmPhoneNumber()">
+      {{ 'AbpAccount::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>

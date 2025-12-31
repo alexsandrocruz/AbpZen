@@ -1,0 +1,60 @@
+﻿@page "/Cms/BlogPosts"
+@attribute [Authorize(CmsKitAdminPermissions.BlogPosts.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Admin.Blogs
+@using Volo.CmsKit.Blogs
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits AbpCrudPageBase<IBlogPostAdminAppService, BlogPostDto, BlogPostListDto, Guid, BlogPostGetListInput, CreateBlogPostDto, UpdateBlogPostDto>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["BlogPosts"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is2">
+                    <Select TValue="BlogPostStatus?" SelectedValue="@GetListInput.Status" SelectedValueChanged="OnSelectedStatusChangedAsync">
+                        <SelectItem></SelectItem>
+                        @foreach (var status in BlogPostStatuses)
+                        {
+                            <SelectItem Value="@status">@status.ToString()</SelectItem>
+                        }
+                    </Select>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is10">
+                    <Fields Horizontal="true">
+                        <Addons>
+                            <Addon AddonType="AddonType.Body">
+                                <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true"/>
+                            </Addon>
+                            <Addon AddonType="AddonType.End">
+                                <SubmitButton Type="ButtonType.Button"
+                                              Clicked="@SearchEntitiesAsync">
+                                    <Icon Name="IconName.Search"/>
+                                </SubmitButton>
+                            </Addon>
+                        </Addons>
+                    </Fields>
+                </Column>
+            </Row>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="BlogPostListDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@BlogPostsManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>

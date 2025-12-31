@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <AssemblyName>Volo.Abp.Gdpr.Domain.Shared</AssemblyName>
+        <PackageId>Volo.Abp.Gdpr.Domain.Shared</PackageId>
+        <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Volo\Abp\Gdpr\Localization\*.json" />
+        <Content Remove="Volo\Abp\Gdpr\Localization\*.json" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.Localization" VersionOverride="9.0.4" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+    </ItemGroup>
+    
+</Project>

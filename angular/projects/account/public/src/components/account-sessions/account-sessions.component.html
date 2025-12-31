@@ -1,0 +1,81 @@
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink>{{ 'AbpIdentity::Sessions' | abpLocalization }}</a>
+    <ng-template ngbNavContent>
+      <ngx-datatable [rows]="data().items" [count]="data().totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'AbpUi::Actions' | abpLocalization" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button
+                class="btn btn-primary btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                ngbDropdownToggle
+              >
+                <i class="fa fa-cog me-1" aria-hidden="true"></i
+                >{{ 'AbpUi::Actions' | abpLocalization }}
+              </button>
+              <div ngbDropdownMenu>
+                <button ngbDropdownItem (click)="showDetail(row)">
+                  {{ 'AbpIdentity::Session:Detail' | abpLocalization }}
+                </button>
+                <button ngbDropdownItem (click)="revokeSession(row)">
+                  {{ 'AbpIdentity::Session:Revoke' | abpLocalization }}
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          [name]="'AbpIdentity::Session:Device' | abpLocalization"
+          [sortable]="true"
+          prop="device"
+        >
+          <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+            {{ value }}
+            @if (row.isCurrent) {
+              <i
+                class="fas fa-dot-circle"
+                [ngbTooltip]="'AbpIdentity::Session:Current' | abpLocalization"
+                container="body"
+                placement="end"
+              ></i>
+            }
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          [name]="'AbpIdentity::Session:DeviceInfo' | abpLocalization"
+          [sortable]="true"
+          prop="deviceInfo"
+        >
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          [name]="'AbpIdentity::Session:SignedIn' | abpLocalization"
+          [sortable]="true"
+          prop="signedIn"
+        >
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{ value | shortDateTime }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column
+          [name]="'AbpIdentity::Session:LastAccessed' | abpLocalization"
+          [sortable]="true"
+          prop="lastAccessed"
+        >
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{ value | shortDateTime }}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>
+
+@if (visibleSessionDetailModal()) {
+  <abp-account-session-detail
+    [sessionId]="sessionId()"
+    [(isModalVisible)]="visibleSessionDetailModal"
+  />
+}

@@ -1,0 +1,14 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Public.Web.Pages.Public.IndexModel
+@inject IStringLocalizer<CmsKitResource> L
+@{
+}
+
+@section scripts {
+    <abp-script src="/client-proxies/cms-kit-pro-common-proxy.js" />
+}
+
+<h1>Public</h1>
+<p>@L["SamplePageMessage"]</p>

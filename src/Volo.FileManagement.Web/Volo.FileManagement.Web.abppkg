@@ -1,0 +1,8 @@
+{
+  "role": "lib.mvc",
+  "npmDependecies": {
+    "@volo/file-management": {
+        "version": ""
+    }
+  }
+}

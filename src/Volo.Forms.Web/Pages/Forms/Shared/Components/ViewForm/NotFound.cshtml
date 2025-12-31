@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Forms.Localization
+@inject IHtmlLocalizer<FormsResource> L
+@model Volo.Forms.Web.Pages.Forms.Shared.Components.ViewForm.ViewFormViewModel
+
+<div class="lp-content h-100">
+   
+<div class="error-page-container">
+    <div class="row">
+        <div class="col-auto">
+            <div class="status-icon">
+                <i class="fa fa-frown-o text-danger" aria-hidden="true"></i>
+                <span></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="status-content">
+                <h1>404</h1>
+                <h2 class="text-danger mb-0">@L["ViewForm:NotFound"]<small class="text-muted">@Model.Id</small></h2>
+                <p class="mt-3 mb-4">@L["ViewForm:NotFoundDescription"]</p>
+                <a href="/" class="btn btn-primary">@L["GoToHomePage"]</a>
+                <a href="javascript:history.back()" class="mt-4 mb-1 d-block"><i class="fa fa-long-arrow-left"></i> @L["GoBack"]</a>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+</div>

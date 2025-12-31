@@ -1,0 +1,140 @@
+<div class="lpx-mobile-navbar-container">
+  <div class="lpx-mobile-navbar">
+    <div class="lpx-mobile-nav-tab-container">
+      <ul class="lpx-mobile-nav-tabs">
+        @for (tab of navTabs; track $index) {
+          @if (tab.children?.length) {
+            <li
+              class="lpx-mobile-nav-tab"
+              [class.selected]="activeMenu === tab.text"
+              (click)="toggleMenu(tab.text, tab.children)"
+            >
+              <a class="lpx-mobile-nav-item">
+                <lpx-icon class="menu-item-icon" [iconClass]="tab.icon" />
+                <span class="mobile-item-text">
+                  {{ tab.text! | lpxTranslate | async }}
+                </span>
+              </a>
+            </li>
+          } @else {
+            <li
+              class="lpx-mobile-nav-tab"
+              [routerLink]="tab.link"
+              [routerLinkActive]="tab.link ? 'selected' : ''"
+              [routerLinkActiveOptions]="{ exact: tab.link === '/' }"
+              [class.selected]="tab.expanded"
+              (click)="forceScrollToTop()"
+            >
+              <a class="lpx-mobile-nav-item">
+                @if (tab.icon) {
+                  <lpx-icon class="menu-item-icon" [iconClass]="tab.icon" />
+                }
+                <span class="mobile-item-text">
+                  {{ tab.text }}
+                </span>
+              </a>
+            </li>
+          }
+        }
+
+        <ng-container
+          *ngTemplateOutlet="settingsPanel?.template || defaultSettings"
+        ></ng-container>
+        <ng-container
+          *ngTemplateOutlet="profilePanel?.template || defaultProfile"
+        ></ng-container>
+
+        <li class="lpx-mobile-nav-tab">
+          <a
+            class="lpx-mobile-hamburger"
+            [ngClass]="toggleClass"
+            (click)="toggleNavbarMenu()"
+          >
+            <i
+              class="menu-item-icon bi bi-list"
+              aria-hidden="true"
+              [class.lpx-mobile-menu-opn]="activeMenu === 'navbar'"
+            ></i>
+            <span class="mobile-item-text">
+              {{ menuTitle | lpxTranslate | async }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lpx-mobile-menu" [hidden]="!menuVisible">
+    <div class="lpx-logo-container">
+      <ng-container
+        *ngTemplateOutlet="logoPanel?.template || defaultLogo"
+      ></ng-container>
+    </div>
+
+    @if (isAuthenticated() && activeMenu === 'profile') {
+      <div class="lpx-context-menu--header">
+        <div class="lpx-user-ctx-header">
+          <div class="lpx-user-ctx-img">
+            <lpx-avatar [avatar]="avatar()" />
+          </div>
+          <div class="lpx-user-ctx-info">
+            <span class="lpx-context-menu-user-name">
+              {{ userName() }}
+            </span>
+            <span class="lpx-context-menu-user-email">
+              {{ email() }}
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <lpx-navbar-routes
+      [navbarItems]="selectedMenuItems"
+      [groupedItems]="groupedItems$ | async"
+      (routeClick)="closeMenu()"
+    />
+
+    @if (activeMenu === 'profile') {
+      <hr class="my-2 mx-2 mr-2" />
+      <lpx-mobile-toolbar
+        [items]="toolbarService.items$ | async"
+        (routeClick)="closeMenu()"
+      />
+    }
+  </div>
+</div>
+
+<ng-template #defaultLogo>
+  <lpx-brand-logo />
+</ng-template>
+
+<ng-template #defaultSettings>
+  <li
+    class="lpx-mobile-nav-tab"
+    [class.selected]="activeMenu === 'settings'"
+    (click)="toggleMenu('settings', settingsMenuItems)"
+  >
+    <a class="lpx-mobile-nav-item">
+      <lpx-icon class="menu-item-icon" iconClass="gearConnected"></lpx-icon>
+      <span class="mobile-item-text">
+        {{ settingsTitle | lpxTranslate | async }}
+      </span>
+    </a>
+  </li>
+</ng-template>
+
+<ng-template #defaultProfile>
+  @if (isAuthenticated()) {
+    <li
+      class="lpx-mobile-nav-tab"
+      [class.selected]="activeMenu === 'profile'"
+      (click)="toggleMenu('profile', profileMenuItems)"
+    >
+      <a class="lpx-mobile-nav-item">
+        <lpx-avatar [avatar]="avatar()" />
+        <span class="mobile-item-text">{{ userName() }}</span>
+      </a>
+    </li>
+  }
+</ng-template>

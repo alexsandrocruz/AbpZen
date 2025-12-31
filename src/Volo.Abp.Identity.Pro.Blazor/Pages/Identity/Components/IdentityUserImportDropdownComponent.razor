@@ -1,0 +1,98 @@
+﻿@using Volo.Abp.Identity.Localization
+@using Microsoft.Extensions.Localization
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inject IStringLocalizer<IdentityResource> L
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+
+<Dropdown>
+    <DropdownToggle Color="Color.Primary" Outline Class="btn-outline">
+        @L["Import"]
+    </DropdownToggle>
+    <DropdownMenu>
+        <DropdownItem Clicked="@OpenExternalUserModalAsync">@L["ExternalUser"]</DropdownItem>
+        <DropdownItem Clicked="@(() => OpenUploadFileModalAsync(ImportUsersFromFileType.Excel))">@L["FromExcel"]</DropdownItem>
+        <DropdownItem Clicked="@(() => OpenUploadFileModalAsync(ImportUsersFromFileType.Csv))">@L["FromCSV"]</DropdownItem>
+    </DropdownMenu>
+</Dropdown>
+
+@* ************************* EXTERNAL USER MODAL ************************* *@
+<Modal @ref="ExternalUserModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["ExternalUser"]</ModalTitle>
+                <CloseButton Clicked="@CloseExternalUserModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@ExternalUserValidationsRef" Model="@ExternalUser" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Provider"] *</FieldLabel>
+                            <Select TValue="string" @bind-SelectedValue="ExternalUser.Provider">
+                                @for (var i = 0; i < ExternalLoginProviders.Count; i++)
+                                {
+                                    var value = ExternalLoginProviders[i].Name;
+                                    <SelectItem Value="@value">@value</SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["UserNameOrEmailAddress"] *</FieldLabel>
+                            <TextEdit Style="width: 100% !important; font-size: 1em !important; padding-left: 0.375rem !important;" @bind-Text="ExternalUser.UserNameOrEmailAddress">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    @{
+                        if (!ExternalLoginProviders.First(x => x.Name == ExternalUser.Provider).CanObtainUserInfoWithoutPassword)
+                        {
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["Password"]</FieldLabel>
+                                    <TextEdit Style="width: 100% !important; font-size: 1em !important; padding-left: 0.375rem !important;" @bind-Text="ExternalUser.Password" Role="TextRole.Password">
+                                        <Feedback>
+                                            <ValidationError/>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                        }
+                    }
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Primary" Outline Clicked="CloseExternalUserModal">@L["Cancel"]</Button>
+                <SubmitButton Clicked="@ImportExternalUserAsync"/>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* IMPORT USER FROM FILE MODAL ************************* *@
+<Modal @ref="UploadFileModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["UploadFile"]</ModalTitle>
+                <CloseButton Clicked="@CloseUploadFileModal"/>
+            </ModalHeader>
+            <ModalBody>
+                <div class="d-grid">
+                    <label for="importUserFile" class="mb-3 px-1 shadow-none btn">
+                        <i class="fas fa-upload me-2"></i>@UploadFile.FileName
+                    </label>
+                    <InputFile id="importUserFile" OnChange="@OnChooseFileChangedAsync" accept="@UploadFile.Accept" style="display: none"/>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button class="btn btn-link" Clicked="CloseUploadFileModal">@L["Close"]</Button>
+                <Button Color="Color.Primary" Outline Clicked="DownloadImportSampleFileAsync">@L["DownloadTemplateFile"]</Button>
+                <Button Color="Color.Primary" Clicked="ImportUsersFromFileAsync">@L["Upload"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

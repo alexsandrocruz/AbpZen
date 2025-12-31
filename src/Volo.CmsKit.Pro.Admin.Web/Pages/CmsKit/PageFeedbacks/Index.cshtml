@@ -1,0 +1,93 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Button
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Card
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Table
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.CmsKit.Pro.Admin.Web.Menus
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks
+
+@inherits Volo.CmsKit.Pro.Admin.Web.Pages.AdminPageBase
+
+@model IndexModel
+
+@{
+    PageLayout.Content.Title = L["PageFeedbacks"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:CMS"].Value);
+    PageLayout.Content.MenuItemName = CmsKitProAdminMenus.PageFeedbacks.PageFeedbackMenu;
+    var nullableBoolItems = new List<SelectListItem>
+    {
+        new SelectListItem { Text = L["-"], Value = "" },
+        new SelectListItem { Text = L["Yes"], Value = "true" },
+        new SelectListItem { Text = L["No"], Value = "false" }
+    };
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/cms-kit-common-proxy.js"/>
+        <abp-script src="/client-proxies/cms-kit-pro-admin-proxy.js"/>
+        <abp-script src="/Pages/CmsKit/PageFeedbacks/Index.js"/>
+        <abp-script src="/Pages/CmsKit/PageFeedbacks/Settings.js"/>
+    </abp-script-bundle>
+}
+
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row id="FilterSection">
+            <abp-column size="_12">
+                <div class="mb-3">
+                    <div class="row align-items-end">
+                        <abp-column size="Auto">
+                            <abp-select asp-for="IsHandled" label="@L["Handled"]" asp-items="nullableBoolItems"></abp-select>
+                        </abp-column>
+                        <abp-column size="Auto">
+                            <abp-select asp-for="IsUseful" label="@L["Useful"]" asp-items="nullableBoolItems"></abp-select>
+                        </abp-column>
+                        <abp-column size="Auto">
+                            <abp-select asp-for="HasUserNote" label="@L["UserNote"]" asp-items="nullableBoolItems"></abp-select>
+                        </abp-column> 
+                        <abp-column size="Auto">
+                            <abp-select asp-for="HasAdminNote" label="@L["AdminNote"]" asp-items="nullableBoolItems"></abp-select>
+                        </abp-column>
+                        <abp-column size="_12" size-sm="_8" size-md="_4">
+                            <abp-input asp-for="UrlFilter" label="@L["Url"]"/>
+                        </abp-column>
+                        <abp-column size="Auto">
+                            <abp-select asp-for="EntityType" asp-items="Array.Empty<SelectListItem>()"></abp-select>
+                        </abp-column>
+                        <abp-column size="Auto">
+                            <abp-input asp-for="EntityId"/>
+                        </abp-column>
+                        <abp-column size="Auto">
+                            <abp-button button-type="Primary" id="RefreshFilterButton" class="w-100 mb-3">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </abp-button>
+                        </abp-column>
+                    </div>
+                </div>
+            </abp-column>
+        </abp-row>
+    </abp-card-body>
+</abp-card>
+
+<abp-table  id="PageFeedbacksTable" class="nowrap"></abp-table>
+
+<abp-modal id="message-modal" size="@(AbpModalSize.Large)">
+    <abp-modal-header title="@L["View"].Value"></abp-modal-header>
+    <abp-modal-body>
+        <div class="mb-3">
+            <label for="message-body">@L["Message"]</label>
+            <textarea id="message-body" class="form-control" rows="4" disabled="disabled"></textarea>
+        </div>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Close)">
+    </abp-modal-footer>
+</abp-modal>

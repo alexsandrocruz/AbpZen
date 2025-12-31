@@ -1,0 +1,1422 @@
+{
+  "modules": {
+    "saas": {
+      "rootPath": "saas",
+      "remoteServiceName": "SaasHost",
+      "controllers": {
+        "Volo.Saas.Host.EditionController": {
+          "controllerName": "Edition",
+          "controllerGroupName": "Edition",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Saas.Host.EditionController",
+          "interfaces": [
+            {
+              "type": "Volo.Saas.Host.IEditionAppService",
+              "name": "IEditionAppService",
+              "methods": [
+                {
+                  "name": "GetAllListAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Saas.Host.Dtos.EditionDto>",
+                    "typeSimple": "[Volo.Saas.Host.Dtos.EditionDto]"
+                  }
+                },
+                {
+                  "name": "GetUsageStatisticsAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.GetEditionUsageStatisticsResultDto",
+                    "typeSimple": "Volo.Saas.Host.GetEditionUsageStatisticsResultDto"
+                  }
+                },
+                {
+                  "name": "GetPlanLookupAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Payment.Plans.PlanDto>",
+                    "typeSimple": "[Volo.Payment.Plans.PlanDto]"
+                  }
+                },
+                {
+                  "name": "MoveAllTenantsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "targetEditionId",
+                      "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                      "type": "System.Guid?",
+                      "typeSimple": "string?",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.EditionDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.GetEditionsInput, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.GetEditionsInput",
+                      "typeSimple": "Volo.Saas.Host.Dtos.GetEditionsInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.EditionDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.EditionDto>"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.EditionCreateDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.EditionDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.EditionUpdateDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.EditionDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/editions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.EditionDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Saas.Host.Dtos.EditionDto,Volo.Saas.Host.Dtos.EditionDto,System.Guid,Volo.Saas.Host.Dtos.GetEditionsInput>"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/editions",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.GetEditionsInput, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.GetEditionsInput",
+                  "typeSimple": "Volo.Saas.Host.Dtos.GetEditionsInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.EditionDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.EditionDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Saas.Host.Dtos.EditionDto,Volo.Saas.Host.Dtos.EditionDto,System.Guid,Volo.Saas.Host.Dtos.GetEditionsInput>"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/saas/editions",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.EditionCreateDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.EditionCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.EditionDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<Volo.Saas.Host.Dtos.EditionDto,Volo.Saas.Host.Dtos.EditionCreateDto>"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/saas/editions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.EditionUpdateDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.EditionUpdateDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.EditionDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.EditionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<Volo.Saas.Host.Dtos.EditionDto,System.Guid,Volo.Saas.Host.Dtos.EditionUpdateDto>"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/saas/editions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
+            },
+            "MoveAllTenantsAsyncByIdAndEditionId": {
+              "uniqueName": "MoveAllTenantsAsyncByIdAndEditionId",
+              "name": "MoveAllTenantsAsync",
+              "httpMethod": "PUT",
+              "url": "api/saas/editions/{id}/move-all-tenants",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "editionId",
+                  "typeAsString": "System.Nullable`1[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "editionId",
+                  "name": "editionId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Query",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.IEditionAppService"
+            },
+            "GetAllListAsync": {
+              "uniqueName": "GetAllListAsync",
+              "name": "GetAllListAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/editions/all",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Saas.Host.Dtos.EditionDto>",
+                "typeSimple": "[Volo.Saas.Host.Dtos.EditionDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.IEditionAppService"
+            },
+            "GetUsageStatisticsAsync": {
+              "uniqueName": "GetUsageStatisticsAsync",
+              "name": "GetUsageStatisticsAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/editions/statistics/usage-statistic",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "Volo.Saas.Host.GetEditionUsageStatisticsResultDto",
+                "typeSimple": "Volo.Saas.Host.GetEditionUsageStatisticsResultDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.IEditionAppService"
+            },
+            "GetPlanLookupAsync": {
+              "uniqueName": "GetPlanLookupAsync",
+              "name": "GetPlanLookupAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/editions/plan-lookup",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Payment.Plans.PlanDto>",
+                "typeSimple": "[Volo.Payment.Plans.PlanDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.IEditionAppService"
+            }
+          }
+        },
+        "Volo.Saas.Host.SubscriptionController": {
+          "controllerName": "Subscription",
+          "controllerGroupName": "Edition",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Saas.Host.SubscriptionController",
+          "interfaces": [
+            {
+              "type": "Volo.Saas.Subscription.ISubscriptionAppService",
+              "name": "ISubscriptionAppService",
+              "methods": [
+                {
+                  "name": "CreateSubscriptionAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "editionId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "tenantId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Payment.Requests.PaymentRequestWithDetailsDto",
+                    "typeSimple": "Volo.Payment.Requests.PaymentRequestWithDetailsDto"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "CreateSubscriptionAsyncByEditionIdAndTenantId": {
+              "uniqueName": "CreateSubscriptionAsyncByEditionIdAndTenantId",
+              "name": "CreateSubscriptionAsync",
+              "httpMethod": "POST",
+              "url": "api/saas/subscription",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "editionId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "tenantId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "editionId",
+                  "name": "editionId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "tenantId",
+                  "name": "tenantId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Requests.PaymentRequestWithDetailsDto",
+                "typeSimple": "Volo.Payment.Requests.PaymentRequestWithDetailsDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "Volo.Saas.Subscription.ISubscriptionAppService"
+            }
+          }
+        },
+        "Volo.Saas.Host.TenantController": {
+          "controllerName": "Tenant",
+          "controllerGroupName": "Tenant",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Saas.Host.TenantController",
+          "interfaces": [
+            {
+              "type": "Volo.Saas.Host.ITenantAppService",
+              "name": "ITenantAppService",
+              "methods": [
+                {
+                  "name": "GetDatabasesAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.SaasTenantDatabasesDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDatabasesDto"
+                  }
+                },
+                {
+                  "name": "GetConnectionStringsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto"
+                  }
+                },
+                {
+                  "name": "UpdateConnectionStringsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "ApplyDatabaseMigrationsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetEditionLookupAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Saas.Host.Dtos.EditionLookupDto>",
+                    "typeSimple": "[Volo.Saas.Host.Dtos.EditionLookupDto]"
+                  }
+                },
+                {
+                  "name": "CheckConnectionStringAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "connectionString",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Boolean",
+                    "typeSimple": "boolean"
+                  }
+                },
+                {
+                  "name": "SetPasswordAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.GetTenantsInput, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.GetTenantsInput",
+                      "typeSimple": "Volo.Saas.Host.Dtos.GetTenantsInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.SaasTenantDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.SaasTenantDto>"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantCreateDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto, Volo.Saas.Host.Application.Contracts",
+                      "type": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                      "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                    "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Saas.Host.Dtos.SaasTenantDto,Volo.Saas.Host.Dtos.SaasTenantDto,System.Guid,Volo.Saas.Host.Dtos.GetTenantsInput>"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.GetTenantsInput, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.GetTenantsInput",
+                  "typeSimple": "Volo.Saas.Host.Dtos.GetTenantsInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "GetEditionNames",
+                  "jsonName": null,
+                  "type": "System.Boolean",
+                  "typeSimple": "boolean",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "EditionId",
+                  "jsonName": null,
+                  "type": "System.Guid?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ExpirationDateMin",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ExpirationDateMax",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ActivationState",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ActivationEndDateMin",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "ActivationEndDateMax",
+                  "jsonName": null,
+                  "type": "System.DateTime?",
+                  "typeSimple": "string?",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.SaasTenantDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Saas.Host.Dtos.SaasTenantDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Saas.Host.Dtos.SaasTenantDto,Volo.Saas.Host.Dtos.SaasTenantDto,System.Guid,Volo.Saas.Host.Dtos.GetTenantsInput>"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/saas/tenants",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantCreateDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<Volo.Saas.Host.Dtos.SaasTenantDto,Volo.Saas.Host.Dtos.SaasTenantCreateDto>"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/saas/tenants/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantUpdateDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.SaasTenantDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<Volo.Saas.Host.Dtos.SaasTenantDto,System.Guid,Volo.Saas.Host.Dtos.SaasTenantUpdateDto>"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/saas/tenants/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
+            },
+            "GetDatabasesAsync": {
+              "uniqueName": "GetDatabasesAsync",
+              "name": "GetDatabasesAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants/databases",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.SaasTenantDatabasesDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantDatabasesDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "GetConnectionStringsAsyncById": {
+              "uniqueName": "GetConnectionStringsAsyncById",
+              "name": "GetConnectionStringsAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants/{id}/connection-strings",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "UpdateConnectionStringsAsyncByIdAndInput": {
+              "uniqueName": "UpdateConnectionStringsAsyncByIdAndInput",
+              "name": "UpdateConnectionStringsAsync",
+              "httpMethod": "PUT",
+              "url": "api/saas/tenants/{id}/connection-strings",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantConnectionStringsDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "ApplyDatabaseMigrationsAsyncById": {
+              "uniqueName": "ApplyDatabaseMigrationsAsyncById",
+              "name": "ApplyDatabaseMigrationsAsync",
+              "httpMethod": "POST",
+              "url": "api/saas/tenants/{id}/apply-database-migrations",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "GetEditionLookupAsync": {
+              "uniqueName": "GetEditionLookupAsync",
+              "name": "GetEditionLookupAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants/lookup/editions",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Saas.Host.Dtos.EditionLookupDto>",
+                "typeSimple": "[Volo.Saas.Host.Dtos.EditionLookupDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "CheckConnectionStringAsyncByConnectionString": {
+              "uniqueName": "CheckConnectionStringAsyncByConnectionString",
+              "name": "CheckConnectionStringAsync",
+              "httpMethod": "GET",
+              "url": "api/saas/tenants/check-connection-string",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "connectionString",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "connectionString",
+                  "name": "connectionString",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            },
+            "SetPasswordAsyncByIdAndInput": {
+              "uniqueName": "SetPasswordAsyncByIdAndInput",
+              "name": "SetPasswordAsync",
+              "httpMethod": "PUT",
+              "url": "api/saas/tenants/{id}/set-password",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto, Volo.Saas.Host.Application.Contracts",
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                  "typeSimple": "Volo.Saas.Host.Dtos.SaasTenantSetPasswordDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Saas.Host.ITenantAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

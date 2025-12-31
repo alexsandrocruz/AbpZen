@@ -1,0 +1,89 @@
+﻿@page "/payment/requests"
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Payment.Admin.Permissions
+@using Volo.Payment.Admin.Plans
+@using Volo.Payment.Plans
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.Application.Dtos
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.Payment.Localization
+@using Volo.Payment.Admin.Requests
+@using Volo.Payment.Requests
+@using System.Linq
+@inject AbpBlazorMessageLocalizerHelper<PaymentResource> LH
+@inject NavigationManager NavigationManager
+
+@inherits AbpPaymentAdminComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["PaymentRequests"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+	<CardBody>
+		<Form>
+			<Fields>
+				<Field ColumnSize="ColumnSize.Is3">
+					<FieldLabel>@L["DisplayName:CreationTime"]</FieldLabel>
+					<DatePicker TValue="DateTime?"
+						Placeholder="@string.Empty"
+						SelectionMode="DateInputSelectionMode.Range"
+						DatesChanged="OnCreationTimeChangedAsync"/>
+				</Field>
+				<Field ColumnSize="ColumnSize.Is3">
+					<FieldLabel>@L["PaymentRequests:PaymentType"]</FieldLabel>
+
+					<Select Placeholder="@string.Empty" TValue="PaymentType?" @bind-SelectedValue="@GetListInput.PaymentType">
+						<option value="@((PaymentType?)null)">-</option>
+						@foreach (var item in PaymentTypes)
+						{
+							<SelectItem Value="@item">@L["PaymentType:" + item]</SelectItem>
+						}
+					</Select>
+				</Field>
+				<Field ColumnSize="ColumnSize.Is3">
+					<FieldLabel>@L["PaymentRequests:Status"]</FieldLabel>
+					<Select Placeholder="@string.Empty" TValue="PaymentRequestState?" @bind-SelectedValue="@GetListInput.Status">
+						<option value="@((PaymentRequestState?)null)">-</option>
+						@foreach (var item in PaymentRequestStates)
+						{
+							<SelectItem Value="@item">@L["Enum:PaymentRequestState:" + (int)item]</SelectItem>
+						}
+					</Select>
+				</Field>
+				<Field ColumnSize="ColumnSize.Is3">
+					<FieldLabel>@L["PaymentRequests:Search"]</FieldLabel>
+					<TextEdit Placeholder="@string.Empty" @bind-Text="@GetListInput.Filter" />
+				</Field>
+				<Field ColumnSize="ColumnSize.Is12">
+					<Row>
+						<Column ColumnSize="ColumnSize.Is9"></Column>
+						<Column ColumnSize="ColumnSize.Is3">
+							<SubmitButton Block="true"
+										  Clicked="@GetEntitiesAsync">
+								<Icon Name="IconName.Search" />
+							</SubmitButton>
+						</Column>
+					</Row>
+				</Field>
+			</Fields>
+		</Form>
+	</CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+	<CardBody>
+		<AbpExtensibleDataGrid TItem="PaymentRequestWithDetailsDto"
+							   Data="Entities"
+							   ReadData="OnDataGridReadAsync"
+							   TotalItems="TotalCount"
+							   ShowPager="true"
+							   PageSize="PageSize"
+							   CurrentPage="@CurrentPage"
+							   Columns="@PaymentRequestTableColumns">
+		</AbpExtensibleDataGrid>
+	</CardBody>
+</Card>

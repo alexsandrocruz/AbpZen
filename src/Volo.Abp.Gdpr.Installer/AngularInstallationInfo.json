@@ -1,0 +1,29 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.gdpr",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'gdpr', loadChildren: () => import('@volo/abp.ng.gdpr').then(m => m.GdprModule.forLazy()),}"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"GdprConfigModule",
+							"provideGdprConfig"
+						],
+						"namespace": "@volo/abp.ng.gdpr/config"
+					}
+				],
+				"ngModuleImports":[
+					"GdprConfigModule"
+				],
+				"providerNames":[
+					"provideGdprConfig()"
+				]
+			}
+		}
+	]
+}

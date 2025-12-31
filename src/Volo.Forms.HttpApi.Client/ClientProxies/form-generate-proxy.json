@@ -1,0 +1,1865 @@
+{
+  "modules": {
+    "form": {
+      "rootPath": "form",
+      "remoteServiceName": "Forms",
+      "controllers": {
+        "Volo.Forms.Responses.ResponseController": {
+          "controllerName": "Response",
+          "controllerGroupName": "Form",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Forms.Responses.ResponseController",
+          "interfaces": [
+            {
+              "type": "Volo.Forms.Responses.IResponseAppService",
+              "name": "IResponseAppService",
+              "methods": [
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Responses.FormResponseDto",
+                    "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+                  }
+                },
+                {
+                  "name": "GetQuestionsWithAnswersAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Forms.Responses.QuestionWithAnswersDto>",
+                    "typeSimple": "[Volo.Forms.Responses.QuestionWithAnswersDto]"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Responses.GetUserFormListInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Responses.GetUserFormListInputDto",
+                      "typeSimple": "Volo.Forms.Responses.GetUserFormListInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDto>"
+                  }
+                },
+                {
+                  "name": "GetFormDetailsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "formId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Forms.FormDto",
+                    "typeSimple": "Volo.Forms.Forms.FormDto"
+                  }
+                },
+                {
+                  "name": "GetUserFormsByUserIdAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "userId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormWithResponseDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormWithResponseDto>"
+                  }
+                },
+                {
+                  "name": "SaveAnswersAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "formId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Responses.CreateResponseDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Responses.CreateResponseDto",
+                      "typeSimple": "Volo.Forms.Responses.CreateResponseDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Responses.FormResponseDto",
+                    "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+                  }
+                },
+                {
+                  "name": "UpdateAnswersAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Responses.UpdateResponseDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Responses.UpdateResponseDto",
+                      "typeSimple": "Volo.Forms.Responses.UpdateResponseDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Responses.FormResponseDto",
+                    "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/responses/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Responses.FormResponseDto",
+                "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/responses",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Responses.GetUserFormListInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Responses.GetUserFormListInputDto",
+                  "typeSimple": "Volo.Forms.Responses.GetUserFormListInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "GetQuestionsWithAnswersAsyncById": {
+              "uniqueName": "GetQuestionsWithAnswersAsyncById",
+              "name": "GetQuestionsWithAnswersAsync",
+              "httpMethod": "GET",
+              "url": "api/responses/{id}/questions-with-answers",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Forms.Responses.QuestionWithAnswersDto>",
+                "typeSimple": "[Volo.Forms.Responses.QuestionWithAnswersDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "GetFormDetailsAsyncByFormId": {
+              "uniqueName": "GetFormDetailsAsyncByFormId",
+              "name": "GetFormDetailsAsync",
+              "httpMethod": "GET",
+              "url": "api/responses/form-details/{formId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "formId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "formId",
+                  "name": "formId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Forms.FormDto",
+                "typeSimple": "Volo.Forms.Forms.FormDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "GetUserFormsByUserIdAsyncByUserId": {
+              "uniqueName": "GetUserFormsByUserIdAsyncByUserId",
+              "name": "GetUserFormsByUserIdAsync",
+              "httpMethod": "GET",
+              "url": "api/responses/{userId}/response",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "userId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "userId",
+                  "name": "userId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormWithResponseDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormWithResponseDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "SaveAnswersAsyncByFormIdAndInput": {
+              "uniqueName": "SaveAnswersAsyncByFormIdAndInput",
+              "name": "SaveAnswersAsync",
+              "httpMethod": "POST",
+              "url": "api/responses",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "formId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Responses.CreateResponseDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Responses.CreateResponseDto",
+                  "typeSimple": "Volo.Forms.Responses.CreateResponseDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "formId",
+                  "name": "formId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Responses.CreateResponseDto",
+                  "typeSimple": "Volo.Forms.Responses.CreateResponseDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Responses.FormResponseDto",
+                "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "UpdateAnswersAsyncByIdAndInput": {
+              "uniqueName": "UpdateAnswersAsyncByIdAndInput",
+              "name": "UpdateAnswersAsync",
+              "httpMethod": "POST",
+              "url": "api/responses/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Responses.UpdateResponseDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Responses.UpdateResponseDto",
+                  "typeSimple": "Volo.Forms.Responses.UpdateResponseDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Responses.UpdateResponseDto",
+                  "typeSimple": "Volo.Forms.Responses.UpdateResponseDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Responses.FormResponseDto",
+                "typeSimple": "Volo.Forms.Responses.FormResponseDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/responses/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Responses.IResponseAppService"
+            }
+          }
+        },
+        "Volo.Forms.Questions.QuestionController": {
+          "controllerName": "Question",
+          "controllerGroupName": "Form",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Forms.Questions.QuestionController",
+          "interfaces": [
+            {
+              "type": "Volo.Forms.Questions.IQuestionAppService",
+              "name": "IQuestionAppService",
+              "methods": [
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Questions.GetQuestionListDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Questions.GetQuestionListDto",
+                      "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Forms.Questions.QuestionDto>",
+                    "typeSimple": "[Volo.Forms.Questions.QuestionDto]"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Questions.QuestionDto",
+                    "typeSimple": "Volo.Forms.Questions.QuestionDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Questions.UpdateQuestionDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Questions.UpdateQuestionDto",
+                      "typeSimple": "Volo.Forms.Questions.UpdateQuestionDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Questions.QuestionDto",
+                    "typeSimple": "Volo.Forms.Questions.QuestionDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/questions",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Questions.GetQuestionListDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Questions.GetQuestionListDto",
+                  "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Questions.GetQuestionListDto",
+                  "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Forms.Questions.QuestionDto>",
+                "typeSimple": "[Volo.Forms.Questions.QuestionDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Questions.IQuestionAppService"
+            },
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/questions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Questions.QuestionDto",
+                "typeSimple": "Volo.Forms.Questions.QuestionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Questions.IQuestionAppService"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/questions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Questions.UpdateQuestionDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Questions.UpdateQuestionDto",
+                  "typeSimple": "Volo.Forms.Questions.UpdateQuestionDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Questions.UpdateQuestionDto",
+                  "typeSimple": "Volo.Forms.Questions.UpdateQuestionDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Questions.QuestionDto",
+                "typeSimple": "Volo.Forms.Questions.QuestionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Questions.IQuestionAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/questions/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Questions.IQuestionAppService"
+            }
+          }
+        },
+        "Volo.Forms.Forms.FormController": {
+          "controllerName": "Form",
+          "controllerGroupName": "Form",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Forms.Forms.FormController",
+          "interfaces": [
+            {
+              "type": "Volo.Forms.Forms.IFormAppService",
+              "name": "IFormAppService",
+              "methods": [
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Forms.GetFormListInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Forms.GetFormListInputDto",
+                      "typeSimple": "Volo.Forms.Forms.GetFormListInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Forms.FormDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Forms.FormDto>"
+                  }
+                },
+                {
+                  "name": "GetResponsesAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Responses.GetResponseListInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Responses.GetResponseListInputDto",
+                      "typeSimple": "Volo.Forms.Responses.GetResponseListInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDetailedDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDetailedDto>"
+                  }
+                },
+                {
+                  "name": "GetCsvResponsesAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Responses.GetResponseListInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Responses.GetResponseListInputDto",
+                      "typeSimple": "Volo.Forms.Responses.GetResponseListInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Content.IRemoteStreamContent",
+                    "typeSimple": "Volo.Abp.Content.IRemoteStreamContent"
+                  }
+                },
+                {
+                  "name": "GetResponsesCountAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Int64",
+                    "typeSimple": "number"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Forms.CreateFormDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Forms.CreateFormDto",
+                      "typeSimple": "Volo.Forms.Forms.CreateFormDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Forms.FormDto",
+                    "typeSimple": "Volo.Forms.Forms.FormDto"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Forms.FormWithDetailsDto",
+                    "typeSimple": "Volo.Forms.Forms.FormWithDetailsDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Forms.UpdateFormDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Forms.UpdateFormDto",
+                      "typeSimple": "Volo.Forms.Forms.UpdateFormDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Forms.FormDto",
+                    "typeSimple": "Volo.Forms.Forms.FormDto"
+                  }
+                },
+                {
+                  "name": "SetSettingsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Forms.UpdateFormSettingInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                      "typeSimple": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetSettingsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "formId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Forms.FormSettingsDto",
+                    "typeSimple": "Volo.Forms.Forms.FormSettingsDto"
+                  }
+                },
+                {
+                  "name": "GetQuestionsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Questions.GetQuestionListDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Questions.GetQuestionListDto",
+                      "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Forms.Questions.QuestionDto>",
+                    "typeSimple": "[Volo.Forms.Questions.QuestionDto]"
+                  }
+                },
+                {
+                  "name": "CreateQuestionAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Questions.CreateQuestionDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Questions.CreateQuestionDto",
+                      "typeSimple": "Volo.Forms.Questions.CreateQuestionDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Forms.Questions.QuestionDto",
+                    "typeSimple": "Volo.Forms.Questions.QuestionDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "DeleteAllResponsesOfFormAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "SendInviteEmailAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Forms.Forms.FormInviteEmailInputDto, Volo.Forms.Application.Contracts",
+                      "type": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                      "typeSimple": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/forms",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Forms.GetFormListInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Forms.GetFormListInputDto",
+                  "typeSimple": "Volo.Forms.Forms.GetFormListInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Forms.FormDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Forms.FormDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetResponsesAsyncByIdAndInput": {
+              "uniqueName": "GetResponsesAsyncByIdAndInput",
+              "name": "GetResponsesAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}/responses",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Responses.GetResponseListInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Responses.GetResponseListInputDto",
+                  "typeSimple": "Volo.Forms.Responses.GetResponseListInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDetailedDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Forms.Responses.FormResponseDetailedDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetCsvResponsesAsyncByIdAndInput": {
+              "uniqueName": "GetCsvResponsesAsyncByIdAndInput",
+              "name": "GetCsvResponsesAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}/download-responses-csv",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Responses.GetResponseListInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Responses.GetResponseListInputDto",
+                  "typeSimple": "Volo.Forms.Responses.GetResponseListInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Content.IRemoteStreamContent",
+                "typeSimple": "Volo.Abp.Content.IRemoteStreamContent"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetResponsesCountAsyncById": {
+              "uniqueName": "GetResponsesCountAsyncById",
+              "name": "GetResponsesCountAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}/responses-count",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Int64",
+                "typeSimple": "number"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "DeleteAllResponsesOfFormAsyncById": {
+              "uniqueName": "DeleteAllResponsesOfFormAsyncById",
+              "name": "DeleteAllResponsesOfFormAsync",
+              "httpMethod": "DELETE",
+              "url": "api/forms/{id}/responses",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "SendInviteEmailAsyncByInput": {
+              "uniqueName": "SendInviteEmailAsyncByInput",
+              "name": "SendInviteEmailAsync",
+              "httpMethod": "POST",
+              "url": "invite",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Forms.FormInviteEmailInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                  "typeSimple": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                  "typeSimple": "Volo.Forms.Forms.FormInviteEmailInputDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/forms",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Forms.CreateFormDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Forms.CreateFormDto",
+                  "typeSimple": "Volo.Forms.Forms.CreateFormDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Forms.CreateFormDto",
+                  "typeSimple": "Volo.Forms.Forms.CreateFormDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Forms.FormDto",
+                "typeSimple": "Volo.Forms.Forms.FormDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Forms.FormWithDetailsDto",
+                "typeSimple": "Volo.Forms.Forms.FormWithDetailsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/forms/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Forms.UpdateFormDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Forms.UpdateFormDto",
+                  "typeSimple": "Volo.Forms.Forms.UpdateFormDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Forms.UpdateFormDto",
+                  "typeSimple": "Volo.Forms.Forms.UpdateFormDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Forms.FormDto",
+                "typeSimple": "Volo.Forms.Forms.FormDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "SetSettingsAsyncByIdAndInput": {
+              "uniqueName": "SetSettingsAsyncByIdAndInput",
+              "name": "SetSettingsAsync",
+              "httpMethod": "PUT",
+              "url": "api/forms/{id}/settings",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Forms.UpdateFormSettingInputDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                  "typeSimple": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                  "typeSimple": "Volo.Forms.Forms.UpdateFormSettingInputDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetSettingsAsyncById": {
+              "uniqueName": "GetSettingsAsyncById",
+              "name": "GetSettingsAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}/settings",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Forms.FormSettingsDto",
+                "typeSimple": "Volo.Forms.Forms.FormSettingsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "GetQuestionsAsyncByIdAndInput": {
+              "uniqueName": "GetQuestionsAsyncByIdAndInput",
+              "name": "GetQuestionsAsync",
+              "httpMethod": "GET",
+              "url": "api/forms/{id}/questions",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Questions.GetQuestionListDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Questions.GetQuestionListDto",
+                  "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Questions.GetQuestionListDto",
+                  "typeSimple": "Volo.Forms.Questions.GetQuestionListDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Forms.Questions.QuestionDto>",
+                "typeSimple": "[Volo.Forms.Questions.QuestionDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "CreateQuestionAsyncByIdAndInput": {
+              "uniqueName": "CreateQuestionAsyncByIdAndInput",
+              "name": "CreateQuestionAsync",
+              "httpMethod": "POST",
+              "url": "api/forms/{id}/questions",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Forms.Questions.CreateQuestionDto, Volo.Forms.Application.Contracts",
+                  "type": "Volo.Forms.Questions.CreateQuestionDto",
+                  "typeSimple": "Volo.Forms.Questions.CreateQuestionDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Forms.Questions.CreateQuestionDto",
+                  "typeSimple": "Volo.Forms.Questions.CreateQuestionDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Forms.Questions.QuestionDto",
+                "typeSimple": "Volo.Forms.Questions.QuestionDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/forms/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Forms.Forms.IFormAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

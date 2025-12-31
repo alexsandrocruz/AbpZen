@@ -1,0 +1,11 @@
+﻿@page
+@using Localization.Resources.AbpUi
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Users
+@inject IStringLocalizer<AbpUiResource> Localizer
+@inject ICurrentUser CurrentUser
+
+@if (!CurrentUser.IsAuthenticated)
+{
+    <a href="~/Account/Login">@Localizer["Login"]</a>
+}

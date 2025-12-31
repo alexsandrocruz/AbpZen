@@ -1,0 +1,163 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "app": {}
+    }
+  },
+  "packages": {
+    "Volo.Payment.DemoApp": {
+      "path": "app/Volo.Payment.DemoApp/Volo.Payment.DemoApp.abppkg",
+      "folder": "app"
+    },
+    "Volo.Payment.Domain.Shared": {
+      "path": "src/Volo.Payment.Domain.Shared/Volo.Payment.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Domain": {
+      "path": "src/Volo.Payment.Domain/Volo.Payment.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.EntityFrameworkCore": {
+      "path": "src/Volo.Payment.EntityFrameworkCore/Volo.Payment.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.MongoDB": {
+      "path": "src/Volo.Payment.MongoDB/Volo.Payment.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.TestBase": {
+      "path": "test/Volo.Payment.TestBase/Volo.Payment.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Payment.Domain.Tests": {
+      "path": "test/Volo.Payment.Domain.Tests/Volo.Payment.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Payment.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Payment.EntityFrameworkCore.Tests/Volo.Payment.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Payment.MongoDB.Tests": {
+      "path": "test/Volo.Payment.MongoDB.Tests/Volo.Payment.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Payment.Application.Tests": {
+      "path": "test/Volo.Payment.Application.Tests/Volo.Payment.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Payment.Payu.Web": {
+      "path": "src/Volo.Payment.Payu.Web/Volo.Payment.Payu.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Payu.Domain": {
+      "path": "src/Volo.Payment.Payu.Domain/Volo.Payment.Payu.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.TwoCheckout.Domain": {
+      "path": "src/Volo.Payment.TwoCheckout.Domain/Volo.Payment.TwoCheckout.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.TwoCheckout.Web": {
+      "path": "src/Volo.Payment.TwoCheckout.Web/Volo.Payment.TwoCheckout.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.PayPal.Domain": {
+      "path": "src/Volo.Payment.PayPal.Domain/Volo.Payment.PayPal.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.PayPal.Web": {
+      "path": "src/Volo.Payment.PayPal.Web/Volo.Payment.PayPal.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Stripe.Domain": {
+      "path": "src/Volo.Payment.Stripe.Domain/Volo.Payment.Stripe.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Stripe.Web": {
+      "path": "src/Volo.Payment.Stripe.Web/Volo.Payment.Stripe.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Iyzico.Domain": {
+      "path": "src/Volo.Payment.Iyzico.Domain/Volo.Payment.Iyzico.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Iyzico.Web": {
+      "path": "src/Volo.Payment.Iyzico.Web/Volo.Payment.Iyzico.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Application": {
+      "path": "src/Volo.Payment.Admin.Application/Volo.Payment.Admin.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Application.Contracts": {
+      "path": "src/Volo.Payment.Admin.Application.Contracts/Volo.Payment.Admin.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Web": {
+      "path": "src/Volo.Payment.Admin.Web/Volo.Payment.Admin.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.HttpApi": {
+      "path": "src/Volo.Payment.Admin.HttpApi/Volo.Payment.Admin.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.HttpApi.Client": {
+      "path": "src/Volo.Payment.Admin.HttpApi.Client/Volo.Payment.Admin.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.HttpApi": {
+      "path": "src/Volo.Payment.HttpApi/Volo.Payment.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.HttpApi.Client": {
+      "path": "src/Volo.Payment.HttpApi.Client/Volo.Payment.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Web": {
+      "path": "src/Volo.Payment.Web/Volo.Payment.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Application": {
+      "path": "src/Volo.Payment.Application/Volo.Payment.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Application.Contracts": {
+      "path": "src/Volo.Payment.Application.Contracts/Volo.Payment.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Blazor": {
+      "path": "src/Volo.Payment.Admin.Blazor/Volo.Payment.Admin.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Blazor.Server": {
+      "path": "src/Volo.Payment.Admin.Blazor.Server/Volo.Payment.Admin.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Admin.Blazor.WebAssembly": {
+      "path": "src/Volo.Payment.Admin.Blazor.WebAssembly/Volo.Payment.Admin.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Iyzico.Domain.Shared": {
+      "path": "src/Volo.Payment.Iyzico.Domain.Shared/Volo.Payment.Iyzico.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.PayPal.Domain.Shared": {
+      "path": "src/Volo.Payment.PayPal.Domain.Shared/Volo.Payment.PayPal.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Payu.Domain.Shared": {
+      "path": "src/Volo.Payment.Payu.Domain.Shared/Volo.Payment.Payu.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.TwoCheckout.Domain.Shared": {
+      "path": "src/Volo.Payment.TwoCheckout.Domain.Shared/Volo.Payment.TwoCheckout.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Payment.Stripe.Domain.Shared": {
+      "path": "src/Volo.Payment.Stripe.Domain.Shared/Volo.Payment.Stripe.Domain.Shared.abppkg",
+      "folder": "src"
+    }
+  }
+}

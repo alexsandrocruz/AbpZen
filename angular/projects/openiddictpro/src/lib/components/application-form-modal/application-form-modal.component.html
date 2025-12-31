@@ -1,0 +1,26 @@
+<abp-modal [visible]="true" (visibleChange)="visibleChange($event)" [options]="options">
+  <ng-template #abpHeader>
+    <h3>
+      {{
+        (selected?.id ? 'AbpOpenIddict::Edit' : 'AbpOpenIddict::NewApplication') | abpLocalization
+      }}
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" id="applicationForm" (ngSubmit)="save()" validateOnSubmit>
+      <div class="row">
+        <abp-extensible-form class="row gap-x2" [selectedRecord]="selected"> </abp-extensible-form>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpOpenIddict::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="applicationForm">{{
+      'AbpOpenIddict::Save' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>

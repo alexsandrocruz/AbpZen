@@ -1,0 +1,42 @@
+<abp-modal
+  [visible]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  [suppressUnsavedChangesWarning]="true"
+>
+  <ng-template #abpHeader>
+    <h5 class="modal-title">
+      {{ 'Saas::MoveAllTenants' | abpLocalization }}
+    </h5>
+  </ng-template>
+  <ng-template #abpBody>
+    <p [innerHTML]="'Saas::MoveAllTenantsWithEditionTo' | abpLocalization: name"></p>
+    <form [formGroup]="form" id="edition-move-tenants-form" (ngSubmit)="save()">
+      <select class="form-select mt-2" formControlName="edition">
+        <option value="" selected>
+          {{
+            (loading() ? 'AbpUi::LoadingWithThreeDot' : 'Saas::UnassignEdition') | abpLocalization
+          }}
+        </option>
+        @for (item of editions(); track $index) {
+          <option [value]="item.id">{{ item.displayName }}</option>
+        }
+      </select>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-primary">
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [loading]="loading()"
+      [disabled]="form.invalid && form.touched"
+      form="edition-move-tenants-form"
+    >
+      <i class="fa fa-check me-1" aria-hidden="true"></i>
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>

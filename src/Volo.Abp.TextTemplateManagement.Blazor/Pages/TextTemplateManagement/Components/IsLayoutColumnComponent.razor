@@ -1,0 +1,14 @@
+﻿﻿@using System;
+@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.TextTemplateManagement.TextTemplates
+@inherits AbpComponentBase
+
+
+@if (Data.As<TemplateDefinitionDto>().IsLayout)
+{
+<Icon class="text-success" Name="@IconName.Check" />
+}
+else
+{
+<Icon class="text-danger" Name="@IconName.Times" />
+}

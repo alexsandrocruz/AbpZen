@@ -1,0 +1,203 @@
+@if (!hasAuthenticator()) {
+  <ul ngbNav #nav="ngbNav" [(activeId)]="activeStep" class="nav nav-pills nav-fill mb-3">
+    <li [ngbNavItem]="'Authenticator'">
+      <button ngbNavLink>
+        <small class="opacity-75">{{ 'AbpAccount::Step' | abpLocalization: '1' }}</small>
+        <p class="m-0">{{ 'AbpAccount::Authenticator' | abpLocalization }}</p>
+      </button>
+      <ng-template ngbNavContent>
+        <div class="authenticator-step-1">
+          <h4 class="mb-1">{{ 'AbpAccount::Authenticator' | abpLocalization }}</h4>
+          <p class="mb-3">
+            {{ 'AbpAccount::UseTwoFactorAuthenticatorApp_Information' | abpLocalization }}
+          </p>
+
+          <div id="setAuthenticator">
+            <div class="row g-0">
+              @if (authenticatorInfo(); as authInfo) {
+                <div class="col">
+                  <div class="card border h-100">
+                    <div class="card-body">
+                      <h5>{{ 'AbpAccount::UseQrCode' | abpLocalization }}</h5>
+                      <div class="d-flex justify-content-center p-3 pb-0">
+                        <abp-qr-code [qrData]="authInfo.uri" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <div class="d-flex align-items-center justify-content-center h-100">
+                    <span class="text-muted py-3">Or</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card border h-100">
+                    <div class="card-body">
+                      <h5>{{ 'AbpAccount::ManuallyEnterCode' | abpLocalization }}</h5>
+
+                      <div id="sharedKey" class="bg-light rounded px-3 py-2 mt-4">
+                        <code class="fs-4 lh-lg">{{ authInfo.key }}</code>
+                      </div>
+                      <button
+                        type="button"
+                        id="copySharedKey"
+                        class="btn btn-outline-primary btn-sm mt-3"
+                        (click)="copySharedKey()"
+                      >
+                        {{ 'AbpAccount::CopyToClipboard' | abpLocalization }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="text-end mt-3">
+              <ng-container
+                *ngTemplateOutlet="nextStep; context: { $implicit: 'VerifyTheAuthenticator' }"
+              ></ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+
+    <li [ngbNavItem]="'VerifyTheAuthenticator'">
+      <button ngbNavLink>
+        <small class="opacity-75">{{ 'AbpAccount::Step' | abpLocalization: '2' }}</small>
+        <p class="m-0">{{ 'AbpAccount::VerifyTheAuthenticator' | abpLocalization }}</p>
+      </button>
+      <ng-template ngbNavContent>
+        <div class="authenticator-step-2">
+          <h4 class="mb-1">
+            {{ 'AbpAccount::VerifyTheAuthenticator' | abpLocalization }}
+          </h4>
+          <p class="mb-3">
+            {{ 'AbpAccount::UseTwoFactorAuthenticatorApp_Code' | abpLocalization }}
+          </p>
+          <div class="row">
+            <div class="col">
+              <abp-form-input
+                [inputId]="'code'"
+                [(ngModel)]="verifyCode"
+                [label]="'AbpAccount::Code' | abpLocalization"
+              ></abp-form-input>
+            </div>
+            <div class="col">
+              <abp-button
+                [id]="'verifyQRCode'"
+                [buttonClass]="'btn btn-outline-success mt-3'"
+                (click)="verifyQrCode()"
+              >
+                {{
+                  isVerifiedAuthenticatorCode()
+                    ? 'Verified'
+                    : ('AbpAccount::Verify' | abpLocalization)
+                }}
+              </abp-button>
+            </div>
+          </div>
+
+          <div class="text-end mt-3">
+            <ng-container
+              *ngTemplateOutlet="
+                nextStep;
+                context: { $implicit: 'RecoveryCodes', disabled: !isVerifiedAuthenticatorCode() }
+              "
+            ></ng-container>
+          </div>
+        </div>
+      </ng-template>
+    </li>
+    <li
+      [ngbNavItem]="'RecoveryCodes'"
+      [classList]="'recovery-codes-tab'"
+      [disabled]="!isVerifiedAuthenticatorCode()"
+    >
+      <button ngbNavLink>
+        <small class="opacity-75">{{ 'AbpAccount::Step' | abpLocalization: '3' }}</small>
+        <p class="m-0">{{ 'AbpAccount::RecoveryCodes' | abpLocalization }}</p>
+      </button>
+      <ng-template ngbNavContent>
+        <div class="authenticator-step-3">
+          <h4 class="mb-1">{{ 'AbpAccount::RecoveryCodes' | abpLocalization }}</h4>
+          <p class="mb-3">
+            {{ 'AbpAccount::RecoveryCodes_Information' | abpLocalization }}
+          </p>
+
+          <ul class="list-group w-100" id="recoveryCodes">
+            <li class="list-group-item p-3 d-flex justify-content-between align-items-start">
+              <div class="w-100">
+                <div class="text-end">
+                  <button
+                    id="printRecoverCodes"
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                    [class.disabled]="!hasRecoveryCodes()"
+                    (click)="printRecoverCodes()"
+                  >
+                    {{ 'AbpAccount::PrintCodes' | abpLocalization }}
+                  </button>
+                  <button
+                    id="copyRecoverCodes"
+                    type="button"
+                    class="ms-1 btn btn-outline-primary btn-sm"
+                    [class.disabled]="!hasRecoveryCodes()"
+                    (click)="copyRecoveryCodes()"
+                  >
+                    {{ 'AbpAccount::CopyToClipboard' | abpLocalization }}
+                  </button>
+                </div>
+                <div class="bg-light rounded px-3 py-3 mt-3 w-100 text-center">
+                  <div id="recoveryCodesList" class="fs-4 lh-lg">
+                    @for (code of recoveryCodeList(); track $index) {
+                      <code>{{ code }}</code>
+                      <br />
+                    }
+                  </div>
+                </div>
+                <div class="text-end">
+                  <abp-button
+                    [id]="'recoveryCodeOk'"
+                    [disabled]="!hasRecoveryCodes()"
+                    [buttonClass]="'btn btn-primary mt-2'"
+                    (click)="recoveryCodeOk()"
+                  >
+                    {{ 'AbpAccount::Done' | abpLocalization }}
+                  </abp-button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <div [id]="activeStep" class="tab-pane fade show active w-100" role="tabpanel">
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+}
+
+@if (hasAuthenticator()) {
+  <div id="reset-authenticator">
+    <div class="my-3">
+      <h4 class="mb-1">{{ 'AbpAccount::ResetAuthenticator' | abpLocalization }}</h4>
+      <p class="mb-3">{{ 'AbpAccount::ResetAuthenticator_Information' | abpLocalization }}</p>
+
+      <abp-button id="resetAuthenticator" (click)="resetAuthenticator()">
+        {{ 'AbpAccount::ResetAuthenticator' | abpLocalization }}
+      </abp-button>
+    </div>
+  </div>
+}
+
+<ng-template #nextStep let-step let-disabled="disabled">
+  <button
+    id="next-btn-{{ step }}"
+    type="button"
+    class="btn btn-primary px-3"
+    [class.disabled]="disabled"
+    (click)="activeStep = step"
+  >
+    {{ 'AbpAccount::NextStep' | abpLocalization }} <i class="bi bi-arrow-right ms-2"></i>
+  </button>
+</ng-template>

@@ -1,0 +1,28 @@
+<abp-modal [(visible)]="visible" [options]="{ size: 'lg' }">
+  <ng-template #abpHeader>
+    <h5 class="modal-title">
+      {{ entityTypeFullName }}
+      <br />
+      <span style="font-size: small">({{ entityId }})</span>
+    </h5>
+  </ng-template>
+  <ng-template #abpBody>
+    @if (history.length) {
+      @for (change of history; track change.id; let f = $first) {
+        <abp-entity-change-details
+          [itemWithUserName]="change"
+          [isCollapsed]="!f"
+        ></abp-entity-change-details>
+      }
+    } @else {
+      <div class="text-center">
+        {{ 'AbpAuditLogging::NoChanges' | abpLocalization }}
+      </div>
+    }
+  </ng-template>
+  <ng-template #abpFooter>
+    <button class="btn btn-secondary" abpClose>
+      {{ 'AbpAuditLogging::Close' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>

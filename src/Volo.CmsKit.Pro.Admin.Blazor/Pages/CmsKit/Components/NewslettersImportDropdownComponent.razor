@@ -1,0 +1,40 @@
+@using Microsoft.Extensions.Localization
+@using Volo.CmsKit.Localization
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@inject IStringLocalizer<CmsKitResource> L
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+
+<Dropdown>
+    <DropdownToggle Color="Color.Primary" Outline Class="btn-outline">
+        @L["Import"]
+    </DropdownToggle>
+    <DropdownMenu>
+        <DropdownItem Clicked="@(() => OpenImportModalAsync())">@L["FromCSV"]</DropdownItem>
+    </DropdownMenu>
+</Dropdown>
+
+@* ************************* IMPORT MODAL ************************* *@
+
+<Modal @ref="ImportModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["UploadFile"]</ModalTitle>
+                <CloseButton Clicked="@CloseImportModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <div class="d-grid">
+                    <label for="importFile" class="mb-3 px-1 shadow-none btn">
+                        <i class="fas fa-upload me-2"></i>@UploadFile.FileName
+                    </label>
+                    <InputFile id="importFile" OnChange="@OnChooseFileChangedAsync" accept="@UploadFile.Accept" style="display: none"/>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button class="btn btn-link" Clicked="CloseImportModalAsync">@L["Close"]</Button>
+                <Button Color="Color.Primary" Outline Clicked="DownloadImportSampleFileAsync">@L["DownloadTemplateFile"]</Button>
+                <Button Color="Color.Primary" Clicked="ImportNewslettersFromFileAsync">@L["Upload"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

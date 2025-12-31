@@ -1,0 +1,8 @@
+{
+  "role": "lib.mvc",
+  "npmDependencies": {
+    "@volo/account": {
+        "version": ""
+    }
+  }
+}

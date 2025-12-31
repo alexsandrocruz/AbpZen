@@ -1,0 +1,55 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Pro.Admin.Web.Menus
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.UrlShorting
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<CmsKitResource> L
+
+@{
+    PageLayout.Content.Title = L["UrlForwarding"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:CMS"].Value);
+    PageLayout.Content.MenuItemName = CmsKitProAdminMenus.UrlShorting.UrlShortingMenu;
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/cms-kit-pro-admin-proxy.js" />
+        <abp-script src="/Pages/CmsKit/UrlShorting/Index.js"/>
+        <abp-script src="/Pages/CmsKit/UrlShorting/Create.js"/>
+        <abp-script src="/Pages/CmsKit/UrlShorting/Edit.js"/>
+    </abp-script-bundle>
+}
+
+@section styles {
+    <abp-style-bundle name="@typeof(IndexModel).FullName">
+        <abp-style src="/Pages/CmsKit/UrlShorting/Create.css"/>
+        <abp-style src="/Pages/CmsKit/UrlShorting/Edit.css"/>
+    </abp-style-bundle>
+}
+
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new {pageName = typeof(IndexModel).FullName})
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row id="AdvancedFilterSection">
+            <abp-column size="_12">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input asp-for="Filter" placeholder="@L["Search"]" class="form-control"/>
+                        <abp-button button-type="Primary" id="RefreshFilterButton">
+                            <i class="fa fa-sync" aria-hidden="true"></i>
+                        </abp-button>
+                    </div>
+                </div>
+            </abp-column>
+        </abp-row>
+    </abp-card-body>
+</abp-card>
+
+<abp-table  id="UrlShortingTable" class="nowrap"></abp-table>

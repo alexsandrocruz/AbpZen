@@ -1,0 +1,38 @@
+<abp-modal [visible]="isVisible$ | async" (visibleChange)="visibleChange($event)">
+  <ng-template #abpHeader>
+    <h3>
+      {{ 'Saas::LoginWithThisTenant' | abpLocalization }}
+      @if (selected().name) {
+        - {{ selected().name }}
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    @if (form) {
+      <form id="impersonateTenantForm" [formGroup]="form" (ngSubmit)="save()">
+        <div class="mb-3">
+          <label for="tenantUserName" class="form-label">
+            {{ 'Saas::UserName' | abpLocalization }}
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="tenantUserName"
+            id="tenantUserName"
+            formControlName="tenantUserName"
+          />
+        </div>
+      </form>
+    }
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" (click)="visibleChange(false)">
+      {{ 'Saas::Cancel' | abpLocalization }}
+    </button>
+    <button form="impersonateTenantForm" type="submit" class="btn btn-primary">
+      {{ 'Saas::Login' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>

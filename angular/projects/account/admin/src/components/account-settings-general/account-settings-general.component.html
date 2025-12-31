@@ -1,0 +1,52 @@
+@if (settings$ | async; as settings) {
+  <div (keyup.enter)="submit(settings)">
+    <h4>{{ 'AbpAccount::AccountSettingsGeneral' | abpLocalization }}</h4>
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="IsSelfRegistrationEnabled"
+        name="IsSelfRegistrationEnabled"
+        class="form-check-input"
+        [(ngModel)]="settings.isSelfRegistrationEnabled"
+        autofocus
+      /><label class="form-check-label" for="IsSelfRegistrationEnabled">{{
+        'AbpAccount::DisplayName:IsSelfRegistrationEnabled' | abpLocalization
+      }}</label>
+    </div>
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="EnableLocalLogin"
+        name="EnableLocalLogin"
+        class="form-check-input"
+        [(ngModel)]="settings.enableLocalLogin"
+      /><label class="form-check-label" for="EnableLocalLogin">{{
+        'AbpAccount::DisplayName:EnableLocalLogin' | abpLocalization
+      }}</label>
+    </div>
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="PreventEmailEnumeration"
+        name="PreventEmailEnumeration"
+        class="form-check-input"
+        [(ngModel)]="settings.preventEmailEnumeration"
+      /><label class="form-check-label" for="PreventEmailEnumeration">{{
+        'AbpAccount::DisplayName:PreventEmailEnumeration' | abpLocalization
+      }}</label>
+      <div>
+        <small class="form-text">
+          {{ 'AbpAccount::Description:PreventEmailEnumeration' | abpLocalization }}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-3" />
+
+  <div>
+    <abp-button (click)="submit(settings)" iconClass="fa fa-save" [loading]="loading">{{
+      'AbpAccount::Save' | abpLocalization
+    }}</abp-button>
+  </div>
+}

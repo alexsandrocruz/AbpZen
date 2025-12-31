@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.Saas": {
+      "path": "Volo.Saas.abpmdl"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Tenant management",
+    "Permission:EditionManagement": "Edition management",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "Permission:ManageConnectionStrings": "Manage connection strings",
+    "Permission:SetPassword": "Set password",
+    "Permission:ManageFeatures": "Manage features",
+    "Permission:ViewChangeHistory": "View change history",
+    "Permission:Impersonation": "Impersonation",
+    "CheckYourProviderDashboard": "Check your payment provider's dashboard to cancel this subscription."
+  }
+}

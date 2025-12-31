@@ -1,0 +1,91 @@
+﻿@page "/Chat"
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.SignalR
+@using Volo.Chat.Localization
+@using Volo.Chat.Web.Pages.Chat
+@model IndexModel
+@inject IHtmlLocalizer<ChatResource> L
+@{
+    ViewBag.PageTitle = L["Chat"];
+}
+@section styles {
+    <abp-style-bundle name="@typeof(IndexModel).FullName">
+        <abp-style src="/Pages/Chat/index.css" />
+    </abp-style-bundle>
+}
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/chat-proxy.js" />
+        <abp-script src="/Pages/Chat/index.js" />
+    </abp-script-bundle>
+}
+<div id="chat_wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Users box-->
+            <div class="col-12 col-md-5 col-lg-4  d-flex align-items-stretch">
+                <div class="card w-100 mb-3 mb-md-0">
+                    <div class="card-body p-1 p-md-2 p-lg-3">
+                        <div class=" mb-2 rounded-2" id="SearchBox" style="display: none;">
+                            <div class="row">
+                                <div class="col">
+                                    <input id="Contacts_Filter" type="search" class="form-control " id="search-input" placeholder="@L["SearchInContacts"].Value" aria-label="@L["SearchInContacts"].Value" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" dir="auto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="messages-box lpx-ps-scroll-container m-0 p-0 ps ps--active-y">
+                            <div class="list-group rounded-3 contract-list" id="contact_list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chat Box-->
+            <div id="chatBox" class="col-12 col-md-7 col-lg-8  d-flex align-items-stretch">
+                <div class="card w-100 mb-0">
+                    <div class="card-body p-1 p-md-2 p-lg-3">
+                        <div id="AvatarId" class="px-2 py-1 border mb-2 rounded-2">
+                            <div class="row">
+                                <div class="col-auto pe-0">
+                                    @*<img src="https://avatars.dicebear.com/v2/human/volo.svg" alt="user" width="36" class="rounded-circle   border-secondary" style="border: 2px solid">*@
+                                    <canvas id="Conversation_Avatar" class="rounded-circle mt-1" width="36" height="36"></canvas>
+                                </div>
+                                <div class="col d-flex flex-column justify-content-center">
+                                    <h5 id="Conversation_Title" class="m-0"></h5>
+                                    @*<small id="Conversation_Info"></small>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div id="chat_conversation_wrapper" class="chat-box mb-2">
+                            <div class="chat-box-container" id="chat_conversation">
+                            </div>
+                        </div>
+
+                        <div id="EmptyTemplate" class="card-body pt-12 pb-12 text-center">
+                            <i class="fa fa-commenting-o fs-2" aria-hidden="true"></i>
+                            <p>@L["NoMessageYetMessage"]</p>
+                            <button id="StartConversation" type="button" class="btn btn-primary">
+                                @L["StartConversation"]
+                            </button>
+                        </div>
+
+                        <!-- Typing area -->
+                        <form id="Send_Message_Form" action="#" class="bg-light rounded-3 m-0">
+                            <div class="p-2 p-lg-3">
+                                <input id="userId" name="userId" hidden value="" />
+                                <textarea id="Chat_Message_Box" name="message" type="text" placeholder="@L["TypeMessage"].Value" class="form-control rounded py-2"></textarea>
+                                <div class="form-check float-start mt-2">
+                                    <input type="checkbox" class="form-check-input border shadow-sm" id="Send_On_Enter">
+                                    <label class="form-check-label" for="Send_On_Enter">@L["SendOnEnter"].Value</label>
+                                </div>
+                                <div class="mt-2 text-end">
+                                    <button id="Send_Message_Button" disabled type="submit" class="btn btn-primary px-3">@L["Send"] <i class="fa fa-paper-plane ms-2"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

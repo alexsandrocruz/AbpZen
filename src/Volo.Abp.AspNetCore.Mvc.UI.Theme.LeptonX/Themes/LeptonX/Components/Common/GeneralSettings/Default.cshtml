@@ -1,0 +1,137 @@
+﻿@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.Toolbar.LanguageSwitch
+@using Volo.Abp.LeptonX.Shared
+@using Volo.Abp.LeptonX.Shared.Localization
+
+@inject ThemeLanguageInfoProvider ThemeLanguageInfoProvider
+@inject IOptions<LeptonXThemeOptions> Options
+@inject IOptions<LeptonXThemeMvcOptions> MvcOptions
+@inject IStringLocalizer<LeptonXResource> L
+@inject IStringLocalizerFactory LocalizerFactory
+
+@{
+	var languageModel = await ThemeLanguageInfoProvider.GetLanguageSwitchViewComponentModel();
+}
+
+<div class="lpx-settings" id="lpx-settings">
+	<div id="appearance" class="setting-icon" data-lpx-setting-icon="appearance" data-lpx-setting-id="settings-context-menu">
+		<div class="setting">
+			<i class="bi bi-laptop-fill"></i>
+		</div>
+	</div>
+
+	@if (MvcOptions.Value.ApplicationLayout == LeptonXMvcLayouts.SideMenu)
+	{
+		<div id="containerWidth" class="setting-icon" data-lpx-setting-icon="containerWidth" data-lpx-setting-id="settings-context-menu">
+			<div class="setting">
+				<i class="bi bi-layout-three-columns"></i>
+			</div>
+		</div>
+	}
+
+	@if (languageModel.Languages.Count > 1)
+	{
+		<div id="language" class="setting-icon" data-lpx-setting-icon="language" data-lpx-setting-id="settings-context-menu">
+			<div class="setting">
+				<span></span>
+			</div>
+		</div>
+	}
+
+	<div class="setting-icon">
+		<i class="bi bi-gear-wide-connected" aria-hidden="true" data-lpx-ctx-toggle="settings-context-menu"></i>
+	</div>
+
+	<div class="lpx-context-menu" data-lpx-context-menu="settings-context-menu">
+		<ul class="lpx-nav-menu" id="settings-routes">
+			<li class="outer-menu-item">
+				<a class="lpx-menu-item-link lpx-menu-item">
+					<span class="lpx-menu-item-icon">
+						<i class="lpx-icon outer-icon bi bi-gear-wide-connected" aria-hidden="true"></i>
+					</span>
+					<span class="lpx-menu-item-text">@L["GeneralSettings"]</span>
+					<span data-lpx-close="settings-context-menu">
+						<i class="lpx-icon bi bi-x outer-icon dd-icon" aria-hidden="true"></i>
+					</span>
+				</a>
+			</li>
+
+			@if(Options.Value.Styles.Any())
+			{
+				<li class="outer-menu-item">
+					<a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting-group="appearance">
+						<span class="lpx-menu-item-icon">
+							<i class="lpx-icon bi bi-palette-fill" aria-hidden="true"></i>
+						</span>
+
+						<span class="lpx-menu-item-text hidden-in-hover-trigger">@L["Appearance"]</span>
+
+						<i class="dd-icon hidden-in-hover-trigger lpx-caret bi-chevron-down" aria-hidden="true"></i>
+					</a>
+
+					<ul class="lpx-inner-menu hidden-in-hover-trigger collapsed" data-id="appearance">
+
+						@foreach (var item in Options.Value.Styles)
+						{
+							<li class="lpx-inner-menu-item">
+								<a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting="@item.Key">
+									<span class="lpx-menu-item-icon">
+										<i class="lpx-icon @item.Value.Icon" aria-hidden="true"></i>
+									</span>
+
+									<span class="lpx-menu-item-text hidden-in-hover-trigger">@item.Value.DisplayName.Localize(LocalizerFactory).Value</span>
+								</a>
+							</li>
+						}
+					</ul>
+				</li>
+			}
+
+			@if (MvcOptions.Value.ApplicationLayout == LeptonXMvcLayouts.SideMenu)
+			{
+				<li class="outer-menu-item">
+					<a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting-group="containerWidth">
+						<span class="lpx-menu-item-icon">
+							<i class="lpx-icon bi bi-aspect-ratio" aria-hidden="true"></i>
+						</span>
+
+						<span class="lpx-menu-item-text hidden-in-hover-trigger">@L["ContainerWidth"]</span>
+
+						<i class="dd-icon hidden-in-hover-trigger lpx-caret bi-chevron-down" aria-hidden="true"></i>
+					</a>
+
+					<ul class="lpx-inner-menu hidden-in-hover-trigger collapsed" data-id="containerWidth">
+						<li class="lpx-inner-menu-item">
+							<a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting="boxed">
+								<span class="lpx-menu-item-icon"><i class="lpx-icon bi bi-square" aria-hidden="true"></i></span>
+
+								<span class="lpx-menu-item-text hidden-in-hover-trigger">@L["ContainerWidth:Boxed"]</span>
+							</a>
+						</li>
+
+						<li class="lpx-inner-menu-item">
+							<a class="lpx-menu-item-link lpx-menu-item selected" data-lpx-setting="fixed">
+								<span class="lpx-menu-item-icon">
+									<i class="lpx-icon bi bi-layout-three-columns" aria-hidden="true"></i>
+								</span>
+
+								<span class="lpx-menu-item-text hidden-in-hover-trigger">@L["ContainerWidth:Fixed"]</span>
+							</a>
+						</li>
+
+						<li class="lpx-inner-menu-item">
+							<a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting="full">
+								<span class="lpx-menu-item-icon"><i class="lpx-icon bi bi-code-square" aria-hidden="true"></i></span>
+								<span class="lpx-menu-item-text hidden-in-hover-trigger">@L["ContainerWidth:Fluid"]</span>
+							</a>
+						</li>
+					</ul>
+				</li>
+			}
+
+			@await Component.InvokeAsync(typeof(LanguageSwitchViewComponent), languageModel)
+		</ul>
+	</div>
+</div>

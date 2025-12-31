@@ -1,0 +1,21 @@
+<abp-page [title]="'AbpOpenIddict::Scopes' | abpLocalization" [toolbar]="data.items">
+  <div id="wrapper">
+
+    <abp-advanced-entity-filters
+      localizationSourceName="AbpOpenIddict"
+      [list]="list"
+    ></abp-advanced-entity-filters>
+
+
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>
+
+<abp-scope-form-modal [selected]="selected" (saved)="onSaved()">
+</abp-scope-form-modal>

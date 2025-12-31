@@ -1,0 +1,86 @@
+{
+  "name": "Volo.Abp.Account.Pro.Public.Web.Shared",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Account.Pro.Public.Web.Shared",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application.Contracts",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.MultiTenancy",
+          "namespace": "Volo.Abp.AspNetCore.MultiTenancy",
+          "name": "AbpAspNetCoreMultiTenancyModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpAccountPublicWebSharedModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Pro.Public.Web.Shared.Pages.Account.LinkUsers",
+      "contentType": "webPage",
+      "name": "LinkUsersModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Pro.Public.Web.Shared.Pages.Account.AuthorityDelegation",
+      "contentType": "webPage",
+      "name": "AuthorityDelegationModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Account.Pro.Public.Web.Shared.Pages.Account.AuthorityDelegation",
+      "contentType": "webPage",
+      "name": "DelegateNewUserModal",
+      "summary": null
+    }
+  ]
+}

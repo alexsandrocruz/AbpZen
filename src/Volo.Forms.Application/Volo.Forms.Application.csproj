@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Ddd.Application" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Emailing" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.Forms.Application.Contracts\Volo.Forms.Application.Contracts.csproj" />
+        <ProjectReference Include="..\Volo.Forms.Domain\Volo.Forms.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CsvHelper" />
+    </ItemGroup>
+
+</Project>

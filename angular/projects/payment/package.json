@@ -1,0 +1,34 @@
+{
+  "name": "@volo/abp.ng.payment",
+  "version": "9.0.4",
+  "peerDependencies": {
+    "@abp/ng.core": ">=9.0.4",
+    "@abp/ng.theme.shared": ">=9.0.4"
+  },
+  "dependencies": {
+    "@volo/abp.commercial.ng.ui": "^9.0.4",
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://abp.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/volosoft/volo.git"
+  },
+  "license": "LGPL-3.0",
+  "keywords": [
+    "aspnetcore",
+    "boilerplate",
+    "framework",
+    "web",
+    "best-practices",
+    "angular",
+    "maui",
+    "blazor",
+    "mvc",
+    "csharp",
+    "webapp"
+  ]
+}

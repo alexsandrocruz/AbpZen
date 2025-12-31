@@ -1,0 +1,35 @@
+{
+  "name": "text-template-management",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/text-template-management/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/text-template-management"],
+      "options": {
+        "tsConfig": "packages/text-template-management/tsconfig.lib.json",
+        "project": "packages/text-template-management/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/text-template-management/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/text-template-management"],
+      "options": {
+        "jestConfig": "packages/text-template-management/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["commercial-ui"]
+}

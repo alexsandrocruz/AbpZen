@@ -1,0 +1,874 @@
+{
+  "modules": {
+    "openiddictpro": {
+      "rootPath": "openiddictpro",
+      "remoteServiceName": "OpenIddictPro",
+      "controllers": {
+        "Volo.Abp.OpenIddict.ApplicationController": {
+          "controllerName": "Application",
+          "controllerGroupName": "Applications",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Abp.OpenIddict.ApplicationController",
+          "interfaces": [
+            {
+              "type": "Volo.Abp.OpenIddict.Applications.IApplicationAppService",
+              "name": "IApplicationAppService",
+              "methods": [
+                {
+                  "name": "GetTokenLifetimeAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto"
+                  }
+                },
+                {
+                  "name": "SetTokenLifetimeAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                      "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto>"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/applications/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,System.Guid,Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput>"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/applications",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,System.Guid,Volo.Abp.OpenIddict.Applications.Dtos.GetApplicationListInput>"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/openiddict/applications",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,Volo.Abp.OpenIddict.Applications.Dtos.CreateApplicationInput>"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/openiddict/applications/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<Volo.Abp.OpenIddict.Applications.Dtos.ApplicationDto,System.Guid,Volo.Abp.OpenIddict.Applications.Dtos.UpdateApplicationInput>"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/openiddict/applications",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
+            },
+            "GetTokenLifetimeAsyncById": {
+              "uniqueName": "GetTokenLifetimeAsyncById",
+              "name": "GetTokenLifetimeAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/applications/{id}/token-lifetime",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.OpenIddict.Applications.IApplicationAppService"
+            },
+            "SetTokenLifetimeAsyncByIdAndInput": {
+              "uniqueName": "SetTokenLifetimeAsyncByIdAndInput",
+              "name": "SetTokenLifetimeAsync",
+              "httpMethod": "PUT",
+              "url": "api/openiddict/applications/{id}/token-lifetime",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                  "typeSimple": "Volo.Abp.OpenIddict.Applications.Dtos.ApplicationTokenLifetimeDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.OpenIddict.Applications.IApplicationAppService"
+            }
+          }
+        },
+        "Volo.Abp.OpenIddict.ScopeController": {
+          "controllerName": "Scope",
+          "controllerGroupName": "Scopes",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "Volo.Abp.OpenIddict.ScopeController",
+          "interfaces": [
+            {
+              "type": "Volo.Abp.OpenIddict.Scopes.IScopeAppService",
+              "name": "IScopeAppService",
+              "methods": [
+                {
+                  "name": "GetAllScopesAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.Collections.Generic.List<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>",
+                    "typeSimple": "[Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto]"
+                  }
+                },
+                {
+                  "name": "GetAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+                  }
+                },
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>"
+                  }
+                },
+                {
+                  "name": "CreateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+                  }
+                },
+                {
+                  "name": "UpdateAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                      "type": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                      "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                    "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/scopes/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,System.Guid,Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput>"
+            },
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/scopes",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IReadOnlyAppService<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,System.Guid,Volo.Abp.OpenIddict.Scopes.Dtos.GetScopeListInput>"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/openiddict/scopes",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.ICreateAppService<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,Volo.Abp.OpenIddict.Scopes.Dtos.CreateScopeInput>"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/openiddict/scopes/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput, Volo.Abp.OpenIddict.Pro.Application.Contracts",
+                  "type": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                  "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto",
+                "typeSimple": "Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IUpdateAppService<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto,System.Guid,Volo.Abp.OpenIddict.Scopes.Dtos.UpdateScopeInput>"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/openiddict/scopes",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.Application.Services.IDeleteAppService<System.Guid>"
+            },
+            "GetAllScopesAsync": {
+              "uniqueName": "GetAllScopesAsync",
+              "name": "GetAllScopesAsync",
+              "httpMethod": "GET",
+              "url": "api/openiddict/scopes/all",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto>",
+                "typeSimple": "[Volo.Abp.OpenIddict.Scopes.Dtos.ScopeDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Abp.OpenIddict.Scopes.IScopeAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

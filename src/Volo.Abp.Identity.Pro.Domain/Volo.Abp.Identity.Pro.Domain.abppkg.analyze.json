@@ -1,0 +1,775 @@
+{
+  "name": "Volo.Abp.Identity.Pro.Domain",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Identity",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Domain",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Domain.Shared",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityProDomainSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Ldap",
+          "namespace": "Volo.Abp.Ldap",
+          "name": "AbpLdapModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Caching",
+          "namespace": "Volo.Abp.Caching",
+          "name": "AbpCachingModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Gdpr.Abstractions",
+          "namespace": "Volo.Abp.Gdpr",
+          "name": "AbpGdprAbstractionsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Abstractions",
+          "namespace": "Volo.Abp.AspNetCore",
+          "name": "AbpAspNetCoreAbstractionsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpIdentityProDomainModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity",
+      "baseClass": {
+        "name": "Object",
+        "namespace": "System",
+        "declaringAssemblyName": "System.Private.CoreLib",
+        "fullName": "System.Object"
+      },
+      "methods": [
+        {
+          "returnType": "Boolean",
+          "namespace": "Volo.Abp.Identity",
+          "name": "IsOptionalAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": []
+        },
+        {
+          "returnType": "Boolean",
+          "namespace": "Volo.Abp.Identity",
+          "name": "IsForcedEnableAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": []
+        },
+        {
+          "returnType": "Boolean",
+          "namespace": "Volo.Abp.Identity",
+          "name": "IsForcedDisableAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": []
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDomainService",
+          "namespace": "Volo.Abp.Domain.Services",
+          "declaringAssemblyName": "Volo.Abp.Ddd.Domain",
+          "fullName": "Volo.Abp.Domain.Services.IDomainService"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "domainService",
+      "name": "IdentityProTwoFactorManager",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity",
+      "baseClass": {
+        "name": "DomainService",
+        "namespace": "Volo.Abp.Domain.Services",
+        "declaringAssemblyName": "Volo.Abp.Ddd.Domain",
+        "fullName": "Volo.Abp.Domain.Services.DomainService"
+      },
+      "methods": [
+        {
+          "returnType": "IdentitySession",
+          "namespace": "Volo.Abp.Identity",
+          "name": "CreateAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sessionId",
+              "isOptional": false
+            },
+            {
+              "type": "String",
+              "name": "device",
+              "isOptional": false
+            },
+            {
+              "type": "String",
+              "name": "deviceInfo",
+              "isOptional": false
+            },
+            {
+              "type": "Guid",
+              "name": "userId",
+              "isOptional": false
+            },
+            {
+              "type": "Nullable<Guid>",
+              "name": "tenantId",
+              "isOptional": false
+            },
+            {
+              "type": "String",
+              "name": "clientId",
+              "isOptional": false
+            },
+            {
+              "type": "String",
+              "name": "ipAddresses",
+              "isOptional": false
+            },
+            {
+              "type": "Boolean",
+              "name": "setLastAccessed",
+              "isOptional": true
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "UpdateAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "IdentitySession",
+              "name": "session",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "List<IdentitySession>",
+          "namespace": "Volo.Abp.Identity",
+          "name": "GetListAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sorting",
+              "isOptional": true
+            },
+            {
+              "type": "Int32",
+              "name": "maxResultCount",
+              "isOptional": true
+            },
+            {
+              "type": "Int32",
+              "name": "skipCount",
+              "isOptional": true
+            },
+            {
+              "type": "Nullable<Guid>",
+              "name": "userId",
+              "isOptional": true
+            },
+            {
+              "type": "String",
+              "name": "device",
+              "isOptional": true
+            },
+            {
+              "type": "String",
+              "name": "clientId",
+              "isOptional": true
+            }
+          ]
+        },
+        {
+          "returnType": "IdentitySession",
+          "namespace": "Volo.Abp.Identity",
+          "name": "GetAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "id",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "IdentitySession",
+          "namespace": "Volo.Abp.Identity",
+          "name": "FindAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "id",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "IdentitySession",
+          "namespace": "Volo.Abp.Identity",
+          "name": "FindAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sessionId",
+              "isOptional": false
+            },
+            {
+              "type": "Boolean",
+              "name": "updateFromCache",
+              "isOptional": true
+            }
+          ]
+        },
+        {
+          "returnType": "Boolean",
+          "namespace": "Volo.Abp.Identity",
+          "name": "ExistAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "id",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "Boolean",
+          "namespace": "Volo.Abp.Identity",
+          "name": "ExistAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sessionId",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "IdentitySession",
+          "namespace": "Volo.Abp.Identity",
+          "name": "UpdateSessionFromCacheAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sessionId",
+              "isOptional": false
+            },
+            {
+              "type": "IdentitySessionCacheItem",
+              "name": "sessionCacheItem",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "RevokeAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "id",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "RevokeAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "String",
+              "name": "sessionId",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "RevokeAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "IdentitySession",
+              "name": "session",
+              "isOptional": false
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "RevokeAllAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "userId",
+              "isOptional": false
+            },
+            {
+              "type": "Nullable<Guid>",
+              "name": "exceptSessionId",
+              "isOptional": true
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "RevokeAllAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "Guid",
+              "name": "userId",
+              "isOptional": false
+            },
+            {
+              "type": "String",
+              "name": "device",
+              "isOptional": false
+            },
+            {
+              "type": "Nullable<Guid>",
+              "name": "exceptSessionId",
+              "isOptional": true
+            }
+          ]
+        },
+        {
+          "returnType": "Void",
+          "namespace": "Volo.Abp.Identity",
+          "name": "DeleteAllAsync",
+          "summary": null,
+          "isAsync": true,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": false,
+          "parameters": [
+            {
+              "type": "TimeSpan",
+              "name": "inactiveTimeSpan",
+              "isOptional": false
+            }
+          ]
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDomainService",
+          "namespace": "Volo.Abp.Domain.Services",
+          "declaringAssemblyName": "Volo.Abp.Ddd.Domain",
+          "fullName": "Volo.Abp.Domain.Services.IDomainService"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "domainService",
+      "name": "IdentitySessionManager",
+      "summary": null
+    },
+    {
+      "eventHandlerType": "Distributed",
+      "namespace": "Volo.Abp.Identity",
+      "subscribedEvents": [
+        {
+          "underlyingType": null,
+          "name": "UserPasswordChangeRequestedEto",
+          "namespace": "Volo.Abp.Users",
+          "declaringAssemblyName": "Volo.Abp.Users.Abstractions",
+          "fullName": "Volo.Abp.Users.UserPasswordChangeRequestedEto"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDistributedEventHandler<UserPasswordChangeRequestedEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<UserPasswordChangeRequestedEto>"
+        },
+        {
+          "name": "IEventHandler",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.IEventHandler"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "eventHandler",
+      "name": "UserPasswordChangeRequestedEventHandler",
+      "summary": null
+    },
+    {
+      "eventHandlerType": "Distributed",
+      "namespace": "Volo.Abp.Identity.Gdpr",
+      "subscribedEvents": [
+        {
+          "underlyingType": null,
+          "name": "GdprUserDataDeletionRequestedEto",
+          "namespace": "Volo.Abp.Gdpr",
+          "declaringAssemblyName": "Volo.Abp.Gdpr.Abstractions",
+          "fullName": "Volo.Abp.Gdpr.GdprUserDataDeletionRequestedEto"
+        },
+        {
+          "underlyingType": null,
+          "name": "GdprUserDataRequestedEto",
+          "namespace": "Volo.Abp.Gdpr",
+          "declaringAssemblyName": "Volo.Abp.Gdpr.Abstractions",
+          "fullName": "Volo.Abp.Gdpr.GdprUserDataRequestedEto"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IDistributedEventHandler<GdprUserDataDeletionRequestedEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<GdprUserDataDeletionRequestedEto>"
+        },
+        {
+          "name": "IEventHandler",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.IEventHandler"
+        },
+        {
+          "name": "IDistributedEventHandler<GdprUserDataRequestedEto>",
+          "namespace": "Volo.Abp.EventBus.Distributed",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.Distributed.IDistributedEventHandler<GdprUserDataRequestedEto>"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "eventHandler",
+      "name": "IdentityGdprEventHandler",
+      "summary": null
+    },
+    {
+      "eventHandlerType": "Local",
+      "namespace": "Volo.Abp.Identity",
+      "subscribedEvents": [
+        {
+          "underlyingType": {
+            "name": "IdentitySession",
+            "namespace": "Volo.Abp.Identity",
+            "declaringAssemblyName": "Volo.Abp.Identity.Domain",
+            "fullName": "Volo.Abp.Identity.IdentitySession"
+          },
+          "name": "EntityDeletedEventData`1",
+          "namespace": "Volo.Abp.Domain.Entities.Events",
+          "declaringAssemblyName": "Volo.Abp.Ddd.Domain",
+          "fullName": "Volo.Abp.Domain.Entities.Events.EntityDeletedEventData`1"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "ILocalEventHandler<EntityDeletedEventData`1>",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.ILocalEventHandler<EntityDeletedEventData`1>"
+        },
+        {
+          "name": "IEventHandler",
+          "namespace": "Volo.Abp.EventBus",
+          "declaringAssemblyName": "Volo.Abp.EventBus.Abstractions",
+          "fullName": "Volo.Abp.EventBus.IEventHandler"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        }
+      ],
+      "contentType": "eventHandler",
+      "name": "IdentitySessionDeletedEventHandler",
+      "summary": null
+    },
+    {
+      "defaultValue": "Optional",
+      "displayName": "Two factor behaviour",
+      "description": "Two factor behaviour",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.TwoFactor.Behaviour",
+      "summary": null
+    },
+    {
+      "defaultValue": "True",
+      "displayName": "Allow users to change their Two Factor.",
+      "description": "Allow users to change their Two Factor.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.TwoFactor.UsersCanChange",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Ldap Login",
+      "description": "Enable Ldap login",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Account.EnableLdapLogin",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "OAuth login",
+      "description": "Enable OAuth login",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.EnableOAuthLogin",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Authority",
+      "description": "Authority",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.Authority",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Client Id",
+      "description": "Client Id",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.ClientId",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Client secret",
+      "description": "Client secret",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.ClientSecret",
+      "summary": null
+    },
+    {
+      "defaultValue": null,
+      "displayName": "Scope",
+      "description": "Scope",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.Scope",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Require Https Metadata",
+      "description": "Require Https Metadata",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.RequireHttpsMetadata",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Validate Endpoints",
+      "description": "Validate Endpoints",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.ValidateEndpoints",
+      "summary": null
+    },
+    {
+      "defaultValue": "false",
+      "displayName": "Validate Issuer Name",
+      "description": "Validate Issuer Name",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.OAuthLogin.ValidateIssuerName",
+      "summary": null
+    },
+    {
+      "defaultValue": "Disabled",
+      "displayName": "Prevent concurrent login",
+      "description": "Allow users to log in simultaneously from any platform or restrict them from having multiple sessions across different clients.",
+      "isVisibleToClient": true,
+      "isInherited": true,
+      "isEncrypted": false,
+      "contentType": "setting",
+      "name": "Abp.Identity.Session.PreventConcurrentLogin",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "openiddictpro",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/openiddictpro/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/openiddictpro"],
+      "options": {
+        "tsConfig": "packages/openiddictpro/tsconfig.lib.json",
+        "project": "packages/openiddictpro/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/openiddictpro/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/openiddictpro"],
+      "options": {
+        "jestConfig": "packages/openiddictpro/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "tags": []
+}

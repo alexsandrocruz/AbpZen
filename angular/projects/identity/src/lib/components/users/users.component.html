@@ -1,0 +1,422 @@
+<abp-page [title]="'AbpIdentity::Users' | abpLocalization" [toolbar]="data.items">
+  <div id="identity-users-wrapper">
+    <div class="mt-2 mt-sm-0">
+      <abp-advanced-entity-filters [list]="list" localizationSourceName="AbpIdentity">
+        <abp-advanced-entity-filters-form>
+          <form #filterForm (keyup.enter)="list.get()">
+            <div class="row">
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="roleIdFilter" class="form-label">
+                    {{ 'AbpIdentity::Role' | abpLocalization }}
+                  </label>
+                  <abp-lookup-select
+                    cid="roleIdFilter"
+                    lookupNameProp="name"
+                    [getFn]="getRolesLookup()"
+                    [(ngModel)]="filters.roleId"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></abp-lookup-select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="organizationUnitIdFilter" class="form-label">
+                    {{ 'AbpIdentity::OrganizationUnit' | abpLocalization }}
+                  </label>
+                  <abp-lookup-select
+                    cid="organizationUnitIdFilter"
+                    [getFn]="getOrganizationUnitLookup()"
+                    [(ngModel)]="filters.organizationUnitId"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></abp-lookup-select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="UserName" class="form-label">
+                    {{ 'AbpIdentity::UserName' | abpLocalization }}
+                  </label>
+                  <input
+                    type="text"
+                    id="UserName"
+                    class="form-control"
+                    [(ngModel)]="filters.userName"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="name" class="form-label">
+                    {{ 'AbpIdentity::Name' | abpLocalization }}
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    [(ngModel)]="filters.name"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="surname" class="form-label">
+                    {{ 'AbpIdentity::Surname' | abpLocalization }}
+                  </label>
+                  <input
+                    type="text"
+                    id="surname"
+                    class="form-control"
+                    [(ngModel)]="filters.surname"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="UserName" class="form-label">
+                    {{ 'AbpIdentity::CreationDate' | abpLocalization }}
+                  </label>
+                  <abp-date-range-picker
+                    startDateProp="minCreationTime"
+                    endDateProp="maxCreationTime"
+                    [(ngModel)]="filters"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                  </abp-date-range-picker>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="UserName" class="form-label">
+                    {{ 'AbpIdentity::ModificationDate' | abpLocalization }}
+                  </label>
+                  <abp-date-range-picker
+                    startDateProp="minModifitionTime"
+                    endDateProp="maxModifitionTime"
+                    [(ngModel)]="filters"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                  </abp-date-range-picker>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="PhoneNumber" class="form-label">
+                    {{ 'AbpIdentity::PhoneNumber' | abpLocalization }}
+                  </label>
+                  <input
+                    type="text"
+                    id="PhoneNumber"
+                    class="form-control"
+                    [(ngModel)]="filters.phoneNumber"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="form-group mb-3">
+                  <label for="EmailAddress" class="form-label">
+                    {{ 'AbpIdentity::EmailAddress' | abpLocalization }}
+                  </label>
+                  <input
+                    type="text"
+                    id="EmailAddress"
+                    class="form-control"
+                    [(ngModel)]="filters.emailAddress"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="organizationUnitIdFilter" class="form-label">
+                    {{ 'AbpIdentity::NotActive' | abpLocalization }}
+                  </label>
+                  <select
+                    name="notActive"
+                    class="form-select form-control"
+                    [(ngModel)]="filters.notActive"
+                  >
+                    <option [ngValue]="undefined">
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    </option>
+                    <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
+                    <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="organizationUnitIdFilter" class="form-label">
+                    {{ 'AbpIdentity::EmailConfirmed' | abpLocalization }}
+                  </label>
+                  <select
+                    name="emailConfirmed"
+                    class="form-select form-control"
+                    [(ngModel)]="filters.emailConfirmed"
+                  >
+                    <option [ngValue]="undefined">
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    </option>
+                    <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
+                    <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="organizationUnitIdFilter" class="form-label">
+                    {{ 'AbpIdentity::Lock' | abpLocalization }}
+                  </label>
+                  <select
+                    name="isLockedOut"
+                    class="form-select form-control"
+                    [(ngModel)]="filters.isLockedOut"
+                  >
+                    <option [ngValue]="undefined">
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    </option>
+                    <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
+                    <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4 col-md-3">
+                <div class="mb-3">
+                  <label for="organizationUnitIdFilter" class="form-label">
+                    {{ 'AbpIdentity::ExternalUser' | abpLocalization }}
+                  </label>
+                  <select
+                    name="isExternal"
+                    class="form-select form-control"
+                    [(ngModel)]="filters.isExternal"
+                  >
+                    <option [ngValue]="undefined">
+                      {{ 'AbpIdentity::Dash' | abpLocalization }}
+                    </option>
+                    <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
+                    <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-auto align-self-end mb-3">
+                <div class="row">
+                  <div class="col-6 col-sm-auto d-grid">
+                    <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                      <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+                    </button>
+                  </div>
+                  <div class="col-6 col-sm-auto d-grid">
+                    <button type="button" class="btn btn-primary" (click)="list.get()">
+                      <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </abp-advanced-entity-filters-form>
+      </abp-advanced-entity-filters>
+    </div>
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [(visible)]="isModalVisible" [busy]="modalBusy" (disappear)="form = null">
+  <ng-template #abpHeader>
+    <h3>
+      @if (selected?.id) {
+        {{ 'AbpIdentity::Edit' | abpLocalization }}
+        @if (selected.userName) {
+          - {{ selected.userName }}
+        }
+      } @else {
+        {{ 'AbpIdentity::NewUser' | abpLocalization }}
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    @if (form) {
+      <form [formGroup]="form" id="userForm" (ngSubmit)="save()" validateOnSubmit>
+        <ul id="user-nav-tabs" ngbNav #nav="ngbNav" class="nav-tabs">
+          <li id="user-informations" ngbNavItem>
+            <a ngbNavLink>{{ 'AbpIdentity::UserInformations' | abpLocalization }}</a>
+            <ng-template ngbNavContent>
+              <div class="row">
+                <abp-extensible-form
+                  class="row gap-x2"
+                  [selectedRecord]="selected"
+                ></abp-extensible-form>
+              </div>
+            </ng-template>
+          </li>
+          <li id="user-roles" *abpPermission="'AbpIdentity.Users.Update.ManageRoles'" ngbNavItem>
+            <a ngbNavLink
+              >{{ 'AbpIdentity::Roles' | abpLocalization }}
+              @if (roleCount(); as roleCount) {
+                <span>({{ roleCount }})</span>
+              }
+            </a>
+            <ng-template ngbNavContent>
+              @for (roleGroup of roleGroups; track i; let i = $index) {
+                <div class="form-check mb-2">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [attr.id]="'roles-' + i"
+                    [formControl]="roleGroup.controls[roles[i].name]"
+                    [abpDisabled]="isFromOrgUnit(roles[i].id)"
+                  />
+                  <label class="form-check-label" [attr.for]="'roles-' + i">
+                    {{ roles[i].name }}
+                    @if (isFromOrgUnit(roles[i].id)) {
+                      <span>({{ 'OU' | abpLocalization }})</span>
+                    }
+                  </label>
+                </div>
+              }
+            </ng-template>
+          </li>
+          <li
+            id="user-organization-units"
+            *abpPermission="'AbpIdentity.Users.Update.ManageOU'"
+            ngbNavItem
+          >
+            <a ngbNavLink
+              >{{ 'AbpIdentity::OrganizationUnits' | abpLocalization }}
+              @if (!!organization.checkedKeys.length) {
+                <span>({{ organization.checkedKeys.length }})</span>
+              }
+            </a>
+
+            <ng-template ngbNavContent>
+              @if (organization.nodes?.length) {
+                <abp-tree
+                  [checkStrictly]="true"
+                  [checkable]="true"
+                  [nodes]="organization.nodes"
+                  [changeCheckboxWithNode]="true"
+                  [isNodeSelected]="organization.selectFn"
+                  [(checkedKeys)]="organization.checkedKeys"
+                  [(expandedKeys)]="organization.expandedKeys"
+                ></abp-tree>
+              } @else {
+                <p class="text-muted">
+                  {{ 'AbpIdentity::NoOrganizationUnits' | abpLocalization }}
+                </p>
+              }
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2 fade-in-top"></div>
+      </form>
+    }
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="userForm">{{
+      'AbpUi::Save' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>
+
+<abp-permission-management
+  *abpReplaceableTemplate="{
+    inputs: {
+      providerName: { value: 'U' },
+      providerKey: { value: providerKey },
+      hideBadges: { value: true },
+      visible: { value: visiblePermissions, twoWay: true },
+    },
+    outputs: { visibleChange: onVisiblePermissionChange },
+    componentKey: 'PermissionManagement.PermissionManagementComponent',
+  }"
+  [(visible)]="visiblePermissions"
+  [providerKey]="providerKey"
+  [hideBadges]="true"
+  providerName="U"
+  [entityDisplayName]="entityDisplayName"
+/>
+
+@if (visibleClaims) {
+  <abp-claim-modal [(visible)]="visibleClaims" [subject]="claimSubject" />
+}
+
+@if (isSetPasswordModalVisible) {
+  <abp-set-user-password [selected]="selected" (visibleChange)="setPasswordModalChange($event)" />
+}
+
+<abp-modal [(visible)]="twoFactor.isModalVisible" [busy]="modalBusy">
+  <ng-template #abpHeader>
+    <h3>{{ 'AbpIdentity::TwoFactor' | abpLocalization }} - {{ selected.userName }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <div class="mt-2 fade-in-top">
+      <div class="form-check mb-2">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="two-factor-enabled"
+          [(ngModel)]="twoFactor.checkboxValue"
+        />
+        <label class="form-check-label" for="two-factor-enabled">{{
+          'AbpIdentity::DisplayName:TwoFactorEnabled' | abpLocalization
+        }}</label>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" (click)="setTwoFactor()" [disabled]="modalBusy">{{
+      'AbpUi::Save' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>
+
+@if (isLockModalVisible) {
+  <abp-user-lock-modal [selected]="selected" (visibleChange)="lockModalVisibleChange($event)" />
+}
+
+@if (!!selected && visibleViewDetails) {
+  <abp-user-view-detail [user]="selected" (isModalVisibleChange)="visibleViewDetails = $event" />
+}
+
+@if (visibleUploadFile) {
+  <abp-excel-upload-file
+    [fileType]="fileType"
+    (isModalVisibleChange)="visibleUploadFile = $event"
+    (isListChange)="resetList()"
+  />
+}
+
+@if (visibleSessionsModal()) {
+  <abp-user-sessions [selected]="selected" [(isModalVisible)]="visibleSessionsModal" />
+}

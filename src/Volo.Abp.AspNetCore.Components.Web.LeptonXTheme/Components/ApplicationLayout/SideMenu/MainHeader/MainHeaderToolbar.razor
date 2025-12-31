@@ -1,0 +1,19 @@
+﻿<nav class="lpx-toolbar" id="lpx-toolbar">
+
+	@if (Toolbar != null)
+	{
+		@foreach (var item in Toolbar.Items.OrderBy(i => i.Order))
+		{
+			if(IsPlainComponent(item))
+			{
+				<DynamicComponent Type="@item.ComponentType" />
+				continue;
+			}
+
+			<div class="outer-menu-item">
+				<DynamicComponent Type="@item.ComponentType" />
+			</div>
+		}
+	}
+	
+</nav>

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.Abp.LanguageManagement": {
+      "path": "Volo.Abp.LanguageManagement.abpmdl"
+    }
+  }
+}

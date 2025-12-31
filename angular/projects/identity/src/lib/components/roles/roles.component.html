@@ -1,0 +1,58 @@
+<abp-page [title]="'AbpIdentity::Roles' | abpLocalization" [toolbar]="data.items">
+  <div id="identity-roles-wrapper">
+    <abp-advanced-entity-filters
+      localizationSourceName="AbpIdentity"
+      [list]="list"
+    ></abp-advanced-entity-filters>
+
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>
+
+<abp-permission-management
+  *abpReplaceableTemplate="{
+    inputs: {
+      providerName: { value: 'R' },
+      providerKey: { value: providerKey },
+      hideBadges: { value: true },
+      visible: { value: visiblePermissions, twoWay: true },
+    },
+    outputs: { visibleChange: onVisiblePermissionChange },
+    componentKey: 'PermissionManagement.PermissionManagementComponent',
+  }"
+  [(visible)]="visiblePermissions"
+  [providerKey]="providerKey"
+  providerName="R"
+  [hideBadges]="true"
+>
+</abp-permission-management>
+
+@if (visibleClaims) {
+  <abp-claim-modal [(visible)]="visibleClaims" [subject]="claimSubject" />
+}
+
+@if (visibleRoleDelete) {
+  <abp-role-delete
+    [visible]="visibleRoleDelete"
+    [selected]="selected"
+    (visibleChange)="onVisibleDeleteChange($event)"
+  />
+}
+
+@if (visibleMove) {
+  <abp-move-all-users
+    [visible]="visibleMove"
+    [selected]="selected"
+    (visibleChange)="onVisibleMoveChange($event)"
+  />
+}
+
+@if (isModalVisible) {
+  <abp-roles-modal (visibleChange)="onVisibleModalChange($event)" [selected]="selected" />
+}

@@ -1,0 +1,54 @@
+<div id="wrapper">
+  <abp-page [title]="'AbpAccount::MySecurityLogs' | abpLocalization" [toolbar]="data.items">
+    <div class="card">
+      <div class="card-body pb-lg-3">
+        <div class="row align-items-end" (keyup.enter)="list.get()">
+          <div class="row">
+            <div class="col-md-6 col-lg-3 col-xxl-3">
+              <div class="mb-3">
+                <label class="form-label">{{ 'AbpAccount::StartTime' | abpLocalization }}</label>
+                <abp-datetime-picker
+                  [(ngModel)]="filter.startTime"
+                  [ngModelOptions]="{ standalone: true }"
+                ></abp-datetime-picker>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 col-xxl-3">
+              <div class="mb-3">
+                <label class="form-label">{{ 'AbpAccount::EndTime' | abpLocalization }}</label>
+                <abp-datetime-picker
+                  [(ngModel)]="filter.endTime"
+                  [ngModelOptions]="{ standalone: true }"
+                ></abp-datetime-picker>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+              <div class="mb-3">
+                <label class="form-label">{{
+                  'AbpAccount::MySecurityLogs:Action' | abpLocalization
+                }}</label>
+                <input type="text" class="form-control" [(ngModel)]="filter.action" />
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 col-xxl-3">
+              <div class="mt-3 mb-lg-0 d-grid">
+                <button type="button" class="btn btn-primary" (click)="list.get()">
+                  <i class="fa fa-search me-1"></i>
+                  <span>{{ 'AbpUi::Search' | abpLocalization }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <abp-extensible-table
+      [data]="data.items"
+      [recordsTotal]="data.totalCount"
+      [list]="list"
+    ></abp-extensible-table>
+  </abp-page>
+</div>

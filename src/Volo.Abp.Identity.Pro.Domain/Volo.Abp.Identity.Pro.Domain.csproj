@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <AssemblyName>Volo.Abp.Identity.Pro.Domain</AssemblyName>
+        <PackageId>Volo.Abp.Identity.Pro.Domain</PackageId>
+        <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="IdentityModel" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <ProjectReference Include="..\Volo.Abp.Identity.Pro.Domain.Shared\Volo.Abp.Identity.Pro.Domain.Shared.csproj" />
+        <PackageReference Include="Volo.Abp.Ldap" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Caching" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Gdpr.Abstractions" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Abstractions" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Identity.Domain" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+    </ItemGroup>
+
+</Project>

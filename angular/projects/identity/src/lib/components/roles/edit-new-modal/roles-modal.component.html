@@ -1,0 +1,31 @@
+<abp-modal [visible]="true" (visibleChange)="onVisibleChange($event)">
+  <ng-template #abpHeader>
+    <h3>
+      @if (!selected()?.id) {
+        {{ 'AbpIdentity::NewRole' | abpLocalization }}
+      } @else {
+        {{ 'AbpUi::Edit' | abpLocalization }}
+        @if (selected().name; as roleName) {
+          - {{ roleName }}
+        }
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    @if (form) {
+      <form id="roleForm" [formGroup]="form" (ngSubmit)="save()" validateOnSubmit>
+        <abp-extensible-form class="row gap-x2" [selectedRecord]="selected()" />
+      </form>
+    }
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="roleForm">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>

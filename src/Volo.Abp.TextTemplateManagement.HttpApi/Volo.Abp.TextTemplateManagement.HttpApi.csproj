@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.Abp.TextTemplateManagement.Application.Contracts\Volo.Abp.TextTemplateManagement.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

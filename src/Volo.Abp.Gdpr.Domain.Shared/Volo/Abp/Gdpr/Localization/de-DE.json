@@ -1,0 +1,28 @@
+{
+  "culture": "de-DE",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Sie haben zuvor den Download personenbezogener Daten angefordert. Sobald der angegebene Anforderungszeitraum abgelaufen ist, können Sie eine neue erstellen.",
+    "Volo.Abp.Gdpr:010002": "Ihre personenbezogenen Daten werden noch verarbeitet. Sie können es unter {GdprDataReadyTime} herunterladen.",
+    "PersonalData": "Persönliche Daten",
+    "Menu:PersonalData": "persönliche Daten",
+    "PersonalDataDescription": "Ihr Konto enthält die personenbezogenen Daten, die Sie uns zur Verfügung gestellt haben. Auf dieser Seite können Sie diese Daten herunterladen oder löschen.",
+    "RequestPersonalData": "Persönliche Daten anfordern",
+    "DeletePersonalData": "Persönliche Daten löschen",
+    "CreationTime": "Erstellungszeitpunkt",
+    "Action": "Aktion",
+    "Preparing": "Vorbereiten",
+    "Download": "Herunterladen",
+    "ReadyTime": "Bereitzeit",
+    "DeletePersonalDataWarning": "Durch das Löschen dieser Daten wird Ihr Konto entfernt und Sie können sich nicht mehr bei der Anwendung anmelden! Sind Sie sicher, dass Sie fortfahren möchten?",
+    "PersonalDataDeleteRequestReceived": "Ihr Antrag auf Löschung Ihrer personenbezogenen Daten wird bearbeitet... Am Ende des Datenlöschvorgangs wird Ihr Konto gelöscht und Sie können es nicht mehr nutzen.",
+    "PersonalDataPrepareRequestReceived": "Ihre Anfrage zu personenbezogenen Daten wird bearbeitet. Sie können es von dieser Seite herunterladen, sobald es fertig ist!",
+    "NoDataAvailable": "Es liegen keine Daten vor.",
+    "Accept": "Akzeptieren",
+    "CookiePolicy": "Cookie-Richtlinie",
+    "PrivacyPolicy": "Datenschutzrichtlinie",
+    "ThisWebsiteUsesCookie": "Diese Website verwendet Cookies, um sicherzustellen, dass Sie die Website optimal nutzen.",
+    "CookieConsentAgreePolicies": "Wenn Sie weitersurfen, stimmen Sie unseren {0} und {1} zu.",
+    "CookieConsentAgreePolicy": "Wenn Sie weitersurfen, stimmen Sie unseren {0} zu.",
+    "CanNotGetDownloadToken": "Sie können für diese Anfrage kein Download-Token erhalten!"
+  }
+}

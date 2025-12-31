@@ -1,0 +1,13 @@
+{
+  "culture": "sv",
+  "texts": {
+    "Permission:LanguageManagement": "Språkhantering",
+    "Permission:LanguageTexts": "Språkliga texter",
+    "Permission:LanguageTextsEdit": "Redigera språktexter",
+    "Permission:Languages": "Språk",
+    "Permission:LanguagesEdit": "Redigera språk",
+    "Permission:LanguagesCreate": "Skapa språk",
+    "Permission:LanguagesChangeDefault": "Ändra standardspråk",
+    "Permission:LanguagesDelete": "Radera språk"
+  }
+}

@@ -1,0 +1,14 @@
+@if (value$ | async; as value) {
+  @if (value.isSubscription) {
+    <i
+      class="fa fa-info-circle text-warning"
+      placement="top"
+      container="body"
+      [ngbTooltip]="'Payment::PriceSubscriptionTooltip' | abpLocalization"
+    ></i>
+  } @else {
+    <ng-template #valueTmp>
+      {{ value.defaultValue }}
+    </ng-template>
+  }
+}

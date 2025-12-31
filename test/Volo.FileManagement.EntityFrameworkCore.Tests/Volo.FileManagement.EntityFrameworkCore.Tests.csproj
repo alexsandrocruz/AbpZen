@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Volo.FileManagement</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" />
+    <ProjectReference Include="..\..\src\Volo.FileManagement.EntityFrameworkCore\Volo.FileManagement.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Volo.FileManagement.TestBase\Volo.FileManagement.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

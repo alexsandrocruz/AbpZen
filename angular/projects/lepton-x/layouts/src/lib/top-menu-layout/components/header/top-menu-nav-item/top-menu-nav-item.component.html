@@ -1,0 +1,38 @@
+<li
+  [ngClass]="isInnerMenu ? 'lpx-inner-menu-item' : 'outer-menu-item'"
+  tabindex="0"
+  #reference
+>
+  <a
+    [ngClass]="{ selected: menuItem.selected }"
+    [routerLink]="menuItem.link || ''"
+    class="lpx-menu-item-link lpx-menu-item"
+  >
+    <ng-container *ngTemplateOutlet="menuItem.template || defaultTemplate">
+    </ng-container>
+    <ng-template #defaultTemplate>
+      @if (menuItem.icon) {
+        <span class="lpx-menu-item-icon">
+          <i class="lpx-icon" [ngClass]="menuItem.icon" aria-hidden="true"></i>
+        </span>
+      }
+      <span class="lpx-menu-item-text">{{ menuItem.text }} </span>
+    </ng-template>
+  </a>
+
+  @if (menuItem.children && menuItem.children.length > 0) {
+    <div class="lpx-menu-dropdown lpx-ps" #floating [attr.id]="menuItem.id">
+      <ul class="lpx-inner-menu">
+        @for (childMenuItem of menuItem.children; track $index) {
+          <lpx-top-menu-nav-item
+            [menuItem]="childMenuItem"
+            [isInnerMenu]="true"
+          >
+          </lpx-top-menu-nav-item>
+        }
+
+        <!-- it will implement or remove all component -->
+      </ul>
+    </div>
+  }
+</li>

@@ -1,0 +1,104 @@
+﻿@page "/identity/security-logs"
+@attribute [Authorize(IdentityPermissions.SecurityLogs.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@inherits AbpIdentityProComponentBase
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["SecurityLogs"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Fields Horizontal="true">
+            <Field ColumnSize="@ColumnSize.Is3">
+            	<FieldLabel>@L["StartTime"]</FieldLabel>
+            	<DatePicker TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="@Filter.StartTime" DisplayFormat="@(DateFormat + " - "+ TimeFormat)" TimeAs24hr="TimeAs24hr" Placeholder="@string.Empty"/>
+            </Field>
+            <Field ColumnSize="@ColumnSize.Is3">
+            	<FieldLabel>@L["EndTime"]</FieldLabel>
+            	<DatePicker TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="@Filter.EndTime" DisplayFormat="@(DateFormat + " - "+ TimeFormat)" TimeAs24hr="TimeAs24hr" Placeholder="@string.Empty" />
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>
+                    @L["SecurityLogs:Application"]
+                    <Tooltip Text="@L["SecurityLogs:ApplicationDescription"]" Class="d-inline">
+                        <i class="bi bi-info-circle"></i>
+                    </Tooltip>
+                </FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.ApplicationName"/>
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>
+                    @L["SecurityLogs:Identity"]
+                    <Tooltip Text="@L["SecurityLogs:IdentityDescription"]" Class="d-inline">
+                        <i class="bi bi-info-circle"></i>
+                    </Tooltip>
+                </FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.Identity"/>
+            </Field>
+        </Fields>
+        <Fields Horizontal="true">
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>@L["SecurityLogs:UserName"]</FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.UserName" />
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel data-bs-original-title="">
+                    @L["SecurityLogs:Action"]
+                    <Tooltip Text="@L["SecurityLogs:ActionDescription"]" Class="d-inline">
+                        <i class="bi bi-info-circle"></i>
+                    </Tooltip>
+                </FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.Action" />
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>@L["SecurityLogs:Client"]</FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.ClientId" />
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>@L["SecurityLogs:CorrelationId"]</FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.CorrelationId" />
+            </Field>
+            <Field ColumnSize="ColumnSize.Is3">
+                <FieldLabel>@L["SecurityLogs:IpAddress"]</FieldLabel>
+                <TextEdit Placeholder="@string.Empty" @bind-Text="@Filter.ClientIpAddress" />
+            </Field>
+        </Fields>
+        <div class="justify-content-end row">
+            <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is6.OnMobile">
+                <div class="d-grid gap-2">
+                    <Button Block="true"
+                            Color="Color.Primary"
+                            Outline
+                            Class="mt-md-2"
+                            Clicked="ClearFilterAsync">
+                        <Icon /> @L["Clear"]
+                    </Button>
+                </div>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is6.OnMobile">
+                    <div class="d-grid gap-2">
+                        <Button Block="true"
+                                Color="Color.Primary"
+                                Class="mt-md-2"
+                                Clicked="GetEntitiesAsync">
+                            <Icon Name="IconName.Search"/> @L["Search"]
+                        </Button>
+                    </div>
+            </Column>
+        </div>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="IdentitySecurityLogDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@SecurityLogManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>

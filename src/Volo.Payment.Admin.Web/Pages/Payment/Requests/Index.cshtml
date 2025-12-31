@@ -1,0 +1,58 @@
+﻿@page
+
+@using Volo.Payment.Admin.Web.Pages.Payment.Requests
+@using Volo.Payment.Admin.Web.Pages
+@using Volo.Payment.Admin.Web.Menus
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageSearchBox
+
+@model IndexModel
+
+@inherits PaymentAdminPageBase
+
+@{
+    PageLayout.Content.Title = L["Menu:PaymentRequests"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:PaymentRequests"].Value);
+    PageLayout.Content.MenuItemName = PaymentAdminMenus.PaymentRequests.PaymentRequestsMenu;
+}
+
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/Pages/Payment/Requests/index.js" />
+        <abp-script src="/client-proxies/paymentAdmin-proxy.js" />
+    </abp-script-bundle>
+}
+
+    @section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+    <abp-card class="mb-4">
+        <abp-card-body>
+            <form id="PaymentRequestFilterForm" method="post">
+                <abp-row>
+                    <abp-column size-lg="_6" class="input-daterange">
+                        <label for="inputTime" class="form-label">@L["DisplayName:CreationTime"]</label>
+                        <input type="text" id="inputTime" class="form-control">
+                    </abp-column>
+                    <abp-column size-lg="_3" size-md="_6">
+                        <abp-select asp-for="@Model.PaymentType" />
+                    </abp-column>
+                    <abp-column size-lg="_3" size-md="_6">
+                        <abp-select asp-for="@Model.Status" />
+                    </abp-column>
+
+                    <abp-column size="_12">
+                        @await Component.InvokeAsync(typeof(AbpPageSearchBoxViewComponent))
+                    </abp-column>
+                </abp-row>
+            </form>
+        </abp-card-body>
+    </abp-card>
+
+    <div id="PaymentRequestsWrapper">
+        <abp-card>
+            <abp-card-body>
+                <abp-table  id="PaymentRequestsTable" class="nowrap"></abp-table>
+            </abp-card-body>
+        </abp-card>
+    </div>

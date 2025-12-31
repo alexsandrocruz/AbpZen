@@ -1,0 +1,73 @@
+{
+  "name": "Volo.Abp.OpenIddict.Pro.Blazor.Server",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Blazor.Server",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.Blazor",
+          "namespace": "Volo.Abp.OpenIddict.Pro.Blazor",
+          "name": "AbpOpenIddictProBlazorModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Blazor.Server",
+          "namespace": "Volo.Abp.PermissionManagement.Blazor.Server",
+          "name": "AbpPermissionManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.Blazor.Server",
+          "namespace": "Volo.Abp.AuditLogging.Blazor.Server",
+          "name": "AbpAuditLoggingBlazorServerModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpOpenIddictProBlazorServerModule",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Chat.Localization
+
+@inject IHtmlLocalizer<ChatResource> L
+
+<a href="/Chat" class="lpx-menu-item-link nav-link b-tooltip b-tooltip-left w-100 b-tooltip-inline d-flex align-items-center justify-content-center" type="button" data-bs-toggle="tooltip" data-bs-placement="left" aria-label="@L["Menu:Chat"].Value" data-bs-original-title="@L["Menu:Chat"].Value">
+    <span class="lpx-menu-item-icon">
+        <i class="lpx-icon fas fa-comments" aria-hidden="true"></i>
+    </span>
+</a>

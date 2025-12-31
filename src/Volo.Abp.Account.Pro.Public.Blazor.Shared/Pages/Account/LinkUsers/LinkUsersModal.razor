@@ -1,0 +1,132 @@
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inherits Volo.Abp.AspNetCore.Components.AbpComponentBase
+
+<li class="outer-menu-item">
+    <a class="lpx-menu-item-link dropdown-item">
+        <span class="lpx-menu-item-icon">
+            <i class="lpx-icon fa fa-link" aria-hidden="true"></i>
+        </span>
+        <span class="lpx-menu-item-text hidden-in-hover-trigger" @onclick="OpenModalAsync">@L["LinkedAccounts"]</span>
+    </a>
+</li>
+
+<div class="account_link_users_modals">
+
+    <Modal @ref="_modal" RenderMode="ModalRenderMode.LazyReload" Closing="CloseModalAsync">
+        <ModalContent>
+            <ModalHeader>
+                <ModalTitle>@L["LinkedAccounts"]</ModalTitle>
+                <CloseButton Clicked="() => CloseSpecifyModalAsync(_modal)"/>
+            </ModalHeader>
+            <ModalBody>
+                <div class="text-end mb-3">
+                    <Button Color="Color.Primary" Clicked="() => NewLinkAccountAsync(false)">@L["NewLinkAccount"]</Button>
+                </div>
+
+                <form method="post" data-ajaxForm="false" action="@PostAction" id="linkUserLoginForm">
+                    <input type="hidden" name="SourceLinkUserId" value="@CurrentUser.Id">
+                    <input type="hidden" name="SourceLinkTenantId" value="@CurrentTenant.Id">
+                    <input type="hidden" name="SourceLinkToken" value="@SourceLinkToken">
+                    <input type="hidden" name="TargetLinkUserId" value="@TargetLinkUserId">
+                    <input type="hidden" name="TargetLinkTenantId" value="@TargetLinkTenantId">
+                    <input type="hidden" name="ReturnUrl" value="@ReturnUrl">
+                </form>
+
+                <div class="text-end">
+                    <label>@L["Search"]</label>
+                    <TextEdit Text="@_customFilterValue" TextChanged="@OnCustomFilterValueChanged" Class="d-inline-block w-auto p-1" />
+                </div>
+
+                <DataGrid
+                          @ref="_linkUsersDataGrid"
+                          TItem="LinkUserDto"
+                          Data="LinkUsers?.Items"
+                          TotalItems="LinkUsers?.Items.Count"
+                          ShowPager="true"
+                          CustomFilter="@OnCustomFilter"
+                          PageSize="PageSize">
+                    <DataGridColumns>
+                        <DataGridColumn Caption="@L["Actions"]">
+                            <DisplayTemplate>
+                                <EntityActions Type="ActionType.Dropdown" TItem="LinkUserDto">
+                                    <EntityAction TItem="LinkUserDto" Text="@L["LoginAsThisAccount"]" Clicked="() => LoginAsThisAccountAsync(context.TargetTenantId, context.TargetUserId)">
+                                    </EntityAction>
+                                    <EntityAction TItem="LinkUserDto" Text="@L["Delete"]" Visible="context.DirectlyLinked" Clicked="() => OpenDeleteConfirmationModalAsync(context.TargetTenantId, context.TargetUserId, context.TargetUserName)">
+                                    </EntityAction>
+                                </EntityActions>
+                            </DisplayTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Caption="@L["TenantAndUserName"]" TItem="LinkUserDto">
+                            <DisplayTemplate>
+                                @{
+                                    var tenantAndUserName = context.TargetTenantName != null
+                                        ? context.TargetTenantName + "\\" + context.TargetUserName
+                                        : context.TargetUserName;
+                                    @tenantAndUserName
+                                }
+                            </DisplayTemplate>
+                        </DataGridColumn>
+                        <DataGridColumn Caption="@L["DirectlyLinked"]" TItem="LinkUserDto">
+                            <DisplayTemplate>
+                                @if (context.DirectlyLinked)
+                                {
+                                    <Icon Name="@IconName.Check"/>
+                                }
+                                else
+                                {
+                                    <Icon Name="@IconName.Times"/>
+                                }
+                            </DisplayTemplate>
+                        </DataGridColumn>
+                    </DataGridColumns>
+                    <EmptyTemplate>
+                        @L["NoDataAvailableInDatatable"]
+                    </EmptyTemplate>
+                </DataGrid>
+            </ModalBody>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="_deleteConfirmationModal" RenderMode="ModalRenderMode.LazyReload" Closing="CloseDeleteConfirmationModalAsync">
+        <ModalContent Centered="true">
+            <ModalBody>
+                <DisplayHeading Size="DisplayHeadingSize.Is2" TextAlignment="TextAlignment.Center">
+                    <Icon Name="@IconName.QuestionCircle" />
+                </DisplayHeading>
+                <Paragraph TextAlignment="TextAlignment.Center" Margin="Margin.Is0.FromBottom">
+                    @DeleteConfirmationMessage
+                </Paragraph>
+            </ModalBody>
+            <ModalFooter class="d-flex justify-content-center">
+                    <Button Color="Color.Danger" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="() => CloseSpecifyModalAsync(_deleteConfirmationModal)" >
+                        @L["Cancel"]
+                    </Button>
+                    <Button Color="Color.Primary" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="@DeleteUsersAsync">
+                        @L["Ok"]
+                    </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    <Modal @ref="_newLinkUserConfirmationModal" RenderMode="ModalRenderMode.LazyReload" Closing="CLoseNewLinkUserConfirmationModal">
+        <ModalContent Centered="true">
+            <ModalBody>
+                <DisplayHeading Size="DisplayHeadingSize.Is2" TextAlignment="TextAlignment.Center">
+                    <Icon Name="@IconName.QuestionCircle" />
+                </DisplayHeading>
+                <Paragraph TextAlignment="TextAlignment.Center" Margin="Margin.Is0.FromBottom">
+                    @L["NewLinkAccountWarning"]
+                </Paragraph>
+            </ModalBody>
+            <ModalFooter class="d-flex justify-content-center">
+                <Button Color="Color.Danger" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="() => CloseSpecifyModalAsync(_newLinkUserConfirmationModal)" >
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary" Padding="Padding.Is3.OnX" Margin="Margin.Is1.OnX" Clicked="() => NewLinkAccountAsync(true)">
+                    @L["Ok"]
+                </Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+</div>

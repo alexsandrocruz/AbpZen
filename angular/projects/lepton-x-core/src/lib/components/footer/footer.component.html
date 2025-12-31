@@ -1,0 +1,18 @@
+@if (footerValues$ | async; as footerValues) {
+  <div class="lpx-footbar">
+    <div class="lpx-footbar-copyright">
+      @if (footerValues.descUrl) {
+        <a [routerLink]="[footerValues.descUrl]"> {{ footerValues.desc }}</a>
+      } @else {
+        <a> {{ footerValues.desc }}</a>
+      }
+    </div>
+    <div class="lpx-footbar-solo-links">
+      @for (footerLink of footerValues.footerLinks; track $index) {
+        @if (footerLink) {
+          <a [routerLink]="[footerLink.link]">{{ footerLink.text }}</a>
+        }
+      }
+    </div>
+  </div>
+}

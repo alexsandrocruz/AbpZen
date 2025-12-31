@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    
+    
+    
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <AssemblyName>Volo.Abp.Gdpr.Application</AssemblyName>
+        <PackageId>Volo.Abp.Gdpr.Application</PackageId>
+        <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+        <RootNamespace />
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Volo.Abp.Gdpr.Domain\Volo.Abp.Gdpr.Domain.csproj" />
+        <ProjectReference Include="..\Volo.Abp.Gdpr.Application.Contracts\Volo.Abp.Gdpr.Application.Contracts.csproj" />
+        <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Ddd.Application" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Caching" VersionOverride="9.0.4" />
+    </ItemGroup>
+</Project>

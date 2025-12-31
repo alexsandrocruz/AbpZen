@@ -1,0 +1,38 @@
+@if (data$ | async; as data) {
+  <abp-page [title]="'Payment::GatewayPlans' | abpLocalization" [toolbar]="data.items">
+    <abp-advanced-entity-filters
+      localizationSourceName="Payment"
+      [list]="list"
+    ></abp-advanced-entity-filters>
+
+    <div class="card">
+      <div class="card-body">
+        <abp-extensible-table [list]="list" [data]="data.items" [recordsTotal]="data.totalCount">
+        </abp-extensible-table>
+      </div>
+    </div>
+  </abp-page>
+
+  <abp-modal [(visible)]="isModalVisible" [busy]="modalBusy">
+    <ng-template #abpHeader>
+      <h3>
+        {{ (selected?.gateway ? 'Payment::Edit' : 'Payment::NewGatewayPlan') | abpLocalization }}
+      </h3>
+    </ng-template>
+
+    <ng-template #abpBody>
+      <form [formGroup]="form" (ngSubmit)="save()" validateOnSubmit>
+        <abp-extensible-form [selectedRecord]="selected"></abp-extensible-form>
+      </form>
+    </ng-template>
+
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-outline-primary" abpClose>
+        {{ 'AbpUi::Cancel' | abpLocalization }}
+      </button>
+      <abp-button iconClass="fa fa-check" [disabled]="form?.invalid" (click)="save()">{{
+        'AbpUi::Save' | abpLocalization
+      }}</abp-button>
+    </ng-template>
+  </abp-modal>
+}

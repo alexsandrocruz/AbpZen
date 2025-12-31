@@ -1,0 +1,245 @@
+﻿@page "/Cms/PageFeedbacks"
+@attribute [Authorize(CmsKitProAdminPermissions.PageFeedbacks.Default)]
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.CmsKit.Admin.PageFeedbacks
+@using System.Threading
+@using Volo.CmsKit.PageFeedbacks
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["PageFeedbacks"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@GetPageFeedbacksAsync">
+            <Row Class="align-items-end">
+                <Column ColumnSize="@ColumnSize.IsAuto">
+                    <Field>
+                        <FieldLabel>@L["IsHandled"]</FieldLabel>
+                        <Select @bind-SelectedValue="@SearchInput.IsHandled">
+                            <SelectItem value="@SearchViewModel.NullSelectionValue">-</SelectItem>
+                            <SelectItem Value="true">@L["Yes"]</SelectItem>
+                            <SelectItem Value="false">@L["No"]</SelectItem>
+                        </Select>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.IsAuto">
+                    <Field>
+                        <FieldLabel>@L["IsUseful"]</FieldLabel>
+                        <Select @bind-SelectedValue="@SearchInput.IsUseful">
+                            <SelectItem value="@SearchViewModel.NullSelectionValue">-</SelectItem>
+                            <SelectItem Value="true">@L["Yes"]</SelectItem>
+                            <SelectItem Value="false">@L["No"]</SelectItem>
+                        </Select>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.Is12.OnMobile.Is8.OnTablet.Is4.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["URL"]</FieldLabel>
+                        <TextEdit Placeholder="@string.Empty" @bind-Text="@GetListInput.Url"/>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.IsAuto">
+                    <Field>
+                        <FieldLabel>@L["EntityType"]</FieldLabel>
+                        <Select @bind-SelectedValue="@SearchInput.EntityType">
+                            <SelectItem value="@SearchViewModel.NullSelectionValue">-</SelectItem>
+                            @foreach (var entityType in EntityTypes)
+                            {
+                                <SelectItem Value="@entityType">@entityType</SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.IsAuto">
+                    <Field>
+                        <FieldLabel>@L["EntityId"]</FieldLabel>
+                        <TextEdit Placeholder="@L["EntityId"]" @bind-Text="@GetListInput.EntityId"/>
+                    </Field>
+                </Column>
+                <Column ColumnSize="@ColumnSize.IsAuto">
+                    <Field>
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchPageFeedbacksAsync">
+                            <Icon Name="IconName.Sync"/>
+                        </SubmitButton>
+                    </Field>
+                </Column>
+            </Row>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="PageFeedbackDto"
+                       Data="PageFeedbackDtos"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="CurrentPage"
+                       Columns="PageFeedbacksManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@if (HasUpdatePermission)
+{
+    @* ************************* EDIT MODAL ************************* *@
+    <Modal @ref="EditModal" Closing="@ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <Field>
+                        <FieldLabel>@L["CreationTime"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.CreationTime.ToString(Thread.CurrentThread.CurrentUICulture)"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["EntityType"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.EntityType"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["EntityId"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.EntityId"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["URL"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.Url"/>
+                    </Field>
+                    <Field>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" disabled checked="@SelectedPageFeedbackDto.IsUseful"/>
+                            <label class="form-check-label">@L["IsUseful"]</label>
+                        </div>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["UserNote"]</FieldLabel>
+                        <textarea class="form-control" rows="4" disabled>@SelectedPageFeedbackDto.UserNote</textarea>
+                    </Field>
+                    <Field>
+                        <Check TValue="bool" @bind-Checked="@SelectedPageFeedbackDto.IsHandled">@L["IsHandled"]</Check>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["AdminNote"]</FieldLabel>
+                        <MemoEdit Rows="4" Placeholder="@L["AdminNote"]" @bind-Text="@SelectedPageFeedbackDto.AdminNote"/>
+                    </Field>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdatePageFeedbackAsync">@L["Save"]</SubmitButton>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+
+@* ************************* VIEW MODAL ************************* *@
+<Modal @ref="ViewModal" Closing="@ClosingViewModal" RenderMode="ModalRenderMode.LazyReload">
+    <ModalContent Size="ModalSize.Large" Centered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["Detail"]</ModalTitle>
+                <CloseButton Clicked="CloseViewModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <ModalBody>
+                    <Field>
+                        <FieldLabel>@L["CreationTime"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.CreationTime.ToString(Thread.CurrentThread.CurrentUICulture)"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["EntityType"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.EntityType"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["EntityId"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.EntityId"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["URL"]</FieldLabel>
+                        <input class="form-control" disabled value="@SelectedPageFeedbackDto.Url"/>
+                    </Field>
+                    <Field>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" disabled checked="@SelectedPageFeedbackDto.IsUseful"/>
+                            <label class="form-check-label">@L["IsUseful"]</label>
+                        </div>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["UserNote"]</FieldLabel>
+                        <textarea class="form-control" rows="4" disabled>@SelectedPageFeedbackDto.UserNote</textarea>
+                    </Field>
+
+                    <Field>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" disabled checked="@SelectedPageFeedbackDto.IsHandled"/>
+                            <label class="form-check-label">@L["IsHandled"]</label>
+                        </div>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["AdminNote"]</FieldLabel>
+                        <textarea class="form-control" rows="4" disabled>@SelectedPageFeedbackDto.AdminNote</textarea>
+                    </Field>
+                </ModalBody>
+            </ModalBody>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@if (HasSettingsPermission)
+{
+    @* ************************* Settings MODAL ************************* *@
+    <Modal @ref="SettingsModal" Closing="@ClosingSettingsModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["MailSettings"]</ModalTitle>
+                    <CloseButton Clicked="CloseSettingsModalAsync"/>
+                </ModalHeader>
+                <ModalBody>
+                    <span>@L["EmailAddresses:Info"]</span>
+                    <table class="table mt-4 mb-0">
+                        <thead>
+                        <tr>
+                            <th>@L["EntityType"]</th>
+                            <th>@L["EmailAddresses"]</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                @L["Default"]
+                            </td>
+                            <td>
+                                <input class="form-control" placeholder="@L["PageFeedback:Settings:EmailAddresses:Placeholder"]" maxlength="@PageFeedbackConst.MaxEmailAddressesLength" @bind="DefaultSetting.EmailAddresses"/>
+                                <span class="text-muted">@L["FallBackEmailAddressInfo"]</span>
+                            </td>
+                        </tr>
+                        @foreach (var setting in SettingDtos)
+                        {
+                            <tr>
+                                <td>@setting.EntityType</td>
+                                <td>
+                                    <input class="form-control" placeholder="@L["PageFeedback:Settings:EmailAddresses:Placeholder"]" maxlength="@PageFeedbackConst.MaxEmailAddressesLength" @bind="DefaultSetting.EmailAddresses"/>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseSettingsModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateSettingsAsync">@L["Save"]</SubmitButton>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

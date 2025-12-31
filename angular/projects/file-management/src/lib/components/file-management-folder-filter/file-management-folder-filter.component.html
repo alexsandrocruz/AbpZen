@@ -1,0 +1,19 @@
+<div class="row mb-3">
+  <div class="col-sm-12 col-md-auto col-lg-auto col-xl-auto">
+    <abp-button
+      (click)="goUpFolder()"
+      iconClass="fa fa-level-up-alt fa-flip-horizontal me-2"
+      buttonClass="w-100 mb-2 mb-md-0 shadow-none btn-block btn btn-outline-secondary"
+      >{{ "FileManagement::GoUpFolder" | abpLocalization }}</abp-button
+    >
+  </div>
+  <div class="col">
+    <div class="input-group">
+      <input
+        class="form-control page-search-filter-text"
+        [(ngModel)]="list.filter"
+        [placeholder]="'FileManagement::Filter' | abpLocalization"
+      />
+    </div>
+  </div>
+</div>

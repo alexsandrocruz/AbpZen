@@ -1,0 +1,18 @@
+﻿@using Volo.Abp.AspNetCore.Components
+
+@inherits AbpComponentBase
+
+@if (Data.As<IdentityUserDto>().IsLockedOut)
+{
+    <Span Class="ms-1">
+        <Icon TextColor="TextColor.Danger" Name="@IconName.Lock"/>
+    </Span>
+}
+
+<Span>@IdentityUser.UserName</Span>
+
+@code {
+    [Parameter] public object Data { get; set; }
+
+    public IdentityUserDto IdentityUser => Data.As<IdentityUserDto>();
+}

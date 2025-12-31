@@ -1,0 +1,42 @@
+﻿@page "/Cms/GlobalResources"
+@attribute [Authorize(CmsKitAdminPermissions.GlobalResources.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["GlobalResources"]" BreadcrumbItems="@BreadcrumbItems">
+
+</PageHeader>
+
+<Card>
+    <CardBody>
+        <Tabs @bind-SelectedTab="@SelectedTab" RenderMode="TabsRenderMode.LazyLoad">
+            <Items>
+                <Tab Name="script">@L["Script"]</Tab>
+                <Tab Name="style">@L["Style"]</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="script">
+                    <Markdown @ref="@ScriptMarkdownRef" @bind-Value="@GlobalResources.ScriptContent" LineNumbers="true" AutoDownloadFontAwesome="false" HideIcons="@HideIcons" UploadImage="false">
+                        <Toolbar>
+                            <MarkdownToolbarButton Action="MarkdownAction.Bold"/>
+                        </Toolbar>
+                    </Markdown>
+                </TabPanel>
+                <TabPanel Name="style">
+                    <Markdown @bind-Value="@GlobalResources.StyleContent" LineNumbers="true" HideIcons="@HideIcons" AutoDownloadFontAwesome="false" UploadImage="false">
+                        <Toolbar>
+                            <MarkdownToolbarButton Action="MarkdownAction.Bold"/>
+                        </Toolbar>
+                    </Markdown>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </CardBody>
+    <CardFooter>
+         <Button Color="Color.Primary" Clicked="@UpdateGlobalResourcesAsync">@L["SaveChanges"]</Button>
+    </CardFooter>
+</Card>

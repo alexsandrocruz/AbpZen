@@ -1,0 +1,20 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Poll.PollViewModel
+
+@inject IHtmlLocalizer<CmsKitResource> L
+
+
+<div class="cms-poll-area container d-flex">
+    <abp-card style="width:100%">
+        <abp-card-body>
+            <div class="text-center">
+                <p class="subtitle text-muted">
+                    @L["CouldntFindWidgetWith"]: @Model.Code
+                </p>
+
+            </div>
+        </abp-card-body>
+    </abp-card>
+</div>

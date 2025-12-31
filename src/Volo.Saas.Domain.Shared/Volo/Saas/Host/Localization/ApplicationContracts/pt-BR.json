@@ -1,0 +1,17 @@
+{
+  "culture": "pt-BR",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Gerenciamento de ambientes",
+    "Permission:EditionManagement": "Gerenciamento de edição",
+    "Permission:Create": "Criar",
+    "Permission:Edit": "Editar",
+    "Permission:Delete": "Excluir",
+    "Permission:ManageConnectionStrings": "Gerenciar strings de conexão",
+    "Permission:SetPassword": "Configurar senha",
+    "Permission:ManageFeatures": "Gerenciar recursos",
+    "Permission:ViewChangeHistory": "Ver o histórico de alterações",
+    "Permission:Impersonation": "Representação",
+    "CheckYourProviderDashboard": "Verifique o painel do seu provedor de pagamento para cancelar esta assinatura."
+  }
+}

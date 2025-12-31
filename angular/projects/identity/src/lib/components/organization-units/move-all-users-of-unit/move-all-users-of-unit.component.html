@@ -1,0 +1,52 @@
+<abp-modal
+  [visible]="service.visible()"
+  (visibleChange)="onVisibleChange($event)"
+  [suppressUnsavedChangesWarning]="true"
+>
+  <ng-template #abpHeader>
+    <h5 class="modal-title">
+      {{ 'AbpIdentity::MoveAllUsers' | abpLocalization }}
+    </h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <p
+      [innerHTML]="
+        'AbpIdentity::MoveAllUsersWithOrganizationUnitTo' | abpLocalization: service.name()
+      "
+    ></p>
+    <form [formGroup]="form" id="move-users" (ngSubmit)="save()">
+      <select class="form-select mt-2" formControlName="selectedOrganizationUnit">
+        <option value="" selected>
+          {{
+            (service.loading()
+              ? 'AbpUi::LoadingWithThreeDot'
+              : 'AbpIdentity::UnassignOrganizationUnit'
+            ) | abpLocalization
+          }}
+        </option>
+        @for (item of service.otherOrganizationUnits(); track $index) {
+          <option [value]="item.id">
+            {{ item.displayName }}
+          </option>
+        }
+      </select>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-primary">
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+
+    <abp-button
+      buttonType="submit"
+      buttonClass="btn btn-primary"
+      [loading]="service.loading()"
+      formName="move-users"
+    >
+      <i class="fa fa-check" aria-hidden="true"></i>
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>

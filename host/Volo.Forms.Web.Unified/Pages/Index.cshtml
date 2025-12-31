@@ -1,0 +1,32 @@
+﻿@page
+@using Localization.Resources.AbpUi
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.MultiTenancy
+@using Volo.Forms.Pages
+@using Volo.Forms.Web.Pages.Forms.Shared.Components.ViewForm
+@model IndexModel
+@inject IStringLocalizer<AbpUiResource> Localizer
+@inject ICurrentTenant CurrentTenant
+<a href="~/Account/Login">@Localizer["Login"]</a>
+
+@section scripts {
+}
+
+@{
+    if (CurrentTenant.GetMultiTenancySide() == MultiTenancySides.Host)
+    {
+        <div class="container">
+            <div class="card">
+                <div class="card-header">ViewFormComponent Test - <strong>Invoking Test Form</strong></div>
+                <div class="card-body">
+                    @{
+                        @await Component.InvokeAsync(typeof(ViewFormViewComponent), new
+                        {
+                            formId = Guid.Parse("36A67366-DFCF-CE94-C812-39F6F4A67110")
+                        })
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

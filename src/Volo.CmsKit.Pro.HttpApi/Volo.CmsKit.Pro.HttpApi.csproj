@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.CmsKit.HttpApi" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.HttpApi\Volo.CmsKit.Pro.Admin.HttpApi.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Application.Contracts\Volo.CmsKit.Pro.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Volo.CmsKit.Pro.Public.HttpApi\Volo.CmsKit.Pro.Public.HttpApi.csproj" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+</Project>

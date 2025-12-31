@@ -1,0 +1,17 @@
+@using System;
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Identity;
+@using Volo.Abp.Identity.Localization
+@inject IStringLocalizer<IdentityResource> L
+@{
+    var session = Data.As<IdentitySessionDto>();
+    var currentText = L["Session:Current"].Value;
+}
+
+@(session.IsCurrent ? session.Device + " " : session.Device)
+@if (session.IsCurrent)
+{
+    <Tooltip Text="@currentText" Inline Placement="TooltipPlacement.Right">
+        <Icon Name="@("fa-dot-circle")" />
+    </Tooltip>
+}

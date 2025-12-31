@@ -1,0 +1,103 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using System.Collections.Generic
+@using System.Web
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Saas.Host.Pages.Saas.Host.Tenants
+@using Volo.Saas.Localization
+@model ConnectionStringsModal
+@inject IStringLocalizer<SaasResource> L
+@{
+    Layout = null;
+}
+
+<form method="post" asp-page="/Saas/Host/Tenants/ConnectionStringsModal">
+    <abp-modal size="Large">
+        <abp-modal-header title="@(L["ConnectionStrings"]) - @(HttpUtility.HtmlEncode(Model.ConnectionStrings.TenantName))"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="ConnectionStrings.Id" />
+
+            <abp-input asp-for="ConnectionStrings.UseSharedDatabase" />
+
+            <div id="Tenant_ConnectionStrings_Wrap" class="@(Model.ConnectionStrings.UseSharedDatabase ? "d-none" : "") mt-3">
+                <div class="row align-items-end mb-3">
+                    <label asp-for="ConnectionStrings.Default" class="form-label">@Html.DisplayNameFor(m => m.ConnectionStrings.Default)</label>
+                    <div class="input-group">
+                        <input asp-for="ConnectionStrings.Default" class="form-control" />
+                        <button id="CheckConnectionString" type="button" class="btn btn-primary">@L["CheckConnectionString"]</button>
+                    </div>
+                    <span asp-validation-for="ConnectionStrings.Default" />
+                </div>
+                
+                @if (!Model.ConnectionStrings.Databases.IsNullOrEmpty())
+                {
+                    <abp-input asp-for="ConnectionStrings.UseSpecificDatabase" />
+                    <div id="Tenant_SpecificDatabase_Wrap" class="@(Model.ConnectionStrings.UseSpecificDatabase ? "" : "d-none")">
+                        <div class="row align-items-end mb-3">
+                            <div class="col-lg-3">
+                                <abp-select asp-for="DatabaseName" asp-items="@Model.DatabaseSelectListItems"></abp-select>
+                            </div>
+                            <div class="col-lg-9">
+                                <label asp-for="ConnectionString" class="form-label">@L["DisplayName:ConnectionString"]</label>
+                                <div class="input-group mb-3">
+                                    <input asp-for="ConnectionString" class="form-control" />
+                                    <button id="CheckDatabaseConnectionString" type="button" class="btn btn-outline-primary">@L["CheckConnectionString"]</button>
+                                    <button id="AddDatabaseConnectionString" type="button" class="btn btn-primary">@L["AddDatabaseConnectionString"]</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>@L["DisplayName:DatabaseName"]</th>
+                                        <th>@L["DisplayName:ConnectionString"]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ConnectionStringsTBody">
+                                    @{
+                                        var connectionString = Model.ConnectionStrings.Databases.Where(x => !x.ConnectionString.IsNullOrWhiteSpace()).ToList();
+                                        if (connectionString.Any())
+                                        {
+                                            for (var index = 0; index < connectionString.Count; index++)
+                                            {
+                                                var database = connectionString[index];
+                                                <tr>
+                                                    <td>
+                                                        @database.DatabaseName
+                                                        <input type="hidden" abp-id-name="@Model.ConnectionStrings.Databases[index].DatabaseName" value="@database.DatabaseName" />
+                                                    </td>
+                                                    <td>
+                                                        @database.ConnectionString
+                                                        <input type="hidden" abp-id-name="@Model.ConnectionStrings.Databases[index].ConnectionString" value="@database.ConnectionString" />
+                                                    </td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <h6>@L["NoDataAvailable"]</h6>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

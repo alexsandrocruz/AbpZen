@@ -1,0 +1,231 @@
+{
+  "name": "Volo.CmsKit.Pro.EntityFrameworkCore",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.EntityFrameworkCore",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Domain",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.EntityFrameworkCore",
+          "namespace": "Volo.CmsKit.EntityFrameworkCore",
+          "name": "CmsKitEntityFrameworkCoreModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProEntityFrameworkCoreModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.EntityFrameworkCore",
+      "connectionStringName": "CmsKit",
+      "databaseTables": [
+        {
+          "entityFullName": "Volo.CmsKit.Newsletters.NewsletterRecord",
+          "contentType": "databaseTable",
+          "name": "NewsletterRecords",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Newsletters.NewsletterPreference",
+          "contentType": "databaseTable",
+          "name": "NewsletterPreferences",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.UrlShorting.ShortenedUrl",
+          "contentType": "databaseTable",
+          "name": "ShortenedUrls",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Polls.Poll",
+          "contentType": "databaseTable",
+          "name": "Polls",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Polls.PollUserVote",
+          "contentType": "databaseTable",
+          "name": "PollUserVotes",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Polls.PollOption",
+          "contentType": "databaseTable",
+          "name": "PollOptions",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.PageFeedbacks.PageFeedback",
+          "contentType": "databaseTable",
+          "name": "PageFeedbacks",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.PageFeedbacks.PageFeedbackSetting",
+          "contentType": "databaseTable",
+          "name": "PageFeedbackSettings",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Faqs.FaqQuestion",
+          "contentType": "databaseTable",
+          "name": "FaqQuestions",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Faqs.FaqSection",
+          "contentType": "databaseTable",
+          "name": "FaqSections",
+          "summary": null
+        }
+      ],
+      "replacedDbContexts": [],
+      "modelBuilderExtensionMethods": [
+        {
+          "returnType": "Void",
+          "namespace": "Volo.CmsKit.EntityFrameworkCore",
+          "name": "ConfigureCmsKitPro",
+          "summary": null,
+          "isAsync": false,
+          "isPublic": true,
+          "isPrivate": false,
+          "isStatic": true,
+          "parameters": [
+            {
+              "type": "ModelBuilder",
+              "name": "builder",
+              "isOptional": false
+            }
+          ]
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IInfrastructure<IServiceProvider>",
+          "namespace": "Microsoft.EntityFrameworkCore.Infrastructure",
+          "declaringAssemblyName": "Microsoft.EntityFrameworkCore",
+          "fullName": "Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure<IServiceProvider>"
+        },
+        {
+          "name": "IDbContextDependencies",
+          "namespace": "Microsoft.EntityFrameworkCore.Internal",
+          "declaringAssemblyName": "Microsoft.EntityFrameworkCore",
+          "fullName": "Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies"
+        },
+        {
+          "name": "IDbSetCache",
+          "namespace": "Microsoft.EntityFrameworkCore.Internal",
+          "declaringAssemblyName": "Microsoft.EntityFrameworkCore",
+          "fullName": "Microsoft.EntityFrameworkCore.Internal.IDbSetCache"
+        },
+        {
+          "name": "IDbContextPoolable",
+          "namespace": "Microsoft.EntityFrameworkCore.Internal",
+          "declaringAssemblyName": "Microsoft.EntityFrameworkCore",
+          "fullName": "Microsoft.EntityFrameworkCore.Internal.IDbContextPoolable"
+        },
+        {
+          "name": "IResettableService",
+          "namespace": "Microsoft.EntityFrameworkCore.Infrastructure",
+          "declaringAssemblyName": "Microsoft.EntityFrameworkCore",
+          "fullName": "Microsoft.EntityFrameworkCore.Infrastructure.IResettableService"
+        },
+        {
+          "name": "IDisposable",
+          "namespace": "System",
+          "declaringAssemblyName": "System.Private.CoreLib",
+          "fullName": "System.IDisposable"
+        },
+        {
+          "name": "IAsyncDisposable",
+          "namespace": "System",
+          "declaringAssemblyName": "System.Private.CoreLib",
+          "fullName": "System.IAsyncDisposable"
+        },
+        {
+          "name": "IAbpEfCoreDbContext",
+          "namespace": "Volo.Abp.EntityFrameworkCore",
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore",
+          "fullName": "Volo.Abp.EntityFrameworkCore.IAbpEfCoreDbContext"
+        },
+        {
+          "name": "IEfCoreDbContext",
+          "namespace": "Volo.Abp.EntityFrameworkCore",
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore",
+          "fullName": "Volo.Abp.EntityFrameworkCore.IEfCoreDbContext"
+        },
+        {
+          "name": "IAbpEfCoreDbFunctionContext",
+          "namespace": "Volo.Abp.EntityFrameworkCore.GlobalFilters",
+          "declaringAssemblyName": "Volo.Abp.EntityFrameworkCore",
+          "fullName": "Volo.Abp.EntityFrameworkCore.GlobalFilters.IAbpEfCoreDbFunctionContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "ICmsKitProDbContext",
+          "namespace": "Volo.CmsKit.EntityFrameworkCore",
+          "declaringAssemblyName": "Volo.CmsKit.Pro.EntityFrameworkCore",
+          "fullName": "Volo.CmsKit.EntityFrameworkCore.ICmsKitProDbContext"
+        }
+      ],
+      "contentType": "efCoreDbContext",
+      "name": "CmsKitProDbContext",
+      "summary": null
+    }
+  ]
+}

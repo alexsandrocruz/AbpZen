@@ -1,0 +1,61 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Navigation
+@using Volo.Abp.UI.Navigation
+@inject NavigationManager Navigation
+
+@{
+	var cssClass = string.IsNullOrEmpty(MenuItem.MenuItem.CssClass) ? string.Empty : MenuItem.MenuItem.CssClass;
+	var customComponentType = MenuItem.MenuItem.GetComponentTypeOrDefault();
+}
+
+@if (MenuItem.MenuItem.IsLeaf)
+{
+	var currentUri = new Uri(Navigation.Uri);
+
+	var url = MenuItem.MenuItem.Url == null  ? "#" : MenuItem.MenuItem.Url.TrimStart('/', '~');
+
+	@if (customComponentType != null && typeof(ComponentBase).IsAssignableFrom(customComponentType))
+	{
+		<DynamicComponent Type="@customComponentType" />
+	}
+	else
+	{
+		<a href="@url" target="@MenuItem.MenuItem.Target" class="lpx-menu-item-link lpx-menu-item @(MenuItem.IsActive ? "selected" : "") @cssClass" id="@MenuItem.MenuItem.ElementId">
+			@if (!MenuItem.MenuItem.Icon.IsNullOrEmpty() || MenuItem.Parent is null)
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @MenuItem.MenuItem.Icon" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@MenuItem.MenuItem.DisplayName</span>
+		</a>
+	}
+}
+else
+{
+	@if (customComponentType != null)
+	{
+		<DynamicComponent Type="@customComponentType" @onclick="ToggleMenu" />
+	}
+	else
+	{
+		<a @onclick:preventDefault @onclick="ToggleMenu" class="lpx-menu-item-link lpx-menu-item @(MenuItem.IsActive || MenuItem.IsOpen ? "selected" : "")">
+
+			@if (!MenuItem.MenuItem.Icon.IsNullOrEmpty() || MenuItem.Parent is null)
+			{
+				<span class="lpx-menu-item-icon"><i class="lpx-icon @MenuItem.MenuItem.Icon" aria-hidden="true"></i></span>
+			}
+
+			<span class="lpx-menu-item-text hidden-in-hover-trigger">@MenuItem.MenuItem.DisplayName</span>
+
+			<i class="dd-icon hidden-in-hover-trigger caret bi-chevron-@(MenuItem.IsOpen ? "up" : "down")" aria-hidden="true"></i>
+		</a>
+	}
+
+	<ul id="@MenuItem.MenuItem.ElementId" class="lpx-inner-menu hidden-in-hover-trigger @(MenuItem.IsOpen ? "" : "collapsed") @cssClass">
+		@foreach (var childMenuItem in MenuItem.Items)
+		{
+			<li class="lpx-inner-menu-item">
+				<MainMenuItem Menu="@Menu" MenuItem="@childMenuItem" />
+			</li>
+		}
+	</ul>
+}

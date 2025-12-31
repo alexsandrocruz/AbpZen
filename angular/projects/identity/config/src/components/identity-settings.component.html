@@ -1,0 +1,41 @@
+<div class="abp-md-form">
+  @if (features$ | async; as features) {
+    <ul ngbNav #nav="ngbNav" class="nav-tabs">
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'AbpIdentity::IdentitySettingsGeneral' | abpLocalization }}</a>
+        <ng-template ngbNavContent>
+          <abp-identity-setting />
+        </ng-template>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'AbpIdentity::Sessions' | abpLocalization }}</a>
+        <ng-template ngbNavContent>
+          <abp-identity-session-setting />
+        </ng-template>
+      </li>
+
+      @for (feature of features; track $index) {
+        <li ngbNavItem>
+          <a ngbNavLink>
+            {{
+              (feature === externalLoginKey
+                ? 'AbpIdentity::IdentitySettingsOAuth'
+                : 'AbpIdentity::IdentitySettingsLdap'
+              ) | abpLocalization
+            }}
+          </a>
+          <ng-template ngbNavContent>
+            @if (feature === externalLoginKey) {
+              <abp-external-login-settings />
+            } @else {
+              <abp-ldap-login-settings />
+            }
+          </ng-template>
+        </li>
+      }
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  } @else {
+    <abp-identity-setting />
+  }
+</div>

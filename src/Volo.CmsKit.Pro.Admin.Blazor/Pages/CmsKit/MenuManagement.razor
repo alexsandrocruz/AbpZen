@@ -1,0 +1,318 @@
+﻿@page "/Cms/Menus/Items"
+@attribute [Authorize(CmsKitAdminPermissions.Menus.Default)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.CmsKit.Admin.Menus
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["MenuItems"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+<Card>
+    <CardBody>
+        <CardTitle Size="5">@L["MenuItems"]</CardTitle>
+        @if (MenuTrees.Any())
+        {
+            <TreeView Nodes="MenuTrees"
+                      GetChildNodes="@(item => item.Children)"
+                      HasChildNodes="@(item => item.HasChildren)">
+                <NodeContent>
+                    <span class="ms-1 me-1">
+                        @if (!context.HasChildren)
+                        {
+                            <span style="margin-left: 0.9em;"></span>
+                        }
+                        <Icon Class="@context.Icon"></Icon>
+                        @context.DisplayName
+                        <Dropdown Style="display:inline;">
+                            <DropdownToggle Style="box-shadow: none" Padding="Padding.Is0" Color="Color.Default" Size="Size.ExtraSmall" Split="true" />
+                            <DropdownMenu>
+                                @if (HasUpdatePermission)
+                                {
+                                    <DropdownItem Style="cursor: pointer;" Clicked="() => OpenUpdatePageAsync(context.Id)">
+                                        <Icon Name="@IconName.Edit"></Icon>
+                                        @L["Edit"]
+                                    </DropdownItem>
+                                    <DropdownItem Style="cursor: pointer" Clicked="() => OpenCreatePageAsync(context.Id)">
+                                        <Icon Name="@IconName.Add"></Icon>
+                                        @L["AddSubMenuItem"]
+                                    </DropdownItem>
+                                }
+                                @if (HasDeletePermission)
+                                {
+                                    <DropdownItem Style="cursor: pointer" Clicked="() => DeleteMenuItemAsync(context)">
+                                        <Icon Name="@IconName.Delete"></Icon>
+                                        @L["Delete"]
+                                    </DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    </span>
+                </NodeContent>
+            </TreeView>
+        }
+        else
+        {
+            @L["NoMenuItems"]
+        }
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["New"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewMenuItem" ValidateOnLoad="false">
+
+                        @if (IsPageFeatureEnabled)
+                        {
+                            <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChangedAsync">
+                                <Items>
+                                    <Tab Name="url">@L["Url"]</Tab>
+                                    <Tab Name="page">@L["Page"]</Tab>
+                                </Items>
+                                <Content>
+                                    <TabPanel Name="url">
+                                        <Validation MessageLocalizer="@LH.Localize" >
+                                            <Field>
+                                                <FieldLabel>@L["Url"] *</FieldLabel>
+                                                <TextEdit @bind-Text="NewMenuItem.Url" Autofocus="true" Disabled="NewMenuItem.PageId != null">
+                                                    <Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>
+                                                </TextEdit>
+                                            </Field>
+                                        </Validation>
+                                    </TabPanel>
+                                    <TabPanel Name="page">
+                                        <Field>
+                                            <FieldLabel>@L["Page"]</FieldLabel>
+                                            <Select @bind-SelectedValue="@NewMenuItem.PageId">
+                                                <SelectItem></SelectItem>
+                                                @foreach (var item in Pages)
+                                                {
+                                                    <SelectItem Value="@item.Id">@item.Title</SelectItem>
+                                                }
+                                            </Select>
+                                        </Field>
+                                    </TabPanel>
+                                </Content>
+                            </Tabs>
+                            <br />
+                        }
+                        else
+                        {
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["Url"] *</FieldLabel>
+                                    <TextEdit @bind-Text="NewMenuItem.Url" Autofocus="true">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                        }
+
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                                <TextEdit @bind-Text="NewMenuItem.DisplayName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@NewMenuItem.IsActive">@L["Active"]</Check>
+                        </Field>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Icon"]</FieldLabel>
+                                <TextEdit @bind-Text="NewMenuItem.Icon">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Target"]</FieldLabel>
+                                <TextEdit @bind-Text="NewMenuItem.Target">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["ElementId"]</FieldLabel>
+                                <TextEdit @bind-Text="NewMenuItem.ElementId">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["CssClass"]</FieldLabel>
+                                <TextEdit @bind-Text="NewMenuItem.CssClass">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <ExtensionProperties TEntityType="MenuItemCreateViewModel" TResourceType="CmsKitResource" Entity="@NewMenuItem" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateMenuItemAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingModal" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingMenuItem" ValidateOnLoad="false">
+                        @if (IsPageFeatureEnabled)
+                        {
+                            <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChangedAsync">
+                                <Items>
+                                    <Tab Name="url">@L["Url"]</Tab>
+                                    <Tab Name="page">@L["Page"]</Tab>
+                                </Items>
+                                <Content>
+                                    <TabPanel Name="url">
+                                        <Validation MessageLocalizer="@LH.Localize">
+                                            <Field>
+                                                <FieldLabel>@L["Url"]</FieldLabel>
+                                                <TextEdit @bind-Text="EditingMenuItem.Url" Autofocus="true" Disabled="EditingMenuItem.PageId != null">
+                                                    <Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>
+                                                </TextEdit>
+                                            </Field>
+                                        </Validation>
+                                    </TabPanel>
+                                    <TabPanel Name="page">
+                                        <Field>
+                                            <FieldLabel>@L["Page"]</FieldLabel>
+                                            <Select @bind-SelectedValue="@EditingMenuItem.PageId">
+                                                <SelectItem></SelectItem>
+                                                @foreach (var item in Pages)
+                                                {
+                                                    <SelectItem Value="@item.Id">@item.Title</SelectItem>
+                                                }
+                                            </Select>
+                                        </Field>
+                                    </TabPanel>
+                                </Content>
+                            </Tabs>
+                            <br />
+                        }
+                        else
+                        {
+                            <Validation MessageLocalizer="@LH.Localize">
+                                <Field>
+                                    <FieldLabel>@L["Url"]</FieldLabel>
+                                    <TextEdit @bind-Text="EditingMenuItem.Url" Autofocus="true">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                        }
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName"] *</FieldLabel>
+                                <TextEdit @bind-Text="EditingMenuItem.DisplayName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@EditingMenuItem.IsActive">@L["Active"]</Check>
+                        </Field>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Icon"]</FieldLabel>
+                                <TextEdit @bind-Text="EditingMenuItem.Icon">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Target"]</FieldLabel>
+                                <TextEdit @bind-Text="EditingMenuItem.Target">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["ElementId"]</FieldLabel>
+                                <TextEdit @bind-Text="EditingMenuItem.ElementId">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["CssClass"]</FieldLabel>
+                                <TextEdit @bind-Text="EditingMenuItem.CssClass">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <ExtensionProperties TEntityType="MenuItemUpdateViewModel" TResourceType="CmsKitResource" Entity="@EditingMenuItem" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateMenuItemAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

@@ -1,0 +1,97 @@
+{
+  "name": "Volo.Saas.Host.Blazor",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Saas.Host.Blazor",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application.Contracts",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Blazor",
+          "namespace": "Volo.Abp.FeatureManagement.Blazor",
+          "name": "AbpFeatureManagementBlazorModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "SaasHostBlazorModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Blazor.Pages.Shared.Components.SaasLatestTenantsWidget",
+      "contentType": "webPage",
+      "name": "SaasLatestTenantsWidgetComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Blazor.Pages.Shared.Components.SaasEditionPercentageWidget",
+      "contentType": "webPage",
+      "name": "SaasEditionPercentageWidgetComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Blazor.Pages.Saas.Host",
+      "contentType": "webPage",
+      "name": "EditionManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Blazor.Pages.Saas.Host",
+      "contentType": "webPage",
+      "name": "TenantManagement",
+      "summary": null
+    }
+  ]
+}

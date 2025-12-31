@@ -1,0 +1,58 @@
+<nav class="lpx-nav" (mouseenter)="handleInitialHover()">
+  <div class="lpx-logo-container">
+    <ng-container
+      *ngTemplateOutlet="logoPanel?.template || defaultLogo"
+    ></ng-container>
+    <lpx-icon
+      class="menu-collapse-icon hidden-in-hover-trigger"
+      iconClass="bi bi-filter-left"
+      (click)="toggleSidebarHover()"
+    ></lpx-icon>
+  </div>
+
+  @if (showFilterMenu$ | async) {
+    <ng-container
+      *ngTemplateOutlet="
+        customContentTemplate;
+        context: { $implicit: contentBefore }
+      "
+    ></ng-container>
+  }
+
+  <ng-container
+    *ngTemplateOutlet="
+      routesTemplate || defaultRouteTemplate;
+      context: {
+        $implicit: service.navbarItems$ | async,
+        groupItems: service.groupedNavbarItems$ | async,
+      }
+    "
+  ></ng-container>
+
+  <ng-container
+    *ngTemplateOutlet="
+      customContentTemplate;
+      context: { $implicit: contentAfter }
+    "
+  ></ng-container>
+</nav>
+
+<ng-template #defaultRouteTemplate let-items let-groupItems="groupItems">
+  <lpx-navbar-routes
+    [navbarItems]="items"
+    [groupedItems]="groupItems"
+    [routerItem]="true"
+  ></lpx-navbar-routes>
+</ng-template>
+
+<ng-template #customContentTemplate let-contents>
+  @for (component of contents; track $index) {
+    <ng-container
+      *ngComponentOutlet="component; injector: injector"
+    ></ng-container>
+  }
+</ng-template>
+
+<ng-template #defaultLogo>
+  <lpx-brand-logo></lpx-brand-logo>
+</ng-template>

@@ -1,0 +1,228 @@
+﻿@page "/identity/roles"
+@attribute [Authorize(IdentityPermissions.Roles.Default)]
+@using Volo.Abp.Identity
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms;
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.PermissionManagement.Blazor.Components
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inherits AbpCrudPageBase<IIdentityRoleAppService, IdentityRoleDto, Guid, GetIdentityRoleListInput, IdentityRoleCreateDto, IdentityRoleUpdateDto>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Roles"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="IdentityRoleDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@RoleManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["NewRole"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName:RoleName"] *</FieldLabel>
+                                <TextEdit @bind-Text="NewEntity.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="NewEntity.IsDefault">@L["DisplayName:IsDefault"]</Check>
+                            <Check TValue="bool" @bind-Checked="NewEntity.IsPublic">@L["DisplayName:IsPublic"]</Check>
+                        </Field>
+                        <ExtensionProperties TEntityType="IdentityRoleCreateDto" TResourceType="IdentityResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"] - @EditingEntity.Name</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                        <input type="hidden" name="ConcurrencyStamp" @bind-value="EditingEntity.ConcurrencyStamp" />
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName:RoleName"] *</FieldLabel>
+                                <TextEdit @bind-Text="EditingEntity.Name" Autofocus="true" ReadOnly="IsStaticRole(EditingEntity.Name)">
+                                    <ChildContent>
+                                        @if (IsStaticRole(EditingEntity.Name))
+                                        {
+                                            <FieldHelp>@L["{0}IsStaticRoleCanNotBeRenamed", EditingEntity.Name]</FieldHelp>
+                                        }
+                                    </ChildContent>
+                                   
+                                    <Feedback>
+                                        <ValidationError/>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@EditingEntity.IsDefault">@L["DisplayName:IsDefault"]</Check>
+                            <Check TValue="bool" @bind-Checked="@EditingEntity.IsPublic">@L["DisplayName:IsPublic"]</Check>
+                        </Field>
+                        <ExtensionProperties TEntityType="IdentityRoleUpdateDto" TResourceType="IdentityResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* DELETE MODAL ************************* *@
+@if (HasDeletePermission)
+{
+    <Modal @ref="DeleteModal" Closing="@ClosingDeleteModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["AreYouSure"]</ModalTitle>
+                    <CloseButton Clicked="CloseDeleteModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <p class="fw-bold">@L["RoleDeletionConfirmationMessage", DeletingRole.Name]</p>
+                    @if (DeletingRole.UserCount > 0)
+                    {
+                        <p class="mt-2">@L["ChooseAnActionForRole", DeletingRole.UserCount]</p>
+                        <Field>
+                            <Radio
+                                TValue="string"
+                                Value="@("unassign")"
+                                Checked="@(!DeletingRole.AssignRole)"
+                                CheckedChanged="@OnAssignCheckedChanged"
+                                Group="assign">
+                                @L["UnassignTheRoleFromTheUsers"]
+                            </Radio>
+                        </Field>
+
+                        @if (DeletingRole.OtherRoles.Any())
+                        {
+                            <Field>
+                                <Radio
+                                    TValue="string"
+                                    Value="@("assign")"
+                                    Checked="@DeletingRole.AssignRole"
+                                    CheckedChanged="@OnAssignCheckedChanged"
+                                    Group="assign">
+                                    @L["AssignUsersToOtherRole"]
+                                </Radio>
+                            </Field>
+                        }
+
+                        @if (DeletingRole.AssignRole)
+                        {
+                            <Select TValue="Guid?" SelectedValue="@DeletingRole.AssignToRoleId" SelectedValueChanged="@OnAssignToRoleSelectedValueChanged">
+                                <SelectItem Value="Guid.Empty">@L["SelectAnRoleToAssign"]</SelectItem>
+                                @foreach (var role in DeletingRole.OtherRoles)
+                                {
+                                    <SelectItem Value="@role.Id">@role.Name</SelectItem>
+                                }
+                            </Select>
+                        }
+                    }
+
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Danger" Outline Clicked="CloseDeleteModalAsync">@L["Cancel"]</Button>
+                    <Button Color="Color.Danger" Disabled="@DeletingRole.DisabledDeleteButton" Clicked="DeleteRoleAsync"><Icon Name="IconName.Delete"/> @L["Delete"]</Button>
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@if (HasManagePermissionsPermission)
+{
+    <PermissionManagementModal @ref="PermissionManagementModal" />
+}
+
+@* ************************* MOVE ALL Users MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="MoveAllUsersModal" Closing="@ClosingMoveAllUsersModalAsync" RenderMode="ModalRenderMode.LazyReload">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["MoveAllUsers"] - @MoveAllUsersModel.CurrentRoleName</ModalTitle>
+                    <CloseButton Clicked="CloseMoveAllUsersModalAsync" />
+                </ModalHeader>
+	            <ModalBody>
+		            <p>@((MarkupString)L["MoveAllUsersWithRoleTo", MoveAllUsersModel.CurrentRoleName].ToString())</p>
+		            <Select TValue="Guid?" @bind-SelectedValue="@MoveAllUsersModel.TargetRoleId">
+			            <SelectItem Value="Guid.Empty">@L["UnassignRole"]</SelectItem>
+			            @foreach (var role in MoveAllUsersModel.TargetRoles)
+			            {
+				            <SelectItem Value="@role.Id">@role.Name</SelectItem>
+			            }
+		            </Select>
+	            </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseMoveAllUsersModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@MoveAllUsersAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

@@ -1,0 +1,109 @@
+{
+  "name": "Volo.FileManagement.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.FileManagement.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.FileManagement.Application.Contracts",
+          "namespace": "Volo.FileManagement",
+          "name": "FileManagementApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "name": "AbpAspNetCoreMvcUiThemeSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "FileManagementWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement.File",
+      "contentType": "webPage",
+      "name": "ChangeNameModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement.File",
+      "contentType": "webPage",
+      "name": "MoveModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement.Directory",
+      "contentType": "webPage",
+      "name": "ChangeNameModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement.Directory",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.FileManagement.Web.Pages.FileManagement.Directory",
+      "contentType": "webPage",
+      "name": "MoveModalModel",
+      "summary": null
+    }
+  ]
+}

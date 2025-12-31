@@ -1,0 +1,93 @@
+﻿@page
+@using Volo.Saas.DemoWithPaymentApp
+@using Volo.Saas.DemoWithPaymentApp.Pages
+@using Volo.Abp.Users
+@using Volo.Abp.MultiTenancy
+
+@model IndexModel
+
+@inject ICurrentUser CurrentUser
+
+@inject ICurrentTenant CurrentTenant
+
+
+@section styles{
+    <abp-style src="/assets/css/pricing.css" />
+}
+
+@section scripts{
+    <abp-script src="/Pages/index.js" />
+}
+
+<h3>Welcome to the Saas demo application.</h3>
+
+@if (!CurrentUser.IsAuthenticated)
+{
+    <a href="/Account/Login">Login</a>
+}
+<hr />
+
+<abp-card>
+    <abp-card-body>
+        <span>Current Tenant:</span> <strong> @(CurrentTenant.Name ?? "-")</strong>
+    </abp-card-body>
+    <abp-card-footer>
+        <abp-button id="tenant-switch-button" text="Switch" button-type="Primary"></abp-button>
+    </abp-card-footer>
+</abp-card>
+
+<hr />
+
+@if (CurrentTenant.Id == null)
+{
+    <h3> Switch to a Tenant to subscribe to an Edition</h3>
+}
+else
+{
+    <div class="background">
+        <div class="container">
+            <div class="panel pricing-table">
+
+                <form method="post" action="Index">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="editionId" value="@DemoData.Edition_1_Id" />
+
+                    <div class="pricing-plan">
+                        <i class="fa fa-plane"></i>
+                        <h2 class="pricing-header">@DemoData.Edition_1_Name</h2>
+                        <ul class="pricing-features">
+                            <li class="pricing-features-item">Identity Pro</li>
+                            <li class="pricing-features-item">Language Management</li>
+                            <li class="pricing-features-item">Text-Template Management</li>
+                            <li>
+                                <button type="submit" class="pricing-button">Subscribe</button>
+                            </li>
+                        </ul>
+                        <span class="pricing-price">$5 / month</span>
+                    </div>
+                </form>
+
+                <form method="post" action="Index">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="editionId" value="@DemoData.Edition_2_Id" />
+
+                    <div class="pricing-plan">
+                        <i class="fa fa-plane"></i>
+                        <h2 class="pricing-header">@DemoData.Edition_2_Name</h2>
+                        <ul class="pricing-features">
+                            <li class="pricing-features-item">All Pro Features</li>
+                            <li class="pricing-features-item">Audit Logging</li>
+                            <li class="pricing-features-item">Account</li>
+                            <li>
+                                <button type="submit" class="pricing-button">Subscribe</button>
+                            </li>
+                        </ul>
+                        <span class="pricing-price">$15 / month</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

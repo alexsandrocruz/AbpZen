@@ -1,0 +1,32 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Newsletters.EditPreferencesModel
+@inject IHtmlLocalizer<CmsKitResource> L
+
+@{
+    Layout = null;
+}
+
+<form method="post" asp-page="/CmsKit/Newsletters/EditPreferences">
+    <input type="hidden" asp-for="EmailAddress"/>
+    <abp-modal size="Small">
+        <abp-modal-header title="@L["Edit"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <div class="mb-3 form-check">
+                <input type="checkbox" id="selectAll" class="form-check-input"/>
+                <label for="selectAll" class="form-check-label">@L["SelectAll"]</label>
+            </div>
+            @for (var i = 0; i < Model.NewsletterPreferences.Count; i++)
+            {
+                <div class="mb-3 form-check">
+                    <input id="newsletter-manage-@Model.NewsletterPreferences[i].Preference" asp-for="@Model.NewsletterPreferences[i].IsEnabled" class="form-check-input newsletter-preference-check"/>
+                    <input type="hidden" asp-for="@Model.NewsletterPreferences[i].Preference"/>
+                    <label for="newsletter-manage-@Model.NewsletterPreferences[i].Preference" class="form-check-label">@Model.NewsletterPreferences[i].DisplayPreference</label>
+                </div>
+            }
+            <abp-button class="mb-2 mt-2" button-type="Primary" type="submit" text=@L["SaveChanges"].Value/>
+
+        </abp-modal-body>
+    </abp-modal>
+</form>

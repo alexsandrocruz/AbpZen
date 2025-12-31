@@ -1,0 +1,192 @@
+{
+  "name": "Volo.CmsKit.Pro.Admin.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Admin.Web",
+          "namespace": "Volo.CmsKit.Admin.Web",
+          "name": "CmsKitAdminWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Common.Web",
+          "namespace": "Volo.CmsKit.Pro.Web",
+          "name": "CmsKitProCommonWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Admin.Application.Contracts",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProAdminApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Web",
+          "namespace": "Volo.Abp.SettingManagement.Web",
+          "name": "AbpSettingManagementWebModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProAdminWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.UrlShorting",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.UrlShorting",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.UrlShorting",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls",
+      "contentType": "webPage",
+      "name": "EditTextModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls",
+      "contentType": "webPage",
+      "name": "ResultModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks",
+      "contentType": "webPage",
+      "name": "SettingsModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.PageFeedbacks",
+      "contentType": "webPage",
+      "name": "ViewModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Newsletters",
+      "contentType": "webPage",
+      "name": "DetailModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Newsletters",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs",
+      "contentType": "webPage",
+      "name": "CreateQuestionModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs",
+      "contentType": "webPage",
+      "name": "CreateSectionModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs",
+      "contentType": "webPage",
+      "name": "EditQuestionModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs",
+      "contentType": "webPage",
+      "name": "EditSectionModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Navigation
+@using Volo.Abp.UI.Navigation
+
+<AuthorizeView>
+	<Authorized>
+		@if (UserMenu != null)
+		{
+			<div class="lpx-context-menu" data-lpx-context-menu="user-context-menu">
+				<div class="lpx-context-menu--header">
+					<div class="lpx-user-ctx-header">
+						<div class="lpx-user-ctx-img">
+							<div class="lpx-avatar">
+								<img src="@ProfileImageUrl" class="lpx-avatar-img" alt="@UserName" />
+							</div>
+						</div>
+						<div class="lpx-user-ctx-info">
+							<span class="lpx-context-menu-user-name">@UserFullName</span>
+							@if (CurrentTenant.IsAvailable)
+                            {
+                            	<span class="lpx-context-menu-user-tenant">@CurrentTenant.Name</span>
+                            }
+							<span class="lpx-context-menu-user-email">@UserEmail</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="lpx-user-ctx-body">
+					<ul class="lpx-nav-menu" id="toolbar-body-routes">
+
+						@foreach (var menuItem in UserMenu.Items)
+						{
+							var customComponentType = menuItem.GetComponentTypeOrDefault();
+
+							if (customComponentType != null && typeof(ComponentBase).IsAssignableFrom(customComponentType))
+							{
+								<DynamicComponent Type="@customComponentType" />
+							}
+							else
+							{
+								<li class="outer-menu-item @menuItem.CssClass" id="@menuItem.ElementId">
+									<a class="lpx-menu-item-link @menuItem.CssClass" href="@menuItem.Url?.TrimStart('/', '~')" target="@menuItem.Target">
+										<span class="lpx-menu-item-icon"><i class="lpx-icon @menuItem.Icon" aria-hidden="true"></i></span>
+
+										<span class="lpx-menu-item-text hidden-in-hover-trigger">@menuItem.DisplayName</span>
+									</a>
+								</li>
+							}
+						}
+					</ul>
+				</div>
+			</div>
+
+            <ul class="lpx-nav-menu">
+              <li class="outer-menu-item lpx-user-menu" id="userItem">
+                <a class="lpx-menu-item-link" data-lpx-ctx-toggle="user-context-menu">
+                  <div class="lpx-avatar">
+                    <img class="lpx-avatar-img" src="@ProfileImageUrl" alt="@UserName" />
+                  </div>
+                  <span class="lpx-menu-item-text">@UserName</span>
+                </a>
+              </li>
+            </ul>
+		}
+	</Authorized>
+	<NotAuthorized>
+		<a class="btn" role="button" href="Account/Login"><i class="fa fa-sign-in me-1"></i> @L["Login"]</a>
+	</NotAuthorized>
+</AuthorizeView>

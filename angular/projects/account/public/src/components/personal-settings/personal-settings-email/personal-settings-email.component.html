@@ -1,0 +1,22 @@
+<div class="mb-3">
+  <label [attr.for]="id" class="form-label">{{ displayName | abpLocalization }}</label
+  ><span> * </span>
+  <div class="input-group" validationTarget validationStyle>
+    <input
+      type="email"
+      [attr.id]="id"
+      class="form-control"
+      [formControlName]="name"
+      [readonly]="isReadonly$ | async"
+    />
+    @if (showEmailVerificationBtn$ | async) {
+      <div class="input-group-append">
+        <abp-personal-settings-verify-button
+          [verified]="isVerified"
+          [edited]="isValueChanged$ | async"
+          (btnClick)="sendEmailVerificationToken()"
+        ></abp-personal-settings-verify-button>
+      </div>
+    }
+  </div>
+</div>

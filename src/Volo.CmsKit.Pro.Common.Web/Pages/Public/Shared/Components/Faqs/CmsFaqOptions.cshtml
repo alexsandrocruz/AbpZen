@@ -1,0 +1,10 @@
+﻿@inject IStringLocalizer<CmsKitResource> L
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Faqs.CmsFaqOptionsViewModel
+
+<div>
+    <abp-input asp-for="GroupName" label="@L["GroupName"]" />
+    <abp-input asp-for="SectionName" label="@L["SectionName"]" />
+</div>

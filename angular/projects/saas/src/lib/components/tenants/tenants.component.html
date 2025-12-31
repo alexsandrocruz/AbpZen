@@ -1,0 +1,203 @@
+<abp-page [title]="'Saas::Tenants' | abpLocalization" [toolbar]="data.items">
+  <div id="wrapper">
+    <abp-advanced-entity-filters [list]="list" localizationSourceName="Saas">
+      <abp-advanced-entity-filters-form>
+        <form #filterForm [formGroup]="formFilters">
+          <div class="row">
+            <div class="col-12 col-sm-3">
+              <div class="mb-3">
+                <label class="form-label" for="editionIdFilter">
+                  {{ 'Saas::Edition' | abpLocalization }}
+                </label>
+                <abp-lookup-select
+                  [emptyOption]="emptyOption"
+                  cid="editionIdFilter"
+                  [getFn]="getEditionLookup()"
+                  formControlName="editionId"
+                ></abp-lookup-select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3">
+              <div class="mb-3">
+                <label
+                  class="form-label"
+                  [ngbTooltip]="'Saas::EditionEndDateToolTip' | abpLocalization"
+                >
+                  {{ 'Saas::DisplayName:ExpirationDate' | abpLocalization }}
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </label>
+                <abp-date-range-picker
+                  formControlName="times"
+                  startDateProp="expirationDateMin"
+                  endDateProp="expirationDateMax"
+                >
+                </abp-date-range-picker>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3">
+              <div class="mb-3">
+                <label for="activationState" class="form-label">{{
+                  'Saas::DisplayName:ActivationState' | abpLocalization
+                }}</label>
+                <select
+                  id="activationState"
+                  class="form-select form-control"
+                  formControlName="activationState"
+                >
+                  <option [ngValue]="null">-</option>
+                  @for (data of activationStateOptions; track $index) {
+                    <option [ngValue]="data.key">
+                      {{ 'Saas::Enum:TenantActivationState.' + data.key | abpLocalization }}
+                    </option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-sm-auto align-self-end mb-3">
+              <div class="row">
+                <div class="col-6 col-sm-auto d-grid">
+                  <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                    <span>{{ 'AbpUi::Clear' | abpLocalization }}</span>
+                  </button>
+                </div>
+                <div class="col-6 col-sm-auto d-grid">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    [disabled]="formFilters.invalid"
+                    (click)="getData()"
+                  >
+                    <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </abp-advanced-entity-filters-form>
+    </abp-advanced-entity-filters>
+
+    <div class="card">
+      <abp-extensible-table
+        [data]="data.items"
+        [recordsTotal]="data.totalCount"
+        [list]="list"
+      ></abp-extensible-table>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [(visible)]="isModalVisible" [busy]="modalBusy" [options]="{ size: 'lg' }">
+  <ng-template #abpHeader>
+    <h3>
+      {{ modalTitle | abpLocalization }}
+      @if (selected().name) {
+        - {{ selected().name }}
+      }
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form
+      id="editOrCreateForm"
+      class="py-2"
+      [formGroup]="tenantForm"
+      (ngSubmit)="save()"
+      validateOnSubmit
+    >
+      @if (selected().id) {
+        <abp-extensible-form [selectedRecord]="selected()" />
+      } @else {
+        <ul ngbNav #nav="ngbNav" [destroyOnHide]="false" class="nav-tabs">
+          <li ngbNavItem>
+            <a ngbNavLink>{{ 'Saas::TenantBaseInfo' | abpLocalization }}</a>
+            <ng-template ngbNavContent>
+              <abp-extensible-form [selectedRecord]="selected()" />
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>{{ 'Saas::ConnectionStrings' | abpLocalization }}</a>
+            <ng-template ngbNavContent>
+              <abp-connection-strings />
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      }
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-primary">
+      {{ 'Saas::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" buttonType="submit" formName="editOrCreateForm">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
+</abp-modal>
+
+@if (setTenantReplaceableTemplateOptions) {
+  <abp-set-tenant-password-modal
+    *abpReplaceableTemplate="setTenantReplaceableTemplateOptions"
+    [modalVisible]="isVisibleSetTenantPasswordModal"
+    [tenantId]="selectedTenantId"
+    [tenantName]="selectedTenantNameForSetTenantPasswordModal"
+    (modalVisibleChange)="closeSetTenantPasswordModal()"
+  />
+}
+
+@if (isConnectionStringModalVisible() && selected()?.id) {
+  <abp-modal [(visible)]="isConnectionStringModalVisible" [options]="{ size: 'lg' }">
+    <ng-template #abpHeader>
+      <h3>
+        {{ 'Saas::ConnectionStrings' | abpLocalization }}
+        @if (selected().name) {
+          - {{ selected().name }}
+        }
+      </h3>
+    </ng-template>
+    <ng-template #abpBody>
+      <div class="mt-2">
+        <form
+          id="databaseConnectionStringsForm"
+          [formGroup]="databaseConnectionStringsForm"
+          (ngSubmit)="saveConectionStrings()"
+        >
+          <abp-connection-strings [selected]="selected()" />
+        </form>
+      </div>
+    </ng-template>
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-outline-primary" abpClose>
+        {{ 'AbpIdentity::Cancel' | abpLocalization }}
+      </button>
+      <abp-button
+        class="m-0"
+        iconClass="fa fa-check"
+        buttonType="submit"
+        formName="databaseConnectionStringsForm"
+      >
+        {{ 'AbpIdentity::Save' | abpLocalization }}
+      </abp-button>
+    </ng-template>
+  </abp-modal>
+}
+
+<abp-feature-management
+  *abpReplaceableTemplate="{
+    inputs: {
+      providerName: { value: 'T' },
+      providerKey: { value: providerKey },
+      visible: { value: visibleFeatures, twoWay: true },
+    },
+    outputs: { visibleChange: onVisibleFeaturesChange },
+    componentKey: 'FeatureManagement.FeatureManagementComponent',
+  }"
+  [(visible)]="visibleFeatures"
+  providerName="T"
+  [providerKey]="providerKey"
+  [providerTitle]="providerTitle"
+/>
+
+<abp-impersonate-tenant-modal [selected]="selected()" />

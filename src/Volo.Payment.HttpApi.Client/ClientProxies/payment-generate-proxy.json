@@ -1,0 +1,494 @@
+{
+  "modules": {
+    "payment": {
+      "rootPath": "payment",
+      "remoteServiceName": "AbpPaymentCommon",
+      "controllers": {
+        "Volo.Payment.Requests.PaymentRequestController": {
+          "controllerName": "PaymentRequest",
+          "controllerGroupName": "PaymentRequest",
+          "isRemoteService": true,
+          "apiVersion": null,
+          "type": "Volo.Payment.Requests.PaymentRequestController",
+          "interfaces": [
+            {
+              "type": "Volo.Payment.Requests.IPaymentRequestAppService"
+            }
+          ],
+          "actions": {
+            "CompleteAsyncByPaymentMethodAndParameters": {
+              "uniqueName": "CompleteAsyncByPaymentMethodAndParameters",
+              "name": "CompleteAsync",
+              "httpMethod": "POST",
+              "url": "api/payment/{paymentMethod}/complete",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "paymentMethod",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "parameters",
+                  "typeAsString": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Collections.Generic.Dictionary<System.String,System.String>",
+                  "typeSimple": "{string:string}",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "paymentMethod",
+                  "name": "paymentMethod",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "parameters",
+                  "name": "parameters",
+                  "jsonName": null,
+                  "type": "System.Collections.Generic.Dictionary<System.String,System.String>",
+                  "typeSimple": "{string:string}",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Requests.PaymentRequestWithDetailsDto",
+                "typeSimple": "Volo.Payment.Requests.PaymentRequestWithDetailsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Requests.IPaymentRequestAppService"
+            },
+            "CreateAsyncByInput": {
+              "uniqueName": "CreateAsyncByInput",
+              "name": "CreateAsync",
+              "httpMethod": "POST",
+              "url": "api/payment/requests",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Payment.Requests.PaymentRequestCreateDto, Volo.Payment.Application.Contracts",
+                  "type": "Volo.Payment.Requests.PaymentRequestCreateDto",
+                  "typeSimple": "Volo.Payment.Requests.PaymentRequestCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Payment.Requests.PaymentRequestCreateDto",
+                  "typeSimple": "Volo.Payment.Requests.PaymentRequestCreateDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Requests.PaymentRequestWithDetailsDto",
+                "typeSimple": "Volo.Payment.Requests.PaymentRequestWithDetailsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Requests.IPaymentRequestAppService"
+            },
+            "GetAsyncById": {
+              "uniqueName": "GetAsyncById",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/requests/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Requests.PaymentRequestWithDetailsDto",
+                "typeSimple": "Volo.Payment.Requests.PaymentRequestWithDetailsDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Requests.IPaymentRequestAppService"
+            },
+            "HandleWebhookAsyncByPaymentMethodAndPayloadAndHeaders": {
+              "uniqueName": "HandleWebhookAsyncByPaymentMethodAndPayloadAndHeaders",
+              "name": "HandleWebhookAsync",
+              "httpMethod": "POST",
+              "url": "api/payment/{paymentMethod}/webhook",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "paymentMethod",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "payload",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "headers",
+                  "typeAsString": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib",
+                  "type": "System.Collections.Generic.Dictionary<System.String,System.String>",
+                  "typeSimple": "{string:string}",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "paymentMethod",
+                  "name": "paymentMethod",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "payload",
+                  "name": "payload",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "headers",
+                  "name": "headers",
+                  "jsonName": null,
+                  "type": "System.Collections.Generic.Dictionary<System.String,System.String>",
+                  "typeSimple": "{string:string}",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Header",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Boolean",
+                "typeSimple": "boolean"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Requests.IPaymentRequestAppService"
+            },
+            "StartAsyncByPaymentMethodAndInput": {
+              "uniqueName": "StartAsyncByPaymentMethodAndInput",
+              "name": "StartAsync",
+              "httpMethod": "POST",
+              "url": "api/payment/{paymentMethod}/start",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "paymentMethod",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "Volo.Payment.Requests.PaymentRequestStartDto, Volo.Payment.Application.Contracts",
+                  "type": "Volo.Payment.Requests.PaymentRequestStartDto",
+                  "typeSimple": "Volo.Payment.Requests.PaymentRequestStartDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "paymentMethod",
+                  "name": "paymentMethod",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "Volo.Payment.Requests.PaymentRequestStartDto",
+                  "typeSimple": "Volo.Payment.Requests.PaymentRequestStartDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Requests.PaymentRequestStartResultDto",
+                "typeSimple": "Volo.Payment.Requests.PaymentRequestStartResultDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Requests.IPaymentRequestAppService"
+            }
+          }
+        },
+        "Volo.Payment.Plans.PlanController": {
+          "controllerName": "Plan",
+          "controllerGroupName": "Plan",
+          "isRemoteService": true,
+          "apiVersion": null,
+          "type": "Volo.Payment.Plans.PlanController",
+          "interfaces": [
+            {
+              "type": "Volo.Payment.Plans.IPlanAppService"
+            }
+          ],
+          "actions": {
+            "GetGatewayPlanAsyncByPlanIdAndGateway": {
+              "uniqueName": "GetGatewayPlanAsyncByPlanIdAndGateway",
+              "name": "GetGatewayPlanAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/plans/{planId}/{gateway}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "planId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "gateway",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "planId",
+                  "name": "planId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "gateway",
+                  "name": "gateway",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Plans.GatewayPlanDto",
+                "typeSimple": "Volo.Payment.Plans.GatewayPlanDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Plans.IPlanAppService"
+            },
+            "GetPlanListAsync": {
+              "uniqueName": "GetPlanListAsync",
+              "name": "GetPlanListAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/plans",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Payment.Plans.PlanDto>",
+                "typeSimple": "[Volo.Payment.Plans.PlanDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Plans.IPlanAppService"
+            },
+            "GetAsyncByPlanId": {
+              "uniqueName": "GetAsyncByPlanId",
+              "name": "GetAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/plans/{planId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "planId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "planId",
+                  "name": "planId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Payment.Plans.PlanDto",
+                "typeSimple": "Volo.Payment.Plans.PlanDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Plans.IPlanAppService"
+            },
+            "GetManyAsyncByIds": {
+              "uniqueName": "GetManyAsyncByIds",
+              "name": "GetManyAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/plans/many",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "ids",
+                  "typeAsString": "System.Guid[], System.Private.CoreLib",
+                  "type": "System.Guid[]",
+                  "typeSimple": "[string]",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "ids",
+                  "name": "ids",
+                  "jsonName": null,
+                  "type": "System.Guid[]",
+                  "typeSimple": "[string]",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Payment.Plans.PlanDto>",
+                "typeSimple": "[Volo.Payment.Plans.PlanDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Plans.IPlanAppService"
+            }
+          }
+        },
+        "Volo.Payment.Gateways.GatewayController": {
+          "controllerName": "Gateway",
+          "controllerGroupName": "Gateway",
+          "isRemoteService": true,
+          "apiVersion": null,
+          "type": "Volo.Payment.Gateways.GatewayController",
+          "interfaces": [
+            {
+              "type": "Volo.Payment.Gateways.IGatewayAppService"
+            }
+          ],
+          "actions": {
+            "GetGatewayConfigurationAsync": {
+              "uniqueName": "GetGatewayConfigurationAsync",
+              "name": "GetGatewayConfigurationAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/gateways",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Payment.Gateways.GatewayDto>",
+                "typeSimple": "[Volo.Payment.Gateways.GatewayDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Gateways.IGatewayAppService"
+            },
+            "GetSubscriptionSupportedGatewaysAsync": {
+              "uniqueName": "GetSubscriptionSupportedGatewaysAsync",
+              "name": "GetSubscriptionSupportedGatewaysAsync",
+              "httpMethod": "GET",
+              "url": "api/payment/gateways/subscription-supported",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.Collections.Generic.List<Volo.Payment.Gateways.GatewayDto>",
+                "typeSimple": "[Volo.Payment.Gateways.GatewayDto]"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "Volo.Payment.Gateways.IGatewayAppService"
+            }
+          }
+        }
+      }
+    }
+  },
+  "types": {}
+}

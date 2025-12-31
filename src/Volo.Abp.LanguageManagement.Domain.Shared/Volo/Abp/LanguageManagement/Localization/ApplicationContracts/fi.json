@@ -1,0 +1,13 @@
+{
+  "culture": "fi",
+  "texts": {
+    "Permission:LanguageManagement": "Kielen hallinta",
+    "Permission:LanguageTexts": "Kielitekstit",
+    "Permission:LanguageTextsEdit": "Muokkaa kielitekstejä",
+    "Permission:Languages": "Kieli (kielet",
+    "Permission:LanguagesEdit": "Muokkaa kieltä",
+    "Permission:LanguagesCreate": "Luo kieli",
+    "Permission:LanguagesChangeDefault": "Vaihda oletuskieli",
+    "Permission:LanguagesDelete": "Poista kieli"
+  }
+}

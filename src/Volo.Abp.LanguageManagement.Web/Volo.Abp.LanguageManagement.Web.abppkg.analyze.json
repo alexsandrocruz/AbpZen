@@ -1,0 +1,103 @@
+{
+  "name": "Volo.Abp.LanguageManagement.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.LanguageManagement",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.LanguageManagement.Application.Contracts",
+          "namespace": "Volo.Abp.LanguageManagement",
+          "name": "LanguageManagementApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "name": "AbpAspNetCoreMvcUiThemeCommercialModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "LanguageManagementWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.Pages.LanguageManagement",
+      "contentType": "webPage",
+      "name": "CreateModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.Pages.LanguageManagement",
+      "contentType": "webPage",
+      "name": "EditModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.Pages.LanguageManagement",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.Pages.LanguageManagement.Texts",
+      "contentType": "webPage",
+      "name": "EditModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.LanguageManagement.Pages.LanguageManagement.Texts",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    }
+  ]
+}

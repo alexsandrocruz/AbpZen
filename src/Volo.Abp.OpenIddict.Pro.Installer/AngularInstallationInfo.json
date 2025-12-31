@@ -1,0 +1,28 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.openiddictpro",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'openiddict', loadChildren: () => import('@volo/abp.ng.openiddictpro').then(m => m.OpeniddictproModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideOpeniddictproConfig"
+						],
+						"namespace": "@volo/abp.ng.openiddictpro/config"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideOpeniddictproConfig()"
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,133 @@
+﻿@page
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Data
+@using Volo.Abp.Localization
+@using Volo.Abp.ObjectExtending
+@using Volo.Saas
+@using Volo.Saas.Host.Pages.Saas.Host.Tenants
+@using Volo.Saas.Localization
+@model CreateModalModel
+@inject IStringLocalizer<SaasResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{
+    Layout = null;
+}
+<form method="post" asp-page="/Saas/Host/Tenants/CreateModal">
+    <abp-modal size="Large">
+        <abp-modal-header title="@L["NewTenant"]"></abp-modal-header>
+        <abp-modal-body>
+            <abp-tabs>
+                <abp-tab title="@L["TenantBaseInfo"].Value">
+                    <abp-input asp-for="Tenant.Name" />
+                    @if (Model.EditionsComboboxItems.Count > 1)
+                    {
+                        <abp-select asp-for="Tenant.EditionId" />
+                    }
+                    <abp-input asp-for="Tenant.AdminEmailAddress" />
+                    <div class="mb-3">
+                    <label class="form-label" for="Tenant.AdminPassword">@L["DisplayName:AdminPassword"] *</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" maxlength="@TenantConnectionStringConsts.MaxPasswordLength" asp-for="Tenant.AdminPassword" />
+                            <button class="btn btn-secondary" type="button" id="PasswordVisibilityButton">
+                                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Tenant.AdminPassword"></span>
+                    </div>
+
+                    <abp-select asp-for="Tenant.ActivationState"></abp-select>
+                    <div style="@(Model.Tenant.ActivationState == TenantActivationState.ActiveWithLimitedTime ? "" : "display: none;")">
+                        <abp-input asp-for="Tenant.ActivationEndDate" type="text" class="singledatepicker"></abp-input>
+                    </div>
+                    @foreach (var propertyInfo in ObjectExtensionManager.Instance.GetProperties<CreateModalModel.TenantInfoModel>())
+                    {
+                        if (!propertyInfo.Name.EndsWith("_Text"))
+                        {
+                            if (propertyInfo.Type.IsEnum || !propertyInfo.Lookup.Url.IsNullOrEmpty())
+                            {
+                                if (propertyInfo.Type.IsEnum)
+                                {
+                                    Model.Tenant.ExtraProperties.ToEnum(propertyInfo.Name, propertyInfo.Type);
+                                }
+                                <abp-select asp-for="Tenant.ExtraProperties[propertyInfo.Name]"
+                                    label="@propertyInfo.GetLocalizedDisplayName(StringLocalizerFactory)"
+                                    autocomplete-api-url="@propertyInfo.Lookup.Url"
+                                    autocomplete-selected-item-name="@Model.Tenant.GetProperty(propertyInfo.Name+"_Text")"
+                                    autocomplete-selected-item-value="@Model.Tenant.GetProperty(propertyInfo.Name)"
+                                    autocomplete-filter-param-name="@propertyInfo.Lookup.FilterParamName"
+                                    autocomplete-items-property-name="@propertyInfo.Lookup.ResultListPropertyName"
+                                    autocomplete-display-property-name="@propertyInfo.Lookup.DisplayPropertyName"
+                                    autocomplete-value-property-name="@propertyInfo.Lookup.ValuePropertyName"></abp-select>
+                            }
+                            else
+                            {
+                                <abp-input type="@propertyInfo.GetInputType()"
+                                asp-for="Tenant.ExtraProperties[propertyInfo.Name]"
+                                label="@propertyInfo.GetLocalizedDisplayName(StringLocalizerFactory)"
+                                asp-format="@propertyInfo.GetInputFormatOrNull()"
+                                value="@propertyInfo.GetInputValueOrNull(Model.Tenant.GetProperty(propertyInfo.Name))" />
+                            }
+                        }
+                    }
+                </abp-tab>
+                <abp-tab title="@L["ConnectionStrings"].Value">
+                    <abp-input asp-for="Tenant.UseSharedDatabase" />
+                    <div id="Tenant_ConnectionStrings_Wrap" class="@(Model.Tenant.UseSharedDatabase ? "d-none" : "")">
+                        <div class="row align-items-end">
+                            <label asp-for="Tenant.ConnectionStrings.Default" class="form-label">@Html.DisplayNameFor(m => m.Tenant.ConnectionStrings.Default)</label>
+                            <div class="input-group mb-3">
+                                <input asp-for="Tenant.ConnectionStrings.Default" class="form-control" />
+                                <button id="CheckConnectionString" type="button" class="btn btn-primary">@L["CheckConnectionString"]</button>
+                            </div>
+                        </div>
+                        @if (!Model.DatabaseSelectListItems.IsNullOrEmpty())
+                        {
+                            <abp-input asp-for="@Model.Tenant.UseSpecificDatabase" />
+                            <div id="Tenant_SpecificDatabase_Wrap" class="@(Model.Tenant.UseSpecificDatabase ? "" : "d-none")">
+                                <div class="row">
+                                    <div class="mb-3 col-md-3">
+                                        <abp-select asp-for="DatabaseName" asp-items="@Model.DatabaseSelectListItems"></abp-select>
+                                    </div>
+                                    <div class="mb-6 col-md-9">
+                                        <label asp-for="ConnectionString" class="form-label">@L["DisplayName:ConnectionString"]</label>
+
+                                        <div class="input-group mb-3">
+                                            <input asp-for="ConnectionString" class="form-control" />
+                                            <button id="CheckDatabaseConnectionString" type="button" class="btn btn-outline-primary">@L["CheckConnectionString"]</button>
+                                            <button id="AddDatabaseConnectionString" type="button" class="btn btn-primary">@L["AddDatabaseConnectionString"]</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>@L["DisplayName:DatabaseName"]</th>
+                                                <th>@L["DisplayName:ConnectionString"]</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ConnectionStringsTBody">
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <h6>@L["NoDataAvailable"]</h6>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

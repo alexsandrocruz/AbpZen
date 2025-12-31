@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+    
+    
+    
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Guids" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.SettingManagement.Blazor" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.Application.Contracts\Volo.CmsKit.Pro.Admin.Application.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AngleSharp" />
+      <PackageReference Include="AngleSharp.Css" />
+      <PackageReference Include="Blazorise.Components" />
+      <PackageReference Include="Blazorise.Markdown" />
+      <PackageReference Include="Blazorise.TreeView" />
+      <PackageReference Include="bunit" />
+      <PackageReference Include="Markdig.Signed" />
+      <PackageReference Include="HtmlSanitizer" />
+      <PackageReference Include="MimeTypeMapOfficial" />
+    </ItemGroup>
+    
+</Project>

@@ -1,0 +1,142 @@
+@if (!useSharedDatabase() && databases()?.length) {
+  <div class="my-2 form-check">
+    <input
+      id="moduleSpecificDatabase"
+      type="checkbox"
+      class="form-check-input"
+      [(ngModel)]="moduleSpecificDatabase"
+      [ngModelOptions]="{ standalone: true }"
+    />
+    <label for="moduleSpecificDatabase" class="form-check-label">
+      {{ 'Saas::DisplayName:UseSpecificDatabase' | abpLocalization }}
+    </label>
+  </div>
+
+  @if (databases()?.length && moduleSpecificDatabase()) {
+    <div class="row align-items-end">
+      <div class="mb-3 col-lg-3">
+        <div>
+          <label for="database-name" class="form-label">
+            {{ 'Saas::DisplayName:DatabaseName' | abpLocalization }}
+          </label>
+          <select
+            id="database-name"
+            name="database-name"
+            class="form-select form-control"
+            [(ngModel)]="selectedModule"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option [ngValue]="null">
+              {{ '-' }}
+            </option>
+
+            @for (module of modules; track $index) {
+              @if (!module.connectionString) {
+                <option [ngValue]="module.databaseName">
+                  {{ module.databaseName }}
+                </option>
+              }
+            }
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 col-lg-6">
+        <div>
+          <label for="connection-string" class="form-label">
+            {{ 'Saas::DisplayName:ConnectionString' | abpLocalization }}
+          </label>
+          <input
+            type="text"
+            id="connection-string"
+            name="connection-string"
+            class="form-control"
+            [(ngModel)]="databaseConnectionString"
+            [ngModelOptions]="{ standalone: true }"
+            (keyup.enter)="add()"
+          />
+        </div>
+      </div>
+      <div class="mb-3 col-lg-3">
+        <button
+          type="button"
+          class="btn btn-primary me-1"
+          [class.disabled]="selectedDatabase === null || !databaseConnectionString"
+          (click)="add()"
+        >
+          {{ 'Saas::AddDatabaseConnectionString' | abpLocalization }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [class.disabled]="databaseConnectionString === null"
+          (click)="checkConnectionString(databaseConnectionString)"
+        >
+          {{ 'Saas::CheckConnectionString' | abpLocalization }}
+        </button>
+      </div>
+    </div>
+
+    <div class="row align-items-end">
+      <div class="col-lg-12 overflow-auto">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{ 'Saas::DisplayName:DatabaseName' | abpLocalization }}</th>
+              <th>{{ 'Saas::DisplayName:ConnectionString' | abpLocalization }}</th>
+              <th>{{ 'Saas::Actions' | abpLocalization }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (
+              ctrl of databasesControl?.controls;
+              track ctrl.value.databaseName;
+              let i = $index
+            ) {
+              @if (ctrl.value.connectionString) {
+                <tr [formGroupName]="i">
+                  <td>{{ ctrl.value.databaseName }}</td>
+                  <td class="text-truncate" style="max-width: 600px; overflow: hidden">
+                    {{ ctrl.value.connectionString }}
+                  </td>
+                  <td>
+                    <ng-template #popContent>
+                      <strong>{{ 'AbpUi::AreYouSure' | abpLocalization }}</strong>
+
+                      <hr />
+                      <div class="text-end">
+                        <button
+                          class="btn btn-sm btn-light me-1"
+                          type="button"
+                          (click)="popover.close()"
+                        >
+                          {{ 'AbpUi::Cancel' | abpLocalization }}
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger"
+                          type="button"
+                          (click)="remove(ctrl.value.databaseName)"
+                        >
+                          {{ 'AbpUi::Yes' | abpLocalization }}
+                        </button>
+                      </div>
+                    </ng-template>
+
+                    <button
+                      #popover="ngbPopover"
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      [ngbPopover]="popContent"
+                      placement="left"
+                    >
+                      <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+}

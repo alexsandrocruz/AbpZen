@@ -1,0 +1,15 @@
+<div class="card">
+  @if (cardHeaderTemplate) {
+    <div class="card-header">
+      <ng-content select="lpx-card-header"></ng-content>
+    </div>
+  }
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+  @if (cardFooterTemplate) {
+    <div class="card-footer">
+      <ng-content select="lpx-card-footer"></ng-content>
+    </div>
+  }
+</div>

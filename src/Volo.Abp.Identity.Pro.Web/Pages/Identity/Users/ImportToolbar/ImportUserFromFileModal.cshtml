@@ -1,0 +1,30 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Identity.Localization
+@inject IHtmlLocalizer<IdentityResource> L
+@model Volo.Abp.Identity.Web.Pages.Identity.Users.ImportToolbar.ImportUserFromFileModal
+
+@{
+    Layout = null;
+}
+
+<form asp-page="/Identity/Users/ImportToolbar/ImportFromFileUserModal" method="post">
+    <abp-modal id="ImportUser">
+        <abp-modal-header title="@L["UploadFile"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <input id="uploadEndpoint" hidden value="@Url.Content("~/api/identity/users/import-users-from-file")"/>
+            <input id="fileType" hidden value="@((int)Model.FileType)"/>
+            <div class="d-grid">
+                <label for="importUserFile" class="mb-3 px-1 shadow-none btn">
+                    <i class="fas fa-upload me-2"></i><span name="fileName">@L["ChooseFile"]</span>
+                </label>
+                <input id="importUserFile" type="file" accept="@Model.AllowedFileType" style="display: none"/>
+            </div>
+        </abp-modal-body>
+        <abp-modal-footer>
+            <abp-button data-bs-dismiss="modal" button-type="Secondary">@L["Close"]</abp-button>
+            <abp-button id="downloadSampleImportFile" button-type="Secondary">@L["DownloadTemplateFile"]</abp-button>
+            <abp-button id="uploadImportFileBtn" button-type="Primary">@L["Upload"]</abp-button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>

@@ -1,0 +1,133 @@
+{
+  "name": "Volo.Abp.LanguageManagement.Application.Contracts",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.LanguageManagement",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.LanguageManagement.Domain.Shared",
+          "namespace": "Volo.Abp.LanguageManagement",
+          "name": "LanguageManagementDomainSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Ddd.Application.Contracts",
+          "namespace": "Volo.Abp.Application",
+          "name": "AbpDddApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Authorization.Abstractions",
+          "namespace": "Volo.Abp.Authorization",
+          "name": "AbpAuthorizationAbstractionsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "LanguageManagementApplicationContractsModule",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.LanguageTexts",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.LanguageTexts.Edit",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.Languages",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.Languages.Create",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.Languages.Edit",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.Languages.ChangeDefault",
+      "summary": null
+    },
+    {
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "LanguageManagement.Languages.Delete",
+      "summary": null
+    },
+    {
+      "valueType": "ToggleStringValueType",
+      "defaultValue": "true",
+      "displayName": "Volo.Abp.Localization.LocalizableString",
+      "description": "Volo.Abp.Localization.LocalizableString",
+      "isAvailableToHost": true,
+      "isVisibleToClients": true,
+      "contentType": "feature",
+      "name": "LanguageManagement.Enable",
+      "summary": null
+    }
+  ]
+}

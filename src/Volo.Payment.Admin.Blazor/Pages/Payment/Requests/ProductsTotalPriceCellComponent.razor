@@ -1,0 +1,20 @@
+﻿@using Volo.Abp.AspNetCore.Components
+@using Volo.Payment.Requests
+
+@inherits AbpPaymentAdminComponentBase
+
+@if (Data.PaymentType == PaymentType.Subscription)
+{
+	<Tooltip Text="@L["PriceSubscriptionTooltip"]" Placement="TooltipPlacement.Left">
+		<i class="fa fa-info-circle text-warning"></i>
+	</Tooltip>
+}
+else
+{
+	<Span>@Data.TotalPrice</Span>
+}
+
+@code {
+	[Parameter]
+	public PaymentRequestProductDto Data { get; set; }
+}

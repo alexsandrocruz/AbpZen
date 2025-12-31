@@ -1,0 +1,193 @@
+﻿@page "/identity/claim-types"
+@attribute [Authorize(IdentityPermissions.Users.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.Identity.Localization
+@using Microsoft.AspNetCore.Components.Forms;
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inherits AbpCrudPageBase<IIdentityClaimTypeAppService, ClaimTypeDto, Guid, GetIdentityClaimTypesInput, CreateClaimTypeDto, UpdateClaimTypeDto>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["ClaimTypes"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+            <Fields Horizontal="true">
+                <Addons>
+                    <Addon AddonType="AddonType.Body">
+                        <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                    </Addon>
+                    <Addon AddonType="AddonType.End">
+                        <SubmitButton Type="ButtonType.Button"
+                                      Clicked="@SearchEntitiesAsync">
+                            <Icon Name="IconName.Search" />
+                        </SubmitButton>
+                    </Addon>
+                </Addons>
+            </Fields>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="ClaimTypeDto"
+                       Data="@Entities"
+                       ReadData="@OnDataGridReadAsync"
+                       TotalItems="@TotalCount"
+                       ShowPager="true"
+                       PageSize="@PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@ClaimTypeManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["NewClaimType"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Name"] *</FieldLabel>
+                                <TextEdit @bind-Text="@NewEntity.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@NewEntity.Required">@L["Required"]</Check>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Regex"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEntity.Regex">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                       
+                        <Field>
+                            <FieldLabel>@L["RegexDescription"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEntity.RegexDescription">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEntity.Description">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                       
+                        <Field>
+                            <FieldLabel>@L["ValueType"]</FieldLabel>
+                            <Select TValue="IdentityClaimValueType" @bind-SelectedValue="@NewEntity.ValueType">
+                                <SelectItem Value="@IdentityClaimValueType.String">@(IdentityClaimValueType.String.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.Int">@(IdentityClaimValueType.Int.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.Boolean">@(IdentityClaimValueType.Boolean.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.DateTime">@(IdentityClaimValueType.DateTime.ToString())</SelectItem>
+                            </Select>
+                        </Field>
+                        <ExtensionProperties TEntityType="CreateClaimTypeDto" TResourceType="IdentityResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["Name"] *</FieldLabel>
+                                <TextEdit @bind-Text="@EditingEntity.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@EditingEntity.Required">@L["Required"]</Check>
+                        </Field>
+
+                        <Field>
+                            <FieldLabel>@L["Regex"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingEntity.Regex">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+
+                        <Field>
+                            <FieldLabel>@L["RegexDescription"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingEntity.RegexDescription">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingEntity.Description">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+      
+                        <Field>
+                            <FieldLabel>@L["ValueType"]</FieldLabel>
+                            <Select TValue="IdentityClaimValueType" @bind-SelectedValue="@EditingEntity.ValueType">
+                                <SelectItem Value="@IdentityClaimValueType.String">@(IdentityClaimValueType.String.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.Int">@(IdentityClaimValueType.Int.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.Boolean">@(IdentityClaimValueType.Boolean.ToString())</SelectItem>
+                                <SelectItem Value="@IdentityClaimValueType.DateTime">@(IdentityClaimValueType.DateTime.ToString())</SelectItem>
+                            </Select>
+                        </Field>
+                        <ExtensionProperties TEntityType="UpdateClaimTypeDto" TResourceType="IdentityResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

@@ -1,0 +1,47 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using OpenIddict.Abstractions
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Card
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Table
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageSearchBox
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.Abp.OpenIddict.Localization
+@using Volo.Abp.OpenIddict.Pro.Web.Menus
+@using Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Applications
+@model IndexModel
+@inject IHtmlLocalizer<AbpOpenIddictResource> L
+@inject IPageLayout PageLayout
+
+@{
+    PageLayout.Content.Title = L["Applications"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:OpenIddict"].Value);
+    PageLayout.Content.MenuItemName = OpenIddictProMenus.Applications;
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/openiddictpro-proxy.js" />
+        <abp-script src="/Pages/OpenIddict/Applications/index.js" />
+        <abp-script src="/Pages/OpenIddict/Applications/createModal.js" />
+        <abp-script src="/Pages/OpenIddict/Applications/editModal.js" />
+        <abp-script src="/Pages/AbpPermissionManagement/permission-management-modal.js" />
+    </abp-script-bundle>
+}
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+<div id="ApplicationsWrapper">
+    <abp-card>
+        <abp-card-body>
+            <abp-row>
+                <abp-column>
+                    @await Component.InvokeAsync(typeof(AbpPageSearchBoxViewComponent))
+                </abp-column>
+            </abp-row>
+        </abp-card-body>
+    </abp-card>
+    <abp-table  id="ApplicationsTable" class="nowrap"></abp-table>
+</div>

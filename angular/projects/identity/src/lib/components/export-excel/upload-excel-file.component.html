@@ -1,0 +1,42 @@
+<abp-modal [visible]="isModalVisible" (visibleChange)="isModalVisibleChange.emit($event)">
+  <ng-template #abpHeader>
+    <h3>{{ 'AbpIdentity::Upload' | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <div class="d-grid">
+      <label for="importUserFile" class="mb-3 px-1 shadow-none btn">
+        <i class="fas fa-upload me-2"></i>
+        @if (fileName) {
+          <span>
+            {{ fileName }}
+          </span>
+        } @else {
+          <span>
+            {{ 'AbpIdentity::ChooseFile' | abpLocalization }}
+          </span>
+        }
+      </label>
+      <input
+        #fileInput
+        (change)="changeFile($event)"
+        id="importUserFile"
+        [accept]="acceptFileType"
+        type="file"
+        class="d-none"
+      />
+    </div>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-link" abpClose>
+      {{ 'AbpUi::Close' | abpLocalization }}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="downloadSample()">
+      {{ 'AbpIdentity::DownloadTemplateFile' | abpLocalization }}
+    </button>
+    <abp-button [disabled]="loading" buttonType="submit" (click)="onSubmit()">{{
+      'AbpIdentity::Upload' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>

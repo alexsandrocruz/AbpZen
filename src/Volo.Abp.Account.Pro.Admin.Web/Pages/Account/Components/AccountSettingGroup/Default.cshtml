@@ -1,0 +1,218 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Account.Admin.Web.Pages.Account.Components
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.Account.Admin.Web.Pages.Account.Components.AccountSettingGroup
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Button
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Tab
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.MultiTenancy
+@inject IHtmlLocalizer<AccountResource> L
+@inject IHtmlLocalizer<IdentityResource> IdentityLocalizer
+@inject ICurrentTenant CurrentTenant
+@inject IStringLocalizerFactory LocalizerFactory
+@model AccountSettingGroupViewComponent.AccountSettingsViewModel
+
+<abp-script src="/Pages/Account/Components/AccountSettingGroup/Default.js" />
+
+<abp-tabs>
+    <abp-tab active="true" title="@L["AccountSettingsGeneral"].Value">
+        <form id="AccountSettingsForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <h4>@L["AccountSettingsGeneral"]</h4>
+                        <div>
+                            <abp-input asp-for="@Model.AccountSettings.IsSelfRegistrationEnabled" name="IsSelfRegistrationEnabled"/>
+                            <abp-input asp-for="@Model.AccountSettings.EnableLocalLogin" name="EnableLocalLogin"/>
+                            <abp-input asp-for="@Model.AccountSettings.PreventEmailEnumeration" name="PreventEmailEnumeration" info="@L["Description:PreventEmailEnumeration"].Value" />
+                        </div>
+                    </div>
+                    <hr class="my-4"/>
+                    <div>
+                        <abp-button button-type="Primary" type="submit"><i class="fa fa-save"></i> @L["Save"]</abp-button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </abp-tab>
+
+    @if (Model.AccountTwoFactorSettings != null)
+    {
+        <abp-tab title="@L["AccountSettingsTwoFactor"].Value">
+            <form id="AccountTwoFactorSettingsForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h4>@L["TwoFactorAuthentication"]</h4>
+                            <div>
+                                <abp-select asp-for="@Model.AccountTwoFactorSettings.TwoFactorBehaviour" label="@IdentityLocalizer["DisplayName:Abp.Identity.TwoFactorBehaviour"].Value" name="TwoFactorBehaviour"/>
+                                <abp-input asp-for="@Model.AccountTwoFactorSettings.UsersCanChange" label="@IdentityLocalizer["DisplayName:Abp.Identity.UsersCanChange"].Value" name="UsersCanChange" />
+                                <abp-input asp-for="@Model.AccountTwoFactorSettings.IsRememberBrowserEnabled" name="IsRememberBrowserEnabled" />
+                            </div>
+                         </div>
+                        <hr class="my-4" />
+                        <div>
+                            <abp-button button-type="Primary" type="submit"><i class="fa fa-save"></i> @L["Save"]</abp-button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </abp-tab>
+    }
+    @if (Model.AccountRecaptchaSettings != null &&
+        (!CurrentTenant.IsAvailable ||
+         Model.AccountRecaptchaSettings.UseCaptchaOnLogin ||
+         Model.AccountRecaptchaSettings.UseCaptchaOnRegistration))
+    {
+        <abp-tab title="@L["Captcha"].Value">
+            <form id="AccountCaptchaSettingsForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <div class="row g-0 mb-3">
+                                <div class="col-2">
+                                    <img src="images/recaptcha.png" class="img-fluid" style="max-width: 85%;">
+                                </div>
+                                <div class="col-8 ms-2">
+                                    <h2>@L["GoogleCaptcha"]</h2>
+                                    <p class="text-muted ">@L["GoogleCaptchaDescription"]</p>
+                                </div>
+                            </div>
+
+                            @if (!CurrentTenant.IsAvailable)
+                            {
+                                <abp-input asp-for="@Model.AccountRecaptchaSettings.VerifyBaseUrl" name="VerifyBaseUrl" label="@L["DisplayName:VerificationUrl"].Value" info="@L["Description:VerificationUrl"].Value" />
+                            }
+
+                            @{
+                                var versionItems = new List<SelectListItem>
+                                {
+                                    new("2", "2"),
+                                    new("3", "3")
+                                };
+                            }
+
+                            <abp-select asp-for="@Model.AccountRecaptchaSettings.Version" asp-items="@versionItems" info="@L["Description:Version"].Value" name="Version"/>
+                            <abp-input asp-for="@Model.AccountRecaptchaSettings.SiteKey" name="SiteKey" info="@L["Description:SiteKey"].Value" />
+                            <abp-input asp-for="@Model.AccountRecaptchaSettings.SiteSecret" name="SiteSecret" info="@L["Description:SiteSecret"].Value" />
+                            <div>
+                                <abp-input asp-for="@Model.AccountRecaptchaSettings.Score" name="Score" type="number" info="@L["Description:Score"].Value"/>
+                            </div>
+
+                            @if (!CurrentTenant.IsAvailable)
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <abp-input asp-for="@Model.AccountRecaptchaSettings.UseCaptchaOnLogin" name="UseCaptchaOnLogin" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <abp-input asp-for="@Model.AccountRecaptchaSettings.UseCaptchaOnRegistration" name="UseCaptchaOnRegistration" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <hr class="my-4" />
+                        <div>
+                            <abp-button button-type="Primary" type="submit"><i class="fa fa-save"></i> @L["Save"]</abp-button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </abp-tab>
+    }
+    @if (!CurrentTenant.IsAvailable && Model.AccountExternalProviderSettings.ExternalProviders.Any() ||
+         (CurrentTenant.IsAvailable && Model.AccountExternalProviderSettings.ExternalProviders.Any(x => x.Enabled)))
+    {
+        var defaultLocalizer = LocalizerFactory.CreateDefaultOrNull();
+
+        <abp-tab title="@L["AccountExternalProviderSettings"].Value">
+            <form id="AccountExternalProviderSettingsForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>@L["SocialAccountSecurity"].Value</h4>
+                        <abp-input asp-for="@Model.AccountExternalProviderSettings.VerifyPasswordDuringExternalLogin" name="VerifyPasswordDuringExternalLogin" info="@L["Description:VerifyPasswordDuringExternalLogin"].Value"/>
+                        @if (CurrentTenant.IsAvailable)
+                        {
+                            foreach (var provider in Model.AccountExternalProviderSettings.ExternalProviders.Where(setting => setting.Enabled))
+                            {
+                                <div class="provider_container">
+                                    <h4>@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}", provider.Name)</h4>
+
+                                    <input type="hidden" name="Name" value="@provider.Name">
+
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="@(provider.Name)UseHostSettings" data-collapse="@(provider.Name)Collapse" @(!provider.IsValid() ? "checked=\"checked\"" : "")>
+                                        <label class="form-check-label" for="@(provider.Name)UseHostSettings">@L["ExternalProviderUseHostSettings"]</label>
+                                    </div>
+
+                                    <div class="collapse @(provider.IsValid() ? "show" : "")" id="@(provider.Name)Collapse">
+                                        @foreach (var property in provider.Properties)
+                                        {
+                                            <div class="mb-3">
+                                                <label class="form-label" for="@($"{provider.Name}.{property.Name}")">@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}:{property.Name}", property.Name)</label>
+                                                <input type="text" name="@($"Properties.{property.Name}")" class="form-control" id="@($"{provider.Name}.{property.Name}")" value="@property.Value">
+                                            </div>
+                                        }
+                                        @foreach (var property in provider.SecretProperties)
+                                        {
+                                            <div class="mb-3">
+                                                <label class="form-label" for="@($"{provider.Name}.{property.Name}")">@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}:{property.Name}", property.Name)</label>
+                                                <input type="password" autocomplete="new-password" name="@($"SecretProperties.{property.Name}")" class="form-control" id="@($"{provider.Name}.{property.Name}")" value="@property.Value">
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <hr class="my-4"/>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var provider in Model.AccountExternalProviderSettings.ExternalProviders)
+                            {
+                                <div class="provider_container">
+                                    <h4>@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}", provider.Name)</h4>
+
+                                    <input type="hidden" name="Name" value="@provider.Name">
+
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" value="true" @(provider.Enabled ? "checked=\"checked\"" : "") id="@($"{provider.Name}.Enabled")" name="Enabled" class="form-check-input">
+                                        <label class="form-check-label" for="@($"{provider.Name}.Enabled")">@L["ExternalProviderEnabled"].Value</label>
+                                    </div>
+
+                                    @foreach (var property in provider.Properties)
+                                    {
+                                        <div class="mb-3">
+                                            <label class="form-label" for="@($"{provider.Name}.{property.Name}")">@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}:{property.Name}", property.Name)</label>
+                                            <input type="text" name="@($"Properties.{property.Name}")" class="form-control" id="@($"{provider.Name}.{property.Name}")" value="@property.Value">
+                                        </div>
+                                    }
+                                    @foreach (var property in provider.SecretProperties)
+                                    {
+                                        <div class="mb-3">
+                                            <label class="form-label" for="@($"{provider.Name}.{property.Name}")">@ExternalLoginProviderLocalizationHelper.Localize(defaultLocalizer, $"ExternalProvider:{provider.Name}:{property.Name}", property.Name)</label>
+                                            <input type="password" autocomplete="new-password" name="@($"SecretProperties.{property.Name}")" class="form-control" id="@($"{provider.Name}.{property.Name}")" value="@property.Value">
+                                        </div>
+                                    }
+
+                                    <hr class="my-4"/>
+                                </div>
+                            }
+                        }
+
+                        <div>
+                            <abp-button button-type="Primary" type="submit"><i class="fa fa-save"></i> @L["Save"]</abp-button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </abp-tab>
+    }
+
+</abp-tabs>

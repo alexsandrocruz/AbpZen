@@ -1,0 +1,13 @@
+<ng-container>
+  <abp-page [title]="'Payment::Products' | abpLocalization" [toolbar]="data">
+    <abp-page-breadcrumb-container>
+      <abp-breadcrumb-items [items]="breadCrumbItems"></abp-breadcrumb-items>
+    </abp-page-breadcrumb-container>
+    <div class="card">
+      <div class="card-body">
+        <abp-extensible-table [list]="list" [data]="data" [recordsTotal]="data.length">
+        </abp-extensible-table>
+      </div>
+    </div>
+  </abp-page>
+</ng-container>

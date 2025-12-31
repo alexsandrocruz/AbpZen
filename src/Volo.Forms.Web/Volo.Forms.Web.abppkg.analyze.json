@@ -1,0 +1,127 @@
+{
+  "name": "Volo.Forms.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Forms.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "name": "AbpAspNetCoreMvcUiThemeSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Forms.Application.Contracts",
+          "namespace": "Volo.Forms",
+          "name": "FormsApplicationContractsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "FormsWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "FormResponseModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "PreviewModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "SendModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms",
+      "contentType": "webPage",
+      "name": "ViewFormModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms.Questions",
+      "contentType": "webPage",
+      "name": "EditSettingsModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms.Questions",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Forms.Web.Pages.Forms.Questions",
+      "contentType": "webPage",
+      "name": "ResponsesModel",
+      "summary": null
+    }
+  ]
+}

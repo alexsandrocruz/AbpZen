@@ -1,0 +1,144 @@
+{
+  "name": "Volo.Saas.Host.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Saas.Host",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application.Contracts",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Commercial",
+          "name": "AbpAspNetCoreMvcUiThemeCommercialModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Web",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "SaasHostWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "ConnectionStringsModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "ImpersonateTenantModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Tenants",
+      "contentType": "webPage",
+      "name": "SetPassword",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Editions",
+      "contentType": "webPage",
+      "name": "CreateModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Editions",
+      "contentType": "webPage",
+      "name": "DeleteEditionModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Editions",
+      "contentType": "webPage",
+      "name": "EditModalModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Editions",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Saas.Host.Pages.Saas.Host.Editions",
+      "contentType": "webPage",
+      "name": "MoveAllTenantsModal",
+      "summary": null
+    }
+  ]
+}

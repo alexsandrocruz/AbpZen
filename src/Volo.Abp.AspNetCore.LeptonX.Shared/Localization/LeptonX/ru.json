@@ -1,0 +1,21 @@
+{
+  "Culture": "ru",
+  "Texts": {
+    "Login": "Войти",
+    "Appearance": "вид",
+    "ContainerWidth": "Ширина контейнера",
+    "ContainerWidth:Boxed": "Макет в штучной упаковке",
+    "ContainerWidth:Fixed": "Фиксированная",
+    "ContainerWidth:Fluid": "Жидкость",
+    "GeneralSettings": "общие настройки",
+    "Language": "Язык",
+    "Settings": "Настройки",
+    "Theme:dark": "Темный",
+    "Theme:dim": "полутемный",
+    "Theme:light": "Легкий",
+    "Theme:system": "Система",
+    "Welcome": "Добро пожаловать",
+    "FilterMenu": "Меню фильтр",
+    "Menu": "Меню"
+  }
+}

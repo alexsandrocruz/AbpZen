@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      @if (tabs$ | async; as tabs) {
+        <div class="col-12 col-md-3">
+          <ul class="nav flex-column nav-pills" id="nav-tab" role="tablist">
+            @for (tab of tabs; track tab.name) {
+              <li *abpPermission="tab.requiredPolicy!" class="nav-item" (click)="selected = tab">
+                <a
+                  class="nav-link"
+                  [ngClass]="{ active: selected?.name === tab.name }"
+                  role="tab"
+                  href="javascript:void(0)"
+                >
+                  {{ tab.name | abpLocalization }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="col-12 col-md-9">
+          @if (isProfileLoaded && tabs.length && selected) {
+            <div class="tab-content">
+              <div
+                [@fadeIn]
+                [id]="selected.name + '-tab'"
+                class="tab-pane fade show active"
+                role="tabpanel"
+              >
+                <h2>{{ selected.name | abpLocalization }}</h2>
+
+                <hr class="my-4" />
+
+                <ng-container *ngComponentOutlet="selected.component"></ng-container>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <ng-template #loader>
+          <div [abpLoading]="true"></div>
+        </ng-template>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div (keyup.enter)="submit()">
+  <div class="row g-0 mb-3">
+    <div class="col-2">
+      <img [src]="recaptchaAsset" class="img-fluid" style="max-width: 85%" />
+    </div>
+    <div class="col-8 ms-2">
+      <h2>{{ 'AbpAccount::GoogleCaptcha' | abpLocalization }}</h2>
+      <p class="text-muted">{{ 'AbpAccount::GoogleCaptchaDescription' | abpLocalization }}</p>
+    </div>
+  </div>
+  @if (form) {
+    <form [formGroup]="form" id="captchaSettings" (ngSubmit)="submit()" validateOnSubmit>
+      @if (!isTenant) {
+        <div class="mb-3">
+          <label class="form-label">{{
+            'AbpAccount::DisplayName:VerificationUrl' | abpLocalization
+          }}</label>
+          <input type="text" class="form-control" formControlName="verifyBaseUrl" />
+          <small class="form-text text-muted">{{
+            'AbpAccount::Description:VerificationUrl' | abpLocalization
+          }}</small>
+        </div>
+      }
+
+      <div class="mb-3">
+        <label class="form-label" for="captcha-version">{{
+          'AbpAccount::DisplayName:Version' | abpLocalization
+        }}</label>
+        <select id="captcha-version" class="form-control" formControlName="version">
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+        </select>
+        <small class="form-text text-muted">{{
+          'AbpAccount::Description:Version' | abpLocalization
+        }}</small>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ 'AbpAccount::DisplayName:SiteKey' | abpLocalization }}</label>
+        <input type="text" class="form-control" formControlName="siteKey" />
+        <small class="form-text text-muted">{{
+          'AbpAccount::Description:SiteKey' | abpLocalization
+        }}</small>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{
+          'AbpAccount::DisplayName:SiteSecret' | abpLocalization
+        }}</label>
+        <input type="text" class="form-control" formControlName="siteSecret" />
+        <small class="form-text text-muted">{{
+          'AbpAccount::Description:SiteSecret' | abpLocalization
+        }}</small>
+      </div>
+
+      @if (form.controls.version.value === 3) {
+        <div class="mb-3">
+          <label class="form-label">{{ 'AbpAccount::DisplayName:Score' | abpLocalization }}</label>
+          <input type="number" class="form-control" formControlName="score" min="0" max="1" />
+          <small class="form-text text-muted">{{
+            'AbpAccount::Description:Score' | abpLocalization
+          }}</small>
+        </div>
+      }
+
+      @if (!isTenant) {
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-check mb-2">
+              <input
+                type="checkbox"
+                id="use-captcha-on-login"
+                name="useCaptchaOnLogin"
+                class="form-check-input"
+                formControlName="useCaptchaOnLogin"
+                autofocus
+              /><label class="form-check-label" for="use-captcha-on-login">{{
+                'AbpAccount::Description:UseCaptchaOnLogin' | abpLocalization
+              }}</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check mb-2">
+              <input
+                type="checkbox"
+                id="use-captcha-on-registration"
+                name="useCaptchaOnRegistration"
+                class="form-check-input"
+                formControlName="useCaptchaOnRegistration"
+              /><label class="form-check-label" for="use-captcha-on-registration">{{
+                'AbpAccount::Description:UseCaptchaOnRegistration' | abpLocalization
+              }}</label>
+            </div>
+          </div>
+        </div>
+      }
+    </form>
+  }
+
+  <hr class="my-3" />
+
+  <div>
+    <abp-button
+      buttonType="submit"
+      formName="captchaSettings"
+      iconClass="fa fa-save"
+      [loading]="loading"
+    >
+      {{ 'AbpAccount::Save' | abpLocalization }}
+    </abp-button>
+  </div>
+</div>

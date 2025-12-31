@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(SaasHostPermissions.Tenants.Default)]
+@inherits SassComponentBase
+
+<Card>
+    <CardBody>
+        <CardTitle Size="5">@L["EditionUsageStatistics"]</CardTitle>
+        <CardText>
+            <div style="position: relative; height: 300px">
+                <PieChart @ref="BarChart" TItem="int" Options="@Options"></PieChart>
+            </div>
+        </CardText>
+    </CardBody>
+</Card>

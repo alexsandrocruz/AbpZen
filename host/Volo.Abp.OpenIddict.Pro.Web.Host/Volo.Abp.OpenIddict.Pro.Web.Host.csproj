@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Volo.Abp.OpenIddict.Pro</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Async" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OpenIdConnect" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Http.Client.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.Web.Impersonation" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.Web\Volo.Abp.OpenIddict.Pro.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.HttpApi.Client\Volo.Abp.OpenIddict.Pro.HttpApi.Client.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.HttpApi\Volo.Abp.OpenIddict.Pro.HttpApi.csproj" />
+    <ProjectReference Include="..\Volo.Abp.OpenIddict.Pro.Host.Shared\Volo.Abp.OpenIddict.Pro.Host.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

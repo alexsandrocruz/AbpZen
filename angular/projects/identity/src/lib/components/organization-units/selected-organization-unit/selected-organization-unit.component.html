@@ -1,0 +1,5 @@
+@if (organizationUnitsStateService.getSelectedNode$() | async; as selectedNode) {
+  <h5>
+    {{ selectedNode.displayName }}
+  </h5>
+}

@@ -1,0 +1,17 @@
+@if (content$ | async; as data) {
+  <abp-extensible-table [list]="list" [data]="data.items" [recordsTotal]="data.totalCount">
+  </abp-extensible-table>
+
+  <abp-rename-modal
+    [(visible)]="renameModalOpen"
+    [(contentToRename)]="contentToRename"
+    (contentSaved)="onContentSaved()"
+  ></abp-rename-modal>
+
+  <abp-move-file-modal
+    [(visible)]="moveModalOpen"
+    (contentSaved)="onContentSaved()"
+    [fileToMove]="fileToMove"
+    [oldParentId]="parentOfFileToMove"
+  ></abp-move-file-modal>
+}

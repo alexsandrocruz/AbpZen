@@ -1,0 +1,90 @@
+﻿@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX
+@using Volo.Abp.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Components.LayoutHook
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetScripts
+@using Volo.Abp.AspNetCore.Mvc.UI.Widgets.Components.WidgetStyles
+@using Volo.Abp.Ui.Branding
+@using Volo.Abp.AspNetCore.Mvc.AntiForgery
+@using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy.Localization
+@using Volo.Abp.AspNetCore.MultiTenancy
+@using Volo.Abp.MultiTenancy
+@using Volo.Abp.Ui.LayoutHooks
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IBrandingProvider BrandingProvider
+@inject LeptonXStyleProvider LeptonXStyleProvider
+@inject IStringLocalizer<AbpUiMultiTenancyResource> MultiTenancyStringLocalizer
+@inject ITenantResolveResultAccessor TenantResolveResultAccessor
+@inject IOptions<AbpMultiTenancyOptions> MultiTenancyOptions
+@inject ICurrentTenant CurrentTenant
+@inject PageLayout PageLayout
+
+@{
+    AbpAntiForgeryManager.SetCookie();
+    var langDir = CultureHelper.IsRtl ? "rtl" : string.Empty;
+    var title = $"{ViewBag.Title ?? PageLayout.Content.Title} | {BrandingProvider.AppName}".Trim('|', ' ');
+
+    var logoUrl = BrandingProvider.LogoUrl == null ? null : "--lpx-logo: url(" + BrandingProvider.LogoUrl + ");";
+    var logoReverseUrl = BrandingProvider.LogoReverseUrl == null ? null : "--lpx-logo: url(" +
+    BrandingProvider.LogoReverseUrl + ");";
+    var selectedStyle = await LeptonXStyleProvider.GetSelectedStyleAsync();
+
+    var selectedStyleFileName = CultureHelper.IsRtl ? selectedStyle + ".rtl" : selectedStyle;
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.Name" dir="@langDir">
+
+<head>
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Head.First, StandardLayouts.Empty)
+
+    <title>@title</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="@ViewBag.MetaDescription">
+
+	<link rel="icon" href="~/favicon.svg" type="image/svg+xml">
+
+    <abp-style-bundle name="@LeptonXThemeBundles.Styles.Global" />
+
+    <link href="~/Themes/LeptonX/Global/side-menu/css/bootstrap-@(selectedStyleFileName).css" type="text/css" rel="stylesheet" id="lpx-theme-bootstrap-@selectedStyle" />
+    <link href="~/Themes/LeptonX/Global/side-menu/css/@(selectedStyleFileName).css" type="text/css" rel="stylesheet" id="lpx-theme-color-@selectedStyle" />
+
+    @await Component.InvokeAsync(typeof(WidgetStylesViewComponent))
+    @await RenderSectionAsync("styles", false)
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Head.Last, StandardLayouts.Empty)
+
+</head>
+
+<body class="abp-empty-layout">
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.First, StandardLayouts.Empty)
+
+    <div id="lpx-wrapper">
+        <div class="lpx-content">
+            <abp-card class="m-5">
+                <abp-card-body>
+                    @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.First, StandardLayouts.Empty)
+                    @RenderBody()
+                    @await Component.InvokeLayoutHookAsync(LayoutHooks.PageContent.Last, StandardLayouts.Empty)
+                </abp-card-body>
+            </abp-card>
+        </div>
+    </div>
+
+    <abp-script-bundle name="@LeptonXThemeBundles.Scripts.Global" />
+    <script src="~/Abp/ApplicationLocalizationScript?cultureName=@CultureInfo.CurrentUICulture.Name"></script>
+    <script type="text/javascript" src="~/Abp/ApplicationConfigurationScript"></script>
+    <script type="text/javascript" src="~/Abp/ServiceProxyScript"></script>
+
+    @await Component.InvokeAsync(typeof(WidgetScriptsViewComponent))
+    @await RenderSectionAsync("scripts", false)
+
+    @await Component.InvokeLayoutHookAsync(LayoutHooks.Body.Last, StandardLayouts.Empty)
+</body>
+</html>

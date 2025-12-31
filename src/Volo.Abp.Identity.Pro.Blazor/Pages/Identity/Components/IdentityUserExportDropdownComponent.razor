@@ -1,0 +1,14 @@
+@using Volo.Abp.Identity.Localization
+@using Microsoft.Extensions.Localization
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inject IStringLocalizer<IdentityResource> L
+
+<Dropdown>
+    <DropdownToggle Color="Color.Primary" Outline Class="btn-outline">
+        @L["Export"]
+    </DropdownToggle>
+    <DropdownMenu>
+        <DropdownItem Clicked="@ExportToExcelFileAsync">@L["ToExcel"]</DropdownItem>
+        <DropdownItem Clicked="@ExportToCsvFileAsync">@L["ToCSV"]</DropdownItem>
+    </DropdownMenu>
+</Dropdown>

@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Themes.LeptonX.Components.SideMenu.Toolbar.LanguageSwitch
+@using Volo.Abp.LeptonX.Shared.Localization
+@model ThemeLanguageInfo
+@inject IStringLocalizer<LeptonXResource> L
+
+@{
+  var returnUrl = System.Net.WebUtility.UrlEncode(Context.Request.GetEncodedPathAndQuery());
+}
+
+@if (Model.Languages.Count > 1)
+{
+  <li class="outer-menu-item">
+    <a class="lpx-menu-item-link lpx-menu-item" data-lpx-setting-group="language">
+      <span class="lpx-menu-item-icon"><i class="lpx-icon bi bi-globe" aria-hidden="true"></i></span>
+
+      <span class="lpx-menu-item-text hidden-in-hover-trigger">@L["Language"]</span>
+
+      <i class="dd-icon hidden-in-hover-trigger lpx-caret bi-chevron-down" aria-hidden="true"></i>
+    </a>
+
+    <ul class="lpx-inner-menu hidden-in-hover-trigger collapsed" data-id="language">
+      @foreach (var language in Model.Languages)
+      {
+        var twoLetterLanguageName = new CultureInfo(language.CultureName).TwoLetterISOLanguageName.ToUpper();
+        <li class="lpx-inner-menu-item">
+          <a class="lpx-menu-item-link lpx-menu-item" href="~/Abp/Languages/Switch?culture=@language.CultureName&uiCulture=@language.UiCultureName&returnUrl=@returnUrl" data-lpx-setting="@twoLetterLanguageName">
+            <span class="lpx-menu-item-text hidden-in-hover-trigger">@language.DisplayName / @twoLetterLanguageName</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </li>
+}

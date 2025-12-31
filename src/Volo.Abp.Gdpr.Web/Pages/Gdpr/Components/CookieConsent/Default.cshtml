@@ -1,0 +1,63 @@
+@using System.Text
+@using Microsoft.Extensions.Localization
+@using Microsoft.Extensions.Options
+@using Volo.Abp.Gdpr
+@using Volo.Abp.Gdpr.Localization
+@inject IStringLocalizer<AbpGdprResource> L
+@inject IOptions<AbpCookieConsentOptions> AbpCookieConsentOptions
+@model Volo.Abp.Gdpr.Web.Pages.Gdpr.Components.CookieConsent.AbpCookieConsentViewModel
+
+<div id="cookieConsent" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 999999;" role="alert">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex flex-row justify-content-between align-items-center card bg-primary mb-0 rounded-0 text-white cookie px-2">
+                <div class="d-flex flex-row align-items-center">
+                    <div class="m-2">
+                        @Html.Raw(GetCookieConsentText())
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-info btn-sm accept-cookie"
+                            type="button"
+                            data-dismiss="alert"
+                            aria-label="Close"
+                            data-cookie-string="@Model.CookieString">
+                        @L["Accept"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions
+{
+    private static string GetLink(string url, string text)
+    {
+        return $"<a href='{url}' class='text-white' target='_blank'>{text}</a>";
+    }
+
+    string GetCookieConsentText()
+    {
+        var builder = new StringBuilder();
+        builder.Append(L["ThisWebsiteUsesCookie"].Value);
+
+        if (!string.IsNullOrWhiteSpace(AbpCookieConsentOptions.Value.CookiePolicyUrl) &&
+            !string.IsNullOrWhiteSpace(AbpCookieConsentOptions.Value.PrivacyPolicyUrl))
+        {
+            builder.AppendLine(L["CookieConsentAgreePolicies",
+                GetLink(AbpCookieConsentOptions.Value.CookiePolicyUrl, L["CookiePolicy"].Value),
+                GetLink(AbpCookieConsentOptions.Value.PrivacyPolicyUrl, L["PrivacyPolicy"].Value)].Value);
+        }
+        else if (!string.IsNullOrWhiteSpace(AbpCookieConsentOptions.Value.CookiePolicyUrl))
+        {
+            builder.AppendLine(L["CookieConsentAgreePolicy", GetLink(AbpCookieConsentOptions.Value.CookiePolicyUrl, L["CookiePolicy"].Value)].Value);
+        }
+        else if (!string.IsNullOrWhiteSpace(AbpCookieConsentOptions.Value.PrivacyPolicyUrl))
+        {
+            builder.AppendLine(L["CookieConsentAgreePolicy", GetLink(AbpCookieConsentOptions.Value.PrivacyPolicyUrl, L["PrivacyPolicy"].Value)].Value);
+        }
+
+        return builder.ToString();
+    }
+}

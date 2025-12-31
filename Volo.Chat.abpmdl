@@ -1,0 +1,129 @@
+{
+  "imports": {
+    "Volo.Abp.PermissionManagement":{
+      "path" : "../../../abp/modules/permission-management/Volo.Abp.PermissionManagement.abpmdl",
+      "isInstalled" : true
+    },
+    "Volo.Abp.SettingManagement":{
+      "path" : "../../../abp/modules/setting-management/Volo.Abp.SettingManagement.abpmdl",
+      "isInstalled" : true
+    } 
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "Volo.Chat.Web.Unified": {
+      "path": "host/Volo.Chat.Web.Unified/Volo.Chat.Web.Unified.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.Web.Host": {
+      "path": "host/Volo.Chat.Web.Host/Volo.Chat.Web.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.IdentityServer": {
+      "path": "host/Volo.Chat.IdentityServer/Volo.Chat.IdentityServer.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.HttpApi.Host": {
+      "path": "host/Volo.Chat.HttpApi.Host/Volo.Chat.HttpApi.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.Host.Shared": {
+      "path": "host/Volo.Chat.Host.Shared/Volo.Chat.Host.Shared.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.Blazor.Host": {
+      "path": "host/Volo.Chat.Blazor.Host/Volo.Chat.Blazor.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.Blazor.Server.Host": {
+      "path": "host/Volo.Chat.Blazor.Server.Host/Volo.Chat.Blazor.Server.Host.abppkg",
+      "folder": "host"
+    },
+    "Volo.Chat.Web": {
+      "path": "src/Volo.Chat.Web/Volo.Chat.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.SignalR": {
+      "path": "src/Volo.Chat.SignalR/Volo.Chat.SignalR.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Blazor": {
+      "path": "src/Volo.Chat.Blazor/Volo.Chat.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Blazor.Server": {
+      "path": "src/Volo.Chat.Blazor.Server/Volo.Chat.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Blazor.WebAssembly": {
+      "path": "src/Volo.Chat.Blazor.WebAssembly/Volo.Chat.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.HttpApi": {
+      "path": "src/Volo.Chat.HttpApi/Volo.Chat.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.HttpApi.Client": {
+      "path": "src/Volo.Chat.HttpApi.Client/Volo.Chat.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Application": {
+      "path": "src/Volo.Chat.Application/Volo.Chat.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Application.Contracts": {
+      "path": "src/Volo.Chat.Application.Contracts/Volo.Chat.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Domain": {
+      "path": "src/Volo.Chat.Domain/Volo.Chat.Domain.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.Domain.Shared": {
+      "path": "src/Volo.Chat.Domain.Shared/Volo.Chat.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.EntityFrameworkCore": {
+      "path": "src/Volo.Chat.EntityFrameworkCore/Volo.Chat.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.MongoDB": {
+      "path": "src/Volo.Chat.MongoDB/Volo.Chat.MongoDB.abppkg",
+      "folder": "src"
+    },
+    "Volo.Chat.TestBase": {
+      "path": "test/Volo.Chat.TestBase/Volo.Chat.TestBase.abppkg",
+      "folder": "test"
+    },
+    "Volo.Chat.EntityFrameworkCore.Tests": {
+      "path": "test/Volo.Chat.EntityFrameworkCore.Tests/Volo.Chat.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Chat.MongoDB.Tests": {
+      "path": "test/Volo.Chat.MongoDB.Tests/Volo.Chat.MongoDB.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Chat.Domain.Tests": {
+      "path": "test/Volo.Chat.Domain.Tests/Volo.Chat.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Chat.Application.Tests": {
+      "path": "test/Volo.Chat.Application.Tests/Volo.Chat.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "Volo.Chat.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/Volo.Chat.HttpApi.Client.ConsoleTestApp/Volo.Chat.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "Volo.Chat",
+    "featureNamePrefix": "Volo.Chat"
+  }
+}

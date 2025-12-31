@@ -1,0 +1,28 @@
+{
+  "culture": "hr",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Prethodno ste zatražili preuzimanje osobnih podataka. Nakon što istekne određeno vremensko razdoblje zahtjeva, možete izraditi novi.",
+    "Volo.Abp.Gdpr:010002": "Vaši osobni podaci još su u pripremi. Možete ga preuzeti na {GdprDataReadyTime}.",
+    "PersonalData": "Osobni podaci",
+    "Menu:PersonalData": "Osobni podaci",
+    "PersonalDataDescription": "Vaš račun sadrži osobne podatke koje ste nam dali. Ova vam stranica omogućuje preuzimanje ili brisanje tih podataka.",
+    "RequestPersonalData": "Zatražite osobne podatke",
+    "DeletePersonalData": "Brisanje osobnih podataka",
+    "CreationTime": "Vrijeme stvaranja",
+    "Action": "Akcijski",
+    "Preparing": "Priprema",
+    "Download": "preuzimanje datoteka",
+    "ReadyTime": "Vrijeme pripravnosti",
+    "DeletePersonalDataWarning": "Brisanjem ovih podataka uklonit ćete svoj račun i više se nećete prijaviti na aplikaciju! Jeste li sigurni da želite nastaviti?",
+    "PersonalDataDeleteRequestReceived": "Vaš zahtjev za brisanjem osobnih podataka je u obradi... Po završetku procesa brisanja Vaš račun će biti izbrisan i više ga nećete moći koristiti.",
+    "PersonalDataPrepareRequestReceived": "Vaš zahtjev za osobne podatke je u obradi. Možete ga preuzeti s ove stranice, kada bude spreman!",
+    "NoDataAvailable": "Podaci nisu dostupni.",
+    "Accept": "Prihvatiti",
+    "CookiePolicy": "Politika kolačića",
+    "PrivacyPolicy": "Politika privatnosti",
+    "ThisWebsiteUsesCookie": "Ova web stranica koristi kolačiće kako bi vam osigurala najbolje iskustvo na web stranici.",
+    "CookieConsentAgreePolicies": "Ako nastavite pregledavati, prihvaćate naše {0} i {1}.",
+    "CookieConsentAgreePolicy": "Ako nastavite pregledavati, prihvaćate naše {0}.",
+    "CanNotGetDownloadToken": "Ne možete dobiti token za preuzimanje za ovaj zahtjev!"
+  }
+}

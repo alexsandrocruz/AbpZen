@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Volo.Payment.Alipay.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:55734;http://localhost:55735"
+    }
+  }
+}

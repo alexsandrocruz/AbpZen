@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0</TargetFrameworks>
+    <AssemblyName>Volo.Chat.Domain</AssemblyName>
+    <PackageId>Volo.Chat.Domain</PackageId>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Users.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Domain" VersionOverride="9.0.4" />
+    <ProjectReference Include="..\Volo.Chat.Domain.Shared\Volo.Chat.Domain.Shared.csproj" />
+
+  </ItemGroup>
+
+</Project>

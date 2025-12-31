@@ -1,0 +1,67 @@
+﻿@page "/Payment/Requests/{Id}/products"
+
+@using Volo.Payment.Admin.Web.Pages.Payment.Requests.Products
+@using Volo.Payment.Admin.Web.Pages
+@using Volo.Payment.Admin.Web.Menus
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.Payment.Requests
+
+@model IndexModel
+
+@inherits PaymentAdminPageBase
+
+@{
+    PageLayout.Content.Title = L["Products"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:PaymentManagement"].Value);
+    PageLayout.Content.BreadCrumb.Add(L["Menu:PaymentRequests"].Value);  
+    PageLayout.Content.BreadCrumb.Add(Model.PaymentRequest.Id.ToString());
+
+    PageLayout.Content.MenuItemName = PaymentAdminMenus.PaymentRequests.PaymentRequestsMenu;
+}
+
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+}
+
+<div id="ProductsWrapper">
+    <abp-card>
+        <abp-card-body>
+            <abp-table  id="ProductsTable" class="nowrap">
+                <thead>
+                    <tr>
+                        <th>@L["DisplayName:Code"]</th>
+                        <th>@L["DisplayName:Name"]</th>
+                        <th>@L["DisplayName:Count"]</th>
+                        <th>@L["DisplayName:UnitPrice"]</th>
+                        <th>@L["DisplayName:TotalPrice"]</th>
+                        <th>@L["DisplayName:PaymentType"]</th>
+                    </tr>
+                </thead>
+
+                @foreach(var item in Model.PaymentRequest.Products)
+                {
+                    <tr>
+                        <td>@item.Code</td>
+                        <td>@item.Name</td>
+                        <td>@item.Count</td>
+                        @if (item.PaymentType == PaymentType.Subscription)
+                        {
+                            <td>
+                                <i class="fa fa-info-circle text-warning" title="@L["PriceSubscriptionTooltip"]" data-toggle="tooltip"></i>
+                            </td>
+                            <td>
+                                <i class="fa fa-info-circle text-warning" title="@L["PriceSubscriptionTooltip"]" data-toggle="tooltip"></i>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>@item.UnitPrice</td>
+                            <td>@item.TotalPrice</td>
+                        }
+                        <td>@L["PaymentType:" + item.PaymentType.ToString()]</td>
+                    </tr>
+                }
+            </abp-table>
+        </abp-card-body>
+    </abp-card>
+</div>

@@ -1,0 +1,295 @@
+@if (form) {
+  <form id="IdentitySettingsForm" [formGroup]="form" (ngSubmit)="submit()" validateOnSubmit>
+    <div class="row">
+      <div class="col-md-12">
+        <div formGroupName="password">
+          <h4>{{ 'AbpIdentity::PasswordSettings' | abpLocalization }}</h4>
+          <div class="mb-3">
+            <label class="form-label" for="Password_RequiredLength">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequiredLength' | abpLocalization
+            }}</label
+            ><input
+              type="number"
+              id="Password_RequiredLength"
+              name="Password.RequiredLength"
+              class="form-control"
+              formControlName="requiredLength"
+              min="2"
+              max="32"
+            />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequiredLength' | abpLocalization
+            }}</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="Password_RequiredUniqueChars">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequiredUniqueChars' | abpLocalization
+            }}</label
+            ><input
+              type="number"
+              id="Password_RequiredUniqueChars"
+              name="Password.RequiredUniqueChars"
+              class="form-control"
+              formControlName="requiredUniqueChars"
+              min="0"
+              max="32"
+            />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequiredUniqueChars' | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Password_RequireNonAlphanumeric"
+              name="Password.RequireNonAlphanumeric"
+              class="form-check-input"
+              formControlName="requireNonAlphanumeric"
+            /><label class="form-check-label" for="Password_RequireNonAlphanumeric">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequireNonAlphanumeric'
+                | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequireNonAlphanumeric'
+                | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Password_RequireLowercase"
+              name="Password.RequireLowercase"
+              class="form-check-input"
+              formControlName="requireLowercase"
+            /><label class="form-check-label" for="Password_RequireLowercase">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequireLowercase' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequireLowercase' | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Password_RequireUppercase"
+              name="Password.RequireUppercase"
+              class="form-check-input"
+              formControlName="requireUppercase"
+            /><label class="form-check-label" for="Password_RequireUppercase">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequireUppercase' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequireUppercase' | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Password_RequireDigit"
+              name="Password.RequireDigit"
+              class="form-check-input"
+              formControlName="requireDigit"
+            /><label class="form-check-label" for="Password_RequireDigit">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.RequireDigit' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.RequireDigit' | abpLocalization
+            }}</small>
+          </div>
+
+          <hr class="my-4" />
+          <h4>{{ 'AbpIdentity::PasswordRenewingSettings' | abpLocalization }}</h4>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Password_ForceUsersToPeriodicallyChangePassword"
+              name="Password.ForceUsersToPeriodicallyChangePassword"
+              class="form-check-input"
+              formControlName="forceUsersToPeriodicallyChangePassword"
+            />
+            <label class="form-check-label" for="Password_ForceUsersToPeriodicallyChangePassword">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.ForceUsersToPeriodicallyChangePassword'
+                | abpLocalization
+            }}</label>
+            <br />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.ForceUsersToPeriodicallyChangePassword'
+                | abpLocalization
+            }}</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="Password_PasswordChangePeriodDays">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Password.PasswordChangePeriodDays'
+                | abpLocalization
+            }}</label
+            ><input
+              type="number"
+              id="Password_PasswordChangePeriodDays"
+              name="Password.PasswordChangePeriodDays"
+              class="form-control"
+              formControlName="passwordChangePeriodDays"
+            />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Password.PasswordChangePeriodDays'
+                | abpLocalization
+            }}</small>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div formGroupName="lockout">
+          <h4>{{ 'AbpIdentity::LockoutSettings' | abpLocalization }}</h4>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="Lockout_AllowedForNewUsers"
+              name="Lockout.AllowedForNewUsers"
+              class="form-check-input"
+              formControlName="allowedForNewUsers"
+            /><label class="form-check-label" for="Lockout_AllowedForNewUsers">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Lockout.AllowedForNewUsers' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Lockout.AllowedForNewUsers' | abpLocalization
+            }}</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="Lockout_LockoutDuration">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Lockout.LockoutDuration' | abpLocalization
+            }}</label
+            ><input
+              type="number"
+              id="Lockout_LockoutDuration"
+              name="Lockout.LockoutDuration"
+              class="form-control"
+              formControlName="lockoutDuration"
+            />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Lockout.LockoutDuration' | abpLocalization
+            }}</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="Lockout_MaxFailedAccessAttempts">{{
+              'AbpIdentity::DisplayName:Abp.Identity.Lockout.MaxFailedAccessAttempts'
+                | abpLocalization
+            }}</label
+            ><input
+              type="number"
+              id="Lockout_MaxFailedAccessAttempts"
+              name="Lockout.MaxFailedAccessAttempts"
+              class="form-control"
+              formControlName="maxFailedAccessAttempts"
+            />
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.Lockout.MaxFailedAccessAttempts'
+                | abpLocalization
+            }}</small>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div formGroupName="signIn">
+          <h4>{{ 'AbpIdentity::SignInSettings' | abpLocalization }}</h4>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="SignIn_RequireConfirmedEmail"
+              name="SignIn.RequireConfirmedEmail"
+              class="form-check-input"
+              formControlName="requireConfirmedEmail"
+            /><label class="form-check-label" for="SignIn_RequireConfirmedEmail">{{
+              'AbpIdentity::DisplayName:Abp.Identity.SignIn.RequireConfirmedEmail' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.SignIn.RequireConfirmedEmail' | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="SignIn_EnablePhoneNumberConfirmation"
+              name="SignIn.EnablePhoneNumberConfirmation"
+              class="form-check-input"
+              formControlName="enablePhoneNumberConfirmation"
+            /><label class="form-check-label" for="SignIn_EnablePhoneNumberConfirmation">{{
+              'AbpIdentity::DisplayName:Abp.Identity.SignIn.EnablePhoneNumberConfirmation'
+                | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.SignIn.EnablePhoneNumberConfirmation'
+                | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="SignIn_RequireConfirmedPhoneNumber"
+              name="SignIn.RequireConfirmedPhoneNumber"
+              class="form-check-input"
+              formControlName="requireConfirmedPhoneNumber"
+            /><label class="form-check-label" for="SignIn_RequireConfirmedPhoneNumber">{{
+              'AbpIdentity::DisplayName:Abp.Identity.SignIn.RequireConfirmedPhoneNumber'
+                | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.SignIn.RequireConfirmedPhoneNumber'
+                | abpLocalization
+            }}</small>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div formGroupName="user">
+          <h4>{{ 'AbpIdentity::UserSettings' | abpLocalization }}</h4>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="User_IsEmailUpdateEnabled"
+              name="User.IsEmailUpdateEnabled"
+              class="form-check-input"
+              formControlName="isEmailUpdateEnabled"
+            /><label class="form-check-label" for="User_IsEmailUpdateEnabled">{{
+              'AbpIdentity::DisplayName:Abp.Identity.User.IsEmailUpdateEnabled' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.User.IsEmailUpdateEnabled' | abpLocalization
+            }}</small>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              type="checkbox"
+              id="User_IsUserNameUpdateEnabled"
+              name="User.IsUserNameUpdateEnabled"
+              class="form-check-input"
+              formControlName="isUserNameUpdateEnabled"
+            /><label class="form-check-label" for="User_IsUserNameUpdateEnabled">{{
+              'AbpIdentity::DisplayName:Abp.Identity.User.IsUserNameUpdateEnabled' | abpLocalization
+            }}</label>
+            &nbsp;
+            <small class="form-text text-muted">{{
+              'AbpIdentity::Description:Abp.Identity.User.IsUserNameUpdateEnabled' | abpLocalization
+            }}</small>
+          </div>
+        </div>
+        <hr class="my-3" />
+        <div>
+          <abp-button
+            iconClass="fa fa-save"
+            [loading]="loading"
+            buttonType="submit"
+            [disabled]="form?.invalid"
+          >
+            {{ 'AbpUi::Save' | abpLocalization }}
+          </abp-button>
+        </div>
+      </div>
+    </div>
+  </form>
+}

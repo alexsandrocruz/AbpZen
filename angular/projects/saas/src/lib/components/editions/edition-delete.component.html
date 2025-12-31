@@ -1,0 +1,87 @@
+<abp-modal
+  [visible]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  [suppressUnsavedChangesWarning]="true"
+>
+  <ng-template #abpHeader>
+    <h5 class="modal-title">
+      {{ 'AbpUi::AreYouSure' | abpLocalization }}
+    </h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <p class="fw-bold">
+      {{ 'Saas::EditionDeletionConfirmationMessage' | abpLocalization: name }}
+    </p>
+    <form [formGroup]="form" id="edition-delete-form" (ngSubmit)="save()">
+      @if (tenantCount > 0) {
+        <p class="mt-2">
+          {{ 'Saas::ChooseAnAction' | abpLocalization: tenantCount }}
+        </p>
+
+        <div class="form-check mt-2">
+          <input
+            class="form-check-input"
+            formControlName="assignType"
+            type="radio"
+            name="assignType"
+            id="unassign"
+            [value]="false"
+          />
+          <label class="form-check-label" for="unassign">{{
+            'Saas::UnassignTheEditionFromTheTenants' | abpLocalization
+          }}</label>
+        </div>
+        @if (editions().length > 0) {
+          <div class="form-check mt-2">
+            <input
+              class="form-check-input"
+              formControlName="assignType"
+              type="radio"
+              name="assignType"
+              id="assign"
+              [value]="true"
+            />
+            <label class="form-check-label" for="assign">{{
+              'Saas::AssignTenantsToOtherEdition' | abpLocalization
+            }}</label>
+          </div>
+          @if (assignType$ | async) {
+            <select
+              class="form-select mt-2"
+              [ngClass]="{ 'border-danger': showAssignErrorMessage() }"
+              formControlName="edition"
+            >
+              <option [ngValue]="null" selected>
+                {{
+                  (loading() ? 'AbpUi::LoadingWithThreeDot' : 'Saas::SelectAnEditionToAssign')
+                    | abpLocalization
+                }}
+              </option>
+              @for (item of editions(); track $index) {
+                <option [value]="item.id">
+                  {{ item.displayName }}
+                </option>
+              }
+            </select>
+          }
+          @if (showAssignErrorMessage()) {
+            <span class="text-danger">
+              {{ 'AbpValidation::ThisFieldIsRequired.' | abpLocalization }}
+            </span>
+          }
+        }
+      }
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button abpClose type="button" class="btn btn-outline-danger">
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <button type="submit" class="btn btn-danger" [loading]="loading()" form="edition-delete-form">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      {{ 'AbpUi::Delete' | abpLocalization }}
+    </button>
+  </ng-template>
+</abp-modal>

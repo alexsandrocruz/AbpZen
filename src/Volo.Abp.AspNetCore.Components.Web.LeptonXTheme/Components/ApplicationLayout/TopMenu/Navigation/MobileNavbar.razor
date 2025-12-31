@@ -1,0 +1,139 @@
+﻿@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.Common
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.SideMenu.MainHeader
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.TopMenu.MainHeader
+@using Volo.Abp.Ui.Branding
+@using Volo.Abp.UI.Navigation
+
+@inject IBrandingProvider BrandingProvider
+
+<div class="lpx-mobile-navbar-container">
+	<div class="lpx-mobile-navbar">
+		<div class="lpx-mobile-nav-tab-left">
+			<ul class="lpx-mobile-nav-tabs">
+				@if(SelectedMenuItems is not null)
+				{
+					foreach (var viewModel in SelectedMenuItems)
+					{
+						<li class="lpx-mobile-nav-tab">
+							<a id="@viewModel.MenuItem.ElementId" href="@viewModel.MenuItem.Url" target="@viewModel.MenuItem.Target" class="lpx-mobile-nav-item @viewModel.MenuItem.CssClass">
+								<i class="menu-item-icon @viewModel.MenuItem.Icon" aria-hidden="true"></i>
+								<span class="mobile-item-text">@viewModel.MenuItem.DisplayName</span>
+							</a>
+						</li>
+					}
+				}
+			</ul>
+
+			<div class="lpx-mobile-nav-tab-center">
+				<a href="javascript:void(0)" class="lpx-mobile-hamburger" data-lpx-mobile-menu-toggle="routes">
+					<span class="hamburger-icon" aria-hidden="true">
+						<span class="icon-part"></span>
+						<span class="icon-part"></span>
+						<span class="icon-part"></span>
+						<span class="icon-part"></span>
+						<span class="icon-part"></span>
+						<span class="icon-part"></span>
+					</span>
+				</a>
+			</div>
+
+			<div class="lpx-mobile-nav-tab-right">
+				<ul class="lpx-mobile-nav-tabs">
+					<li class="lpx-mobile-nav-tab">
+						<a class="lpx-mobile-nav-item" data-lpx-mobile-menu-toggle="settings">
+							<i class="menu-item-icon bi bi-gear-wide-connected" aria-hidden="true"></i>
+							<span class="mobile-item-text">@L["Settings"]</span>
+						</a>
+					</li>
+					<li class="lpx-mobile-nav-tab">
+						<AuthorizeView>
+							<Authorized>
+								<a class="lpx-mobile-nav-item" data-lpx-mobile-menu-toggle="user">
+									<div class="lpx-avatar">
+										<img class="lpx-avatar-img" src="@ProfileImageUrl" alt="@CurrentUser.UserName avatar" />
+									</div>
+
+									<span class="mobile-item-text">@CurrentUser.UserName</span>
+								</a>
+							</Authorized>
+							<NotAuthorized>
+								<a href="@LoginLink" class="lpx-mobile-nav-item">
+									<i class="menu-item-icon bi bi-person-fill" aria-hidden="true"></i>
+									<span class="mobile-item-text">@L["Login"]</span>
+								</a>
+							</NotAuthorized>
+						</AuthorizeView>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="lpx-mobile-menu hidden">
+		<div class="lpx-logo-container">
+			<a href="">
+				<div class="lpx-brand-logo"></div>
+				@if(BrandingProvider.LogoUrl.IsNullOrEmpty())
+				{
+					<div class="lpx-brand-name">@BrandingProvider.AppName</div>
+				}
+			</a>
+		</div>
+		<ul class="lpx-nav-menu d-none" data-lpx-mobile-menu="routes">
+			<MainMenu />
+		</ul>
+
+		<ul class="lpx-nav-menu d-none" data-lpx-mobile-menu="settings">
+			<MobileGeneralSettings />
+		</ul>
+
+		<ul class="lpx-nav-menu d-none" data-lpx-mobile-menu="user">
+			<div class="d-flex ps-3 pe-3">
+				<div class="lpx-avatar me-2">
+					<img class="lpx-avatar-img" src="@ProfileImageUrl" alt="@CurrentUser.UserName avatar" />
+				</div>
+
+				<div class="d-flex flex-column" style="line-height: normal">
+					<span class="lpx-context-menu-user-name">@CurrentUser.Name @CurrentUser.SurName</span>
+					@if (CurrentTenant.IsAvailable)
+                    {
+                    	<span class="lpx-context-menu-user-tenant">@CurrentTenant.Name</span>
+                    }
+					<span class="lpx-context-menu-user-email">@CurrentUser.Email</span>
+				</div>
+			</div>
+
+			@if (UserMenu != null)
+			{
+				foreach (var menuItem in UserMenu.Items)
+				{
+					var componentType = menuItem.GetComponentTypeOrDefault();
+					if (componentType != null && typeof(ComponentBase).IsAssignableFrom(componentType))
+					{
+						<DynamicComponent Type="componentType" />
+					}
+					else
+					{
+						<li class="outer-menu-item">
+							<a class="lpx-menu-item-link lpx-menu-item @menuItem.CssClass" href="@menuItem.Url?.TrimStart('/', '~')" target="@menuItem.Target" id="@menuItem.ElementId">
+								<span class="lpx-menu-item-icon"><i class="lpx-icon @menuItem.Icon" aria-hidden="true"></i></span>
+
+								<span class="lpx-menu-item-text hidden-in-hover-trigger">@menuItem.DisplayName</span>
+							</a>
+						</li>
+					}
+				}
+			}
+
+			@if (Toolbar != null)
+			{
+				foreach (var item in Toolbar.Items)
+				{
+					<DynamicComponent Type="@item.ComponentType" />
+				}
+			}
+		</ul>
+	</div>
+</div>

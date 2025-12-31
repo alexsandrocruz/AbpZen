@@ -1,0 +1,84 @@
+@if (settings) {
+  <h4>{{ 'AbpIdentity::LdapLoginSettings' | abpLocalization }}</h4>
+  <div id="ldap-login-settings" (keyup.enter)="submit(settings)">
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="enable-ldap-login"
+        class="form-check-input"
+        [(ngModel)]="settings.enableLdapLogin"
+        autofocus
+      /><label class="form-check-label" for="enable-ldap-login">{{
+        'AbpIdentity::DisplayName:Abp.Identity.EnableLdapLogin' | abpLocalization
+      }}</label>
+    </div>
+
+    <div class="form-check mb-2">
+      <input
+        type="checkbox"
+        id="ldaps"
+        class="form-check-input"
+        [(ngModel)]="settings.ldaps"
+        autofocus
+      /><label class="form-check-label" for="ldaps">{{
+        'AbpIdentity::DisplayName:Abp.Ldap.Ldaps' | abpLocalization
+      }}</label>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.ServerHost' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" [(ngModel)]="settings.ldapServerHost" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.ServerPort' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" [(ngModel)]="settings.ldapServerPort" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.BaseDc' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" [(ngModel)]="settings.ldapBaseDc" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.Domain' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" [(ngModel)]="settings.ldapDomain" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.UserName' | abpLocalization
+      }}</label>
+      <input type="text" class="form-control" [(ngModel)]="settings.ldapUserName" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{
+        'AbpLdap::DisplayName:Abp.Ldap.Password' | abpLocalization
+      }}</label>
+      <input
+        type="password"
+        class="form-control"
+        placeholder="{{ 'AbpIdentity::LdapPasswordPlaceholder' | abpLocalization }}"
+        [(ngModel)]="settings.ldapPassword"
+        autocomplete="new-password"
+      />
+    </div>
+  </div>
+
+  <hr class="my-3" />
+
+  <div>
+    <abp-button (click)="submit(settings)" iconClass="fa fa-save" [loading]="loading">{{
+      'AbpIdentity::Save' | abpLocalization
+    }}</abp-button>
+  </div>
+}

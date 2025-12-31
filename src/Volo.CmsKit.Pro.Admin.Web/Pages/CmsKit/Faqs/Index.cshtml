@@ -1,0 +1,41 @@
+﻿@page
+@inherits Volo.CmsKit.Pro.Admin.Web.Pages.AdminPageBase
+
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.TuiEditor
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using Volo.CmsKit.Pro.Admin.Web.Menus
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs.IndexModel
+
+@{
+    PageLayout.Content.Title = L["Faqs"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:CMS"].Value);
+    PageLayout.Content.MenuItemName = CmsKitProAdminMenus.Faqs.FaqMenu;
+}
+
+@section styles {
+    <abp-style-bundle name="@typeof(IndexModel).FullName">
+        <abp-style type="typeof(TuiEditorStyleContributor)"/>
+        <abp-style src="/Pages/CmsKit/Faqs/Index.css"/>i
+    </abp-style-bundle>
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/client-proxies/cms-kit-pro-admin-proxy.js"/>
+        <abp-script src="/Pages/CmsKit/Faqs/Index.js"/>
+        <abp-script src="/Pages/CmsKit/Faqs/createQuestionModal.js"/>
+        <abp-script src="/Pages/CmsKit/Faqs/editQuestionModal.js"/>
+        <abp-script type="typeof(TuiEditorScriptContributor)"/>
+    </abp-script-bundle>
+}
+
+@section content_toolbar {
+    @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new {pageName = typeof(IndexModel).FullName})
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="FaqsTable"></abp-table>
+    </abp-card-body>
+</abp-card>

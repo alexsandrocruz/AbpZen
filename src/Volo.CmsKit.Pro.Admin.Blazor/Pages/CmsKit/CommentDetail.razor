@@ -1,0 +1,99 @@
+﻿@page "/Cms/Comments/Details/{Id:guid}"
+@attribute [Authorize(CmsKitAdminPermissions.Comments.Default)]
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Admin.Comments
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Comments"]" BreadcrumbItems="@BreadcrumbItems">
+
+</PageHeader>
+
+<Card>
+    <Table>
+        <TableBody>
+            <TableRow>
+                <TableRowHeader>@L["EntityType"]</TableRowHeader>
+                <TableRowCell>@Comment.EntityType</TableRowCell>
+            </TableRow>
+            <TableRow>
+                <TableRowHeader>@L["EntityId"]</TableRowHeader>
+                <TableRowCell>@Comment.EntityId</TableRowCell>
+            </TableRow>
+            <TableRow>
+                <TableRowHeader>@L["CreationTime"]</TableRowHeader>
+                <TableRowCell>@Comment.CreationTime</TableRowCell>
+            </TableRow>
+            <TableRow>
+                <TableRowHeader>@L["Username"]</TableRowHeader>
+                <TableRowCell>@Comment?.Author?.UserName</TableRowCell>
+            </TableRow>
+            @if (Comment.RepliedCommentId.HasValue)
+            {
+                <TableRow>
+                    <TableRowHeader>@L["ReplyTo"]:</TableRowHeader>
+                    <TableRowCell>
+                        <a href="@("Cms/Comments/Details/" + Comment.RepliedCommentId)">@Comment.RepliedCommentId.ToString()</a>
+                    </TableRowCell>
+                </TableRow>
+            }
+            <TableRow>
+                <TableRowHeader>@L["Text"]:</TableRowHeader>
+                <TableRowCell>
+                    @Comment.Text
+                </TableRowCell>
+            </TableRow>
+        </TableBody>
+    </Table>
+</Card>
+
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@GetCommentsAsync">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is6">
+                    <Field>
+                        <FieldLabel>@L["StartDate"]</FieldLabel>
+                        <DateEdit @bind-Date="@GetListInput.CreationStartDate" Max="@GetListInput.CreationEndDate" />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is6">
+                    <Field>
+                        <FieldLabel>@L["StartDate"]</FieldLabel>
+                        <DateEdit @bind-Date="@GetListInput.CreationEndDate" min="@GetListInput.CreationStartDate" />
+                    </Field>
+                </Column>
+            </Row>
+            <Row>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Username"]</FieldLabel>
+                        <TextEdit @bind-Text="@GetListInput.Author"  />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is6.OnDesktop">
+                    <div class="d-grid gap-2 mt-md-3" style="margin-top: 1.75rem !important;">
+                        <SubmitButton Type="@ButtonType.Button"
+                                      Clicked="@SearchCommentsAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </div>
+                </Column>
+            </Row>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="CommentManagement.CommentWithAuthorViewModel"
+                       Data="@Comments"
+                       ReadData="@OnDataGridReadAsync"
+                       TotalItems="@TotalCount"
+                       ShowPager="true"
+                       PageSize="@PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@CommentsManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>

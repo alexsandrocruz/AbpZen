@@ -1,0 +1,28 @@
+{
+	"packages":[
+		{
+			"name": "@volo/abp.ng.file-management",
+			"appRoutingModuleConfiguration":{
+				"routes":[
+					"{ path: 'file-management', loadChildren: () => import('@volo/abp.ng.file-management').then(m => m.FileManagementModule.forLazy()), }"
+				]
+			},
+			"appModuleConfiguration":{
+				"imports":[
+					{
+						"names":[
+							"provideFileManagementConfig"
+						],
+						"namespace": "@volo/abp.ng.file-management/config"
+					}
+				],
+				"ngModuleImports":[
+				
+				],
+				"providerNames":[
+					"provideFileManagementConfig()"
+				]
+			}
+		}
+	]
+}

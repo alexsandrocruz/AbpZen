@@ -1,0 +1,13 @@
+{
+  "culture": "hi",
+  "texts": {
+    "Permission:LanguageManagement": "भाषा प्रबंधन",
+    "Permission:LanguageTexts": "भाषा ग्रंथ",
+    "Permission:LanguageTextsEdit": "भाषा ग्रंथों को संपादित करें",
+    "Permission:Languages": "बोली",
+    "Permission:LanguagesEdit": "भाषा संपादित करें",
+    "Permission:LanguagesCreate": "भाषा बनाएँ",
+    "Permission:LanguagesChangeDefault": "डिफ़ॉल्ट भाषा बदलें",
+    "Permission:LanguagesDelete": "भाषा हटाएं"
+  }
+}

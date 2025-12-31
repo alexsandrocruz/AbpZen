@@ -1,0 +1,13 @@
+{
+  "culture": "sl",
+  "texts": {
+    "Permission:LanguageManagement": "Jezikovno upravljanje",
+    "Permission:LanguageTexts": "Jezikovna besedila",
+    "Permission:LanguageTextsEdit": "Urejanje jezikovnih besedil",
+    "Permission:Languages": "Jeziki",
+    "Permission:LanguagesEdit": "Uredi jezik",
+    "Permission:LanguagesCreate": "Ustvari jezik",
+    "Permission:LanguagesChangeDefault": "Spremeni privzeti jezik",
+    "Permission:LanguagesDelete": "Izbriši jezik"
+  }
+}

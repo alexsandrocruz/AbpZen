@@ -1,0 +1,21 @@
+{
+  "Culture": "nl",
+  "Texts": {
+    "Login": "Log in",
+    "Appearance": "Uiterlijk",
+    "ContainerWidth": "Containerbreedte",
+    "ContainerWidth:Boxed": "Indeling in Dozen",
+    "ContainerWidth:Fixed": "Vaste indeling",
+    "ContainerWidth:Fluid": "Vloeibaar",
+    "GeneralSettings": "Algemene Instellingen",
+    "Language": "Taal",
+    "Settings": "Instellingen",
+    "Theme:dark": "Donker",
+    "Theme:dim": "Halfdonker",
+    "Theme:light": "Licht",
+    "Theme:system": "Systeem",
+    "Welcome": "Welkom",
+    "FilterMenu": "Filtermenu",
+    "Menu": "Menu"
+  }
+}

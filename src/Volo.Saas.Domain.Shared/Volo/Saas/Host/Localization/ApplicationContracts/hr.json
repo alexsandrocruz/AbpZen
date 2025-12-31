@@ -1,0 +1,17 @@
+{
+  "culture": "hr",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "Upravljanje stanarima",
+    "Permission:EditionManagement": "Upravljanje izdanjem",
+    "Permission:Create": "Stvoriti",
+    "Permission:Edit": "Uredi",
+    "Permission:Delete": "Izbrisati",
+    "Permission:ManageConnectionStrings": "Upravljanje nizovima veze",
+    "Permission:SetPassword": "Postavi lozinku",
+    "Permission:ManageFeatures": "Upravljanje značajkama",
+    "Permission:ViewChangeHistory": "Pregledajte povijest promjena",
+    "Permission:Impersonation": "Lažno predstavljanje",
+    "CheckYourProviderDashboard": "Provjerite nadzornu ploču svog pružatelja plaćanja da biste otkazali ovu pretplatu."
+  }
+}

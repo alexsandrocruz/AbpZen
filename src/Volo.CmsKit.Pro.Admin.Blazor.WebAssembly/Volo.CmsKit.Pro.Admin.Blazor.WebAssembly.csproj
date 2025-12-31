@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Volo.CmsKit.Pro.Admin.Blazor.WebAssembly</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.SettingManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.HttpApi.Client\Volo.CmsKit.Pro.Admin.HttpApi.Client.csproj" />
+        <ProjectReference Include="..\Volo.CmsKit.Pro.Admin.Blazor\Volo.CmsKit.Pro.Admin.Blazor.csproj" />
+    </ItemGroup>
+
+</Project>

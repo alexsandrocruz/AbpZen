@@ -1,0 +1,119 @@
+﻿@page "/payment/plans"
+@attribute [Authorize(PaymentAdminPermissions.Plans.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Payment.Admin.Permissions
+@using Volo.Payment.Admin.Plans
+@using Volo.Payment.Plans
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.Application.Dtos
+@inject AbpBlazorMessageLocalizerHelper<PaymentResource> LH
+@inject NavigationManager NavigationManager
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@using Volo.Payment.Localization
+@inherits AbpCrudPageBase<IPlanAdminAppService, PlanDto, Guid, PlanGetListInput, PlanCreateInput, PlanUpdateInput>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Plans"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form>
+            <Fields Horizontal="true">
+                <Field ColumnSize="ColumnSize.Is11" class="mb-0">
+                    <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                </Field>
+                <Field ColumnSize="ColumnSize.Is1" class="mb-0">
+                    <SubmitButton Block="true"
+                                  Clicked="@SearchEntitiesAsync">
+                        <Icon Name="IconName.Search" />
+                    </SubmitButton>
+                </Field>
+            </Fields>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <AbpExtensibleDataGrid TItem="PlanDto"
+                               Data="Entities"
+                               ReadData="OnDataGridReadAsync"
+                               TotalItems="TotalCount"
+                               ShowPager="true"
+                               PageSize="PageSize"
+                               CurrentPage="CurrentPage"
+                               Columns="PlanManagementTableColumns"
+                               Responsive="true">
+        </AbpExtensibleDataGrid>
+    </CardBody>
+</Card>
+
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["NewPlan"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName:Name"]</FieldLabel>
+                                <TextEdit @bind-Text="NewEntity.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <ExtensionProperties TEntityType="PlanCreateInput" TResourceType="PaymentResource" Entity="NewEntity" LH="LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"]</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["DisplayName:Name"]</FieldLabel>
+                                <TextEdit @bind-Text="EditingEntity.Name" Autofocus="true">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <ExtensionProperties TEntityType="PlanUpdateInput" TResourceType="PaymentResource" Entity="EditingEntity" LH="LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}

@@ -1,0 +1,102 @@
+﻿@using Volo.Abp.Users
+@using Volo.Abp.MultiTenancy
+@using Localization.Resources.AbpUi
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System
+@using System.Text
+@using Volo.Abp.UI.Navigation
+@inject ICurrentUser CurrentUser
+@inject ICurrentTenant CurrentTenant
+@inject IHtmlLocalizer<AbpUiResource> L
+@model Volo.Abp.UI.Navigation.ApplicationMenu
+
+@if (CurrentUser.Id.HasValue)
+{
+  <div class="lpx-context-menu" data-lpx-context-menu="user-context-menu">
+    <div class="lpx-context-menu--header">
+        <div class="lpx-user-ctx-header">
+          <div class="lpx-user-ctx-img">
+            <div class="lpx-avatar">
+              <img class="lpx-avatar-img" src="@Url.Content($"~/api/account/profile-picture-file/{CurrentUser.GetId()}")" alt="@CurrentUser.UserName" />
+            </div>
+          </div>
+          <div class="lpx-user-ctx-info">
+            <span class="lpx-context-menu-user-name">@GetUserFullName()</span>
+            @if (CurrentTenant.IsAvailable)
+            {
+            	<span class="lpx-context-menu-user-tenant">@CurrentTenant.Name</span>
+            }
+            <span class="lpx-context-menu-user-email">@CurrentUser.Email</span>
+          </div>
+        </div>
+      </div>
+
+    @if (Model.Items.Any())
+    {
+      <div class="lpx-user-ctx-body">
+        <ul class="lpx-nav-menu" id="toolbar-body-routes">
+          @foreach (var menuItem in Model.Items)
+          {
+            var customComponentType = menuItem.GetComponentTypeOrDefault();
+            if(customComponentType != null && typeof(ViewComponent).IsAssignableFrom(customComponentType))
+            {
+                @(await Component.InvokeAsync(customComponentType))
+            }
+            else
+            {
+              var url = string.IsNullOrEmpty(menuItem.Url) ? "#" : Url.Content(menuItem.Url);
+
+              if((menuItem.Name == "Account.Manage" || menuItem.Name == "Account.SecurityLogs") && !url.Contains("returnUrl", StringComparison.InvariantCultureIgnoreCase))
+              {
+                var returnUrl = Context.Request.Query["returnUrl"];
+                if (!returnUrl.ToString().IsNullOrWhiteSpace())
+                {
+                  url += "?returnUrl=" + System.Net.WebUtility.UrlEncode(returnUrl);
+                }
+              }
+              <li class="outer-menu-item @menuItem.CssClass" id="@menuItem.ElementId">
+                <a class="lpx-menu-item-link" href="@url" target="@menuItem.Target">
+                  <span class="lpx-menu-item-icon"><i class="lpx-icon @menuItem.Icon"></i></span>
+                  <span class="lpx-menu-item-text hidden-in-hover-trigger">
+                    @menuItem.DisplayName
+                  </span>
+                </a>
+              </li>
+            }
+          }
+        </ul>
+      </div>
+    }
+  </div>
+}
+
+@functions
+{
+  string GetUserFullName()
+  {
+    var fullName = new StringBuilder();
+
+    if (!CurrentUser.Name.IsNullOrEmpty())
+    {
+      fullName.Append(CurrentUser.Name);
+    }
+
+    if (!CurrentUser.SurName.IsNullOrEmpty())
+    {
+      if (fullName.Length > 0)
+      {
+        fullName.Append(' ');
+      }
+
+      fullName.Append(CurrentUser.SurName);
+    }
+
+    if (fullName.Length == 0)
+    {
+      fullName.Append(CurrentUser.UserName);
+    }
+
+    return fullName.ToString();
+  }
+}

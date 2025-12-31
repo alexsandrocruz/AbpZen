@@ -1,0 +1,20 @@
+{
+  "Culture": "de-DE",
+  "Texts": {
+    "Appearance": "Aussehen",
+    "ContainerWidth": "Behälterbreite",
+    "ContainerWidth:Boxed": "Boxed-Layout",
+    "ContainerWidth:Fixed": "Festes",
+    "ContainerWidth:Fluid": "Flüssig",
+    "GeneralSettings": "Allgemeine Einstellungen",
+    "Language": "Sprache",
+    "Settings": "Einstellungen",
+    "Theme:dark": "Dunkel",
+    "Theme:dim": "Halbdunkel",
+    "Theme:light": "Hell",
+    "Theme:system": "System",
+    "Welcome": "Herzlich willkommen",
+    "FilterMenu": "Filtermenü",
+    "Menu": "Menü"
+  }
+}

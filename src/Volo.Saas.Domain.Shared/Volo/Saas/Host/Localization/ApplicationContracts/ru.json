@@ -1,0 +1,17 @@
+{
+  "culture": "ru",
+  "texts": {
+    "Permission:Saas": "Саас",
+    "Permission:TenantManagement": "Управление арендаторами",
+    "Permission:EditionManagement": "Управление изданием",
+    "Permission:Create": "Создавать",
+    "Permission:Edit": "Редактировать",
+    "Permission:Delete": "Удалить",
+    "Permission:ManageConnectionStrings": "Управление строками подключения",
+    "Permission:SetPassword": "Установка пароля",
+    "Permission:ManageFeatures": "Управление функциями",
+    "Permission:ViewChangeHistory": "Посмотреть историю изменений",
+    "Permission:Impersonation": "Олицетворение",
+    "CheckYourProviderDashboard": "Проверьте панель управления вашего платежного провайдера, чтобы отменить эту подписку."
+  }
+}

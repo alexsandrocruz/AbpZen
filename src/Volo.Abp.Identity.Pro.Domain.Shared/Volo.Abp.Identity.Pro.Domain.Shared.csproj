@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <AssemblyName>Volo.Abp.Identity.Pro.Domain.Shared</AssemblyName>
+        <PackageId>Volo.Abp.Identity.Pro.Domain.Shared</PackageId>
+        <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.Identity.Domain.Shared" VersionOverride="9.0.4" />
+        <PackageReference Include="Volo.Abp.Ldap.Abstractions" VersionOverride="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Volo\Abp\Identity\Localization\DomainShared\*.json" />
+        <Content Remove="Volo\Abp\Identity\Localization\DomainShared\*.json" />
+        <EmbeddedResource Include="Volo\Abp\Identity\Localization\ApplicationContracts\*.json" />
+        <Content Remove="Volo\Abp\Identity\Localization\ApplicationContracts\*.json" />
+    </ItemGroup>
+
+</Project>

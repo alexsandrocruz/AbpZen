@@ -1,0 +1,218 @@
+{
+  "name": "Volo.Chat.Blazor.Server.Host",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Chat.Blazor.Server.Host",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Chat.Application",
+          "namespace": "Volo.Chat",
+          "name": "ChatApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.EntityFrameworkCore",
+          "namespace": "Volo.Chat.EntityFrameworkCore",
+          "name": "ChatEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.HttpApi",
+          "namespace": "Volo.Chat",
+          "name": "ChatHttpApiModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Autofac",
+          "namespace": "Volo.Abp.Autofac",
+          "name": "AbpAutofacModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Swashbuckle",
+          "namespace": "Volo.Abp.Swashbuckle",
+          "name": "AbpSwashbuckleModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Authentication.JwtBearer",
+          "namespace": "Volo.Abp.AspNetCore.Authentication.JwtBearer",
+          "name": "AbpAspNetCoreAuthenticationJwtBearerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Serilog",
+          "namespace": "Volo.Abp.AspNetCore.Serilog",
+          "name": "AbpAspNetCoreSerilogModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.SettingManagement.EntityFrameworkCore",
+          "name": "AbpSettingManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Application",
+          "namespace": "Volo.Abp.SettingManagement",
+          "name": "AbpSettingManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Blazor.Server",
+          "namespace": "Volo.Abp.SettingManagement.Blazor.Server",
+          "name": "AbpSettingManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.EntityFrameworkCore",
+          "namespace": "Volo.Abp.Identity.EntityFrameworkCore",
+          "name": "AbpIdentityProEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.PermissionManagement.EntityFrameworkCore",
+          "name": "AbpPermissionManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Application",
+          "namespace": "Volo.Abp.PermissionManagement",
+          "name": "AbpPermissionManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Domain.Identity",
+          "namespace": "Volo.Abp.PermissionManagement.Identity",
+          "name": "AbpPermissionManagementDomainIdentityModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Blazor.Server",
+          "namespace": "Volo.Abp.FeatureManagement.Blazor.Server",
+          "name": "AbpFeatureManagementBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.Application",
+          "namespace": "Volo.Abp.FeatureManagement",
+          "name": "AbpFeatureManagementApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "namespace": "Volo.Abp.FeatureManagement.EntityFrameworkCore",
+          "name": "AbpFeatureManagementEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Web.IdentityServer",
+          "namespace": "Volo.Abp.Account.Web",
+          "name": "AbpAccountPublicWebIdentityServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Admin.Blazor.Server",
+          "namespace": "Volo.Abp.Account.Pro.Admin.Blazor.Server",
+          "name": "AbpAccountAdminBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Public.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountPublicApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Account.Pro.Admin.Application",
+          "namespace": "Volo.Abp.Account",
+          "name": "AbpAccountAdminApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Blazor.Server",
+          "namespace": "Volo.Abp.Identity.Pro.Blazor.Server",
+          "name": "AbpIdentityProBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX",
+          "name": "AbpAspNetCoreMvcUiLeptonXThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Components.Server.LeptonXTheme",
+          "namespace": "Volo.Abp.AspNetCore.Components.Server.LeptonXTheme",
+          "name": "AbpAspNetCoreComponentsServerLeptonXThemeModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Blazor.Server",
+          "namespace": "Volo.Saas.Host.Blazor.Server",
+          "name": "SaasHostBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.Host.Application",
+          "namespace": "Volo.Saas.Host",
+          "name": "SaasHostApplicationModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Saas.EntityFrameworkCore",
+          "namespace": "Volo.Saas.EntityFrameworkCore",
+          "name": "SaasEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "namespace": "Volo.Abp.BlobStoring.Database.EntityFrameworkCore",
+          "name": "BlobStoringDatabaseEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "namespace": "Volo.Abp.AuditLogging.EntityFrameworkCore",
+          "name": "AbpAuditLoggingEntityFrameworkCoreModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.Blazor.Server",
+          "namespace": "Volo.Chat.Blazor.Server",
+          "name": "ChatBlazorServerModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Chat.SignalR",
+          "namespace": "Volo.Chat",
+          "name": "ChatSignalRModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "ChatBlazorHostModule",
+      "summary": null
+    }
+  ]
+}

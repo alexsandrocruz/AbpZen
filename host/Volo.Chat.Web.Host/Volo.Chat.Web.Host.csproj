@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Volo.Chat</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OAuth" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Shared.Application.Contracts" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Chat.SignalR\Volo.Chat.SignalR.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Chat.Web\Volo.Chat.Web.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Chat.HttpApi.Client\Volo.Chat.HttpApi.Client.csproj" />
+    <ProjectReference Include="..\Volo.Chat.Host.Shared\Volo.Chat.Host.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

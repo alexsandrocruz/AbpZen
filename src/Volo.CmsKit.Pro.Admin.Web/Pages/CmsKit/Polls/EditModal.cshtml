@@ -1,0 +1,140 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Button
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+@using Volo.CmsKit.Admin.Web.Pages
+@using Volo.CmsKit.Pro.Admin.Web.Pages
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Tab
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Table
+@using Volo.Abp.Data
+@using Volo.Abp.Localization
+@using Volo.Abp.ObjectExtending
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Polls
+@inject IStringLocalizerFactory StringLocalizerFactory
+@inherits AdminPageBase
+
+@model EditModalModel
+
+@{
+    Layout = null;
+}
+
+<form method="post" asp-page="/CmsKit/Polls/EditModal">
+    <abp-modal size="@(AbpModalSize.Large)">
+        <abp-modal-header title="@L["Edit"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            <abp-tabs name="PollEditTabsId">
+                <abp-tab title="@L["Question"].Value">
+                    <abp-input asp-for="ViewModel.Question" />
+                    <abp-input asp-for="ViewModel.Code" />
+                    <abp-input asp-for="ViewModel.Name" />
+                    <abp-select asp-for="ViewModel.Widget" />
+                    <abp-input asp-for="ViewModel.StartDate" type="text" class="singledatepicker" value="@Model.ViewModel.StartDate.ToString("s")" />
+                    <abp-input asp-for="ViewModel.EndDate" type="text" class="singledatepicker" value="@Model.ViewModel.EndDate?.ToString("s")"/>
+                    <abp-input asp-for="ViewModel.ShowHoursLeft" />
+                    <abp-input asp-for="ViewModel.ResultShowingEndDate" type="text" class="singledatepicker" value="@Model.ViewModel.ResultShowingEndDate?.ToString("s")"/>
+                    <abp-input asp-for="ViewModel.ShowVoteCount" />
+                    <abp-input asp-for="ViewModel.ShowResultWithoutGivingVote" />
+                    @foreach (var propertyInfo in ObjectExtensionManager.Instance.GetProperties<EditModalModel.PollEditViewModel>())
+                    {
+                        if (!propertyInfo.Name.EndsWith("_Text"))
+                        {
+                            if (propertyInfo.Type.IsEnum || !propertyInfo.Lookup.Url.IsNullOrEmpty())
+                            {
+                                if (propertyInfo.Type.IsEnum)
+                                {
+                                    Model.ViewModel.ExtraProperties.ToEnum(propertyInfo.Name, propertyInfo.Type);
+                                }
+                                <abp-select asp-for="ViewModel.ExtraProperties[propertyInfo.Name]"
+                                            label="@propertyInfo.GetLocalizedDisplayName(StringLocalizerFactory)"
+                                            autocomplete-api-url="@propertyInfo.Lookup.Url"
+                                            autocomplete-selected-item-name="@Model.ViewModel.GetProperty(propertyInfo.Name+"_Text")"
+                                            autocomplete-selected-item-value="@Model.ViewModel.GetProperty(propertyInfo.Name)"
+                                            autocomplete-filter-param-name="@propertyInfo.Lookup.FilterParamName"
+                                            autocomplete-items-property-name="@propertyInfo.Lookup.ResultListPropertyName"
+                                            autocomplete-display-property-name="@propertyInfo.Lookup.DisplayPropertyName"
+                                            autocomplete-value-property-name="@propertyInfo.Lookup.ValuePropertyName"></abp-select>
+                            }
+                            else
+                            {
+                                <abp-input type="@propertyInfo.GetInputType()"
+                                           asp-for="ViewModel.ExtraProperties[propertyInfo.Name]"
+                                           label="@propertyInfo.GetLocalizedDisplayName(StringLocalizerFactory)"
+                                           asp-format="@propertyInfo.GetInputFormatOrNull()"
+                                           value="@propertyInfo.GetInputValueOrNull(Model.ViewModel.GetProperty(propertyInfo.Name))" />
+                            }
+                        }
+                    }
+                </abp-tab>
+                <abp-tab title="@L["Options"].Value">
+                    <div class="pt-2 pb-2 clearfix">
+                        <abp-row class="mb-2 px-2">
+                            <label>@L["NewOption"]</label>
+                        </abp-row>
+                        <abp-row>
+                            <abp-column size="_12">
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input asp-for="NewOption" suppress-label="true" class="form-control" />
+                                        <abp-button button-type="Primary" id="AddNewOptionButton">
+                                            <i class="fa fa-plus" aria-hidden="true"> </i> @L["Add"]
+                                        </abp-button>
+                                    </div>
+                                </div>
+                            </abp-column>
+                        </abp-row>
+                    </div>
+                    <abp-table  responsive-sm="true" id="OptionTableId" style="@(Model.ViewModel.PollOptions.Length > 0 ? "" : "display: none;")">
+                        <thead>
+                            <tr>
+                                <th scope="Column">@L["Text"]</th>
+                                <th scope="Column"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="OptionTableBodyId">
+                            @for (int i = 0; i < Model.ViewModel.PollOptions.Length; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.ViewModel.PollOptions[i].Text
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-outline-dark upOptionButton">
+                                            <i class="fa fa-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-dark downOptionButton">
+                                            <i class="fa fa-arrow-down"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary editOptionButton">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger deleteOptionButton">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <td hidden>
+                                        <input asp-for="@Model.ViewModel.PollOptions[i].Id" data-id/>
+                                        <input asp-for="@Model.ViewModel.PollOptions[i].Text" data-text/>
+                                        <input asp-for="@Model.ViewModel.PollOptions[i].Order" data-order/>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </abp-table>
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.None)">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Cancel"]</button>
+            <button type="submit" class="btn btn-primary" id="UpdatePoll" data-busy-text="@L["Save"].Value">@L["Save"]</button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>
+<input hidden id="OptionStartIndex" value="@Model.ViewModel.PollOptions.Length" />

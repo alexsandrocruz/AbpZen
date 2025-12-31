@@ -1,0 +1,103 @@
+﻿@page
+@using Microsoft.Extensions.Options
+@using Volo.Payment
+@model Volo.Payment.Iyzico.Pages.Payment.Iyzico.PrePaymentModel
+
+@{
+}
+@section scripts {
+	<abp-script src="/client-proxies/payment-proxy.js" />
+}
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mx-auto mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">You will pay with Iyzico</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                <input type="hidden" value="@Model.PaymentRequestId" asp-for="PaymentRequestId" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6 mb-3 mb-md-1">
+                                        <div class="position-relative">
+                                            <input type="text" asp-for="@Model.Customer.Name" name="Name" id="iyzico-first-name" placeholder="First Name *" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 ps-md-1">
+                                        <div class="initial position-relative no-value">
+                                            <input type="text" asp-for="@Model.Customer.Surname" name="Surname" id="iyzico-last-name" placeholder="Last Name *" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="initial position-relative no-value">
+                                            <input type="text" asp-for="@Model.Customer.Email" name="Email" id="iyzico-email-address" placeholder="E-mail Address *" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12 mb-3 mb-md-1">
+                                        <div class="initial position-relative no-value">
+                                            <input type="text" asp-for="@Model.Customer.Address.Country" name="Address.Country" id="iyzico-country" placeholder="Country *" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="initial position-relative no-value">
+                                            <input type="text" asp-for="@Model.Customer.Address.City" name="Address.City" id="iyzico-city" placeholder="City *" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="initial position-relative no-value">
+                                            <input type="text" asp-for="@Model.Customer.Address.ZipCode" name="Address.ZipCode" id="iyzico-zip-code" placeholder="Zip Code *" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="initial position-relative no-value">
+                                            <textarea name="Address.Description" asp-for="@Model.Customer.Address.Description" id="iyzico-address" placeholder="Address *" class="form-control" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-success btn-lg mt-4 @Model.PrePaymentCheckoutButtonStyle" asp-page-handler="ContinueToCheckout">
+                                                Continue to Checkout
+                                                <i class="fa fa-long-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="card-footer">
+                            <div>
+                                <p class="m-0 text-muted">
+                                    <i class="fa fa-info"></i>
+                                    <small>You will be directed to Iyzico official website for payment.</small>
+                                </p>
+                                <p class="m-0 text-muted">
+                                    <i class="fa fa-info"></i>
+                                    <small>Iyzico accepts Visa and MasterCard</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

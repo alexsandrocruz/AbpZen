@@ -1,0 +1,11 @@
+﻿@using System;
+@using Volo.Abp.Identity; 
+
+@if (Data.As<ClaimTypeDto>().IsStatic)
+{
+    <Icon class="text-success" Name="IconName.Check" />
+}
+else
+{
+    <Icon class="text-danger" Name="IconName.Times" />
+}

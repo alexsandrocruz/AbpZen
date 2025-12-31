@@ -1,0 +1,15 @@
+<ul class="lpx-nav-menu">
+  @for (item of items; track $index) {
+    <li class="outer-menu-item">
+      <lpx-toolbar-item
+        *lpxVisible="!item.visible || item.visible(item)"
+        [icon]="item?.icon"
+        [badge]="item?.badge?.count"
+        [html]="item?.html"
+        [component]="item?.component"
+        [template]="item?.template"
+        [action]="item?.action"
+      ></lpx-toolbar-item>
+    </li>
+  }
+</ul>

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.Abp.AuditLogging.Pro": {
+      "path": "Volo.Abp.AuditLogging.Pro.abpmdl"
+    }
+  }
+}

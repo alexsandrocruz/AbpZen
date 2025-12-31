@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Web" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.Identity.HttpApi" VersionOverride="9.0.4" />
+	 <PackageReference Include="Volo.Abp.Identity.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Identity" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Web" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Database.EntityFrameworkCore" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Saas.Host.Application\Volo.Saas.Host.Application.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Saas.EntityFrameworkCore\Volo.Saas.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Saas.Host.Web\Volo.Saas.Host.Web.csproj" />
+	 <ProjectReference Include="..\..\src\Volo.Saas.Host.HttpApi\Volo.Saas.Host.HttpApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

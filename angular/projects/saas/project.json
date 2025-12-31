@@ -1,0 +1,35 @@
+{
+  "name": "saas",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/saas/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/saas"],
+      "options": {
+        "tsConfig": "packages/saas/tsconfig.lib.json",
+        "project": "packages/saas/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/saas/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/saas"],
+      "options": {
+        "jestConfig": "packages/saas/jest.config.ts"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["commercial-ui"]
+}

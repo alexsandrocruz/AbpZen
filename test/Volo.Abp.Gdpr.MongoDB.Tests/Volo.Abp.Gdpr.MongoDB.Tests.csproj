@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Volo.Abp.Gdpr.MongoDB\Volo.Abp.Gdpr.MongoDB.csproj" />
+        <ProjectReference Include="..\Volo.Abp.Gdpr.TestBase\Volo.Abp.Gdpr.TestBase.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="EphemeralMongo.Core" />
+        <PackageReference Include="EphemeralMongo6.runtime.linux-x64" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+        <PackageReference Include="EphemeralMongo6.runtime.osx-x64" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
+        <PackageReference Include="EphemeralMongo6.runtime.win-x64" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+    </ItemGroup>
+
+</Project>

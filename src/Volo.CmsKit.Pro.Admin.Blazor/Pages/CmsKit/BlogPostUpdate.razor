@@ -1,0 +1,83 @@
+﻿@page "/Cms/BlogPosts/Update/{Id:guid}"
+@attribute [Authorize(CmsKitAdminPermissions.BlogPosts.Update)]
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@using Volo.CmsKit.Localization
+@using Volo.CmsKit.Admin.Blogs
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["BlogPosts"]" BreadcrumbItems="@BreadcrumbItems">
+
+</PageHeader>
+@if (BlogPost != null)
+{
+    <Card>
+        <CardBody>
+            <Form>
+                <Validations @ref="@ValidationsRef" Model="@BlogPost" ValidateOnLoad="false">
+                    @if (BlogPost.CoverImageMediaId.HasValue)
+                    {
+                        <img height="120" src="@CoverImageUrl" alt=""/>
+                        <br/>
+                        <Button Color="Color.Link" Clicked="@RemoveCoverImageAsync">@L["RemoveCoverImage"]</Button>
+                        <br/>
+                    }
+                    <Field>
+                        <FieldLabel>@L["CoverImage"]</FieldLabel>
+                        <FileEdit Filter="image/*" Changed="@OnCoverImageChangedAsync"/>
+                    </Field>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Title"] *</FieldLabel>
+                            <TextEdit TextExpression="@(() => BlogPost.Title)" Text="@BlogPost.Title" TextChanged="OnTitleTextChangedAsync" Autofocus="false">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Slug"] *</FieldLabel>
+                            <TextEdit TextExpression="@(() => BlogPost.Slug)" Text="@BlogPost.Slug" TextChanged="OnSlugTextChangedAsync" Autofocus="false">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["ShortDescription"]</FieldLabel>
+                            <TextEdit @bind-Text="BlogPost.ShortDescription" Autofocus="false">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <DynamicWidgetMarkdown @ref="@MarkdownRef" @bind-Value="@BlogPost.Content"></DynamicWidgetMarkdown>
+                    <Field>
+                        <FieldLabel>@L["Tags"]</FieldLabel>
+                        <TextEdit @bind-Text="@Tags" Autofocus="false">
+                            <Feedback>
+                                <ValidationError/>
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                    <ExtensionProperties TEntityType="UpdateBlogPostDto" TResourceType="CmsKitResource" Entity="@BlogPost" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                </Validations>
+            </Form>
+        </CardBody>
+        <CardFooter>
+            <Row>
+                <Column ColumnSize="ColumnSize.IsAuto" Class="px-1 pt-2">
+                    <Button Color="Color.Primary" Clicked="@UpdateBlogPostAsync">@L["Submit"]</Button>
+                </Column>
+            </Row>
+        </CardFooter>
+    </Card>
+}

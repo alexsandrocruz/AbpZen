@@ -1,0 +1,161 @@
+{
+  "name": "Volo.Abp.Identity.Pro.Blazor",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.Identity.Pro.Application.Contracts",
+          "namespace": "Volo.Abp.Identity",
+          "name": "AbpIdentityApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Blazor",
+          "namespace": "Volo.Abp.PermissionManagement.Blazor",
+          "name": "AbpPermissionManagementBlazorModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.SettingManagement.Blazor",
+          "namespace": "Volo.Abp.SettingManagement.Blazor",
+          "name": "AbpSettingManagementBlazorModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.BlazoriseUI",
+          "namespace": "Volo.Abp.BlazoriseUI",
+          "name": "AbpBlazoriseUIModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpIdentityProBlazorModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity",
+      "contentType": "webPage",
+      "name": "ClaimTypeManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity",
+      "contentType": "webPage",
+      "name": "OrganizationUnitsManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity",
+      "contentType": "webPage",
+      "name": "RoleManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity",
+      "contentType": "webPage",
+      "name": "SecurityLogManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity",
+      "contentType": "webPage",
+      "name": "UserManagement",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.IdentitySettingGroup",
+      "contentType": "webPage",
+      "name": "IdentitySettingManagementComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserImportDropdownComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserViewDetailsModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserEmailConfirmedColumnComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserIsActiveColumnComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserLockoutEnabledColumnComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserTwoFactorEnabledColumnComponent",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.Identity.Pro.Blazor.Pages.Identity.Components",
+      "contentType": "webPage",
+      "name": "IdentityUserUserNameComponent",
+      "summary": null
+    }
+  ]
+}

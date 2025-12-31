@@ -1,0 +1,38 @@
+{
+  "name": "gdpr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/gdpr/src",
+  "prefix": "abp",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/packages/gdpr"],
+      "options": {
+        "tsConfig": "packages/gdpr/tsconfig.lib.json",
+        "project": "packages/gdpr/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "packages/gdpr/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "packages/gdpr/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/gdpr"],
+      "options": {
+        "jestConfig": "packages/gdpr/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  },
+  "implicitDependencies": ["commercial-ui"],
+  "tags": []
+}

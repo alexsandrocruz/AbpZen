@@ -1,0 +1,60 @@
+﻿@page "/Cms/Comments"
+@attribute [Authorize(CmsKitAdminPermissions.Comments.Default)]
+@using Microsoft.AspNetCore.Components
+@using Volo.CmsKit.Admin.Comments
+@using Volo.CmsKit.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inherits CmsKitProComponentBase
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Comments"]" BreadcrumbItems="@BreadcrumbItems">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <EditForm Model="@GetListInput" OnValidSubmit="@GetCommentsAsync">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is4.OnWidescreen.Is6.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["StartDate"] - @L["EndDate"]</FieldLabel>
+                        <DatePicker @bind-Dates="@DataRange" TValue="DateTime?" InputMode="DateInputMode.Date" SelectionMode="DateInputSelectionMode.Range" Placeholder="@string.Empty"/>
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is6.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["Username"]</FieldLabel>
+                        <TextEdit @bind-Text="@GetListInput.Author"  />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3.OnWidescreen.Is6.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["EntityType"]</FieldLabel>
+                        <TextEdit @bind-Text="@GetListInput.EntityType"  />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is2.OnWidescreen.Is6.OnDesktop">
+                    <div class="d-grid gap-2 mt-md-4" style="margin-top: 1.75rem !important;">
+                        <SubmitButton Type="@ButtonType.Button"
+                                      Clicked="@SearchCommentsAsync">
+                            <Icon Name="IconName.Search"/>
+                        </SubmitButton>
+                    </div>
+                </Column>
+            </Row>
+        </EditForm>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="CommentWithAuthorViewModel"
+                       Data="@Comments"
+                       ReadData="@OnDataGridReadAsync"
+                       TotalItems="@TotalCount"
+                       ShowPager="true"
+                       PageSize="@PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@CommentsManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>

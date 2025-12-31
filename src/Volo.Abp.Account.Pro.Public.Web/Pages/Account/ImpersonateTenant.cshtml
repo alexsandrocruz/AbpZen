@@ -1,0 +1,21 @@
+﻿@page
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Volo.Abp.Account.Public.Web.Pages.Account.ImpersonateTenantModel
+@inject IHtmlLocalizer<AccountResource> L
+@inject IThemeManager ThemeManager
+@{
+    Layout = ThemeManager.CurrentTheme.GetApplicationLayout();
+}
+
+@if (!Model.ReturnUrl.IsNullOrWhiteSpace())
+{
+    <abp-row class="mb-2">
+        <abp-column>
+            <a class="btn btn-primary" id="returnUrlLink" href="@Model.ReturnUrl">
+                <i class="fa fa-chevron-left me-2"></i>@L["ReturnToApplication"]
+            </a>
+        </abp-column>
+    </abp-row>
+}

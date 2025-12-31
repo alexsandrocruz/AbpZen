@@ -1,0 +1,215 @@
+{
+  "name": "Volo.CmsKit.Pro.Admin.Application.Contracts",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Admin.Application.Contracts",
+          "namespace": "Volo.CmsKit.Admin",
+          "name": "CmsKitAdminApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Common.Application.Contracts",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProCommonApplicationContractsModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProAdminApplicationContractsModule",
+      "summary": null
+    },
+    {
+      "displayName": "Newsletter management",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Newsletter",
+      "summary": null
+    },
+    {
+      "displayName": "Edit preferences",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Newsletter.EditPreferences",
+      "summary": null
+    },
+    {
+      "displayName": "Import newsletters",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Newsletter.Import",
+      "summary": null
+    },
+    {
+      "displayName": "Poll management",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Poll",
+      "summary": null
+    },
+    {
+      "displayName": "Create a new poll",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Poll.Create",
+      "summary": null
+    },
+    {
+      "displayName": "Update a poll",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Poll.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete a poll",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Poll.Delete",
+      "summary": null
+    },
+    {
+      "displayName": "Contact setting management",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.SettingManagement",
+      "summary": null
+    },
+    {
+      "displayName": "Url shorting",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.UrlShorting",
+      "summary": null
+    },
+    {
+      "displayName": "Create a new shortened url",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.UrlShorting.Create",
+      "summary": null
+    },
+    {
+      "displayName": "Update a shortened url",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.UrlShorting.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete a shortened url",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.UrlShorting.Delete",
+      "summary": null
+    },
+    {
+      "displayName": "Page feedback management",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.PageFeedback",
+      "summary": null
+    },
+    {
+      "displayName": "Update a page feedback",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.PageFeedback.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete a page feedback",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.PageFeedback.Delete",
+      "summary": null
+    },
+    {
+      "displayName": "Mail settings",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.PageFeedback.Settings",
+      "summary": null
+    },
+    {
+      "displayName": "Page feedback setting management",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.PageFeedback.SettingManagement",
+      "summary": null
+    },
+    {
+      "displayName": "FAQ",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Faq",
+      "summary": null
+    },
+    {
+      "displayName": "Create FAQ",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Faq.Create",
+      "summary": null
+    },
+    {
+      "displayName": "Update FAQ",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Faq.Update",
+      "summary": null
+    },
+    {
+      "displayName": "Delete FAQ",
+      "isEnabled": true,
+      "contentType": "permission",
+      "name": "CmsKit.Faq.Delete",
+      "summary": null
+    }
+  ]
+}

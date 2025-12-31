@@ -1,0 +1,77 @@
+<abp-modal [(visible)]="isModalOpen" [suppressUnsavedChangesWarning]="true">
+  <ng-template #abpHeader>
+    <h5 class="modal-title">{{ 'AbpAccount::LinkedAccounts' | abpLocalization }}</h5>
+  </ng-template>
+  <ng-template #abpBody>
+    <div class="text-end mb-3">
+      <button
+        id="create-link-user"
+        class="btn btn-primary"
+        type="button"
+        (click)="createNewLinkUser()"
+      >
+        {{ 'AbpAccount::NewLinkAccount' | abpLocalization }}
+      </button>
+
+      <div class="mt-2">
+        <label class="form-label d-inline-block">
+          {{ 'AbpAccount::Search' | abpLocalization }}
+          <input
+            type="search"
+            class="form-control form-control-sm d-inline-block w-auto"
+            [(ngModel)]="filterText"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="filterByText()"
+            aria-controls="MyLinkUsersTable"
+          />
+        </label>
+      </div>
+      <div class="mt-2">
+        <ngx-datatable [rows]="filteredData" [count]="resultCount" [list]="list" default>
+          <ngx-datatable-column
+            [name]="'AbpUi::Actions' | abpLocalization"
+            [maxWidth]="150"
+            [sortable]="false"
+          >
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div ngbDropdown container="body" class="d-inline-block">
+                <button
+                  class="btn btn-primary btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  ngbDropdownToggle
+                >
+                  <i class="fa fa-cog me-1" aria-hidden="true"></i
+                  >{{ 'AbpUi::Actions' | abpLocalization }}
+                </button>
+                <div ngbDropdownMenu>
+                  <button ngbDropdownItem (click)="LoginAsThisAccount(row)">
+                    {{ 'AbpAccount::LoginAsThisAccount' | abpLocalization }}
+                  </button>
+                  @if (row.directlyLinked) {
+                    <button ngbDropdownItem (click)="delete(row)">
+                      {{ 'AbpUi::Delete' | abpLocalization }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [name]="'AbpAccount::UserName' | abpLocalization">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <a href="javascript:void(0)" class="text-body" (click)="LoginAsThisAccount(row)">
+                {{ row.targetTenantName ? row.targetTenantName + '\\' : ''
+                }}{{ row.targetUserName }}
+              </a>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [name]="'AbpAccount::DirectlyLinked' | abpLocalization">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <i class="fas fa-{{ row.directlyLinked ? 'check' : 'times' }}" aria-hidden="true"></i>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </ng-template>
+</abp-modal>

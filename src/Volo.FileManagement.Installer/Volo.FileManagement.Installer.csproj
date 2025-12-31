@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        
+        <PackageReference Include="Volo.Abp.VirtualFileSystem" VersionOverride="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="..\..\Volo.FileManagement.abpmdl" />
+      <Content Include="..\..\Volo.FileManagement.abpmdl">
+		<Pack>true</Pack>
+		<PackagePath>content\</PackagePath>
+	  </Content>
+      <None Remove="..\..\**\*.abppkg*" />
+      <Content Include="..\..\**\*.abppkg*">
+		<Pack>true</Pack>
+		<PackagePath>content\</PackagePath>
+	  </Content>
+        <None Remove="InstallationNotes.md" />
+        <Content Include="InstallationNotes.md" />
+        <None Remove="AngularInstallationInfo.json" />
+        <Content Include="AngularInstallationInfo.json" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,73 @@
+<h4>{{ 'AbpIdentity::Sessions' | abpLocalization }}</h4>
+
+<form [formGroup]="form" class="abp-md-form" (ngSubmit)="save()">
+  <div class="mb-3 form-group">
+    <label class="form-label"
+      >{{ 'AbpIdentity::DisplayName:Abp.Identity.PreventConcurrentLogin' | abpLocalization }}
+    </label>
+    <select class="form-select form-control" formControlName="preventConcurrentLogin">
+      @for (setting of sessionSettings; track setting.value) {
+        <option [ngValue]="setting.value">
+          {{
+            'AbpIdentity::Enum:IdentityProPreventConcurrentLoginBehaviour.' + setting.key
+              | abpLocalization
+          }}
+        </option>
+      }
+    </select>
+  </div>
+  <div class="form-text">
+    <p>
+      {{ 'AbpIdentity::Description:Abp.Identity.PreventConcurrentLogin' | abpLocalization }}
+    </p>
+    <ol class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="me-auto">
+          <div class="fw-bold">
+            {{
+              'AbpIdentity::Enum:IdentityProPreventConcurrentLoginBehaviour.Disabled'
+                | abpLocalization
+            }}
+          </div>
+          {{
+            'AbpIdentity::Description:IdentityProPreventConcurrentLoginBehaviour.Disabled'
+              | abpLocalization
+          }}
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="me-auto">
+          <div class="fw-bold">
+            {{
+              'AbpIdentity::Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices'
+                | abpLocalization
+            }}
+          </div>
+          {{
+            'AbpIdentity::Description:IdentityProPreventConcurrentLoginBehaviour.LogoutFromSameTypeDevices'
+              | abpLocalization
+          }}
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="me-auto">
+          <div class="fw-bold">
+            {{
+              'AbpIdentity::Enum:IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices'
+                | abpLocalization
+            }}
+          </div>
+          {{
+            'AbpIdentity::Description:IdentityProPreventConcurrentLoginBehaviour.LogoutFromAllDevices'
+              | abpLocalization
+          }}
+        </div>
+      </li>
+    </ol>
+  </div>
+  <hr class="my-4" />
+  <button class="btn btn-primary">
+    <i class="fa fa-save me-1"></i>
+    {{ 'AbpUi::Save' | abpLocalization }}
+  </button>
+</form>

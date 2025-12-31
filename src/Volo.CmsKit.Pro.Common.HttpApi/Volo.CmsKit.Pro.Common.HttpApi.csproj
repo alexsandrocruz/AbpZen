@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.CmsKit.Common.HttpApi" VersionOverride="9.0.4" />
+        <ProjectReference Include="..\Volo.CmsKit.Pro.Common.Application.Contracts\Volo.CmsKit.Pro.Common.Application.Contracts.csproj" />
+        <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Owl.reCAPTCHA" />
+    </ItemGroup>
+
+</Project>

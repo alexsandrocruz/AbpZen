@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(SaasHostPermissions.Tenants.Default)]
+@inherits SassComponentBase
+
+<Card>
+    <CardBody>
+        <CardTitle Size="5">@L["LatestTenants"]</CardTitle>
+        <CardText>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>#</TableHeaderCell>
+                        <TableHeaderCell>@L["Name"]</TableHeaderCell>
+                        <TableHeaderCell>@L["EditionName"]</TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @for (var i = 0; i < SaasTenants.Items.Count; i++)
+                    {
+                        var tenant = SaasTenants.Items[i];
+                        <TableRow>
+                            <TableRowHeader>@i</TableRowHeader>
+                            <TableRowCell>@tenant.Name</TableRowCell>
+                            <TableRowCell>@tenant.EditionName</TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        </CardText>
+    </CardBody>
+</Card>

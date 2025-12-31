@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "name": "demo-app",
+  "private": true,
+  "dependencies": {
+    "@volo/abp.aspnetcore.mvc.ui.theme.lepton": "~9.0.4",
+    "@abp/tui-editor": "~9.0.4",
+    "tui-code-snippet": "1.5.2",
+    "@volo/account": "~9.0.4",
+    "@abp/cms-kit": "~9.0.4",
+    "slugify": "1.4.6",
+    "@abp/jstree": "~9.0.4"
+  },
+  "resolutions": {
+    "jquery": "3.4.1"
+  }
+}

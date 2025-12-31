@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.Application\Volo.Abp.OpenIddict.Pro.Application.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <ProjectReference Include="..\Volo.Abp.OpenIddict.Pro.TestBase\Volo.Abp.OpenIddict.Pro.TestBase.csproj" />
+  </ItemGroup>
+
+</Project>

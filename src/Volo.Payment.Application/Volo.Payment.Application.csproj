@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Payment.Domain\Volo.Payment.Domain.csproj" />
+    <ProjectReference Include="..\Volo.Payment.Application.Contracts\Volo.Payment.Application.Contracts.csproj" />
+  </ItemGroup>
+  
+</Project>

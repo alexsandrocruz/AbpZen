@@ -1,0 +1,47 @@
+﻿@using Microsoft.Extensions.Localization
+@using Volo.CmsKit.Localization
+@inject AbpBlazorMessageLocalizerHelper<CmsKitResource> LH
+@inject IStringLocalizer<CmsKitResource> L
+
+@if (Settings != null)
+{
+    <Row>
+        <Column>
+            <Tabs @bind-SelectedTab="@SelectedTab">
+                <Items>
+                    @if (Settings.ContactSetting != null)
+                    {
+                        <Tab Name="Contact">
+                            @L["CmsKitPro:Contact"]
+                        </Tab>
+                    }
+                </Items>
+                <Content>
+                    @if (Settings.ContactSetting != null)
+                    {
+                        <TabPanel Name="Contact">
+                            <Form id="ContactSettingEditForm">
+                                <Validations @ref="@ContactSettingValidation" Model="@Settings.ContactSetting" ValidateOnLoad="false">
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["ReceiverEmailAddress"]</FieldLabel>
+                                            <TextEdit @bind-Text="@Settings.ContactSetting.ReceiverEmailAddress">
+                                                <Feedback>
+                                                    <ValidationError />
+                                                </Feedback>
+                                            </TextEdit>
+                                        </Field>
+                                    </Validation>
+                                </Validations>
+                                <hr class="my-4"/>
+                                <Field>
+                                    <SubmitButton Form="ContactSettingEditForm" Clicked="@UpdateContactSettingsAsync" />
+                                </Field>
+                            </Form>
+                        </TabPanel>
+                    }
+                </Content>
+            </Tabs>
+        </Column>
+    </Row>
+}

@@ -1,0 +1,17 @@
+{
+  "culture": "zh-Hans",
+  "texts": {
+    "Permission:Saas": "Saas",
+    "Permission:TenantManagement": "租户管理",
+    "Permission:EditionManagement": "版本管理",
+    "Permission:Create": "创建",
+    "Permission:Edit": "编辑",
+    "Permission:Delete": "删除",
+    "Permission:ManageConnectionStrings": "管理连接字符串",
+    "Permission:SetPassword": "设置密码",
+    "Permission:ManageFeatures": "管理功能",
+    "Permission:ViewChangeHistory": "查看更改历史",
+    "Permission:Impersonation": "冒充",
+    "CheckYourProviderDashboard": "查看付款提供者的仪表板，取消此订阅。"
+  }
+}

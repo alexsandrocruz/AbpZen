@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap5" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" />
+    <PackageReference Include="Blazorise.Components" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Autofac.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.LeptonTheme" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Blazor.WebAssembly" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.SettingManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Blazor.WebAssembly/Volo.Saas.Host.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.IdentityServer.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.TextTemplateManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LanguageManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Chat.Host.Shared\Volo.Chat.Host.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Chat.Blazor.WebAssembly\Volo.Chat.Blazor.WebAssembly.csproj" />
+  </ItemGroup>
+
+</Project>

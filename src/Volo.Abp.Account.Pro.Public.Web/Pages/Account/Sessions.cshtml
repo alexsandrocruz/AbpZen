@@ -1,0 +1,36 @@
+@page
+@using Volo.Abp.Account.Public.Web.Pages.Account
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Tab
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Table
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@inject IThemeManager ThemeManager
+@inject IHtmlLocalizer<AccountResource> L
+@inject IPageLayout PageLayout
+@model SecurityLogsModel;
+@{
+    Layout = ThemeManager.CurrentTheme.GetApplicationLayout();
+    PageLayout.Content.Title = L["Sessions"].Value;
+}
+
+
+@section styles {
+    <abp-style-bundle name="@typeof(SecurityLogsModel).FullName">
+        <abp-style src="/Pages/Account/Sessions.css" />
+    </abp-style-bundle>
+}
+
+@section scripts {
+    <abp-script-bundle name="@typeof(SecurityLogsModel).FullName">
+        <abp-script src="/Pages/Account/Sessions.js"/>
+    </abp-script-bundle>
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="SessionsTable" class="nowrap"></abp-table>
+    </abp-card-body>
+</abp-card>

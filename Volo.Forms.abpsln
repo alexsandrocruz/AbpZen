@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Volo.Forms": {
+      "path": "Volo.Forms.abpmdl"
+    }
+  }
+}

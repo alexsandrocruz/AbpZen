@@ -1,0 +1,28 @@
+{
+  "culture": "fr",
+  "texts": {
+    "Volo.Abp.Gdpr:010001": "Vous avez préalablement demandé le téléchargement de données personnelles. Une fois le délai de demande écoulé, vous pouvez en créer un nouveau.",
+    "Volo.Abp.Gdpr:010002": "Vos données personnelles sont toujours en cours de préparation. Vous pouvez le télécharger sur {GdprDataReadyTime}.",
+    "PersonalData": "Données personnelles",
+    "Menu:PersonalData": "Données personnelles",
+    "PersonalDataDescription": "Votre compte contient les données personnelles que vous nous avez fournies. Cette page vous permet de télécharger ou de supprimer ces données.",
+    "RequestPersonalData": "Demander des données personnelles",
+    "DeletePersonalData": "Supprimer les données personnelles",
+    "CreationTime": "Temps de creation",
+    "Action": "Action",
+    "Preparing": "En train de préparer",
+    "Download": "Télécharger",
+    "ReadyTime": "Temps de préparation",
+    "DeletePersonalDataWarning": "La suppression de ces données supprimera votre compte et vous ne vous connecterez plus à l&#39;application ! Êtes-vous sur de vouloir continuer?",
+    "PersonalDataDeleteRequestReceived": "Votre demande de suppression de données personnelles est en cours de traitement... A la fin du processus de suppression des données, votre compte sera supprimé et vous ne pourrez plus l&#39;utiliser.",
+    "PersonalDataPrepareRequestReceived": "Votre demande de données personnelles est en cours de traitement. Vous pouvez le télécharger depuis cette page, une fois qu&#39;il sera prêt !",
+    "NoDataAvailable": "Aucune donnée n&#39;est disponible.",
+    "Accept": "Accepter",
+    "CookiePolicy": "Politique en matière de cookies",
+    "PrivacyPolicy": "politique de confidentialité",
+    "ThisWebsiteUsesCookie": "Ce site Web utilise des cookies pour vous garantir la meilleure expérience sur le site Web.",
+    "CookieConsentAgreePolicies": "Si vous continuez à naviguer, vous acceptez nos {0} et {1}.",
+    "CookieConsentAgreePolicy": "Si vous continuez à naviguer, vous acceptez notre {0}.",
+    "CanNotGetDownloadToken": "Vous ne pouvez pas obtenir de jeton de téléchargement pour cette demande !"
+  }
+}

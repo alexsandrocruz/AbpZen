@@ -1,0 +1,31 @@
+@if (component) {
+  <div class="lpx-menu-item-link" (click)="actionClick()">
+    <div class="lpx-menu-item-icon">
+      <div class="lpx-icon">
+        <ng-container *ngComponentOutlet="component"></ng-container>
+      </div>
+    </div>
+  </div>
+} @else {
+  @if (template) {
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+  } @else {
+    @if (html) {
+      <div [innerHtml]="html" (click)="actionClick()"></div>
+    } @else {
+      <a class="lpx-menu-item-link active-menu-item" (click)="actionClick()">
+        <span class="lpx-menu-item-icon">
+          @if (badge$ | async; as badge) {
+            <small class="menu-item-badge">{{ badge }}</small>
+          }
+          @if (icon) {
+            <lpx-icon
+              class="action-icon"
+              [iconClass]="icon"
+            ></lpx-icon>
+          }
+        </span>
+      </a>
+    }
+  }
+}

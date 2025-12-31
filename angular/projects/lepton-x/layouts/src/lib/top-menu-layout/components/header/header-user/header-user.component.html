@@ -1,0 +1,42 @@
+@if (userProfileService.user$ | async; as user) {
+  <div (mouseenter)="openCtxMenu('hover')" (mouseleave)="closeCtxMenu('hover')">
+    <div
+      class="lpx-avatar-container"
+      (click)="openCtxMenu('click')"
+      #avatarContainer
+    >
+      <lpx-avatar [avatar]="user.avatar"> </lpx-avatar>
+    </div>
+    <lpx-context-menu
+      (lpxClickOutside)="closeCtxMenu('click')"
+      [exceptedRefs]="[avatarContainerRef]"
+    >
+      <lpx-context-menu-header>
+        <div class="lpx-user-ctx-header">
+          <div class="lpx-user-ctx-img">
+            <lpx-avatar [avatar]="user?.avatar"></lpx-avatar>
+          </div>
+          <div class="lpx-user-ctx-info">
+            <!--TODO: muhammed copy lepton's username display logic-->
+            <span class="lpx-context-menu-user-name">{{ user?.userName }}</span>
+            @if (user?.tenant?.name; as tenantName) {
+              <span class="lpx-context-menu-user-tenant">
+                {{ tenantName }}
+              </span>
+            }
+            <span class="lpx-context-menu-user-email">{{ user?.email }}</span>
+          </div>
+        </div>
+      </lpx-context-menu-header>
+
+      @for (actions of user?.userActionGroups; track $index) {
+        <lpx-context-menu-action-group>
+          <lpx-navbar-routes
+            [navbarItems]="actions"
+            [routerItem]="false"
+          ></lpx-navbar-routes>
+        </lpx-context-menu-action-group>
+      }
+    </lpx-context-menu>
+  </div>
+}

@@ -1,0 +1,56 @@
+{
+  "imports": {
+    "Volo.Abp.SettingManagement":{
+      "path" : "../../../abp/modules/setting-management/Volo.Abp.SettingManagement.abpmdl",
+      "isInstalled" : true
+    } 
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "Volo.Abp.AuditLogging.Web": {
+      "path": "src/Volo.Abp.AuditLogging.Web/Volo.Abp.AuditLogging.Web.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Blazor": {
+      "path": "src/Volo.Abp.AuditLogging.Blazor/Volo.Abp.AuditLogging.Blazor.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Blazor.Server": {
+      "path": "src/Volo.Abp.AuditLogging.Blazor.Server/Volo.Abp.AuditLogging.Blazor.Server.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Blazor.WebAssembly": {
+      "path": "src/Volo.Abp.AuditLogging.Blazor.WebAssembly/Volo.Abp.AuditLogging.Blazor.WebAssembly.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.HttpApi": {
+      "path": "src/Volo.Abp.AuditLogging.HttpApi/Volo.Abp.AuditLogging.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.HttpApi.Client": {
+      "path": "src/Volo.Abp.AuditLogging.HttpApi.Client/Volo.Abp.AuditLogging.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Application": {
+      "path": "src/Volo.Abp.AuditLogging.Application/Volo.Abp.AuditLogging.Application.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Application.Contracts": {
+      "path": "src/Volo.Abp.AuditLogging.Application.Contracts/Volo.Abp.AuditLogging.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "Volo.Abp.AuditLogging.Application.Tests": {
+      "path": "test/Volo.Abp.AuditLogging.Application.Tests/Volo.Abp.AuditLogging.Application.Tests.abppkg",
+      "folder": "test"
+    }
+  },
+  "analyze": {
+    "settingNamePrefix": "Volo.Abp.AuditLogging",
+    "featureNamePrefix": "Volo.Abp.AuditLogging"
+  }
+}

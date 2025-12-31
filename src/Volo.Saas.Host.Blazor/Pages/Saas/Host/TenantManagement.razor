@@ -1,0 +1,610 @@
+﻿@page "/saas/host/tenants"
+@attribute [Authorize(SaasHostPermissions.Tenants.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Volo.Abp;
+@using System.Globalization
+@using Volo.Abp.FeatureManagement.Blazor.Components
+@using Volo.Saas.Host.Dtos
+@using Volo.Saas.Localization
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inject AbpBlazorMessageLocalizerHelper<SaasResource> LH
+@inherits AbpCrudPageBase<ITenantAppService, SaasTenantDto, Guid, GetTenantsInput, SaasTenantCreateDto, SaasTenantUpdateDto>
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Tenants"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Row>
+            <div class="col-md-8 col-lg-10">
+                <div class="mb-3">
+                    <Form @onsubmit="@SearchEntitiesAsync">
+                        <Fields Horizontal="true">
+                            <Addons>
+                                <Addon AddonType="AddonType.Body">
+                                    <TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+                                </Addon>
+                                <Addon AddonType="AddonType.End">
+                                    <SubmitButton Type="ButtonType.Button"
+                                                    Clicked="@SearchEntitiesAsync">
+                                        <Icon Name="IconName.Search" />
+                                    </SubmitButton>
+                                </Addon>
+                            </Addons>
+                        </Fields>
+                    </Form>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="mb-3">
+                   <Button Color="Color.Primary" Outline id="AdvancedFilterSectionToggler" style="width: 100%;"
+                        Clicked="() => ShowAdvancedFilters = !ShowAdvancedFilters">@L["Filters"]
+                        <i aria-hidden="true" class="fa ms-1 @(!ShowAdvancedFilters ? "fa-angle-down" : "fa-angle-up")"></i>
+				    </Button>
+                </div>
+			</div>
+        </Row>
+        <div id="AdvancedFilterSection" style="display: @(!ShowAdvancedFilters ? "none" : "block")" class="mt-3">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["Edition"]</FieldLabel>
+                        <Select TValue="Guid"
+                                SelectedValue="@AdvancedFilterInput.EditionId"
+                                SelectedValueChanged="@OnEditionChangedAsync">
+
+                            <SelectItem Value="@Guid.Empty">-</SelectItem>
+
+                            @if (Editions != null)
+                            {
+                                @foreach (var edition in Editions)
+                                {
+                                    <SelectItem Value="@edition.Id">
+                                        @edition.DisplayName
+                                    </SelectItem>
+                                }
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+
+                <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                    <Field>
+                        <FieldLabel>
+                            @L["DisplayName:ExpirationDate"]
+                            <Tooltip Text="@L["EditionEndDateToolTip"]" Class="d-inline">
+                                <i class="bi bi-info-circle"></i>
+                            </Tooltip>
+                        </FieldLabel>
+                        <DatePicker TValue="DateTime?" DisplayFormat="@CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern"
+                                    SelectionMode="DateInputSelectionMode.Range"
+                                    DatesChanged="OnExpirationDatesChangedAsync"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+                </Column>
+
+                <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                    <Field>
+                        <FieldLabel>
+                            @L["DisplayName:ActivationEndDate"]
+                        </FieldLabel>
+                        <DatePicker TValue="DateTime?" DisplayFormat="@CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern"
+                                    SelectionMode="DateInputSelectionMode.Range"
+                                    DatesChanged="OnActivationEndDatesChangedAsync"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+                </Column>
+
+                <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                    <Field>
+                        <FieldLabel>@L["DisplayName:ActivationState"]</FieldLabel>
+                        <Select TValue="int"
+                                SelectedValue="AdvancedFilterInput.ActivationState"
+                                SelectedValueChanged="OnActivationStateChangedAsync">
+
+                            <SelectItem Value="-1">-</SelectItem>
+                            @foreach (TenantActivationState value in Enum.GetValues(typeof(TenantActivationState)))
+                            {
+                                <SelectItem Value="(int)value">
+                                    @L["Enum:TenantActivationState." + value]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+            </Row>
+        </div>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="SaasTenantDto"
+                       Data="Entities"
+                       ReadData="OnDataGridReadAsync"
+                       TotalItems="TotalCount"
+                       ShowPager="true"
+                       PageSize="PageSize"
+                       CurrentPage="@CurrentPage"
+                       Columns="@TenantManagementTableColumns"
+                       Responsive="true">
+</AbpExtensibleDataGrid>
+
+@if (Options.Value.EnableTenantImpersonation)
+{
+    <Modal @ref="TenantImpersonationModal" Closing="ClosingModal">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <form method="post" action="/Account/ImpersonateTenant" id="ImpersonationForm">
+                <ModalHeader>
+                    <ModalTitle>@L["LoginWithThisTenant"] - @CurrentImpersonationTenantName</ModalTitle>
+                    <CloseButton Clicked="CloseTenantImpersonationModal" />
+                </ModalHeader>
+                <ModalBody>
+                    <input type="hidden" name="TenantId" id="ImpersonationTenantId">
+                    <input type="hidden" name="ReturnUrl" value="@TenantImpersonationReturnUrl" id="ReturnUrl">
+                    <Field>
+                        <FieldLabel>@L["UserName"]</FieldLabel>
+                        <TextEdit @bind-Text="@DefaultAdminUserName" name="TenantUserName"></TextEdit>
+                    </Field>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseTenantImpersonationModal">@L["Cancel"]</Button>
+                    <Button Color="Color.Primary" Clicked="@ImpersonationTenantAsync"> @L["Login"]</Button>
+                </ModalFooter>
+            </form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+    <Modal @ref="CreateModal" Closing="@ClosingCreateModal">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["NewTenant"]</ModalTitle>
+                    <CloseButton Clicked="CloseCreateModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+                        <Items>
+                            <Tab Name="info">@L["TenantBaseInfo"].Value</Tab>
+                            <Tab Name="connectionStrings">@L["ConnectionStrings"].Value</Tab>
+                        </Items>
+                        <Content>
+                            <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                                <TabPanel Name="info">
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["TenantName"] *</FieldLabel>
+                                            <TextEdit @bind-Text="@NewEntity.Name" Autofocus="true" name="@nameof(NewEntity.Name)">
+                                                <Feedback>
+                                                    <ValidationError />
+                                                </Feedback>
+                                            </TextEdit>
+                                        </Field>
+                                    </Validation>
+                                    @if (Editions != null)
+                                    {
+                                        <Field>
+                                            <FieldLabel>@L["Edition"]</FieldLabel>
+                                            <Select TValue="Guid?"
+                                            @bind-SelectedValue="@NewEntity.EditionId" name="@nameof(NewEntity.EditionId)">
+
+                                                <SelectItem Value="@Guid.Empty">@AbpUiLocalizer["NotAssigned"].Value</SelectItem>
+
+                                                @foreach (var edition in Editions)
+                                                {
+                                                    <SelectItem Value="@edition.Id">
+                                                        @edition.DisplayName
+                                                    </SelectItem>
+                                                }
+                                            </Select>
+                                        </Field>
+                                    }
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["DisplayName:AdminEmailAddress"] *</FieldLabel>
+                                            <TextEdit Role="@TextRole.Email" @bind-Text="@NewEntity.AdminEmailAddress" name="@nameof(NewEntity.AdminEmailAddress)">
+                                                <Feedback>
+                                                    <ValidationError />
+                                                </Feedback>
+                                            </TextEdit>
+                                        </Field>
+                                    </Validation>
+                                    <Validation MessageLocalizer="@LH.Localize">
+                                        <Field>
+                                            <FieldLabel>@L["DisplayName:AdminPassword"] *</FieldLabel>
+                                            <Addons>
+                                                <Addon AddonType="AddonType.Body">
+                                                    <TextEdit Role="ShowPassword ? TextRole.Text : TextRole.Password" @bind-Text="@NewEntity.AdminPassword" name="@nameof(NewEntity.AdminPassword)">
+                                                    </TextEdit>
+                                                </Addon>
+                                                <Addon AddonType="AddonType.End">
+                                                    <Button Color="Color.Secondary" Clicked="@(() => TogglePasswordVisibility())">
+                                                        <Icon Name="ShowPassword ? IconName.Eye : IconName.EyeSlash" />
+                                                    </Button>
+                                                </Addon>
+                                            </Addons>
+                                            <ValidationError Style="display: block" />
+                                        </Field>
+                                    </Validation>
+
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:ActivationState"]</FieldLabel>
+                                        <Select TValue="TenantActivationState"
+                                        @bind-SelectedValue="@NewEntity.ActivationState" name="@nameof(NewEntity.ActivationState)">
+
+                                            <SelectItem Value="TenantActivationState.Active">@L["Enum:TenantActivationState.Active"]</SelectItem>
+                                            <SelectItem Value="TenantActivationState.ActiveWithLimitedTime">@L["Enum:TenantActivationState.ActiveWithLimitedTime"]</SelectItem>
+                                            <SelectItem Value="TenantActivationState.Passive">@L["Enum:TenantActivationState.Passive"]</SelectItem>
+                                        </Select>
+                                    </Field>
+                                    <Validation MessageLocalizer="@LH.Localize" Validator="ValidateNewEntityActivationEndDate">
+                                        <Field Style="@(NewEntity.ActivationState == TenantActivationState.ActiveWithLimitedTime ? "" : "display: none;")">
+                                            <FieldLabel>@L["DisplayName:ActivationEndDate"]</FieldLabel>
+                                            <DateEdit TValue="DateTime?" val InputMode="DateInputMode.DateTime" @bind-Date="@NewEntity.ActivationEndDate" name="@nameof(NewEntity.ActivationEndDate)">
+                                                <Feedback>
+                                                    <ValidationError />
+                                                </Feedback>
+                                            </DateEdit>
+                                        </Field>
+                                    </Validation>
+
+                                    <ExtensionProperties TEntityType="SaasTenantCreateDto" TResourceType="SaasResource" Entity="@NewEntity" LH="@LH" ModalType="ExtensionPropertyModalType.CreateModal" />
+                                </TabPanel>
+                                <TabPanel Name="connectionStrings">
+                                    <Field>
+                                        <Check TValue="bool" @bind-Checked="@CreateModalUseSharedDatabase">@L["DisplayName:UseSharedDatabase"]</Check>
+                                    </Field>
+
+                                    @if (!CreateModalUseSharedDatabase)
+                                    {
+                                        <div class="row align-items-end">
+                                            <Validation MessageLocalizer="@LH.Localize">
+                                                <Field>
+                                                    <FieldLabel>@L["DisplayName:Default"]</FieldLabel>
+                                                    <div class="input-group">
+                                                        <TextEdit @bind-Text="@ConnectionStrings.Default">
+                                                          
+                                                        </TextEdit>
+                                                        <Button Class="input-group-text" Color="Color.Primary" Clicked="() => CheckDatabaseConnectionStringAsync(ConnectionStrings.Default)">@L["CheckConnectionString"]</Button>
+                                                        <ValidationError />
+                                                        </div>
+                                                </Field>
+                                            </Validation>
+                                        </div>
+                                        
+                                        
+                                        @if (!ConnectionStrings.Databases.IsNullOrEmpty())
+                                        {
+                                            <Field>
+                                                <Check TValue="bool" @bind-Checked="@UseModuleSpecificDatabase">@L["DisplayName:UseSpecificDatabase"]</Check>
+                                            </Field>
+                                            
+                                            @if (UseModuleSpecificDatabase)
+                                            {
+                                                <div class="row align-items-end">
+                                                    <div class="col-md-3">
+                                                        <Field>
+                                                            <FieldLabel>@L["DisplayName:DatabaseName"]</FieldLabel>
+                                                            <Select TValue="string" @bind-SelectedValue="@DatabaseName">
+                                                                @{
+                                                                    foreach (var item in GetSelectValue())
+                                                                    {
+                                                                        <SelectItem Value="@item.Value">@item.Name</SelectItem>
+                                                                    }
+                                                                }
+                                                            </Select>
+                                                        </Field>
+                                                    </div>
+
+                                                    <div class="col-md-9">
+                                                        <Field>
+                                                            <FieldLabel>@L["DisplayName:ConnectionString"]</FieldLabel>
+                                                            <div class="input-group">
+                                                                <TextEdit @bind-Text="@ConnectionString">
+                                                                    <Feedback>
+                                                                        <ValidationError />
+                                                                    </Feedback>
+                                                                </TextEdit>
+                                                                <Button Class="input-group-text" Color="Color.Primary" Outline Clicked="() => CheckDatabaseConnectionStringAsync(ConnectionString)">@L["CheckConnectionString"]</Button>
+                                                                <Button Class="input-group-text" Color="Color.Primary" Clicked="AddDatabaseConnectionString">@L["AddDatabaseConnectionString"]</Button>
+                                                            </div>
+                                                        </Field>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" id="Tenant_ConnectionStrings_Wrap">
+                                                    <Table style="word-break: break-all;">
+                                                        <TableHeader>
+                                                            <TableRow>
+                                                                <TableHeaderCell style="width: 25%;">@L["DisplayName:DatabaseName"]</TableHeaderCell>
+                                                                <TableHeaderCell>@L["DisplayName:ConnectionString"]</TableHeaderCell>
+                                                                <TableHeaderCell style="width: 15%;">@L["Actions"]</TableHeaderCell>
+                                                            </TableRow>
+                                                        </TableHeader>
+                                                        <TableBody>
+                                                            @{
+                                                                foreach (var database in ConnectionStrings.Databases.Where(x => !x.ConnectionString.IsNullOrWhiteSpace()))
+                                                                {
+                                                                    <TableRow>
+                                                                        <TableRowCell>@database.DatabaseName</TableRowCell>
+                                                                        <TableRowCell>@database.ConnectionString</TableRowCell>
+                                                                        <TableRowCell><button type="button" @onclick="() => RemoveDatabaseConnectionString(database.DatabaseName)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></TableRowCell>
+                                                                    </TableRow>
+                                                                }
+                                                            }
+                                                        </TableBody>
+                                                    </Table>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </TabPanel>
+                            </Validations>
+                        </Content>
+                    </Tabs>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@CreateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="EditModal" Closing="@ClosingEditModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["Edit"] - @EditingEntity.Name</ModalTitle>
+                    <CloseButton Clicked="CloseEditModalAsync" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+                        <Validation MessageLocalizer="@LH.Localize">
+                            <Field>
+                                <FieldLabel>@L["TenantName"] *</FieldLabel>
+                                <TextEdit @bind-Text="@EditingEntity.Name" Autofocus="true" name="@nameof(EditingEntity.Name)">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        @if (Editions != null)
+                        {
+                            var hasSubscription = EditingEntity.EditionEndDateUtc > DateTime.UtcNow;
+
+                            <Field>
+                                <FieldLabel>@L["Edition"]</FieldLabel>
+                                <Select TValue="Guid?"
+                                        Disabled="@hasSubscription"
+                                        title="@(hasSubscription ? L["CheckYourProviderDashboard"] : string.Empty)"
+                                @bind-SelectedValue="@EditingEntity.EditionId"
+                                        name="@nameof(EditingEntity.EditionId)">
+
+                                    <SelectItem Value="@Guid.Empty">@AbpUiLocalizer["NotAssigned"].Value</SelectItem>
+
+                                    @foreach (var edition in Editions)
+                                    {
+                                        <SelectItem Value="@edition.Id">
+                                            @edition.DisplayName
+                                        </SelectItem>
+                                    }
+                                </Select>
+                            </Field>
+                        }
+                        <Field>
+                            <FieldLabel>@L["DisplayName:ActivationState"]</FieldLabel>
+                            <Select TValue="TenantActivationState"
+                            @bind-SelectedValue="@EditingEntity.ActivationState" name="@nameof(EditingEntity.ActivationState)">
+                                <SelectItem Value="TenantActivationState.Active">@L["Enum:TenantActivationState.Active"]</SelectItem>
+                                <SelectItem Value="TenantActivationState.ActiveWithLimitedTime">@L["Enum:TenantActivationState.ActiveWithLimitedTime"]</SelectItem>
+                                <SelectItem Value="TenantActivationState.Passive">@L["Enum:TenantActivationState.Passive"]</SelectItem>
+                            </Select>
+                        </Field>
+                            <Validation MessageLocalizer="@LH.Localize" Validator="ValidateEditingEntityActivationEndDate">
+                                <Field Style="@(EditingEntity.ActivationState == TenantActivationState.ActiveWithLimitedTime ? "" : "display: none;")">
+                                    <FieldLabel>@L["DisplayName:ActivationEndDate"]</FieldLabel>
+                                    <DateEdit TValue="DateTime?" InputMode="DateInputMode.DateTime" @bind-Date="@EditingEntity.ActivationEndDate" name="@nameof(EditingEntity.ActivationEndDate)">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                    </DateEdit>
+                                </Field>
+                            </Validation>
+                        <ExtensionProperties TEntityType="SaasTenantUpdateDto" TResourceType="SaasResource" Entity="@EditingEntity" LH="@LH" ModalType="ExtensionPropertyModalType.EditModal" />
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateEntityAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@* ************************* EDIT CONNECTION STRING MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+    <Modal @ref="@ManageConnectionStringModal" Closing="@ClosingModal">
+        <ModalContent Size="ModalSize.Large" Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@L["ConnectionStrings"] - @ConnectionStrings.TenantName</ModalTitle>
+                    <CloseButton Clicked="CloseEditConnectionStringModal" />
+                </ModalHeader>
+                <ModalBody>
+                    <Validations @ref="@ManageConnectionStringValidations" Model="@ConnectionStrings" ValidateOnLoad="false">
+                        <Field>
+                            <Check TValue="bool" @bind-Checked="@ConnectionStrings.UseSharedDatabase" Cursor="@Cursor.Pointer">@L["DisplayName:UseSharedDatabase"]</Check>
+                        </Field>
+                        @if (!ConnectionStrings.UseSharedDatabase)
+                        {
+                            <div class="row align-items-end">
+                                <Validation MessageLocalizer="@LH.Localize" Validator="ValidateDefaultConnectionString">
+                                    <Field>
+                                        <FieldLabel>@L["DisplayName:Default"]</FieldLabel>
+                                        <Addons>
+                                            <Addon AddonType="AddonType.Body">
+                                                <TextEdit @bind-Text="@ConnectionStrings.Default" />
+                                            </Addon>
+                                            <Addon AddonType="AddonType.End">
+                                                <Button Class="input-group-text" Color="Color.Primary" Clicked="() => CheckDatabaseConnectionStringAsync(ConnectionStrings.Default)">@L["CheckConnectionString"]</Button>
+                                            </Addon>
+                                                <ValidationError />
+                                        </Addons>
+                                    </Field>
+                                </Validation>
+                            </div>
+                            
+                            @if (!ConnectionStrings.Databases.IsNullOrEmpty())
+                            {
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="@UseModuleSpecificDatabase">@L["DisplayName:UseSpecificDatabase"]</Check>
+                                </Field>
+                                
+                                @if (UseModuleSpecificDatabase)
+                                {
+                                    <div class="row align-items-end">
+                                        <div class="col-lg-3">
+                                            <Field>
+                                                <FieldLabel>@L["DisplayName:DatabaseName"]</FieldLabel>
+                                                <Select TValue="string" @bind-SelectedValue="@DatabaseName">
+                                                    @{
+                                                        foreach (var item in GetSelectValue())
+                                                        {
+                                                            <SelectItem Value="@item.Value">@item.Name</SelectItem>
+                                                        }
+                                                    }
+                                                </Select>
+                                            </Field>
+                                        </div>
+
+                                        <div class="col-lg-9">
+                                            <Field>
+                                                <FieldLabel>@L["DisplayName:ConnectionString"]</FieldLabel>
+                                                <div class="input-group">
+                                                    <TextEdit @bind-Text="@ConnectionString">
+                                                        <Feedback>
+                                                            <ValidationError />
+                                                        </Feedback>
+                                                    </TextEdit>
+                                                    <Button Class="input-group-text" Color="Color.Primary" Outline Clicked="() => CheckDatabaseConnectionStringAsync(ConnectionString)">@L["CheckConnectionString"]</Button>
+                                                    <Button Class="input-group-text" Color="Color.Primary" Clicked="AddDatabaseConnectionString">@L["AddDatabaseConnectionString"]</Button>
+                                                </div>
+                                            </Field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="Tenant_ConnectionStrings_Wrap">
+                                        <Table style="word-break: break-all;">
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHeaderCell style="width: 25%;">@L["DisplayName:DatabaseName"]</TableHeaderCell>
+                                                    <TableHeaderCell>@L["DisplayName:ConnectionString"]</TableHeaderCell>
+                                                    <TableHeaderCell style="width: 15%;">@L["Actions"]</TableHeaderCell>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                @{
+                                                    foreach (var database in ConnectionStrings.Databases.Where(x => !x.ConnectionString.IsNullOrWhiteSpace()))
+                                                    {
+                                                        <TableRow>
+                                                            <TableRowCell>@database.DatabaseName</TableRowCell>
+                                                            <TableRowCell>@database.ConnectionString</TableRowCell>
+                                                            <TableRowCell><button type="button" @onclick="() => RemoveDatabaseConnectionString(database.DatabaseName)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></TableRowCell>
+                                                        </TableRow>
+                                                    }
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                }
+                            }
+                            
+                        }
+                    </Validations>
+                </ModalBody>
+                <ModalFooter>
+                    <Button Color="Color.Primary" Outline Clicked="CloseEditConnectionStringModal">@L["Cancel"]</Button>
+                    <SubmitButton Clicked="@UpdateConnectionStringAsync" />
+                </ModalFooter>
+            </Form>
+        </ModalContent>
+    </Modal>
+}
+
+@if (HasManageFeaturesPermission)
+{
+    <FeatureManagementModal @ref="FeatureManagementModal" />
+}
+@* ************************* Password MODAL ************************* *@
+@if (HasManageSetPasswordPermission)
+{
+    <Modal @ref="ChangePasswordModal">
+        <ModalContent Centered="true">
+            <Form>
+                <ModalHeader>
+                    <ModalTitle>@(L["SetPassword"].Value + " - " + ChangePasswordModel.TenantName)</ModalTitle>
+                        <CloseButton Clicked="CloseChangePasswordModalAsync" />
+                    </ModalHeader>
+                    <ModalBody>
+                        <input type="hidden" name="ChangePasswordModel.Id" @bind-value="ChangePasswordModel.Id" />
+                        <FieldLabel>@L["UserName"]</FieldLabel>
+                        <Addons>
+                            <Addon AddonType="AddonType.Body">
+                                <TextEdit id="UserName" Role="TextRole.Text" @bind-Text="ChangePasswordModel.UserName">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Addon>
+                        </Addons>
+                        <label class="form-check-label d-block mb-2" for="UserName">@L["UserNameTooltip"]</label>
+
+                        <FieldLabel>@L["Password"]</FieldLabel>
+                        <Addons>
+                            <Addon AddonType="AddonType.Body">
+                                <Addons class="form-control p-0">
+                                    <Addon AddonType="AddonType.Body">
+                                        <TextEdit autoComplete="none" Role="@ChangePasswordTextRole" @bind-Text="ChangePasswordModel.NewPassword">
+                                            <Feedback>
+                                                <ValidationError />
+                                            </Feedback>
+                                        </TextEdit>
+                                    </Addon>
+                                    <Addon AddonType="AddonType.End">
+                                        <Button class="btn text-muted position-absolute border-0 top-0 end-0" Clicked="@(() => ToggleChangePasswordVisibility())">
+                                            <Icon Name="ChangePasswordTextRole == TextRole.Password ? IconName.EyeSlash : IconName.Eye" />
+                                        </Button>
+                                    </Addon>
+                                </Addons>
+                            </Addon>
+                            <Addon AddonType="AddonType.End">
+                                <Button Color="Color.Secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="@L["GeneratePassword"].Value" Clicked="GenerateRandomPassword">
+                                    <Icon Name="@IconName.Random" />
+                                </Button>
+                            </Addon>
+                        </Addons>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button Color="Color.Primary" Outline Clicked="CloseChangePasswordModalAsync">@L["Cancel"]</Button>
+                        <SubmitButton Clicked="@ChangePasswordAsync" />
+                    </ModalFooter>
+                </Form>
+            </ModalContent>
+        </Modal>
+}

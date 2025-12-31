@@ -1,0 +1,145 @@
+{
+  "name": "Volo.CmsKit.Pro.MongoDB",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.CmsKit.MongoDB",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.CmsKit.Pro.Domain",
+          "namespace": "Volo.CmsKit",
+          "name": "CmsKitProDomainModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.CmsKit.MongoDB",
+          "namespace": "Volo.CmsKit.MongoDB",
+          "name": "CmsKitMongoDbModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "CmsKitProMongoDbModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.CmsKit.MongoDB",
+      "connectionStringName": "CmsKit",
+      "databaseCollections": [
+        {
+          "entityFullName": "Volo.CmsKit.Newsletters.NewsletterRecord",
+          "contentType": "databaseCollection",
+          "name": "NewsletterRecords",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.UrlShorting.ShortenedUrl",
+          "contentType": "databaseCollection",
+          "name": "ShortenedUrls",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Polls.Poll",
+          "contentType": "databaseCollection",
+          "name": "Polls",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Polls.PollUserVote",
+          "contentType": "databaseCollection",
+          "name": "PollUserVotes",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.PageFeedbacks.PageFeedback",
+          "contentType": "databaseCollection",
+          "name": "PageFeedbacks",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.PageFeedbacks.PageFeedbackSetting",
+          "contentType": "databaseCollection",
+          "name": "PageFeedbackSettings",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Faqs.FaqSection",
+          "contentType": "databaseCollection",
+          "name": "FaqSections",
+          "summary": null
+        },
+        {
+          "entityFullName": "Volo.CmsKit.Faqs.FaqQuestion",
+          "contentType": "databaseCollection",
+          "name": "FaqQuestions",
+          "summary": null
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpMongoDbContext",
+          "namespace": "Volo.Abp.MongoDB",
+          "declaringAssemblyName": "Volo.Abp.MongoDB",
+          "fullName": "Volo.Abp.MongoDB.IAbpMongoDbContext"
+        },
+        {
+          "name": "ITransientDependency",
+          "namespace": "Volo.Abp.DependencyInjection",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
+        },
+        {
+          "name": "ICmsKitProMongoDbContext",
+          "namespace": "Volo.CmsKit.MongoDB",
+          "declaringAssemblyName": "Volo.CmsKit.Pro.MongoDB",
+          "fullName": "Volo.CmsKit.MongoDB.ICmsKitProMongoDbContext"
+        }
+      ],
+      "contentType": "mongoDbContext",
+      "name": "CmsKitProMongoDbContext",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>Volo.Abp.OpenIddict.Pro</RootNamespace>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Async" />
+    <PackageReference Include="IdentityModel" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Volo.Abp.Autofac" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.EntityFrameworkCore" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Lepton" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Application" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.Domain" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.HttpApi\Volo.Abp.OpenIddict.Pro.HttpApi.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.Application\Volo.Abp.OpenIddict.Pro.Application.csproj" />
+    <ProjectReference Include="..\Volo.Abp.OpenIddict.Pro.Host.Shared\Volo.Abp.OpenIddict.Pro.Host.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Abp.OpenIddict.Pro.EntityFrameworkCore\Volo.Abp.OpenIddict.Pro.EntityFrameworkCore.csproj" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.EntityFrameworkCore" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Chat.Localization
+@using Volo.Chat.Web.Pages.Chat.Components.ChatSettingGroup;
+@inject IHtmlLocalizer<ChatResource> L
+@inject IHtmlLocalizer<ChatResource> ChatLocalizer
+@model ChatAppSettingGroupViewComponent.ChatSettingsViewModel
+
+<abp-script src="/Pages/Chat/Components/ChatSettingGroup/Default.js"/>
+
+
+<form id="ChatSettingsForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div>
+                    <abp-select asp-for="@Model.ChatSettings.DeletingMessages" label="@ChatLocalizer["DisplayName:Abp.Chat.DeletingMessages"].Value" name="DeletingMessages"/>
+                    <abp-input asp-for="@Model.ChatSettings.MessageDeletionPeriod" label="@ChatLocalizer["DisplayName:Abp.Chat.MessageDeletionPeriod"].Value" name="MessageDeletionPeriod"/>
+                    <abp-select asp-for="@Model.ChatSettings.DeletingConversations" label="@ChatLocalizer["DisplayName:Abp.Chat.DeletingConversations"].Value" name="DeletingConversations"/>
+                </div>
+            </div>
+            <hr class="my-4"/>
+            <div>
+                <abp-button button-type="Primary" type="submit">
+                    <i class="fa fa-save"></i> @L["Save"]
+                </abp-button>
+            </div>
+        </div>
+    </div>
+</form>

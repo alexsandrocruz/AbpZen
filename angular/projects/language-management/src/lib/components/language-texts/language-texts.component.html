@@ -1,0 +1,195 @@
+<abp-page [title]="'LanguageManagement::LanguageTexts' | abpLocalization" [toolbar]="data.items">
+  <div id="wrapper">
+    <abp-advanced-entity-filters localizationSourceName="LanguageManagement" [list]="list">
+      <abp-advanced-entity-filters-above-search>
+        <form id="FilterFormId" (keyup.enter)="list.get()">
+          <div class="row">
+            <div class="col-12 col-md-3">
+              <div class="mb-3">
+                <label for="BaseCultureName" class="form-label">{{
+                  'LanguageManagement::BaseCultureName' | abpLocalization
+                }}</label>
+                <select
+                  class="form-select form-control"
+                  id="BaseCultureName"
+                  name="BaseCultureName"
+                  [(ngModel)]="pageQuery.baseCultureName"
+                  (change)="list.get()"
+                >
+                  @for (lang of languages; track $index) {
+                    <option [ngValue]="lang.cultureName">
+                      {{ lang.displayName }}
+                    </option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-3">
+              <div class="mb-3">
+                <label for="TargetCultureName" class="form-label">{{
+                  'LanguageManagement::TargetCultureName' | abpLocalization
+                }}</label>
+                <select
+                  class="form-select form-control"
+                  id="TargetCultureName"
+                  name="TargetCultureName"
+                  [(ngModel)]="pageQuery.targetCultureName"
+                  (change)="list.get()"
+                >
+                  @for (lang of languages; track $index) {
+                    <option [ngValue]="lang.cultureName">
+                      {{ lang.displayName }}
+                    </option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-3">
+              <div class="mb-3">
+                <label for="ResourceName" class="form-label">{{
+                  'LanguageManagement::ResourceName' | abpLocalization
+                }}</label>
+                <select
+                  class="form-select form-control"
+                  id="ResourceName"
+                  name="ResourceName"
+                  [(ngModel)]="pageQuery.resourceName"
+                  (change)="list.get()"
+                >
+                  <option [ngValue]="null">-</option>
+                  @for (resource of resources; track $index) {
+                    <option [ngValue]="resource.name">
+                      {{ resource.name }}
+                    </option>
+                  }
+                </select>
+              </div>
+            </div>
+            <div class="col-12 col-md-3">
+              <div class="mb-3">
+                <label class="form-label" for="GetOnlyEmptyValues">{{
+                  'LanguageManagement::TargetValue' | abpLocalization
+                }}</label>
+                <select
+                  class="form-select form-control"
+                  id="GetOnlyEmptyValues"
+                  name="GetOnlyEmptyValues"
+                  [(ngModel)]="pageQuery.getOnlyEmptyValues"
+                  (change)="list.get()"
+                >
+                  <option [ngValue]="false">-</option>
+                  <option [ngValue]="true">
+                    {{ 'LanguageManagement::OnlyEmptyValues' | abpLocalization }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </abp-advanced-entity-filters-above-search>
+    </abp-advanced-entity-filters>
+
+    <div class="card">
+      <ngx-datatable default [rows]="data.items" [count]="data.totalCount" [list]="list">
+        <ngx-datatable-column
+          [name]="'LanguageManagement::Actions' | abpLocalization"
+          [maxWidth]="150"
+          [width]="150"
+          [sortable]="false"
+        >
+          <ng-template let-row="row" let-i="rowIndex" ngx-datatable-cell-template>
+            <abp-grid-actions
+              [index]="i"
+              [record]="row"
+              text="LanguageManagement::Actions"
+            ></abp-grid-actions>
+          </ng-template>
+        </ngx-datatable-column>
+        @for (col of columns; track $index) {
+          <ngx-datatable-column
+            [name]="col.header | abpLocalization"
+            [prop]="col.field"
+            [width]="200"
+          >
+            <ng-template let-row="row" let-i="index" ngx-datatable-cell-template>
+              <div abpEllipsis>
+                {{ row[col.field] }}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        }
+      </ngx-datatable>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [(visible)]="isModalVisible" [busy]="modalBusy" [options]="{ size: 'lg' }">
+  <ng-template #abpHeader>
+    <h3>
+      {{ 'LanguageManagement::Edit' | abpLocalization }}
+    </h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <div class="fade" [class.show]="!modalBusy">
+      <div class="mb-3">
+        <label class="form-label">{{ 'LanguageManagement::Key' | abpLocalization }}</label>
+        <div>
+          <strong>{{ selected.name }}</strong>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="LanguageTextToEdit_BaseCultureValue">{{
+          'LanguageManagement::BaseValue' | abpLocalization
+        }}</label
+        ><textarea
+          id="LanguageTextToEdit_BaseCultureValue"
+          name="LanguageTextToEdit.BaseCultureValue"
+          rows="4"
+          disabled
+          class="form-control"
+          [value]="selected.baseValue"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="LanguageTextToEdit_BaseCultureValue">{{
+          'LanguageManagement::TargetValue' | abpLocalization
+        }}</label
+        ><textarea
+          id="LanguageTextToEdit_TargetCultureValue"
+          name="LanguageTextToEdit.TargetCultureValue"
+          rows="4"
+          class="form-control"
+          (keyup.enter)="save(false)"
+          [(ngModel)]="selected.value"
+        ></textarea>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-sm btn-link" abpClose>
+      {{ 'LanguageManagement::Cancel' | abpLocalization }}
+    </button>
+
+    <abp-button buttonClass="btn btn-sm btn-outline-primary" (click)="restore()">
+      {{ 'LanguageManagement::RestoreToDefault' | abpLocalization }}
+    </abp-button>
+
+    <abp-button
+      iconClass="fa fa-check"
+      buttonClass="btn btn-sm btn-primary"
+      (click)="save(false)"
+      [loading]="modalBusy"
+    >
+      {{ 'LanguageManagement::Save' | abpLocalization }}
+    </abp-button>
+
+    <abp-button buttonClass="btn btn-sm btn-success" (click)="save(true)" [loading]="modalBusy">
+      {{ 'LanguageManagement::SaveAndNext' | abpLocalization }}
+      <i class="fa fa-arrow-right ms-1" aria-hidden="true"></i>
+    </abp-button>
+  </ng-template>
+</abp-modal>

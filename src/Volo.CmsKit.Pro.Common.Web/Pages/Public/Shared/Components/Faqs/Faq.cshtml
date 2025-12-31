@@ -1,0 +1,78 @@
+﻿@using System.Globalization
+@using System.Text.RegularExpressions
+@using JetBrains.Annotations
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Faqs.FaqViewModel
+@inject IStringLocalizer<CmsKitResource> L
+
+<div class="faq-container py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card search-card mt-0">
+                    <div class="card-body p-4">
+                        <div class="search-bar">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                                <input type="search" name="FaqFilter" class="form-control faq-search-input faq-filter" placeholder="@L["SearchQuestionPlaceholder"]"/>
+                                <label for="FaqFilter" class="visually-hidden">@L["SearchQuestionPlaceholder"]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @foreach (var faq in Model.SectionWithQuestions)
+        {
+            <div class="faq-section my-4">
+                @if (Model.ShowSectionName)
+                {
+                    <h2 class="section-title">@faq.Section.Name</h2>
+                }
+
+                @{ var accordionId = "A" + Guid.NewGuid().ToString("N"); }
+                <div class="accordion" id="@accordionId">
+                    @foreach (var question in faq.Questions)
+                    {
+                        var questionCardId = "C" + Guid.NewGuid().ToString("N");
+                        var questionId = NormalizeQuestionInfo(faq.Section.Name, question.Title);
+                        <div class="faq accordion-item" data-anchor-id="#@question.Title">
+                            <h2 class="accordion-header" id="@questionCardId">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@questionId" aria-expanded="false" aria-controls="@questionId">
+                                    @question.Title
+                                </button>
+                            </h2>
+                            <div id="@questionId" class="accordion-collapse collapse" aria-labelledby="@questionCardId" data-bs-parent="#@accordionId">
+                                <div class="accordion-body">
+                                    @Html.Raw(Markdig.Markdown.ToHtml(question.Text))
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    private string NormalizeQuestionInfo([CanBeNull] string sectionName, string questionTitle)
+    {
+        string input;
+        if (sectionName.IsNullOrWhiteSpace())
+        {
+           input = questionTitle; 
+        }
+        else
+        {
+            input = sectionName + "-" + questionTitle;
+        }
+        
+        var normalized = Regex.Replace(input, @"[^a-zA-Z\-]", "-").Trim('-').ToLower(CultureInfo.InvariantCulture);
+        return normalized + "-faq" + input.GetHashCode().ToString().EnsureStartsWith('-');
+    }
+}

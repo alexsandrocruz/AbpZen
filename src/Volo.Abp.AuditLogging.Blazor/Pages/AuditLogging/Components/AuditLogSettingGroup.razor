@@ -1,0 +1,97 @@
+@using Microsoft.AspNetCore.Components.Forms
+@inherits AbpAuditLoggingComponentBase
+
+<Tabs @bind-SelectedTab="@selectedTab">
+    <Items>
+        @if (AuditLogGlobalSettings != null)
+        {
+            <Tab Name="AuditLogSettingsGlobal">@L["AuditLogSettingsGlobal"]</Tab>
+        }
+        @if (AuditLogSettings != null)
+        {
+            <Tab Name="AuditLogSettingsGeneral">@L["AuditLogSettingsGeneral"]</Tab>
+        }
+    </Items>
+    <Content>
+        @if (AuditLogGlobalSettings != null)
+        {
+            <TabPanel Name="AuditLogSettingsGlobal">
+                <Form>
+                    <Validations @ref="AuditLogGlobalSettingsValidation" Model="@AuditLogGlobalSettings" ValidateOnLoad="false">
+                        <Row>
+                            <Column>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="AuditLogGlobalSettings.IsPeriodicDeleterEnabled">@L["DisplayName:IsPeriodicDeleterEnabled"]</Check>
+                                    <div class="form-text mb-3">@L["Description:IsPeriodicDeleterEnabled"]</div>
+                                </Field>
+
+                                @if (AuditLogGlobalSettings.IsPeriodicDeleterEnabled)
+                                {
+                                    <Field>
+                                        <Check TValue="bool" @bind-Checked="AuditLogGlobalSettings.IsExpiredDeleterEnabled">@L["DisplayName:GlobalIsExpiredDeleterEnabled"]</Check>
+                                        <div class="form-text mb-3">@L["Description:GlobalIsExpiredDeleterEnabled"]</div>
+                                    </Field>
+
+                                    @if (AuditLogGlobalSettings.IsExpiredDeleterEnabled)
+                                    {
+                                        <Field>
+                                            <div class="input-group w-75">
+                                                <label class="input-group-text">@L["DisplayName:ExpiredDeleterPeriod"]</label>
+                                                <InputNumber class="form-control text-center" @bind-Value="AuditLogGlobalSettings.ExpiredDeleterPeriod" Min="1" />
+                                                <span class="input-group-text">@L["ExpiredDeleterPeriodUnit"]</span>
+                                            </div>
+                                            <ValidationMessage For="@(() => AuditLogGlobalSettings.ExpiredDeleterPeriod)" />
+                                            <p class="text-muted"> @L["AuditLogsBeforeXWillBeDeleted", DateTime.Now.AddDays(-AuditLogGlobalSettings.ExpiredDeleterPeriod).ToShortDateString()] </p>
+                                        </Field>
+                                    }
+                                }
+                            </Column>
+                        </Row>
+                    </Validations>
+                    <Row>
+                        <Column>
+                            <SubmitButton Clicked="SaveAuditLogGlobalSettingsAsync" />
+                        </Column>
+                    </Row>
+                </Form>
+            </TabPanel>
+        }
+
+        
+        @if (AuditLogSettings != null)
+        {
+            <TabPanel Name="AuditLogSettingsGeneral">
+                <Form>
+                    <Validations @ref="AuditLogSettingsValidation" Model="AuditLogSettings" ValidateOnLoad="false">
+                        <Row>
+                            <Column>
+                                <Field>
+                                    <Check TValue="bool" @bind-Checked="AuditLogSettings.IsExpiredDeleterEnabled">@L["DisplayName:IsExpiredDeleterEnabled"]</Check>
+                                </Field>
+                                @if (AuditLogSettings.IsExpiredDeleterEnabled)
+                                {
+                                    <Field>
+                                        <div class="input-group w-75">
+                                            <label class="input-group-text">@L["DisplayName:ExpiredDeleterPeriod"]</label>
+                                            <InputNumber class="form-control text-center" @bind-Value="AuditLogSettings.ExpiredDeleterPeriod" Min="1" />
+                                            <span class="input-group-text">@L["ExpiredDeleterPeriodUnit"]</span>
+                                        </div>
+                                        <ValidationMessage For="@(() => AuditLogSettings.ExpiredDeleterPeriod)" />
+                                        <p class="text-muted"> @L["AuditLogsBeforeXWillBeDeleted", DateTime.Now.AddDays(-AuditLogSettings.ExpiredDeleterPeriod).ToShortDateString()] </p>
+                                    </Field>
+                                }
+                            </Column>
+                        </Row>
+                    </Validations>
+                    <Row>
+                        <Column>
+                            <SubmitButton Clicked="SaveAuditLogSettingsAsync" />
+                        </Column>
+                    </Row>
+                </Form>
+            </TabPanel>
+        }
+    </Content>
+</Tabs>
+
+

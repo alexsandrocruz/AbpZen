@@ -1,0 +1,20 @@
+﻿﻿@using System;
+@using Volo.Abp.AspNetCore.Components
+@using Volo.Abp.AuditLogging
+@inherits AbpComponentBase
+
+ @{var item = Data.As<AuditLogDto>();}
+
+<Badge Color="@GetHttpStatusCodeBadgeColor(item.HttpStatusCode)"
+       Margin="Margin.Is1.FromEnd">
+
+@item.HttpStatusCode
+</Badge>
+
+<Badge Color="@GetHttpMethodBadgeColor(item.HttpMethod)"
+       Margin="Margin.Is1.FromEnd">
+
+@item.HttpMethod
+</Badge>
+
+<span>@item.Url</span>

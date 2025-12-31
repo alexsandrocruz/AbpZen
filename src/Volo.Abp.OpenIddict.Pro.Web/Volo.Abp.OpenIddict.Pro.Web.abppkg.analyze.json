@@ -1,0 +1,120 @@
+{
+  "name": "Volo.Abp.OpenIddict.Pro.Web",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "Volo.Abp.OpenIddict.Pro.Application.Contracts",
+          "namespace": "Volo.Abp.OpenIddict",
+          "name": "AbpOpenIddictProApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "namespace": "Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared",
+          "name": "AbpAspNetCoreMvcUiThemeSharedModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.PermissionManagement.Web",
+          "namespace": "Volo.Abp.PermissionManagement.Web",
+          "name": "AbpPermissionManagementWebModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.AutoMapper",
+          "namespace": "Volo.Abp.AutoMapper",
+          "name": "AbpAutoMapperModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "AbpOpenIddictProWebModule",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Scopes",
+      "contentType": "webPage",
+      "name": "CreateModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Scopes",
+      "contentType": "webPage",
+      "name": "EditModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Scopes",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Applications",
+      "contentType": "webPage",
+      "name": "CreateModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Applications",
+      "contentType": "webPage",
+      "name": "EditModal",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Applications",
+      "contentType": "webPage",
+      "name": "IndexModel",
+      "summary": null
+    },
+    {
+      "namespace": "Volo.Abp.OpenIddict.Pro.Web.Pages.OpenIddict.Applications",
+      "contentType": "webPage",
+      "name": "TokenLifetimeModal",
+      "summary": null
+    }
+  ]
+}

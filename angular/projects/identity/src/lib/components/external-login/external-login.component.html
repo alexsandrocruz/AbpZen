@@ -1,0 +1,68 @@
+<abp-modal [(visible)]="visible" [busy]="modalBusy">
+  <ng-template #abpHeader>
+    <h5 class="modal-title">{{ 'AbpIdentity::ExternalUser' | abpLocalization }}</h5>
+  </ng-template>
+  <ng-template #abpBody>
+    <form>
+      <div class="row">
+        <div class="col col-sm-12">
+          <div class="mb-6">
+            <label class="form-label" for="providerTypeSelect">
+              <span>{{ 'AbpIdentity::Provider' | abpLocalization }}</span> </label
+            ><select
+              autofocus
+              id="providerTypeSelect"
+              class="form-select form-control"
+              [(ngModel)]="selectedExternalLoginProvider"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              @for (type of externalLoginProviders; track $index) {
+                <option [ngValue]="type.name">
+                  {{ type.name }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-sm-12">
+          <div class="mb-3">
+            <label class="form-label" for="newUserName">
+              <span>{{ 'AbpIdentity::UserNameOrEmailAddress' | abpLocalization }}</span>
+            </label>
+            <input
+              required
+              id="newUserName"
+              type="text"
+              class="form-control"
+              [(ngModel)]="userNameOrEmailAddress"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="newUserName">
+            <span>{{ 'AbpIdentity::Password' | abpLocalization }}</span>
+          </label>
+          <input
+            required
+            id="password"
+            type="password"
+            class="form-control"
+            [(ngModel)]="password"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-outline-primary" abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+    <abp-button iconClass="fa fa-check" (click)="save()">{{
+      'AbpUi::Save' | abpLocalization
+    }}</abp-button>
+  </ng-template>
+</abp-modal>

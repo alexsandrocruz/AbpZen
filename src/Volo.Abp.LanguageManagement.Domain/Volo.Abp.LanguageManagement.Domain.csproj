@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace />
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Volo.Abp.LanguageManagement.Domain.Shared\Volo.Abp.LanguageManagement.Domain.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Caching" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.AutoMapper" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Polly" />
+  </ItemGroup>
+
+</Project>

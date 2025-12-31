@@ -1,0 +1,34 @@
+@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components.ApplicationLayout.TopMenu.Navigation
+
+<header>
+   <div class="lpx-header-top">
+      <MainHeaderBranding/>
+      <nav class="lpx-nav me-auto">
+         <ul class="lpx-nav-menu">
+
+             @*TODO: Should we use a contributor for here?*@
+        @*      
+            <li class="outer-menu-item" tabindex="0"><a class="lpx-menu-item-link lpx-menu-item " href="/">
+               <span class="lpx-menu-item-icon"><i class="lpx-icon bi bi-house-door-fill" aria-hidden="true"></i></span>
+               <span class="lpx-menu-item-text">Home</span>
+               </a>
+            </li>
+            <li class="outer-menu-item" tabindex="0"><a class="lpx-menu-item-link lpx-menu-item ">
+               <span class="lpx-menu-item-icon"><i class="lpx-icon bi bi-star-fill" aria-hidden="true"></i></span>
+               <span class="lpx-menu-item-text">Favorite Pages</span>
+               </a>
+            </li>
+        *@
+         </ul>
+      </nav>
+      
+      <MainHeaderToolbar />
+   </div>
+   <div class="lpx-header-bottom">
+      <nav class="lpx-nav">
+         <ul class="lpx-nav-menu">
+            <MainMenu />
+         </ul>
+      </nav>
+   </div>
+</header>

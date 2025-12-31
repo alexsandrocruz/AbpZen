@@ -1,0 +1,130 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Users
+@using Volo.CmsKit.Localization
+@model Volo.CmsKit.Pro.Web.Pages.Public.Shared.Components.Poll.PollViewModel
+@inject IHtmlLocalizer<CmsKitResource> L
+@inject ICurrentUser CurrentUser
+
+@if (Model.Id.HasValue)
+{
+    <div class="cms-poll-area d-flex" data-id="@Model.Id.Value" data-widget="@Model.WidgetName">
+        <abp-card class="hide-results" style="width:100%">
+            <abp-card-body>
+                @if (Model.IsVoted || Model.ShowResultWithoutGivingVote)
+                {
+                    <div id="CmsPollResultSection" style="@(!Model.IsVoted ? "display: none" : "")">
+                        <div class="pb-3">
+                            <h3>@Html.Raw(@Model.Question)</h3>
+                        </div>
+                        <div>
+                            @foreach (var item in @Model.PollResultDetails)
+                            {
+                                var percentage = item.VoteCount > 0 ? ((float)(item.VoteCount * 100) / (float) (Model.PollVoteCount)).ToString("0.0") : "0";
+
+                                <div class="mb-3">
+                                    <label class="form-check-label d-block @(item.IsSelectedForCurrentUser ? "text-primary" : "text-secondary")">
+                                        @item.Text
+                                    </label>
+                                    <div class="row">
+                                        <div class="col pe-0">
+                                            <div class="progress mt-2 hide-info" style="height: 12px;">
+                                                <div class="progress-bar progress-bar-striped @(item.IsSelectedForCurrentUser ? "bg-primary progress-bar-animated" : "bg-secondary")" role="progressbar" style="width: @percentage%;" aria-valuenow="@percentage"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 text-start ps-0">
+                                            <span class="badge hide-info @(item.IsSelectedForCurrentUser ? "text-primary" : "text-secondary") ">@(percentage + "%")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                @if (!Model.IsVoted && !Model.IsOutdated)
+                {
+                    <div id="CmsPollVotingSection">
+                        <div>
+                            <h3>@Html.Raw(@Model.Question)</h3>
+                        </div>
+                        @if (Model.OptionIds.Count > 0)
+                        {
+                            <div class="poll-form">
+
+                                <p class="pb-2 ">@(Model.AllowMultipleVote ? @L["ChooseOneOrMoreOption"].Value : @L["ChooseOneOption"].Value)</p>
+
+                                @if (Model.AllowMultipleVote)
+                                {
+                                    <div id="MultipleSelectionOptions">
+                                        @for (var i = 0; i < Model.OptionIds.Count; i++)
+                                        {
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" data-option-id="@Model.OptionIds[i]" type="checkbox" value="" id="@Model.OptionIds[i].ToString("D")"/>
+                                                <label class="form-check-label text-dark d-block" for="@Model.OptionIds[i].ToString("D")">
+                                                    @Model.Texts[i]
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="SingleSelectionOptions">
+                                        @for (var i = 0; i < Model.OptionIds.Count; i++)
+                                        {
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" data-option-id="@Model.OptionIds[i]" id="@Model.OptionIds[i].ToString("D")" type="radio" name="single-select-input">
+                                                <label class="form-check-label text-dark d-block" for="@Model.OptionIds[i].ToString("D")">
+                                                    @Model.Texts[i]
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Model.IsVoted || Model.IsOutdated || Model.ShowResultWithoutGivingVote)
+                {
+                    <small class="text-muted">
+                        @{
+                            var timeLeftText = Model.IsOutdated ? L["FinalResult"].Value : Model.GetTimeLeftAsText(L);
+                        }
+                        @(timeLeftText)
+                        @(string.IsNullOrWhiteSpace(timeLeftText) || !Model.ShowVoteCount ? string.Empty : ", ")
+                        @Model.GetVoteCountText(L)
+                    </small>
+                }
+            </abp-card-body>
+
+            @if (!Model.IsVoted && !Model.IsOutdated)
+            {
+                <abp-card-footer class="text-end" id="cmsPollFooter">
+                    <div class="d-flex gx-2">
+                        @if (Model.ShowResultWithoutGivingVote)
+                        {
+                            <button id="CmsPollFooterReturnVotingButton" type="button" class="btn btn-outline-secondary flex-fill" style="display: none">
+                                @L["ReturnVoting"]
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary px-3 me-2" id="CmsPollFooterGetResultButton">
+                                @L["Results"]
+                            </button>
+                        }
+                        @if (CurrentUser.IsAuthenticated)
+                        {
+                            <button type="button" class="btn btn-primary flex-fill" id="CmsPollFooterVoteButton">
+                                @L["Vote"]
+                            </button>
+                        }
+                        else
+                        {
+                            <a type="button" class="btn btn-primary flex-fill" href="@Model.LoginUrl">
+                                @L["LoginToVote"]
+                            </a>
+                        }
+                    </div>
+                </abp-card-footer>
+            }
+        </abp-card>
+    </div>
+}

@@ -1,0 +1,929 @@
+﻿@page "/identity/users"
+@attribute [Authorize(IdentityPermissions.Users.Default)]
+@using Microsoft.AspNetCore.Authorization
+@using Volo.Abp.Identity
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.PermissionManagement.Blazor.Components
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using Volo.Abp.BlazoriseUI.Components.ObjectExtending
+@inject AbpBlazorMessageLocalizerHelper<IdentityResource> LH
+@inject IIdentityUserAppService identityUserAppService
+@inject IIdentitySessionAppService IdentitySessionAppService
+@inject NavigationManager NavigationManager
+@inherits AbpCrudPageBase<IIdentityUserAppService, IdentityUserDto, Guid, GetIdentityUsersInput, IdentityUserCreateDto,
+IdentityUserUpdateDto>
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Users"]" BreadcrumbItems="@BreadcrumbItems" Toolbar="@Toolbar">
+</PageHeader>
+@* ************************* SEARCH ************************* *@
+<Card>
+	<CardBody>
+		<Row>
+			<div class="col-md-8 col-lg-10">
+				<div class="mb-3">
+					<EditForm Model="@GetListInput" OnValidSubmit="@SearchEntitiesAsync">
+						<Fields Horizontal="true">
+							<Addons>
+								<Addon AddonType="AddonType.Body">
+									<TextEdit Placeholder="@L["Search"]" @bind-Text="@GetListInput.Filter" Autofocus="true" />
+								</Addon>
+								<Addon AddonType="AddonType.End">
+									<SubmitButton Type="ButtonType.Button" Clicked="@SearchEntitiesAsync">
+										<Icon Name="IconName.Search" />
+									</SubmitButton>
+								</Addon>
+							</Addons>
+						</Fields>
+					</EditForm>
+				</div>
+			</div>
+			<div class="col-md-4 col-lg-2">
+				<div class="mb-3">
+					<Button Color="Color.Primary" Outline id="AdvancedFilterSectionToggler" style="width: 100%;"
+						Clicked="@OnAdvancedFilterSectionClick">@L["Filters"]
+						<i aria-hidden="true" class="fa ms-1 @(!ShowAdvancedFilters ? "fa-angle-down" : "fa-angle-up")"></i>
+					</Button>
+				</div>
+			</div>
+		</Row>
+
+		<div id="AdvancedFilterSection" style="display: @(!ShowAdvancedFilters ? "none" : "block")" class="mt-3">
+			<Row>
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["Role"]</FieldLabel>
+					<Select TValue="Guid" SelectedValue="@AdvancedFilterInput.RoleId"
+						SelectedValueChanged="@OnRoleChangedAsync">
+
+						<SelectItem Value="@Guid.Empty">-</SelectItem>
+
+						@if (Roles != null)
+						{
+							@foreach (var role in Roles)
+							{
+								<SelectItem Value="@role.Id">
+									@role.Name
+								</SelectItem>
+							}
+						}
+					</Select>
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["OrganizationUnit"]</FieldLabel>
+					<Select TValue="Guid" SelectedValue="@AdvancedFilterInput.OrganizationUnitId"
+						SelectedValueChanged="@OnOrganizationUnitChangedAsync">
+
+						<SelectItem Value="@Guid.Empty">-</SelectItem>
+
+						@if (OrganizationUnits != null)
+						{
+							@foreach (var organizationUnit in OrganizationUnits)
+							{
+								<SelectItem Value="@organizationUnit.Id">
+									@organizationUnit.DisplayName
+								</SelectItem>
+							}
+						}
+					</Select>
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["UserName"]</FieldLabel>
+					<TextEdit @bind-Text="@GetListInput.UserName"
+						KeyUp="@(async delegate(KeyboardEventArgs e) {if (e.Key == "Enter") await base.SearchEntitiesAsync();})"
+						Autofocus="true" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["PhoneNumber"]</FieldLabel>
+					<TextEdit @bind-Text="@GetListInput.PhoneNumber"
+						KeyUp="@(async delegate(KeyboardEventArgs e) {if (e.Key == "Enter") await base.SearchEntitiesAsync();})"
+						Autofocus="true" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["CreationStartDate"]</FieldLabel>
+					<DatePicker TValue="DateTime?" SelectionMode="DateInputSelectionMode.Single"
+						DateChanged="OnMinCreationTimeChangedAsync" Placeholder="@string.Empty" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["CreationEndDate"]</FieldLabel>
+					<DatePicker TValue="DateTime?" SelectionMode="DateInputSelectionMode.Single"
+						DateChanged="OnMaxCreationTimeChangedAsync" Placeholder="@string.Empty" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["ModificationStartDate"]</FieldLabel>
+					<DatePicker TValue="DateTime?" SelectionMode="DateInputSelectionMode.Single"
+						DateChanged="OnMinModificationTimeChangedAsync" Placeholder="@string.Empty" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["ModificationEndDate"]</FieldLabel>
+					<DatePicker TValue="DateTime?" SelectionMode="DateInputSelectionMode.Single"
+						DateChanged="OnMaxModificationTimeChangedAsync" Placeholder="@string.Empty" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["EmailAddress"]</FieldLabel>
+					<TextEdit @bind-Text="@GetListInput.EmailAddress"
+						KeyUp="@(async delegate(KeyboardEventArgs e) {if (e.Key == "Enter") await base.SearchEntitiesAsync();})"
+						Autofocus="true" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["Name"]</FieldLabel>
+					<TextEdit @bind-Text="@GetListInput.Name"
+						KeyUp="@(async delegate(KeyboardEventArgs e) {if (e.Key == "Enter") await base.SearchEntitiesAsync();})"
+						Autofocus="true" />
+				</Field>
+               </Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["Surname"]</FieldLabel>
+					<TextEdit @bind-Text="@GetListInput.Surname"
+						KeyUp="@(async delegate(KeyboardEventArgs e) {if (e.Key == "Enter") await base.SearchEntitiesAsync();})"
+						Autofocus="true" />
+				</Field>
+				</Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["NotActive"]</FieldLabel>
+					<Select TValue="string" SelectedValue="@AdvancedFilterInput.NotActive"
+						SelectedValueChanged="@OnNotActiveChangedAsync">
+						<SelectItem Value="AdvancedFilterInput.NullSelectionValue">-</SelectItem>
+						<SelectItem Value="true">@L["Yes"]</SelectItem>
+						<SelectItem Value="false">@L["No"]</SelectItem>
+					</Select>
+				</Field>
+				</Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["EmailConfirmed"]</FieldLabel>
+					<Select TValue="string" SelectedValue="@AdvancedFilterInput.EmailConfirmed"
+						SelectedValueChanged="@OnEmailConfirmedChangedAsync">
+						<SelectItem Value="AdvancedFilterInput.NullSelectionValue">-</SelectItem>
+						<SelectItem Value="true">@L["Yes"]</SelectItem>
+						<SelectItem Value="false">@L["No"]</SelectItem>
+					</Select>
+				</Field>
+				</Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["Lock"]</FieldLabel>
+					<Select TValue="string" SelectedValue="@AdvancedFilterInput.IsLockedOut"
+						SelectedValueChanged="@OnIsLockedOutChangedAsync">
+						<SelectItem Value="AdvancedFilterInput.NullSelectionValue">-</SelectItem>
+						<SelectItem Value="true">@L["Yes"]</SelectItem>
+						<SelectItem Value="false">@L["No"]</SelectItem>
+					</Select>
+				</Field>
+				</Column> 
+				<Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                 <Field>
+					<FieldLabel>@L["External"]</FieldLabel>
+					<Select TValue="string" SelectedValue="@AdvancedFilterInput.IsExternal"
+						SelectedValueChanged="@OnIsExternalChangedAsync">
+						<SelectItem Value="AdvancedFilterInput.NullSelectionValue">-</SelectItem>
+						<SelectItem Value="true">@L["Yes"]</SelectItem>
+						<SelectItem Value="false">@L["No"]</SelectItem>
+					</Select>
+				</Field>
+				</Column>
+			</Row>
+		</div>
+	</CardBody>
+</Card>
+@* ************************* DATA GRID ************************* *@
+<AbpExtensibleDataGrid TItem="IdentityUserDto" Data="Entities" ReadData="OnDataGridReadAsync" TotalItems="TotalCount"
+	ShowPager="true" PageSize="PageSize" CurrentPage="@CurrentPage" Columns="@UserManagementTableColumns"
+	Responsive="true">
+</AbpExtensibleDataGrid>
+
+@if (Options.Value.EnableUserImpersonation)
+{
+	<form method="post" action="/Account/ImpersonateUser" id="ImpersonationForm">
+		<input type="hidden" name="UserId" id="ImpersonationUserId">
+	</form>
+}
+
+@* ************************* CREATE MODAL ************************* *@
+@if (HasCreatePermission)
+{
+	<Modal @ref="CreateModal" Closing="@ClosingCreateModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@L["NewUser"]</ModalTitle>
+					<CloseButton Clicked="CloseCreateModalAsync" />
+				</ModalHeader>
+				<ModalBody>
+					<Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+						<Tabs @bind-SelectedTab="@CreateModalSelectedTab">
+							<Items>
+								<Tab Name="UserInformations">@L["UserInformations"]</Tab>
+								<Tab Name="Roles">@L["Roles{0}", NewUserRoles.Count(r => r.IsAssigned)]</Tab>
+								@if (OrganizationUnits != null && OrganizationUnits.Any())
+								{
+									<Tab Name="OrganizationUnits">@L["OrganizationUnits{0}", SelectedOrganizationUnits.Count(x
+											=> x.Value)]</Tab>
+								}
+							</Items>
+							<Content>
+								<TabPanel Name="UserInformations">
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:UserName"] *</FieldLabel>
+											<TextEdit @bind-Text="NewEntity.UserName" Autofocus="true">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Row>
+										<Validation MessageLocalizer="@LH.Localize">
+											<Field ColumnSize="ColumnSize.Is6">
+												<FieldLabel>@L["DisplayName:Name"]</FieldLabel>
+												<TextEdit @bind-Text="NewEntity.Name">
+													<Feedback>
+														<ValidationError />
+													</Feedback>
+												</TextEdit>
+											</Field>
+										</Validation>
+										<Validation MessageLocalizer="@LH.Localize">
+											<Field ColumnSize="ColumnSize.Is6">
+												<FieldLabel>@L["DisplayName:Surname"]</FieldLabel>
+												<TextEdit @bind-Text="NewEntity.Surname">
+													<Feedback>
+														<ValidationError />
+													</Feedback>
+												</TextEdit>
+											</Field>
+										</Validation>
+									</Row>
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:Password"] *</FieldLabel>
+											<Addons>
+												<Addon AddonType="AddonType.Body">
+													<TextEdit Role="@PasswordTextRole" @bind-Text="NewEntity.Password">
+													</TextEdit>
+												</Addon>
+												<Addon AddonType="AddonType.End">
+													<Button Color="Color.Secondary"
+														Clicked="@(() => ChangePasswordTextRole())">
+														<Icon Name="ShowPassword ? IconName.Eye : IconName.EyeSlash" />
+													</Button>
+												</Addon>
+											</Addons>
+											<ValidationError Style="display: block" />
+										</Field>
+									</Validation>
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:Email"] *</FieldLabel>
+											<TextEdit @bind-Text="NewEntity.Email">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Validation>
+										<Field>
+											<FieldLabel>@L["DisplayName:PhoneNumber"]</FieldLabel>
+											<TextEdit @bind-Text="NewEntity.PhoneNumber">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Row>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Check TValue="bool" @bind-Checked="@NewEntity.IsActive">
+												@L["DisplayName:IsActive"]</Check>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Tooltip Text="@L["Description:LockoutEnabled"].Value">
+												<Check TValue="bool" @bind-Checked="@NewEntity.LockoutEnabled">
+													@L["DisplayName:LockoutEnabled"]
+													<Icon Name="IconName.InfoCircle" />
+												</Check>
+											</Tooltip>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Check TValue="bool" @bind-Checked="@NewEntity.EmailConfirmed">
+												@L["DisplayName:EmailConfirmed"]</Check>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Check TValue="bool" @bind-Checked="@NewEntity.PhoneNumberConfirmed">
+												@L["DisplayName:PhoneNumberConfirmed"]</Check>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Tooltip Text="@L["Description:ShouldChangePasswordOnNextLogin"].Value">
+												<Check TValue="bool"
+													@bind-Checked="@NewEntity.ShouldChangePasswordOnNextLogin">
+													@L["DisplayName:ShouldChangePasswordOnNextLogin"]
+													<Icon Name="IconName.InfoCircle" />
+												</Check>
+											</Tooltip>
+										</Field>
+										@if (RequireConfirmedEmail)
+										{
+											<Field ColumnSize="ColumnSize.Is12">
+												<Check TValue="bool" @bind-Checked="@NewEntity.SendConfirmationEmail">
+													@L["DisplayName:SendConfirmationEmail"]</Check>
+											</Field>
+										}
+									</Row>
+
+									<ExtensionProperties TEntityType="IdentityUserCreateDto"
+										TResourceType="IdentityResource" Entity="@NewEntity" LH="@LH"
+										ModalType="ExtensionPropertyModalType.CreateModal" />
+								</TabPanel>
+								<TabPanel Name="Roles">
+									@if (NewUserRoles != null)
+									{
+										@foreach (var role in NewUserRoles)
+										{
+											<Field>
+												<input type="hidden" @bind-value="@role.Name" />
+												<Check TValue="bool" Disabled="@role.IsInheritedFromOu"
+													@bind-Checked="@role.IsAssigned">
+													@role.Name
+													@if (role.IsInheritedFromOu)
+													{
+														<Span>(@L["OU"])</Span>
+													}
+												</Check>
+											</Field>
+										}
+									}
+								</TabPanel>
+								@if (OrganizationUnits != null && OrganizationUnits.Any())
+								{
+									<TabPanel Name="OrganizationUnits">
+										<TreeView Items="OrganizationUnits" GetChildren="@(item => item.Children)"
+											HasChildren="@(item => item.HasChildren == true)">
+											<ItemTemplate>
+												<span class="ms-1 me-1 d-inline" @onclick:stopPropagation>
+													<i class="fas fa-folder fs-15px text-primary me-1" />
+													<Check Inline="true" TValue="bool"
+														Checked="@SelectedOrganizationUnits[context.Item.Id]"
+														CheckedChanged="@(() => OnSelectedOrganizationUnitChanged(context.Item.Id, context.Item.Roles, true))">
+														@context.Item.DisplayName
+													</Check>
+												</span>
+											</ItemTemplate>
+										</TreeView>
+									</TabPanel>
+								}
+							</Content>
+						</Tabs>
+					</Validations>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@CreateEntityAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+
+@* ************************* EDIT MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="EditModal" Closing="@ClosingEditModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@L["Edit"] - @EditingEntity.UserName</ModalTitle>
+					<CloseButton Clicked="CloseEditModalAsync"/>
+				</ModalHeader>
+				<ModalBody>
+					<Validations @ref="@EditValidationsRef" Model="@EditingEntity" ValidateOnLoad="false">
+						<input type="hidden" name="ConcurrencyStamp" @bind-value="EditingEntity.ConcurrencyStamp" />
+						<Tabs @bind-SelectedTab="@EditModalSelectedTab">
+							<Items>
+								<Tab Name="UserInformations">@L["UserInformations"]</Tab>
+								@if (EditUserRoles != null && EditUserRoles.Any())
+								{
+									<Tab Name="Roles">@L["Roles{0}", EditUserRoles.Count(r => r.IsAssigned)]</Tab>
+								}
+								@if (OrganizationUnits != null && OrganizationUnits.Any())
+								{
+									<Tab Name="OrganizationUnits">@L["OrganizationUnits{0}", SelectedOrganizationUnits.Count(x
+											=> x.Value)]</Tab>
+								}
+							</Items>
+							<Content>
+								<TabPanel Name="UserInformations">
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:UserName"] *</FieldLabel>
+											<TextEdit @bind-Text="EditingEntity.UserName" Autofocus="true">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Row>
+										<Validation MessageLocalizer="@LH.Localize">
+											<Field ColumnSize="ColumnSize.Is6">
+												<FieldLabel>@L["DisplayName:Name"]</FieldLabel>
+												<TextEdit @bind-Text="EditingEntity.Name">
+													<Feedback>
+														<ValidationError />
+													</Feedback>
+												</TextEdit>
+											</Field>
+										</Validation>
+										<Validation MessageLocalizer="@LH.Localize">
+											<Field ColumnSize="ColumnSize.Is6">
+												<FieldLabel>@L["DisplayName:Surname"]</FieldLabel>
+												<TextEdit @bind-Text="EditingEntity.Surname">
+													<Feedback>
+														<ValidationError />
+													</Feedback>
+												</TextEdit>
+											</Field>
+										</Validation>
+									</Row>
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:Email"] *</FieldLabel>
+											<TextEdit @bind-Text="EditingEntity.Email">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Validation MessageLocalizer="@LH.Localize">
+										<Field>
+											<FieldLabel>@L["DisplayName:PhoneNumber"]</FieldLabel>
+											<TextEdit @bind-Text="EditingEntity.PhoneNumber">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</Field>
+									</Validation>
+									<Row>
+										@if (!IsEditCurrentUser)
+										{
+											<Field ColumnSize="ColumnSize.Is6">
+												<Check TValue="bool" @bind-Checked="EditingEntity.IsActive">@L["DisplayName:IsActive"]</Check>
+											</Field>
+										}
+										<Field ColumnSize="ColumnSize.Is6">
+											<Tooltip Text="@L["Description:LockoutEnabled"].Value">
+												<Check Display="Display.Inline" TValue="bool" @bind-Checked="EditingEntity.LockoutEnabled">@L["DisplayName:LockoutEnabled"] <Icon Name="IconName.InfoCircle"/> </Check>
+											</Tooltip>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Check TValue="bool" @bind-Checked="@EditingEntity.EmailConfirmed">
+												@L["DisplayName:EmailConfirmed"]</Check>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Check TValue="bool" @bind-Checked="@EditingEntity.PhoneNumberConfirmed">
+												@L["DisplayName:PhoneNumberConfirmed"]</Check>
+										</Field>
+										<Field ColumnSize="ColumnSize.Is6">
+											<Tooltip Text="@L["Description:ShouldChangePasswordOnNextLogin"].Value">
+												<Check TValue="bool"
+													@bind-Checked="@EditingEntity.ShouldChangePasswordOnNextLogin">
+													@L["DisplayName:ShouldChangePasswordOnNextLogin"]
+													<Icon Name="IconName.InfoCircle" />
+												</Check>
+											</Tooltip>
+										</Field>
+									</Row>
+
+									<ExtensionProperties TEntityType="IdentityUserUpdateDto"
+										TResourceType="IdentityResource" Entity="@EditingEntity" LH="@LH"
+										ModalType="ExtensionPropertyModalType.EditModal" />
+
+								</TabPanel>
+								@if (EditUserRoles != null && EditUserRoles.Any())
+								{
+									<TabPanel Name="Roles">
+										@foreach (var role in EditUserRoles)
+										{
+											<Field>
+												<input type="hidden" @bind-value="@role.Name" />
+												<Check TValue="bool" @bind-Checked="@role.IsAssigned"
+													Disabled="@role.IsInheritedFromOu">
+													@role.Name
+													@if (role.IsInheritedFromOu)
+													{
+														<Span>(@L["OU"])</Span>
+													}
+												</Check>
+
+											</Field>
+										}
+									</TabPanel>
+								}
+								@if (OrganizationUnits != null && OrganizationUnits.Any())
+								{
+									<TabPanel Name="OrganizationUnits">
+										<TreeView Items="OrganizationUnits" GetChildren="@(item => item.Children)"
+											HasChildren="@(item => item.HasChildren == true)">
+											<ItemTemplate>
+												<span class="ms-1 me-1 d-inline" @onclick:stopPropagation>
+													<i class="fas fa-folder fs-15px text-primary me-1" />
+													<Check Inline="true" TValue="bool"
+														@bind-Checked="@SelectedOrganizationUnits[context.Item.Id]">
+														@context.Item.DisplayName
+													</Check>
+												</span>
+											</ItemTemplate>
+										</TreeView>
+									</TabPanel>
+								}
+							</Content>
+						</Tabs>
+					</Validations>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@UpdateEntityAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+@* ************************* LOCK MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="LockModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@L["Lock"]</ModalTitle>
+					<CloseButton Clicked="CloseLockModalAsync" />
+				</ModalHeader>
+				<ModalBody>
+					<Validations>
+						<Field>
+							<input type="hidden" name="LockingUser.Id" @bind-value="LockingUser.Id" />
+							<FieldLabel>@L["DisplayName:LockoutEnd"]</FieldLabel>
+							<Addons>
+								<Addon AddonType="AddonType.Body">
+									<DatePicker TValue="DateTime" @bind-Date="@LockingUser.LockoutEnd">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</DatePicker>
+								</Addon>
+								<Addon AddonType="AddonType.End">
+									<Button Color="Color.Primary">
+										<Icon Name="IconName.Calendar" />
+									</Button>
+								</Addon>
+							</Addons>
+						</Field>
+					</Validations>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseLockModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@LockUserAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+@* ************************* Password MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="ChangePasswordModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@(L["SetPassword"].Value + " - " + ChangePasswordModel.UserName)</ModalTitle>
+					<CloseButton Clicked="CloseChangePasswordModalAsync" />
+				</ModalHeader>
+				<ModalBody>
+					<input type="hidden" name="ChangePasswordModel.Id" @bind-value="ChangePasswordModel.Id" />
+					<FieldLabel>@L["DisplayName:NewPassword"]</FieldLabel>
+					<Addons>
+						<Addon AddonType="AddonType.Body">
+
+							<Addons class="form-control p-0">
+								<Addon AddonType="AddonType.Body">
+									<TextEdit Role="@PasswordTextRole" @bind-Text="ChangePasswordModel.NewPassword">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</Addon>
+								<Addon AddonType="AddonType.End">
+									<Button class="btn text-muted position-absolute border-0 top-0 end-0" Clicked="@(() => ChangePasswordTextRole())">
+										<Icon Name="ShowPassword ? IconName.Eye : IconName.EyeSlash" />
+									</Button>
+								</Addon>
+							</Addons>
+						</Addon>
+						<Addon AddonType="AddonType.End">
+							<Addon AddonType="AddonType.End">
+								<Button Color="Color.Secondary" Clicked="GenerateRandomPassword"
+									title="@L["GenerateRandomPasswordTooltip"]">
+									<Icon Name="@IconName.Random" />
+								</Button>
+							</Addon>
+
+						</Addon>
+					</Addons>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseChangePasswordModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@ChangePasswordAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+@* ************************* TwoFactor MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="TwoFactorModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@(L["TwoFactor"].Value + " - " + TwoFactorModel.UserName)</ModalTitle>
+					<CloseButton Clicked="CloseTwoFactorModalAsync" />
+				</ModalHeader>
+				<ModalBody>
+					<input type="hidden" name="TwoFactorModel.Id" @bind-value="TwoFactorModel.Id" />
+					<Field>
+						<Check TValue="bool" @bind-Checked="TwoFactorModel.TwoFactorEnabled">
+							@L["DisplayName:TwoFactorEnabled"]</Check>
+					</Field>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseTwoFactorModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@ChangeTwoFactorAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+@* ************************* Claims MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="ClaimsModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@(L["Claims"].Value + " - " + ClaimsModel.UserName)</ModalTitle>
+					<CloseButton Clicked="CloseClaimsModalAsync" />
+				</ModalHeader>
+				<ModalBody>
+					<Row>
+						<Column ColumnSize="ColumnSize.Is6">
+							<div class="mb-3">
+								<Field>
+									<FieldLabel>@L["Type"]</FieldLabel>
+									<Select TValue="string" SelectedValueChanged="@SetSelectedClaimValueType">
+										@foreach (var claim in ClaimsModel.AllClaims)
+										{
+											<SelectItem Value="@claim.Name">@claim.Name</SelectItem>
+										}
+									</Select>
+								</Field>
+							</div>
+						</Column>
+						<Column ColumnSize="ColumnSize.Is6">
+							<Field>
+								@if (SelectedClaimValueType is not null)
+								{
+									<FieldLabel>@L["Value"]</FieldLabel>
+								}
+
+								@switch (SelectedClaimValueType)
+								{
+									case IdentityClaimValueType.String:
+										<TextEdit @bind-Text="@SelectedClaimValueText" />
+										break;
+									case IdentityClaimValueType.Int:
+										<NumericPicker TValue="int" @bind-Value="@SelectedClaimValueNumeric" />
+										break;
+									case IdentityClaimValueType.Boolean:
+										<Select @bind-SelectedValue="@SelectedClaimValueBool">
+											<SelectItem Value="true">True</SelectItem>
+											<SelectItem Value="false">False</SelectItem>
+										</Select>
+										break;
+									case IdentityClaimValueType.DateTime:
+										<DateEdit TValue="DateTime" InputMode="DateInputMode.DateTime"
+											@bind-Date="@SelectedClaimValueDate"></DateEdit>
+										break;
+								}
+
+							</Field>
+						</Column>
+
+						<Column ColumnSize="ColumnSize.Is12" v-align="Center">
+							<div class="d-grid gap-2">
+								<Button Color="Color.Success" Clicked="@AddClaimAsync"><i class="fa fa-plus"></i>
+									@L["AddClaim"]</Button>
+							</div>
+						</Column>
+					</Row>
+
+					<hr class="my-4" />
+
+					@foreach (var ownedClaim in ClaimsModel.OwnedClaims)
+					{
+						if (ClaimsModel.AllClaims.FirstOrDefault(c => c.Name == ownedClaim.ClaimType) == null)
+						{
+							continue;
+						}
+						<Addons Class="my-1">
+							<Addon AddonType="AddonType.Start">
+								<AddonLabel>@ownedClaim.ClaimType</AddonLabel>
+							</Addon>
+							<Addon AddonType="AddonType.Body">
+								@if (GetClaimValueType(ownedClaim.ClaimType) == IdentityClaimValueType.String)
+								{
+									<TextEdit @bind-Text="@ownedClaim.ClaimValueText"
+										Pattern="@GetClaimRegex(ownedClaim.ClaimType)" />
+								}
+								@if (GetClaimValueType(ownedClaim.ClaimType) == IdentityClaimValueType.Int)
+								{
+									<NumericPicker TValue="int" @bind-Value="@ownedClaim.ClaimValueNumeric" />
+								}
+								@if (GetClaimValueType(ownedClaim.ClaimType) == IdentityClaimValueType.DateTime)
+								{
+									<DateEdit TValue="DateTime" InputMode="DateInputMode.DateTime"
+										@bind-Date="@ownedClaim.ClaimValueDate"></DateEdit>
+								}
+								@if (GetClaimValueType(ownedClaim.ClaimType) == IdentityClaimValueType.Boolean)
+								{
+									<Select @bind-SelectedValue="@ownedClaim.ClaimValueBool">
+										<SelectItem Value="true">True</SelectItem>
+										<SelectItem Value="false">False</SelectItem>
+									</Select>
+								}
+							</Addon>
+							<Addon AddonType="AddonType.End">
+								<Button Color="Color.Danger" Clicked="() => RemoveClaim(ownedClaim)"><i
+										class="fa fa-trash"></i></Button>
+							</Addon>
+						</Addons>
+					}
+
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseClaimsModalAsync">@L["Cancel"]</Button>
+					<SubmitButton Clicked="@SaveClaimsAsync" />
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+
+@* ************************* SESSIONS MODAL ************************* *@
+@if (HasUpdatePermission)
+{
+	<Modal @ref="SessionsModal" RenderMode="ModalRenderMode.LazyReload">
+		<ModalContent Centered="true" Size="ModalSize.ExtraLarge">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@L["Sessions"] - @CurrentSessionUserName</ModalTitle>
+					<CloseButton Clicked="CloseSessionsModalAsync"/>
+				</ModalHeader>
+				<ModalBody>
+					<AbpExtensibleDataGrid TItem="IdentitySessionDto" Data="SessionsEntities"
+						ReadData="OnSessionsDataGridReadAsync" TotalItems="SessionTotalCount" ShowPager="true"
+						PageSize="SessionPageSize" CurrentPage="@CurrentSessionPage"
+						Columns="@UserManagementSessionsTableColumns" Responsive="true">
+					</AbpExtensibleDataGrid>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Primary" Outline Clicked="CloseSessionsModalAsync">@L["Close"]</Button>
+				</ModalFooter>
+			</Form>
+		</ModalContent>
+	</Modal>
+}
+
+@* ************************* SESSION DETAIL MODAL ************************* *@
+<Modal @ref="@SessionDetailModal" RenderMode="ModalRenderMode.LazyReload">
+	<ModalContent Centered="true" Size="ModalSize.Large">
+		<ModalHeader>
+			<ModalTitle>@L["Session:Detail"]</ModalTitle>
+		</ModalHeader>
+		<ModalBody>
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:Device"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@SessionDetail.Device
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:DeviceInfo"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@SessionDetail.DeviceInfo
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:UserInfo"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@(SessionDetail.TenantName.IsNullOrWhiteSpace() ? SessionDetail.UserName : (SessionDetail.TenantName
+												+ "\\" + SessionDetail.UserName))
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:ClientId"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@SessionDetail.ClientId
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:IpAddresses"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@if (!SessionDetail.IpAddresses.IsNullOrEmpty())
+					{
+						<ul class="list-group list-group-flush">
+							@foreach (var ip in SessionDetail.IpAddresses)
+							{
+								<li class="list-group-item">@ip</li>
+							}
+						</ul>
+					}
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:SignedIn"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@SessionDetail.SignedIn
+				</Column>
+			</Row>
+
+			<hr class="my-2">
+			<Row>
+				<Column ColumnSize="@ColumnSize.Is3.OnDesktop">
+					@L["Session:LastAccessed"]
+				</Column>
+				<Column ColumnSize="@ColumnSize.Is9">
+					@SessionDetail.LastAccessed
+				</Column>
+			</Row>
+		</ModalBody>
+		<ModalFooter>
+			<Button Color="@Color.Primary" Clicked="@CloseSessionDetailModalAsync">@L["Close"]</Button>
+		</ModalFooter>
+	</ModalContent>
+</Modal>
+
+@* ************************* ViewDetails MODAL ************************* *@
+@if (HasViewDetailsPermission)
+{
+	<IdentityUserViewDetailsModal @ref="ViewDetailsModal" />
+}
+
+@if (HasManagePermissionsPermission)
+{
+	<PermissionManagementModal @ref="PermissionManagementModal" />
+}

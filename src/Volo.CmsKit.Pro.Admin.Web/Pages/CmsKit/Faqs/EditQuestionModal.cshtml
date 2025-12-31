@@ -1,0 +1,27 @@
+﻿@page
+@inherits Volo.CmsKit.Pro.Admin.Web.Pages.AdminPageBase
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model Volo.CmsKit.Pro.Admin.Web.Pages.CmsKit.Faqs.EditQuestionModalModel
+
+@{
+    Layout = null;
+}
+
+<abp-modal>
+    <form id="EditQuestionForm" method="post" asp-page="/CmsKit/Faqs/EditQuestionModal">
+        <abp-modal-header title="@L["EditQuestion"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Id" />
+            <abp-input asp-for="EditViewModel.Title" />
+            <abp-input asp-for="EditViewModel.Order" />
+
+            <div class="content-editor cms-kit-editor" id="QuestionInputContainer" data-language="@(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)" ></div>
+                       
+            <input type="hidden" asp-for="EditViewModel.Text"/>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel | AbpModalButtons.Save)"></abp-modal-footer>
+    </form>
+</abp-modal>

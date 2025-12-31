@@ -1,0 +1,46 @@
+@if (service.settings$ | async; as settings) {
+  <div
+    class="lpx-settings"
+    (mouseenter)="openMenu('hover')"
+    (mouseleave)="closeMenu('hover')"
+  >
+    <!-- TODO: muhammed: check clickOutside directive logic when change exceptedRef -->
+    <lpx-context-menu
+      #menu="lpx-context-menu"
+      (lpxClickOutside)="menu.close()"
+      [exceptedRefs]="exceptedRefs"
+    >
+      <lpx-navbar-routes
+        [navbarItems]="[{ template: ctxFirst, selected: true }]"
+        [routerItem]="false"
+      ></lpx-navbar-routes>
+      <lpx-navbar-routes
+        [navbarItems]="settings"
+        [routerItem]="false"
+      ></lpx-navbar-routes>
+    </lpx-context-menu>
+    @for (setting of service.selectedSettings$ | async; track $index) {
+      <lpx-setting
+        [setting]="setting"
+        (mouseenter)="openExpendedSettingsPanel(settings, setting, 'hover')"
+        (settingClick)="openCtxMenuWith(settings, setting)"
+      ></lpx-setting>
+    }
+    <lpx-setting
+      [setting]="{ icon: 'gearConnected', text: '' }"
+      (mouseenter)="openAllExpendedSettingsPanel(settings)"
+      (settingClick)="toggleCtxMenu(settings)"
+    ></lpx-setting>
+  </div>
+}
+
+<ng-template #ctxFirst>
+  <span class="lpx-menu-item-icon">
+    <lpx-icon iconClass="gearConnected" class="outer-icon"> </lpx-icon>
+  </span>
+  <span class="lpx-menu-item-text">
+    {{ generalSettingsTranslateKey | lpxTranslate | async }}</span
+  >
+  <lpx-icon iconClass="x" class="outer-icon dd-icon" (click)="hideCtxMenu()">
+  </lpx-icon>
+</ng-template>

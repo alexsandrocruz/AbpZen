@@ -1,0 +1,55 @@
+@if (settings$ | async; as settings) {
+  <div (keyup.enter)="submit(settings)">
+    <h4>{{ 'AbpAccount::TwoFactorAuthentication' | abpLocalization }}</h4>
+    <div>
+      <div class="mb-3">
+        <label class="form-label" for="AccountTwoFactorSettings_TwoFactorBehaviour">{{
+          'AbpIdentity::DisplayName:Abp.Identity.TwoFactorBehaviour' | abpLocalization
+        }}</label>
+        <select
+          name="TwoFactorBehaviour"
+          class="form-select form-control"
+          [(ngModel)]="settings.twoFactorBehaviour"
+        >
+          @for (option of twoFactorBehaviourOptions; track $index) {
+            <option [ngValue]="option.value">
+              {{ option.key }}
+            </option>
+          }
+        </select>
+      </div>
+      @if (settings.twoFactorBehaviour === eTwoFactorBehaviour.Optional) {
+        <div class="form-check mb-2">
+          <input
+            name="UsersCanChange"
+            type="checkbox"
+            checked="checked"
+            id="AccountTwoFactorSettings_UsersCanChange"
+            [(ngModel)]="settings.usersCanChange"
+            class="form-check-input"
+          /><label class="form-check-label" for="AccountTwoFactorSettings_UsersCanChange">{{
+            'AbpIdentity::DisplayName:Abp.Identity.UsersCanChange' | abpLocalization
+          }}</label>
+        </div>
+      }
+      <div class="form-check mb-2">
+        <input
+          name="IsRememberBrowserEnabled"
+          type="checkbox"
+          checked="checked"
+          id="AccountTwoFactorSettings_IsRememberBrowserEnabled"
+          [(ngModel)]="settings.isRememberBrowserEnabled"
+          class="form-check-input"
+        /><label class="form-check-label" for="AccountTwoFactorSettings_IsRememberBrowserEnabled">{{
+          'AbpAccount::RememberBrowser' | abpLocalization
+        }}</label>
+      </div>
+    </div>
+    <hr class="my-3" />
+    <div>
+      <abp-button (click)="submit(settings)" iconClass="fa fa-save" [loading]="loading">{{
+        'AbpAccount::Save' | abpLocalization
+      }}</abp-button>
+    </div>
+  </div>
+}

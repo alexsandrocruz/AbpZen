@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    
+    
+
+    <PropertyGroup><LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        
+        <PackageReference Include="Volo.Abp.VirtualFileSystem" VersionOverride="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="..\..\Volo.Forms.abpmdl" />
+      <Content Include="..\..\Volo.Forms.abpmdl">
+		<Pack>true</Pack>
+		<PackagePath>content\</PackagePath>
+	  </Content>
+      <None Remove="..\..\**\*.abppkg*" />
+      <Content Include="..\..\**\*.abppkg*">
+		<Pack>true</Pack>
+		<PackagePath>content\</PackagePath>
+	  </Content>
+    </ItemGroup>
+
+</Project>

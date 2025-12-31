@@ -1,0 +1,72 @@
+@if ((service.currentTenant$ | async) || {}; as currentTenant) {
+  <hr />
+  <div>
+    <div class="tenant-switch-box">
+      <div class="row">
+        <div class="col pr-1 pb-2">
+          <h6 class="m0">
+            {{ 'AbpUiMultiTenancy::Tenant' | abpLocalization }}
+          </h6>
+          <i>{{
+            currentTenant.name ||
+              ('AbpUiMultiTenancy::NotSelected' | abpLocalization)
+          }}</i>
+        </div>
+
+        <div class="col-auto pl-1">
+          <a
+            id="abp-tenant-switch-link"
+            class="btn btn-sm btn-outline-primary float-end pointer"
+            (click)="service.onSwitch()"
+            href="javascript:void(0)"
+            >{{ 'AbpUiMultiTenancy::Switch' | abpLocalization }}</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+
+  <abp-modal
+    [(visible)]="service.isModalVisible"
+    [busy]="service.modalBusy"
+    size="md"
+  >
+    <ng-template #abpHeader>
+      <h5>Switch Tenant</h5>
+    </ng-template>
+    <ng-template #abpBody>
+      <form (ngSubmit)="service.save()">
+        <div class="mt-2">
+          <div class="form-group">
+            <label for="name">{{
+              'AbpUiMultiTenancy::Name' | abpLocalization
+            }}</label>
+            <input
+              [(ngModel)]="service.name"
+              type="text"
+              id="name"
+              name="tenant"
+              class="form-control"
+              autofocus
+            />
+          </div>
+          <p>{{ 'AbpUiMultiTenancy::SwitchTenantHint' | abpLocalization }}</p>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template #abpFooter>
+      <button abpClose type="button" class="btn btn-outline-primary">
+        {{ 'AbpAccount::Cancel' | abpLocalization }}
+      </button>
+      <abp-button
+        type="abp-button"
+        iconClass="fa fa-check"
+        (click)="service.save()"
+        [disabled]="currentTenant?.name === service.name"
+      >
+        {{ 'AbpAccount::Save' | abpLocalization }}
+      </abp-button>
+    </ng-template>
+  </abp-modal>
+}

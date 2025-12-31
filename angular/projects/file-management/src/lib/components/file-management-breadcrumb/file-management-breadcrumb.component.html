@@ -1,0 +1,22 @@
+<ol class="breadcrumb">
+  @for (folder of navigatedFolders; track folder.id; let last = $last; let first = $first) {
+    <li
+      (click)="onClick(folder)"
+      class="breadcrumb-item"
+      [class.root]="first"
+      [class.active]="last && !first"
+      [class.pe-none]="last"
+      aria-current="page"
+    >
+      <span class="breadcrumb-item-text">
+        @if (first) {
+          <i class="fa fa-home me-1" aria-hidden="true"></i>
+          <span>{{ rootBreadcrumbName | abpLocalization }}</span>
+        }
+        @if (!first) {
+          <span>{{ folder.name }}</span>
+        }
+      </span>
+    </li>
+  }
+</ol>

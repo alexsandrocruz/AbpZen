@@ -1,0 +1,97 @@
+<h5 class="mb-3">
+  {{ 'AbpAccount::AlreadyRegistered' | abpLocalization }}
+  <a routerLink="/account/login" class="text-decoration-none">{{
+    'AbpAccount::Login' | abpLocalization
+  }}</a>
+</h5>
+
+@if (isSelfRegistrationEnabled) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" validateOnSubmit>
+    <div class="form-floating mb-2">
+      <input
+        autofocus
+        type="text"
+        class="form-control"
+        id="input-user-name"
+        placeholder="name@example.com"
+        formControlName="username"
+      />
+      <label for="input-user-name">
+        {{ 'AbpAccount::UserName' | abpLocalization }}
+      </label>
+    </div>
+
+    <div class="form-floating mb-2">
+      <input
+        type="email"
+        class="form-control"
+        id="input-email-address"
+        placeholder="name@example.com"
+        formControlName="email"
+      />
+      <label for="input-email-address">
+        {{ 'AbpAccount::EmailAddress' | abpLocalization }}
+      </label>
+    </div>
+
+    <div class="form-floating mb-2 d-flex flex-column">
+      <input
+        id="password"
+        class="form-control"
+        placeholder="Password"
+        formControlName="password"
+        (abpCapsLock)="capsLock = $event"
+        [abpShowPassword]="showPassword"
+        (keyup)="validatePassword()"
+      />
+      <abp-password-complexity-indicator
+        [progressBar]="progressBar"
+      ></abp-password-complexity-indicator>
+      @if (progressBar?.width > 0) {
+        <div
+          class="d-flex align-items-center order-2 mt-1"
+          style="font-weight: 500; padding-left: 1.25rem"
+        >
+          {{ 'AbpAccount::Strength' | abpLocalization }}&nbsp;
+          <span [style.color]="progressBar?.bgColor">{{
+            'AbpAccount::' + progressBar?.text | abpLocalization
+          }}</span>
+        </div>
+      }
+      <label for="input-password" class="opacity-100">
+        {{ 'AbpAccount::Password' | abpLocalization }}
+      </label>
+      <i
+        id="capslockicon"
+        class="bi bi-capslock caps-lock-icon"
+        [class.d-none]="!capsLock"
+        [ngbTooltip]="'AbpAccount::CapsLockOn' | abpLocalization"
+      ></i>
+
+      <i
+        id="passwordicon"
+        class="bi bi-eye{{ showPassword ? '' : '-slash' }} show-pass-icon"
+        aria-label="Show/Hide password"
+        (click)="showPassword = !showPassword"
+        [ngbTooltip]="
+          'AbpAccount::' + (!showPassword ? 'ShowPassword' : 'HidePassword') | abpLocalization
+        "
+      ></i>
+    </div>
+
+    <div #recaptcha></div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <abp-button
+          class="d-grid"
+          buttonClass="btn btn-primary register-btn btn-lg w-100"
+          [loading]="inProgress"
+          buttonType="submit"
+        >
+          {{ 'AbpAccount::Register' | abpLocalization }}
+        </abp-button>
+      </div>
+    </div>
+  </form>
+}

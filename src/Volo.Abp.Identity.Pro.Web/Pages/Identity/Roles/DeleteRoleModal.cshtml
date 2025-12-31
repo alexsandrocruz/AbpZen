@@ -1,0 +1,51 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Volo.Abp.Identity.Localization
+@using Volo.Abp.Identity.Web.Pages.Identity.Roles
+@model DeleteRoleModal
+@inject IHtmlLocalizer<IdentityResource> L
+@{
+    Layout = null;
+}
+
+<form method="post"  asp-page="/Identity/Roles/DeleteRoleModal" autocomplete="off">
+    <abp-modal>
+        <abp-modal-header title="@L["AreYouSure"].Value"></abp-modal-header>
+        <abp-modal-body>
+
+            <abp-input asp-for="Role.Id" type="hidden"></abp-input>
+
+            <p class="fw-bold">@L.GetString("RoleDeletionConfirmationMessage", Model.Role.Name).Value</p>
+
+            @if (Model.Role.UserCount > 0)
+            {
+                <p class="mt-2">@L.GetString("ChooseAnActionForRole", Model.Role.UserCount).Value</p>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" checked name="assign" id="unassign">
+                    <label class="form-check-label" for="unassign">@L["UnassignTheRoleFromTheUsers"].Value</label>
+                </div>
+
+                if (Model.Role.OtherRoles.Any())
+                {
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="radio" name="assign" id="assign">
+                        <label class="form-check-label" for="assign">@L["AssignUsersToOtherRole"].Value</label>
+                    </div>
+                    <select name="Role.AssignToRoleId" id="Role_AssignToRoleId" class="form-select mt-2" style="display: none">
+                        <option value="" selected>@L["SelectAnRoleToAssign"].Value</option>
+                        @foreach (var role in Model.Role.OtherRoles)
+                        {
+                            <option value="@role.Key">@role.Value</option>
+                        }
+                    </select>
+                }
+            }
+        </abp-modal-body>
+        <abp-modal-footer>
+            <button class="btn btn-outline-danger" data-bs-dismiss="modal" type="button">@L["Cancel"]</button>
+            <button class="btn btn-danger"  type="submit"><i class="fa fa-trash"></i> <span>@L["Delete"]</span></button>
+        </abp-modal-footer>
+    </abp-modal>
+</form>

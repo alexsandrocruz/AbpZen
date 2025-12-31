@@ -1,0 +1,21 @@
+{
+  "Culture": "fi",
+  "Texts": {
+    "Login": "Kirjaudu sisään",
+    "Appearance": "Ulkomuoto",
+    "ContainerWidth": "Säiliön leveys",
+    "ContainerWidth:Boxed": "Laatikon asettelu",
+    "ContainerWidth:Fixed": "Kiinteä asettelu",
+    "ContainerWidth:Fluid": "Nestemäinen",
+    "GeneralSettings": "Yleiset asetukset",
+    "Language": "Kieli",
+    "Settings": "asetukset",
+    "Theme:dark": "Tumma",
+    "Theme:dim": "Puolipimeä",
+    "Theme:light": "Kevyt",
+    "Theme:system": "Järjestelmä",
+    "Welcome": "Tervetuloa",
+    "FilterMenu": "Suodatinvalikko",
+    "Menu": "Valikko"
+  }
+}

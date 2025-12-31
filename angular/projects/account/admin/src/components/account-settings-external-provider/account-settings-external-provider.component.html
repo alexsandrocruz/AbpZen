@@ -1,0 +1,104 @@
+@if (settings$ | async; as settings) {
+  <h4>{{ 'AbpAccount::SocialAccountSecurity' | abpLocalization }}</h4>
+  <div class="form-check mb-2">
+    <input
+      type="checkbox"
+      class="form-check-input"
+      id="verify-password"
+      [(ngModel)]="settings.verifyPasswordDuringExternalLogin"
+    />
+    <label class="form-check-label" for="verify-password">{{
+      'AbpAccount::DisplayName:VerifyPasswordDuringExternalLogin' | abpLocalization
+    }}</label>
+    <br />
+    <small class="form-text text-muted">{{
+      'AbpAccount::Description:VerifyPasswordDuringExternalLogin' | abpLocalization
+    }}</small>
+  </div>
+
+  <div (keyup.enter)="submit(settings)">
+    @for (provider of settings.externalProviders; track $index) {
+      @if (isTenant) {
+        <h4>{{ provider.name }}</h4>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [attr.id]="provider.name + '.use-host-settings'"
+            [(ngModel)]="provider.useHostSettings"
+          />
+          <label class="form-check-label" [for]="provider.name + '.use-host-settings'">{{
+            'AbpAccount::ExternalProviderUseHostSettings' | abpLocalization
+          }}</label>
+        </div>
+
+        <div class="collapse" [class.show]="!provider.useHostSettings">
+          <ng-container *ngTemplateOutlet="propertySetsTemplate"></ng-container>
+        </div>
+
+        <hr class="my-4" />
+      } @else {
+        <h4>{{ provider.name }}</h4>
+
+        <div class="form-check mb-2">
+          <input
+            type="checkbox"
+            [attr.id]="provider.name + '.enabled'"
+            [attr.name]="provider.name + '.enabled'"
+            class="form-check-input"
+            [(ngModel)]="provider.enabled"
+            autofocus
+          /><label class="form-check-label" [attr.for]="provider.name + '.enabled'">{{
+            'AbpAccount::ExternalProviderEnabled' | abpLocalization
+          }}</label>
+        </div>
+
+        <ng-container *ngTemplateOutlet="propertySetsTemplate"></ng-container>
+      }
+
+      <ng-template #propertySetsTemplate>
+        <ng-container
+          *ngTemplateOutlet="singlePropertySetTemplate; context: { $implicit: provider.properties }"
+        ></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            singlePropertySetTemplate;
+            context: {
+              $implicit: provider.secretProperties,
+              type: 'password',
+              autocomplete: 'new-password',
+            }
+          "
+        ></ng-container>
+
+        <ng-template
+          #singlePropertySetTemplate
+          let-properties
+          let-type="type"
+          let-autocomplete="autocomplete"
+        >
+          @for (property of properties; track $index) {
+            <div class="mb-3">
+              <label class="form-label" [attr.for]="provider.name + '.' + property.name">{{
+                '::ExternalProvider:' + provider.name + ':' + property.name | abpLocalization
+              }}</label>
+              <input
+                [type]="type || 'text'"
+                [autocomplete]="autocomplete || 'off'"
+                class="form-control"
+                [(ngModel)]="property.value"
+                [attr.id]="provider.name + '.' + property.name"
+              />
+            </div>
+          }
+        </ng-template>
+      </ng-template>
+    }
+
+    <div>
+      <abp-button (click)="submit(settings)" iconClass="fa fa-save" [loading]="loading">{{
+        'AbpAccount::Save' | abpLocalization
+      }}</abp-button>
+    </div>
+  </div>
+}

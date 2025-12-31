@@ -1,0 +1,8 @@
+﻿@page "/account/logout"
+
+@inject IStringLocalizer<AccountResource> AccountStringLocalizer
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Account.Localization
+@inherits AbpAccountPublicMauiBlazorComponentBase
+
+@AccountStringLocalizer["Authentication:YouAreLoggedOut"]
