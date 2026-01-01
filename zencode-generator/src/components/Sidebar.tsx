@@ -7,10 +7,11 @@ interface SidebarProps {
     onUpdateEntity: (id: string, data: EntityData) => void;
     onUpdateEdge: (id: string, data: RelationshipData) => void;
     onDeleteEntity: (id: string) => void;
+    onDeleteEdge: (id: string) => void;
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onClose }: SidebarProps) => {
+const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onClose }: SidebarProps) => {
     if (!selectedEntity && !selectedEdge) return null;
 
     if (selectedEdge && !selectedEntity) {
@@ -19,7 +20,16 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
             <div className="sidebar">
                 <div className="sidebar-header">
                     <h3>Edit Relation</h3>
-                    <button className="btn-icon" onClick={onClose}><X size={18} /></button>
+                    <div className="header-actions">
+                        <button
+                            className="btn-icon text-red-400"
+                            onClick={() => { onDeleteEdge(id); onClose(); }}
+                            title="Delete Relationship"
+                        >
+                            <Trash2 size={18} />
+                        </button>
+                        <button className="btn-icon" onClick={onClose}><X size={18} /></button>
+                    </div>
                 </div>
                 <div className="sidebar-content">
                     <div className="relation-display">

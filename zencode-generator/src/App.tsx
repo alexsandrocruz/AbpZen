@@ -217,6 +217,7 @@ function App() {
         onUpdateEntity={updateEntity}
         onUpdateEdge={updateEdge}
         onDeleteEntity={deleteEntity}
+        onDeleteEdge={deleteEdge}
         onClose={clearSelection}
       />
 
