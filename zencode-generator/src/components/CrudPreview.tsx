@@ -30,6 +30,10 @@ const generateSampleData = (fields: EntityField[]): Record<string, string>[] => 
         fields.forEach(field => {
             if (field.isLookup) {
                 row[field.name] = `Related Item ${idx + 1}`;
+            } else if (field.type === 'enum' && field.enumConfig?.options?.length) {
+                // For enum fields, pick a random option's displayText
+                const optionIndex = idx % field.enumConfig.options.length;
+                row[field.name] = field.enumConfig.options[optionIndex].displayText;
             } else {
                 row[field.name] = sample[field.type as keyof typeof sample] || 'N/A';
             }
@@ -155,6 +159,10 @@ function GridPreview({ fields, data, entityName }: GridPreviewProps) {
                                 <td key={field.id}>
                                     {field.isLookup ? (
                                         <span style={{ color: '#6366f1' }}>{row[field.name]}</span>
+                                    ) : field.type === 'enum' ? (
+                                        <span className="ui-badge" style={{ background: '#334155', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem' }}>
+                                            {row[field.name]}
+                                        </span>
                                     ) : (
                                         row[field.name]
                                     )}
@@ -499,6 +507,15 @@ function FormField({ field, allEntities: _allEntities }: FormFieldProps) {
                     <option value="">Select...</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
+                </select>
+            ) : field.type === 'enum' && field.enumConfig ? (
+                <select className="ui-select" disabled={field.readOnly}>
+                    <option value="">Select {field.label || field.name}...</option>
+                    {field.enumConfig.options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.displayText}
+                        </option>
+                    ))}
                 </select>
             ) : (
                 <input
