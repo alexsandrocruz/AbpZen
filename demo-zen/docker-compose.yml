@@ -23,7 +23,7 @@ services:
       - redis
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:8080
       - "App:SelfUrl=http://localhost:44322"
       - "App:CorsOrigins=http://localhost:44360,http://localhost:4200"
       - "Redis:Configuration=redis:6379"
@@ -31,7 +31,7 @@ services:
       - "AuthServer:Authority=http://localhost:44322"
       - "AuthServer:RequireHttpsMetadata=false"
     ports:
-      - "44322:80"
+      - "44322:8080"
 
   web:
     build:
@@ -42,14 +42,14 @@ services:
       - httpapi-host
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:8080
       - "App:SelfUrl=http://localhost:44360"
       - "Redis:Configuration=redis:6379"
       - "ConnectionStrings:Default=mongodb://mongodb:27017/LeptonXDemoApp"
       - "AuthServer:Authority=http://host.docker.internal:44322"
       - "AuthServer:RequireHttpsMetadata=false"
     ports:
-      - "44360:80"
+      - "44360:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

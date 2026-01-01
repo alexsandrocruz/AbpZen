@@ -47,11 +47,33 @@ echo "   MongoDB: localhost:27017"
 echo "   Redis:   localhost:6379"
 echo ""
 
-# Check if --api-only flag should run only API
-cd "$SCRIPT_DIR/LeptonXDemoApp.HttpApi.Host"
+# Check if --api-only flag exists
+API_ONLY=false
+for arg in "$@"; do
+    if [ "$arg" == "--api-only" ]; then
+        API_ONLY=true
+    fi
+done
 
 echo "📡 Starting API (https://localhost:44322)..."
-echo "   Press Ctrl+C to stop"
-echo ""
+cd "$SCRIPT_DIR/LeptonXDemoApp.HttpApi.Host"
+dotnet run --urls="https://localhost:44322" &
+API_PID=$!
 
-dotnet run --urls="https://localhost:44322"
+if [ "$API_ONLY" = false ]; then
+    echo "🌐 Starting Web (https://localhost:44360)..."
+    cd "$SCRIPT_DIR/LeptonXDemoApp.Web"
+    dotnet run --urls="https://localhost:44360" &
+    WEB_PID=$!
+fi
+
+echo "🚀 demo-zen is running!"
+echo "   API: https://localhost:44322/swagger"
+echo "   Web: https://localhost:44360"
+echo ""
+echo "Press Ctrl+C to stop all services"
+
+# Handle shutdown
+trap "kill $API_PID ${WEB_PID:-}; exit" SIGINT SIGTERM
+
+wait

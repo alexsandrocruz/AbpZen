@@ -1,9 +1,13 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+# Base image for production
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble AS base
+USER app
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+ENV DOTNET_EnableDiagnostics=0
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0-noble AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy local NuGet packages first
