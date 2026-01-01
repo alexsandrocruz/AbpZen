@@ -8,6 +8,14 @@ export type EntityBaseClass =
     | 'AuditedAggregateRoot'
     | 'FullAuditedAggregateRoot';
 
+export interface LookupConfig {
+    mode: 'dropdown' | 'modal';
+    targetEntity?: string;      // Related entity name
+    displayField: string;       // Field to display (e.g., "name")
+    searchFields?: string[];    // Fields to search
+    valueField?: string;        // Field to save (default: "id")
+}
+
 export interface EntityField {
     id: string;
     name: string;
@@ -21,6 +29,24 @@ export interface EntityField {
     maxLength?: number;
     regex?: string;
     emailValidation?: boolean;
+
+    // Display Configuration
+    label?: string;              // Label shown in forms/grid
+    placeholder?: string;        // Placeholder text for inputs
+    order?: number;              // Display order (lower = first)
+
+    // Grid Configuration
+    showInGrid?: boolean;        // Show this field in grid (default: true)
+    gridWidth?: number;          // Width in grid (px)
+
+    // Form Configuration
+    showInForm?: boolean;        // Show in edit form (default: true)
+    formWidth?: 'full' | 'half' | 'third';  // Width in form layout
+    readOnly?: boolean;          // Read-only in form
+
+    // Relationship Lookup Configuration (for FK fields)
+    isLookup?: boolean;          // Is this a lookup/FK field?
+    lookupConfig?: LookupConfig;
 }
 
 export interface EntityData {

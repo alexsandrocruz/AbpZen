@@ -19,6 +19,7 @@ import RelationEdge from './components/RelationEdge';
 import Sidebar from './components/Sidebar';
 import MetadataPreview from './components/MetadataPreview';
 import ImportSqlModal from './components/ImportSqlModal';
+import CrudPreview from './components/CrudPreview';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
@@ -42,6 +43,8 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showCrudPreview, setShowCrudPreview] = useState(false);
+  const [previewEntityId, setPreviewEntityId] = useState<string | null>(null);
   const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
   const [projectName, setProjectName] = useState('Untitled');
 
@@ -59,15 +62,65 @@ function App() {
 
   const onConnect = useCallback(
     (params: Connection) => {
+      if (!params.source || !params.target) return;
+
+      // Get source and target entity names
+      const sourceNode = nodes.find(n => n.id === params.source);
+      const targetNode = nodes.find(n => n.id === params.target);
+
+      if (!sourceNode || !targetNode) return;
+
+      const targetEntityName = targetNode.data.name;
+      const fkFieldName = `${targetEntityName}Id`;
+
+      // Check if FK field already exists
+      const fieldExists = sourceNode.data.fields.some(
+        f => f.name.toLowerCase() === fkFieldName.toLowerCase()
+      );
+
+      // Create the relationship edge
       const defaultData: RelationshipData = {
         type: 'one-to-many',
-        sourceNavigationName: '',
-        targetNavigationName: '',
+        sourceNavigationName: pluralize(sourceNode.data.name),
+        targetNavigationName: targetEntityName,
         isRequired: false,
       };
       setEdges((eds) => addEdge({ ...params, data: defaultData, type: 'relation' }, eds));
+
+      // Auto-add FK field to source entity if it doesn't exist
+      if (!fieldExists) {
+        const newFkField = {
+          id: `field_${Date.now()}`,
+          name: fkFieldName,
+          type: 'guid' as const,
+          isRequired: false,
+          isNullable: true,
+          isFilterable: true,
+          isTextArea: false,
+          isLookup: true,
+          label: targetEntityName,
+          lookupConfig: {
+            mode: 'dropdown' as const,
+            targetEntity: targetEntityName,
+            displayField: 'name',
+          },
+        };
+
+        setNodes((nds) => nds.map((node) => {
+          if (node.id === params.source) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                fields: [...node.data.fields, newFkField],
+              },
+            };
+          }
+          return node;
+        }));
+      }
     },
-    [setEdges]
+    [setEdges, setNodes, nodes]
   );
 
   const updateEntity = useCallback((id: string, data: EntityData) => {
@@ -327,11 +380,13 @@ function App() {
       <Sidebar
         selectedEntity={selectedNode}
         selectedEdge={selectedEdge}
+        allEntities={nodes.map(n => n.data)}
         onUpdateEntity={updateEntity}
         onUpdateEdge={updateEdge}
         onDeleteEntity={deleteEntity}
         onDeleteEdge={deleteEdge}
         onDuplicateEntity={duplicateEntity}
+        onPreviewEntity={(id) => { setPreviewEntityId(id); setShowCrudPreview(true); }}
         onClose={clearSelection}
       />
 
@@ -352,7 +407,19 @@ function App() {
           />
         )
       }
-    </div >
+
+      {showCrudPreview && previewEntityId && (() => {
+        const previewNode = nodes.find(n => n.id === previewEntityId);
+        if (!previewNode) return null;
+        return (
+          <CrudPreview
+            entity={previewNode.data}
+            allEntities={nodes.map(n => n.data)}
+            onClose={() => { setShowCrudPreview(false); setPreviewEntityId(null); }}
+          />
+        );
+      })()}
+    </div>
   );
 }
 

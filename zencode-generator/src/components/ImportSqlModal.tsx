@@ -1,4 +1,4 @@
-import { X, Upload, FileText, Check } from 'lucide-react';
+import { X, Upload, FileText } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { parseSqlToEntities } from '../utils/sqlParser';
 import type { EntityData } from '../types';

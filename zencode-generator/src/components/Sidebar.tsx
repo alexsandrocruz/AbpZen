@@ -1,19 +1,21 @@
-import { Plus, Trash2, X, Copy } from 'lucide-react';
+import { Plus, Trash2, X, Copy, Eye } from 'lucide-react';
 import type { EntityData, EntityField, FieldType, RelationshipData } from '../types';
 import { pluralize } from '../utils/pluralize';
 
 interface SidebarProps {
     selectedEntity: { id: string; data: EntityData } | null;
     selectedEdge: { id: string; data: RelationshipData; sourceName?: string; targetName?: string } | null;
+    allEntities: EntityData[];
     onUpdateEntity: (id: string, data: EntityData) => void;
     onUpdateEdge: (id: string, data: RelationshipData) => void;
     onDeleteEntity: (id: string) => void;
     onDeleteEdge: (id: string) => void;
     onDuplicateEntity: (id: string) => void;
+    onPreviewEntity: (id: string) => void;
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onDuplicateEntity, onClose }: SidebarProps) => {
+const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onDuplicateEntity, onPreviewEntity, onClose }: SidebarProps) => {
     if (!selectedEntity && !selectedEdge) return null;
 
     if (selectedEdge && !selectedEntity) {
@@ -118,6 +120,13 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
             <div className="sidebar-header">
                 <h3>Edit Entity</h3>
                 <div className="header-actions">
+                    <button
+                        className="btn-icon text-green-400"
+                        onClick={() => { onPreviewEntity(id); }}
+                        title="Preview CRUD"
+                    >
+                        <Eye size={18} />
+                    </button>
                     <button
                         className="btn-icon text-blue-400"
                         onClick={() => { onDuplicateEntity(id); }}
@@ -241,12 +250,127 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
                                             <input type="number" value={field.maxLength || ''} onChange={(e) => updateField(field.id, { maxLength: parseInt(e.target.value) })} />
                                         </div>
                                     </div>
+                                    {/* Display Settings */}
+                                    <FieldDisplaySettings field={field} onUpdate={(updates: Partial<EntityField>) => updateField(field.id, updates)} />
+                                    {/* Lookup Settings */}
+                                    {field.type === 'guid' && (
+                                        <FieldLookupSettings
+                                            field={field}
+                                            allEntities={allEntities}
+                                            onUpdate={(updates: Partial<EntityField>) => updateField(field.id, updates)}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+        </div>
+    );
+};
+
+// Sub-component for Display Settings
+const FieldDisplaySettings = ({ field, onUpdate }: { field: EntityField; onUpdate: (updates: Partial<EntityField>) => void }) => {
+    return (
+        <div className="field-display-settings" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #334155' }}>
+            <div style={{ fontSize: '0.75rem', color: '#6366f1', marginBottom: '8px', fontWeight: 500 }}>Display Settings</div>
+            <div className="inner-row">
+                <div className="inner-group">
+                    <label>Label</label>
+                    <input type="text" value={field.label || ''} onChange={(e) => onUpdate({ label: e.target.value })} placeholder="Field label..." />
+                </div>
+                <div className="inner-group">
+                    <label>Order</label>
+                    <input type="number" value={field.order ?? ''} onChange={(e) => onUpdate({ order: parseInt(e.target.value) || undefined })} placeholder="#" />
+                </div>
+            </div>
+            <div className="inner-group" style={{ marginTop: '8px' }}>
+                <label>Placeholder</label>
+                <input type="text" value={field.placeholder || ''} onChange={(e) => onUpdate({ placeholder: e.target.value })} placeholder="Enter placeholder..." />
+            </div>
+            <div className="inner-row" style={{ marginTop: '8px' }}>
+                <div className="inner-group">
+                    <label>Form Width</label>
+                    <select value={field.formWidth || 'full'} onChange={(e) => onUpdate({ formWidth: e.target.value as 'full' | 'half' | 'third' })}>
+                        <option value="full">Full</option>
+                        <option value="half">Half</option>
+                        <option value="third">Third</option>
+                    </select>
+                </div>
+                <div className="inner-group">
+                    <label>Grid Width</label>
+                    <input type="number" value={field.gridWidth || ''} onChange={(e) => onUpdate({ gridWidth: parseInt(e.target.value) || undefined })} placeholder="px" />
+                </div>
+            </div>
+            <div className="field-options" style={{ marginTop: '8px' }}>
+                <label><input type="checkbox" checked={field.showInGrid !== false} onChange={(e) => onUpdate({ showInGrid: e.target.checked })} /> Show in Grid</label>
+                <label><input type="checkbox" checked={field.showInForm !== false} onChange={(e) => onUpdate({ showInForm: e.target.checked })} /> Show in Form</label>
+                <label><input type="checkbox" checked={field.readOnly || false} onChange={(e) => onUpdate({ readOnly: e.target.checked })} /> Read Only</label>
+            </div>
+        </div>
+    );
+};
+
+// Sub-component for Lookup Settings
+const FieldLookupSettings = ({ field, allEntities, onUpdate }: { field: EntityField; allEntities: EntityData[]; onUpdate: (updates: Partial<EntityField>) => void }) => {
+    return (
+        <div className="field-lookup-settings" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #334155' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <label style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 500 }}>
+                    <input
+                        type="checkbox"
+                        checked={field.isLookup || false}
+                        onChange={(e) => onUpdate({
+                            isLookup: e.target.checked,
+                            lookupConfig: e.target.checked ? { mode: 'dropdown', displayField: 'name' } : undefined
+                        })}
+                    /> Is Lookup (FK)
+                </label>
+            </div>
+            {field.isLookup && (
+                <>
+                    <div className="inner-row">
+                        <div className="inner-group">
+                            <label>Target Entity</label>
+                            <select
+                                value={field.lookupConfig?.targetEntity || ''}
+                                onChange={(e) => onUpdate({
+                                    lookupConfig: { ...field.lookupConfig!, targetEntity: e.target.value }
+                                })}
+                            >
+                                <option value="">Select entity...</option>
+                                {allEntities.map(entity => (
+                                    <option key={entity.name} value={entity.name}>{entity.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="inner-group">
+                            <label>Lookup Mode</label>
+                            <select
+                                value={field.lookupConfig?.mode || 'dropdown'}
+                                onChange={(e) => onUpdate({
+                                    lookupConfig: { ...field.lookupConfig!, mode: e.target.value as 'dropdown' | 'modal' }
+                                })}
+                            >
+                                <option value="dropdown">Dropdown</option>
+                                <option value="modal">Modal Picker</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="inner-group" style={{ marginTop: '8px' }}>
+                        <label>Display Field</label>
+                        <input
+                            type="text"
+                            value={field.lookupConfig?.displayField || ''}
+                            onChange={(e) => onUpdate({
+                                lookupConfig: { ...field.lookupConfig!, displayField: e.target.value }
+                            })}
+                            placeholder="e.g. name"
+                        />
+                    </div>
+                </>
+            )}
         </div>
     );
 };
