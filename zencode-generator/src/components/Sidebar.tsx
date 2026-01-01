@@ -6,10 +6,11 @@ interface SidebarProps {
     selectedEdge: { id: string; data: RelationshipData; sourceName?: string; targetName?: string } | null;
     onUpdateEntity: (id: string, data: EntityData) => void;
     onUpdateEdge: (id: string, data: RelationshipData) => void;
+    onDeleteEntity: (id: string) => void;
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onClose }: SidebarProps) => {
+const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onClose }: SidebarProps) => {
     if (!selectedEntity && !selectedEdge) return null;
 
     if (selectedEdge && !selectedEntity) {
@@ -104,7 +105,16 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
         <div className="sidebar">
             <div className="sidebar-header">
                 <h3>Edit Entity</h3>
-                <button className="btn-icon" onClick={onClose}><X size={18} /></button>
+                <div className="header-actions">
+                    <button
+                        className="btn-icon text-red-400"
+                        onClick={() => { onDeleteEntity(id); onClose(); }}
+                        title="Delete Entity"
+                    >
+                        <Trash2 size={18} />
+                    </button>
+                    <button className="btn-icon" onClick={onClose}><X size={18} /></button>
+                </div>
             </div>
 
             <div className="sidebar-content">

@@ -135,6 +135,16 @@ function App() {
     setEdges((eds) => eds.map((e) => ({ ...e, selected: false })));
   }, [setNodes, setEdges]);
 
+  const deleteEntity = useCallback((id: string) => {
+    setNodes((nds) => nds.filter((node) => node.id !== id));
+    // Also remove any edges connected to this entity
+    setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+  }, [setNodes, setEdges]);
+
+  const deleteEdge = useCallback((id: string) => {
+    setEdges((eds) => eds.filter((edge) => edge.id !== id));
+  }, [setEdges]);
+
   const handleExport = useCallback(() => {
     const data = transformToMetadata(nodes, edges);
     downloadJson(data);
@@ -206,6 +216,7 @@ function App() {
         selectedEdge={selectedEdge}
         onUpdateEntity={updateEntity}
         onUpdateEdge={updateEdge}
+        onDeleteEntity={deleteEntity}
         onClose={clearSelection}
       />
 
