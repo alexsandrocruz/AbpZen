@@ -1,2 +1,0 @@
-        var l = context.GetLocalizer<{{ ProjectInfo.Name }}Resource>();
- 
