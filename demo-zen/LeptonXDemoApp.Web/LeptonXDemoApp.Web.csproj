@@ -48,7 +48,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LeptonXDemoApp.HttpApi.Client\LeptonXDemoApp.HttpApi.Client.csproj" />
-    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.csproj" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>
