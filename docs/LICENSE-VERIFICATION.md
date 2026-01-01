@@ -9,6 +9,7 @@ Este documento detalha a análise de verificação de licença no repositório A
 | Código de licença no fonte | ❌ Não encontrado |
 | Verificação em runtime | ⚠️ No pacote NuGet externo |
 | Pacote responsável | `Volo.Abp.Commercial.Core` |
+| Stub Local | ✅ Implementado em `/nupkgs` |
 | Projetos afetados | 91 de ~230 projetos |
 
 ## 🔍 Análise Detalhada

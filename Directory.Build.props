@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <AbpVersion>9.0.4</AbpVersion>
+  </PropertyGroup>
+</Project>

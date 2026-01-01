@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>LeptonXDemoApp.Web</RootNamespace>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Gdpr.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Chat.SignalR" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Chat.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.CmsKit.Pro.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.FileManagement.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Forms.Web" Version="$(AbpVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Autofac" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Http.Client.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Swashbuckle" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AuditLogging.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.Web.Impersonation" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Pro.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.LanguageManagement.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Saas.Host.Web" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.TextTemplateManagement.Web" Version="$(AbpVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeptonXDemoApp.HttpApi.Client\LeptonXDemoApp.HttpApi.Client.csproj" />
+    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\**\*.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pages\**\*.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

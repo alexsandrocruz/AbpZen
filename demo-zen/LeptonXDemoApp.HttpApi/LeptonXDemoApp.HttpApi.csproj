@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  
+
+  <PropertyGroup><LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>LeptonXDemoApp</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeptonXDemoApp.Application.Contracts\LeptonXDemoApp.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Gdpr.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.SettingManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AuditLogging.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Identity.Pro.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Admin.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.Account.Pro.Public.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Pro.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.LanguageManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Chat.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.CmsKit.Pro.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.FileManagement.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Forms.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Saas.Host.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.LeptonTheme.Management.HttpApi" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.TextTemplateManagement.HttpApi" Version="$(AbpVersion)" />
+  </ItemGroup>
+
+</Project>

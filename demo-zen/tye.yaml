@@ -1,0 +1,34 @@
+name: LeptonX-Lite-ABP-Demo
+services:
+- name: mongodb
+  image: mongo:latest
+  bindings:
+    - port: 27017
+      containerPort: 27017
+
+- name: redis
+  image: redis:latest
+  bindings:
+    - port: 6379
+      containerPort: 6379
+
+- name: httpapi-host
+  project: LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj
+  bindings:
+  - port: 44322
+    protocol: https
+
+- name: web
+  project: LeptonXDemoApp.Web/LeptonXDemoApp.Web.csproj
+  replicas: 1
+  bindings:
+  - port: 44360
+    protocol: https
+
+- name: angular
+  executable: npm
+  args: start
+  workingDirectory: angular
+  bindings:
+  - port: 4200
+    protocol: http

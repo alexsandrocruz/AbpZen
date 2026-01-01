@@ -1,0 +1,75 @@
+﻿@page "/"
+@using Volo.Abp.AspNetCore.Components.Progression
+@inherits LeptonXDemoAppComponentBase
+
+@inject IUiPageProgressService pageProgressService
+
+<div class="row entry-row">
+    <div class="col-auto">
+        <h1 class="content-header-title">Welcome to LeptonXDemoApp!</h1>
+    </div>
+</div>
+<Card>
+    <CardBody>
+        <h2>
+            The Tutorial
+        </h2>
+
+        <p>
+            See the <a href="https://docs.abp.io/en/commercial/latest/tutorials/book-store/part-1?UI=Blazor" target="_blank">Web Application Development Tutorial</a> to learn how to develop
+            web applications with the ABP Commercial and the Blazor UI.
+        </p>
+    </CardBody>
+</Card>
+
+<Card>
+    <CardTitle>
+    </CardTitle>
+    <CardBody>
+        <h2>Page Progress</h2>
+        <Row>
+            <Column>
+                <SelectList TItem="UiPageProgressType"
+                            TValue="UiPageProgressType"
+                            Data="@types"
+                            TextField="@((item)=>item.ToString())"
+                            ValueField="@((item)=>item)"
+                            @bind-SelectedValue="@pageProgressType"
+                            DefaultItemText="Choose a type" />
+
+            </Column>
+            <Column>
+
+                <Button @onclick="IncreaseProgress" Color="Color.Primary">Increase Progress (@progress)</Button>
+            </Column>
+        </Row>
+    </CardBody>
+</Card>
+
+@code {
+    int progress = 0;
+
+    UiPageProgressType[] types = new UiPageProgressType[]{
+        UiPageProgressType.Default,
+        UiPageProgressType.Info,
+        UiPageProgressType.Success,
+        UiPageProgressType.Warning,
+        UiPageProgressType.Error
+    };
+
+    UiPageProgressType pageProgressType = UiPageProgressType.Default;
+
+    Task IncreaseProgress()
+    {
+        progress += 10;
+        if (progress >= 100)
+        {
+            progress = 0;
+        }
+
+        return pageProgressService.Go(progress, options =>
+        {
+            options.Type = pageProgressType;
+        });
+    }
+}
