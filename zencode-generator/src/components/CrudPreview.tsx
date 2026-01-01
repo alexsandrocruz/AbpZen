@@ -201,13 +201,23 @@ function FormPreview({ fields, entityName, allEntities, childGrids }: FormPrevie
             </div>
 
             <div className="ui-form">
-                {fields.map(field => (
-                    <FormField
-                        key={field.id}
-                        field={field}
-                        allEntities={allEntities}
-                    />
-                ))}
+                {fields
+                    // Filter out lookup fields that are shown as child grids
+                    .filter(field => {
+                        if (!field.isLookup) return true;
+                        // Check if this field's target entity is shown as a child grid
+                        const isChildGridEntity = childGrids.some(
+                            cg => cg.childEntity.name === field.lookupConfig?.targetEntity
+                        );
+                        return !isChildGridEntity;
+                    })
+                    .map(field => (
+                        <FormField
+                            key={field.id}
+                            field={field}
+                            allEntities={allEntities}
+                        />
+                    ))}
             </div>
 
             {/* Child Grid Sections */}
@@ -233,11 +243,16 @@ function FormPreview({ fields, entityName, allEntities, childGrids }: FormPrevie
 
 // Child Grid Section Component
 function ChildGridSection({ childEntity, config }: { childEntity: EntityData; config: RelationshipData }) {
+    const [showAddModal, setShowAddModal] = useState(false);
     const childConfig = config.childGridConfig;
     const childFields = sortFieldsByOrder(childEntity.fields).filter(f => f.showInGrid !== false);
     // Exclude the FK field pointing back to parent
     const displayFields = childFields.filter(f => !f.isLookup || f.lookupConfig?.targetEntity !== config.targetNavigationName);
     const sampleChildData = generateSampleData(displayFields);
+
+    // Get lookup fields (for the add modal)
+    const lookupFields = childEntity.fields.filter(f => f.isLookup);
+    const editableFields = childEntity.fields.filter(f => !f.isLookup && f.showInForm !== false);
 
     return (
         <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #334155' }}>
@@ -246,7 +261,11 @@ function ChildGridSection({ childEntity, config }: { childEntity: EntityData; co
                     {childConfig?.title || `${childEntity.pluralName}`}
                 </h4>
                 {childConfig?.allowAdd !== false && (
-                    <button className="ui-button ui-button-secondary" style={{ padding: '8px 12px' }}>
+                    <button
+                        className="ui-button ui-button-secondary"
+                        style={{ padding: '8px 12px' }}
+                        onClick={() => setShowAddModal(true)}
+                    >
                         <Plus size={16} />
                         Add Item
                     </button>
@@ -295,6 +314,117 @@ function ChildGridSection({ childEntity, config }: { childEntity: EntityData; co
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Add Item Modal */}
+            {showAddModal && (
+                <AddChildItemModal
+                    childEntity={childEntity}
+                    lookupFields={lookupFields}
+                    editableFields={editableFields}
+                    onClose={() => setShowAddModal(false)}
+                />
+            )}
+        </div>
+    );
+}
+
+// Add Child Item Modal Component
+function AddChildItemModal({
+    childEntity,
+    lookupFields,
+    editableFields,
+    onClose
+}: {
+    childEntity: EntityData;
+    lookupFields: EntityField[];
+    editableFields: EntityField[];
+    onClose: () => void;
+}) {
+    return (
+        <div className="ui-dialog-overlay" onClick={onClose} style={{ zIndex: 200 }}>
+            <div
+                className="ui-dialog"
+                style={{ width: '500px', zIndex: 201 }}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="ui-dialog-header">
+                    <h2 className="ui-dialog-title">
+                        Add {childEntity.name}
+                    </h2>
+                    <button className="btn-icon" onClick={onClose}>
+                        <X size={20} />
+                    </button>
+                </div>
+
+                <div className="ui-dialog-content">
+                    <div className="ui-form">
+                        {/* Lookup fields first (e.g., Product selection) */}
+                        {lookupFields.map(field => (
+                            <div key={field.id} className="ui-form-group full">
+                                <label className="ui-label">
+                                    {field.label || field.name}
+                                    {field.isRequired && <span style={{ color: '#ef4444' }}> *</span>}
+                                </label>
+                                {field.lookupConfig?.mode === 'modal' ? (
+                                    <div className="ui-lookup-field">
+                                        <input
+                                            type="text"
+                                            className="ui-input"
+                                            placeholder={`Search ${field.lookupConfig?.targetEntity}...`}
+                                            readOnly
+                                        />
+                                        <button className="ui-lookup-button" title="Search">
+                                            <Search size={16} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <select className="ui-select">
+                                        <option value="">Select {field.lookupConfig?.targetEntity}...</option>
+                                        <option value="1">Sample Item 1 - R$ 150.00</option>
+                                        <option value="2">Sample Item 2 - R$ 299.99</option>
+                                        <option value="3">Sample Item 3 - R$ 50.00</option>
+                                    </select>
+                                )}
+                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>
+                                    💡 O preço será preenchido automaticamente ao selecionar
+                                </p>
+                            </div>
+                        ))}
+
+                        {/* Editable fields (e.g., Quantity, Price) */}
+                        {editableFields.map(field => (
+                            <div key={field.id} className={`ui-form-group ${field.formWidth || 'half'}`}>
+                                <label className="ui-label">
+                                    {field.label || field.name}
+                                    {field.isRequired && <span style={{ color: '#ef4444' }}> *</span>}
+                                </label>
+                                <input
+                                    type={field.type === 'decimal' || field.type === 'int' ? 'number' : 'text'}
+                                    className="ui-input"
+                                    placeholder={field.placeholder || `Enter ${field.label || field.name}...`}
+                                    defaultValue={field.name.toLowerCase().includes('price') ? '150.00' : ''}
+                                    readOnly={field.name.toLowerCase().includes('price')}
+                                />
+                                {field.name.toLowerCase().includes('price') && (
+                                    <p style={{ fontSize: '0.75rem', color: '#f59e0b', marginTop: '4px' }}>
+                                        🔒 Valor herdado do produto selecionado
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="ui-dialog-footer">
+                    <button className="ui-button ui-button-secondary" onClick={onClose}>
+                        Cancel
+                    </button>
+                    <button className="ui-button ui-button-primary" onClick={onClose}>
+                        <Plus size={16} />
+                        Add Item
+                    </button>
+                </div>
             </div>
         </div>
     );
