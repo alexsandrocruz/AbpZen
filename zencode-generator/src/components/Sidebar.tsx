@@ -8,6 +8,7 @@ interface SidebarProps {
     allEntities: EntityData[];
     onUpdateEntity: (id: string, data: EntityData) => void;
     onUpdateEdge: (id: string, data: RelationshipData) => void;
+    onChangeRelationType: (edgeId: string, newType: RelationshipData['type']) => void;
     onDeleteEntity: (id: string) => void;
     onDeleteEdge: (id: string) => void;
     onDuplicateEntity: (id: string) => void;
@@ -15,7 +16,7 @@ interface SidebarProps {
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onDuplicateEntity, onPreviewEntity, onClose }: SidebarProps) => {
+const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, onUpdateEdge, onChangeRelationType, onDeleteEntity, onDeleteEdge, onDuplicateEntity, onPreviewEntity, onClose }: SidebarProps) => {
     if (!selectedEntity && !selectedEdge) return null;
 
     if (selectedEdge && !selectedEntity) {
@@ -48,12 +49,17 @@ const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, on
                             <label>Relation Type</label>
                             <select
                                 value={data.type}
-                                onChange={(e) => onUpdateEdge(id, { ...data, type: e.target.value as any })}
+                                onChange={(e) => onChangeRelationType(id, e.target.value as RelationshipData['type'])}
                             >
                                 <option value="one-to-many">One to Many (1..*)</option>
                                 <option value="many-to-many">Many to Many (*..*)</option>
                                 <option value="one-to-one">One to One (1..1)</option>
                             </select>
+                            {data.type === 'many-to-many' && data.junctionConfig && (
+                                <p style={{ fontSize: '0.75rem', color: '#22c55e', marginTop: '4px' }}>
+                                    ✓ Junction table "{data.junctionConfig.tableName}" created
+                                </p>
+                            )}
                         </div>
                         <div className="form-group">
                             <label>Source Navigation Name</label>

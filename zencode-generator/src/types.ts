@@ -70,6 +70,14 @@ export interface ChildGridConfig {
     defaultExpanded?: boolean;           // Start expanded
 }
 
+export interface JunctionConfig {
+    tableName: string;                   // Junction table name (e.g., "AlunoTurma")
+    junctionEntityId?: string;           // ID of the generated junction entity node
+    additionalFields?: EntityField[];    // Extra fields (e.g., DataMatricula)
+    showInSource?: boolean;              // Show grid in source entity form
+    showInTarget?: boolean;              // Show grid in target entity form
+}
+
 export interface RelationshipData {
     type: RelationshipType;
     sourceNavigationName: string;
@@ -80,6 +88,9 @@ export interface RelationshipData {
     // Master-Detail (Child Grid) configuration
     isChildGrid?: boolean;               // Is this a master-detail relationship?
     childGridConfig?: ChildGridConfig;   // Configuration for the child grid
+
+    // Many-to-Many (N:N) configuration
+    junctionConfig?: JunctionConfig;     // Configuration for junction table
 }
 
 export interface ZenMetadata {

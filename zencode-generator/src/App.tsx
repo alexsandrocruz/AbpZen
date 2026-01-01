@@ -70,7 +70,11 @@ function App() {
 
       if (!sourceNode || !targetNode) return;
 
+      const sourceEntityName = sourceNode.data.name;
       const targetEntityName = targetNode.data.name;
+
+      // For now, default to one-to-many (user can change in sidebar)
+      // We'll handle many-to-many case separately
       const fkFieldName = `${targetEntityName}Id`;
 
       // Check if FK field already exists
@@ -81,7 +85,7 @@ function App() {
       // Create the relationship edge
       const defaultData: RelationshipData = {
         type: 'one-to-many',
-        sourceNavigationName: pluralize(sourceNode.data.name),
+        sourceNavigationName: pluralize(sourceEntityName),
         targetNavigationName: targetEntityName,
         isRequired: false,
       };
@@ -122,6 +126,158 @@ function App() {
     },
     [setEdges, setNodes, nodes]
   );
+
+  // Handler for changing relationship type (called from sidebar)
+  const handleRelationshipTypeChange = useCallback((edgeId: string, newType: RelationshipData['type']) => {
+    const edge = edges.find(e => e.id === edgeId);
+    if (!edge || !edge.data) return;
+
+    const sourceNode = nodes.find(n => n.id === edge.source);
+    const targetNode = nodes.find(n => n.id === edge.target);
+    if (!sourceNode || !targetNode) return;
+
+    const sourceEntityName = sourceNode.data.name;
+    const targetEntityName = targetNode.data.name;
+
+    if (newType === 'many-to-many' && edge.data.type !== 'many-to-many') {
+      // Generate junction table for N:N
+      const junctionName = `${sourceEntityName}${targetEntityName}`;
+      const junctionId = `entity_junction_${Date.now()}`;
+
+      // Create the junction entity
+      const junctionEntity: EntityData = {
+        name: junctionName,
+        pluralName: pluralize(junctionName),
+        tableName: pluralize(junctionName),
+        namespace: sourceNode.data.namespace,
+        baseClass: 'FullAuditedAggregateRoot',
+        isMaster: false,
+        fields: [
+          {
+            id: `field_${Date.now()}_1`,
+            name: `${sourceEntityName}Id`,
+            type: 'guid',
+            isRequired: true,
+            isNullable: false,
+            isFilterable: true,
+            isTextArea: false,
+            isLookup: true,
+            label: sourceEntityName,
+            lookupConfig: {
+              mode: 'dropdown',
+              targetEntity: sourceEntityName,
+              displayField: 'name',
+            },
+          },
+          {
+            id: `field_${Date.now()}_2`,
+            name: `${targetEntityName}Id`,
+            type: 'guid',
+            isRequired: true,
+            isNullable: false,
+            isFilterable: true,
+            isTextArea: false,
+            isLookup: true,
+            label: targetEntityName,
+            lookupConfig: {
+              mode: 'dropdown',
+              targetEntity: targetEntityName,
+              displayField: 'name',
+            },
+          },
+        ],
+      };
+
+      // Position the junction between source and target
+      const junctionPosition = {
+        x: (sourceNode.position.x + targetNode.position.x) / 2,
+        y: (sourceNode.position.y + targetNode.position.y) / 2 + 100,
+      };
+
+      // Create the junction node
+      const junctionNode: Node<EntityData> = {
+        id: junctionId,
+        type: 'entity',
+        position: junctionPosition,
+        data: junctionEntity,
+      };
+
+      // Add junction node
+      setNodes((nds) => [...nds, junctionNode]);
+
+      // Update the original edge with junction config
+      setEdges((eds) => eds.map(e => {
+        if (e.id === edgeId) {
+          return {
+            ...e,
+            data: {
+              ...e.data!,
+              type: 'many-to-many' as const,
+              junctionConfig: {
+                tableName: junctionName,
+                junctionEntityId: junctionId,
+                showInSource: true,
+                showInTarget: true,
+              },
+            },
+          };
+        }
+        return e;
+      }));
+
+      // Create two 1:N edges from junction to each entity
+      const edge1: Edge = {
+        id: `edge_junction_${Date.now()}_1`,
+        source: junctionId,
+        target: edge.source,
+        type: 'relation',
+        data: {
+          type: 'one-to-many',
+          sourceNavigationName: pluralize(junctionName),
+          targetNavigationName: sourceEntityName,
+          isRequired: true,
+          isChildGrid: true,
+          childGridConfig: {
+            title: pluralize(targetEntityName),
+            allowAdd: true,
+            allowRemove: true,
+            allowEdit: false,
+          },
+        } as RelationshipData,
+      };
+
+      const edge2: Edge = {
+        id: `edge_junction_${Date.now()}_2`,
+        source: junctionId,
+        target: edge.target,
+        type: 'relation',
+        data: {
+          type: 'one-to-many',
+          sourceNavigationName: pluralize(junctionName),
+          targetNavigationName: targetEntityName,
+          isRequired: true,
+          isChildGrid: true,
+          childGridConfig: {
+            title: pluralize(sourceEntityName),
+            allowAdd: true,
+            allowRemove: true,
+            allowEdit: false,
+          },
+        } as RelationshipData,
+      };
+
+      setEdges((eds) => [...eds, edge1, edge2]);
+
+    } else {
+      // Just update the type
+      setEdges((eds) => eds.map(e => {
+        if (e.id === edgeId) {
+          return { ...e, data: { ...e.data!, type: newType } };
+        }
+        return e;
+      }));
+    }
+  }, [edges, nodes, setNodes, setEdges]);
 
   const updateEntity = useCallback((id: string, data: EntityData) => {
     setNodes((nds) =>
@@ -383,6 +539,7 @@ function App() {
         allEntities={nodes.map(n => n.data)}
         onUpdateEntity={updateEntity}
         onUpdateEdge={updateEdge}
+        onChangeRelationType={handleRelationshipTypeChange}
         onDeleteEntity={deleteEntity}
         onDeleteEdge={deleteEdge}
         onDuplicateEntity={duplicateEntity}
