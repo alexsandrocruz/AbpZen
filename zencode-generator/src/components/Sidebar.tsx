@@ -1,4 +1,4 @@
-import { Plus, Trash2, X } from 'lucide-react';
+import { Plus, Trash2, X, Copy } from 'lucide-react';
 import type { EntityData, EntityField, FieldType, RelationshipData } from '../types';
 
 interface SidebarProps {
@@ -8,10 +8,11 @@ interface SidebarProps {
     onUpdateEdge: (id: string, data: RelationshipData) => void;
     onDeleteEntity: (id: string) => void;
     onDeleteEdge: (id: string) => void;
+    onDuplicateEntity: (id: string) => void;
     onClose: () => void;
 }
 
-const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onClose }: SidebarProps) => {
+const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, onDeleteEntity, onDeleteEdge, onDuplicateEntity, onClose }: SidebarProps) => {
     if (!selectedEntity && !selectedEdge) return null;
 
     if (selectedEdge && !selectedEntity) {
@@ -116,6 +117,13 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
             <div className="sidebar-header">
                 <h3>Edit Entity</h3>
                 <div className="header-actions">
+                    <button
+                        className="btn-icon text-blue-400"
+                        onClick={() => { onDuplicateEntity(id); }}
+                        title="Duplicate Entity"
+                    >
+                        <Copy size={18} />
+                    </button>
                     <button
                         className="btn-icon text-red-400"
                         onClick={() => { onDeleteEntity(id); onClose(); }}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -11,7 +11,7 @@ import ReactFlow, {
   type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, FileJson, Upload } from 'lucide-react';
+import { Plus, Download, FileJson, Upload, Undo2, Redo2, Save, FolderOpen } from 'lucide-react';
 import { useState } from 'react';
 
 import EntityNode from './components/EntityNode';
@@ -21,6 +21,8 @@ import MetadataPreview from './components/MetadataPreview';
 import ImportSqlModal from './components/ImportSqlModal';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
+import { useHistory } from './hooks/useHistory';
+import { createProjectFile, saveProjectToFile, loadProjectFromFile } from './utils/projectFile';
 import './App.css';
 
 const nodeTypes = {
@@ -40,6 +42,19 @@ function App() {
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
+  const [projectName, setProjectName] = useState('Untitled');
+
+  // Undo/Redo history
+  const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialNodes, initialEdges);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Track changes for undo
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      pushState(nodes, edges);
+    }, 500); // Debounce to avoid too many snapshots
+    return () => clearTimeout(timer);
+  }, [nodes, edges, pushState]);
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -169,9 +184,90 @@ function App() {
     setNodes((nds) => nds.concat(newNodes));
   }, [setNodes]);
 
+  // Undo handler
+  const handleUndo = useCallback(() => {
+    const state = undo();
+    if (state) {
+      setNodes(state.nodes);
+      setEdges(state.edges);
+    }
+  }, [undo, setNodes, setEdges]);
+
+  // Redo handler
+  const handleRedo = useCallback(() => {
+    const state = redo();
+    if (state) {
+      setNodes(state.nodes);
+      setEdges(state.edges);
+    }
+  }, [redo, setNodes, setEdges]);
+
+  // Save project
+  const handleSave = useCallback(() => {
+    let name = projectName;
+    if (name === 'Untitled' || !name) {
+      const input = prompt('Digite o nome do projeto:', 'MeuProjeto');
+      if (!input) return; // User cancelled
+      name = input;
+      setProjectName(name);
+    }
+    const project = createProjectFile(name, nodes, edges);
+    saveProjectToFile(project);
+  }, [projectName, nodes, edges]);
+
+  // Load project
+  const handleLoad = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const project = await loadProjectFromFile(file);
+      setNodes(project.nodes);
+      setEdges(project.edges);
+      setProjectName(project.name);
+    } catch (error) {
+      alert('Erro ao carregar projeto: ' + (error as Error).message);
+    }
+
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [setNodes, setEdges]);
+
+  // Duplicate entity
+  const duplicateEntity = useCallback((id: string) => {
+    const node = nodes.find(n => n.id === id);
+    if (!node) return;
+
+    const newId = `entity_${Date.now()}`;
+    const newName = `${node.data.name}Copy`;
+    const newNode: Node<EntityData> = {
+      id: newId,
+      type: 'entity',
+      data: {
+        ...node.data,
+        name: newName,
+        pluralName: `${newName}s`,
+        tableName: `${newName}s`,
+        fields: node.data.fields.map(f => ({ ...f, id: `field_${Date.now()}_${Math.random().toString(36).substr(2, 5)}` }))
+      },
+      position: { x: node.position.x + 50, y: node.position.y + 50 },
+    };
+    setNodes((nds) => nds.concat(newNode));
+  }, [nodes, setNodes]);
+
   return (
     <div className="app-container">
       <div className="controls-panel">
+        <div className="controls-row">
+          <button className="btn-icon-sm" onClick={handleUndo} disabled={!canUndo} title="Undo">
+            <Undo2 size={18} />
+          </button>
+          <button className="btn-icon-sm" onClick={handleRedo} disabled={!canRedo} title="Redo">
+            <Redo2 size={18} />
+          </button>
+        </div>
         <button className="btn-primary" onClick={addEntity}>
           <Plus size={18} />
           Add Entity
@@ -180,6 +276,22 @@ function App() {
           <Upload size={18} />
           Import SQL
         </button>
+        <button className="btn-secondary" onClick={handleSave}>
+          <Save size={18} />
+          Save Project
+        </button>
+        <button className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
+          <FolderOpen size={18} />
+          Load Project
+        </button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept=".zen,.json"
+          onChange={handleLoad}
+          style={{ display: 'none' }}
+        />
+        <hr className="controls-divider" />
         <button className="btn-secondary" onClick={handlePreview}>
           <FileJson size={18} />
           Preview
@@ -218,23 +330,28 @@ function App() {
         onUpdateEdge={updateEdge}
         onDeleteEntity={deleteEntity}
         onDeleteEdge={deleteEdge}
+        onDuplicateEntity={duplicateEntity}
         onClose={clearSelection}
       />
 
-      {showPreview && generatedMetadata && (
-        <MetadataPreview
-          metadata={generatedMetadata}
-          onClose={() => setShowPreview(false)}
-        />
-      )}
+      {
+        showPreview && generatedMetadata && (
+          <MetadataPreview
+            metadata={generatedMetadata}
+            onClose={() => setShowPreview(false)}
+          />
+        )
+      }
 
-      {showImportModal && (
-        <ImportSqlModal
-          onImport={handleImportSql}
-          onClose={() => setShowImportModal(false)}
-        />
-      )}
-    </div>
+      {
+        showImportModal && (
+          <ImportSqlModal
+            onImport={handleImportSql}
+            onClose={() => setShowImportModal(false)}
+          />
+        )
+      }
+    </div >
   );
 }
 
