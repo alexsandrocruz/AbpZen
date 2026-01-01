@@ -3,7 +3,7 @@
   
 
   <PropertyGroup><LangVersion>latest</LangVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>LeptonXDemoApp</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <IsPackable>false</IsPackable>

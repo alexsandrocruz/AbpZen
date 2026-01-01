@@ -12,6 +12,9 @@
     <ProjectReference Include="..\Volo.Payment.Domain\Volo.Payment.Domain.csproj" />
     <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
     <ProjectReference Include="..\Volo.Payment.TwoCheckout.Domain.Shared\Volo.Payment.TwoCheckout.Domain.Shared.csproj" />
+  
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BouncyCastle.Cryptography" />
   </ItemGroup>
 
 </Project>

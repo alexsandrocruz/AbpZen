@@ -17,6 +17,7 @@
     <ItemGroup>
       <PackageReference Include="PayPalCheckoutSdk" />
       <PackageReference Include="PayPalHttp" />
+      <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     
 </Project>

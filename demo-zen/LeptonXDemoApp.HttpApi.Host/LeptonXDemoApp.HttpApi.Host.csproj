@@ -31,7 +31,7 @@
     <ProjectReference Include="..\LeptonXDemoApp.Application\LeptonXDemoApp.Application.csproj" />
     <ProjectReference Include="..\LeptonXDemoApp.MongoDB\LeptonXDemoApp.MongoDB.csproj" />
     <ProjectReference Include="..\LeptonXDemoApp.HttpApi\LeptonXDemoApp.HttpApi.csproj" />
-    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.csproj" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

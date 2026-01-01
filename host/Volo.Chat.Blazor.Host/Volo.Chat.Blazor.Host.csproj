@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.SettingManagement.Blazor.WebAssembly" VersionOverride="9.0.4" />
-    <PackageReference Include="Volo.Saas.Host.Blazor.WebAssembly/Volo.Saas.Host.Blazor.WebAssembly" VersionOverride="9.0.4" />
+    <PackageReference Include="Volo.Saas.Host.Blazor.WebAssembly" VersionOverride="9.0.4" />
     <PackageReference Include="Volo.Abp.Identity.Pro.Blazor.WebAssembly" VersionOverride="9.0.4" />
     <PackageReference Include="Volo.Abp.Account.Pro.Admin.Blazor.WebAssembly" VersionOverride="9.0.4" />
     <PackageReference Include="Volo.Abp.IdentityServer.Blazor.WebAssembly" VersionOverride="9.0.4" />

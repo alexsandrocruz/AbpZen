@@ -3,7 +3,8 @@
   
   
 
-  <PropertyGroup><LangVersion>latest</LangVersion>
+  <PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally><LangVersion>latest</LangVersion><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Volo.Abp.LeptonX.Shared</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>

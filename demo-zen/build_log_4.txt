@@ -1,0 +1,57 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.09kB done
+#1 DONE 0.0s
+
+#2 [httpapi-host internal] load build definition from Dockerfile
+#2 transferring dockerfile: 676B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from Dockerfile
+#3 transferring dockerfile: 631B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#4 DONE 0.4s
+
+#5 [web internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#5 DONE 0.4s
+
+#6 [httpapi-host internal] load .dockerignore
+#6 transferring context: 213B done
+#6 DONE 0.0s
+
+#7 [web base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5 done
+#7 DONE 0.0s
+
+#8 [web build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593
+#8 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593 done
+#8 DONE 0.0s
+
+#9 [web base 2/2] WORKDIR /app
+#9 CACHED
+
+#10 [web final 1/2] WORKDIR /app
+#10 CACHED
+
+#11 [web internal] load build context
+#11 transferring context: 13.32MB 0.2s done
+#11 DONE 0.2s
+
+#12 [web build 2/7] WORKDIR /src
+#12 CACHED
+
+#13 [web build 3/7] COPY nupkgs /nupkgs
+#13 DONE 0.1s
+
+#14 [web build 4/7] COPY . .
+#14 DONE 0.1s
+
+#15 [web build 5/7] WORKDIR /src/LeptonXDemoApp.Web
+#15 DONE 0.1s
+
+#16 [httpapi-host build 5/7] WORKDIR /src/LeptonXDemoApp.HttpApi.Host
+#16 DONE 0.1s
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 0.575   Determining projects to restore...
