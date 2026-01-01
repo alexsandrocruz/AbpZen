@@ -299,6 +299,7 @@ const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, on
                                         <option value="guid">guid</option>
                                         <option value="datetime">datetime</option>
                                         <option value="decimal">decimal</option>
+                                        <option value="enum">enum</option>
                                     </select>
                                     <button className="btn-icon text-red-400" onClick={() => removeField(field.id)}>
                                         <Trash2 size={14} />
@@ -337,6 +338,13 @@ const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, on
                                         <FieldLookupSettings
                                             field={field}
                                             allEntities={allEntities}
+                                            onUpdate={(updates: Partial<EntityField>) => updateField(field.id, updates)}
+                                        />
+                                    )}
+                                    {/* Enum Settings */}
+                                    {field.type === 'enum' && (
+                                        <FieldEnumSettings
+                                            field={field}
                                             onUpdate={(updates: Partial<EntityField>) => updateField(field.id, updates)}
                                         />
                                     )}
@@ -451,6 +459,140 @@ const FieldLookupSettings = ({ field, allEntities, onUpdate }: { field: EntityFi
                     </div>
                 </>
             )}
+        </div>
+    );
+};
+
+// Sub-component for Enum Settings
+const FieldEnumSettings = ({ field, onUpdate }: { field: EntityField; onUpdate: (updates: Partial<EntityField>) => void }) => {
+    const enumConfig = field.enumConfig || { enumName: `${field.name}Type`, options: [] };
+
+    const updateEnumConfig = (updates: Partial<typeof enumConfig>) => {
+        onUpdate({
+            enumConfig: { ...enumConfig, ...updates }
+        });
+    };
+
+    const addOption = () => {
+        const nextValue = enumConfig.options.length;
+        const newOption = {
+            value: nextValue,
+            name: `Option${nextValue + 1}`,
+            displayText: `Option ${nextValue + 1}`
+        };
+        updateEnumConfig({ options: [...enumConfig.options, newOption] });
+    };
+
+    const updateOption = (index: number, updates: Partial<typeof enumConfig.options[0]>) => {
+        const newOptions = [...enumConfig.options];
+        newOptions[index] = { ...newOptions[index], ...updates };
+        updateEnumConfig({ options: newOptions });
+    };
+
+    const removeOption = (index: number) => {
+        const newOptions = enumConfig.options.filter((_, i) => i !== index);
+        updateEnumConfig({ options: newOptions });
+    };
+
+    return (
+        <div className="field-enum-settings" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #334155' }}>
+            <div style={{ fontSize: '0.75rem', color: '#f59e0b', marginBottom: '8px', fontWeight: 500 }}>Enum Settings</div>
+
+            <div className="inner-group">
+                <label>Enum Name</label>
+                <input
+                    type="text"
+                    value={enumConfig.enumName}
+                    onChange={(e) => updateEnumConfig({ enumName: e.target.value })}
+                    placeholder="e.g. OrderStatus"
+                />
+            </div>
+
+            <div style={{ marginTop: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Options</label>
+                    <button
+                        onClick={addOption}
+                        style={{
+                            padding: '4px 8px',
+                            fontSize: '0.7rem',
+                            background: '#334155',
+                            border: '1px solid #475569',
+                            borderRadius: '4px',
+                            color: '#f8fafc',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        + Add Option
+                    </button>
+                </div>
+
+                {enumConfig.options.length === 0 ? (
+                    <p style={{ fontSize: '0.75rem', color: '#64748b', fontStyle: 'italic' }}>
+                        No options defined. Click "Add Option" to add enum values.
+                    </p>
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {enumConfig.options.map((option, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    padding: '8px',
+                                    background: '#1e293b',
+                                    borderRadius: '6px',
+                                    border: '1px solid #334155',
+                                }}
+                            >
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <div style={{ flex: '0 0 40px' }}>
+                                        <label style={{ fontSize: '0.65rem', color: '#64748b' }}>Value</label>
+                                        <input
+                                            type="number"
+                                            value={option.value}
+                                            onChange={(e) => updateOption(index, { value: parseInt(e.target.value) || 0 })}
+                                            style={{ width: '100%', padding: '4px', fontSize: '0.75rem' }}
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <label style={{ fontSize: '0.65rem', color: '#64748b' }}>Name (C#)</label>
+                                        <input
+                                            type="text"
+                                            value={option.name}
+                                            onChange={(e) => updateOption(index, { name: e.target.value })}
+                                            placeholder="Active"
+                                            style={{ width: '100%', padding: '4px', fontSize: '0.75rem' }}
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <label style={{ fontSize: '0.65rem', color: '#64748b' }}>Display</label>
+                                        <input
+                                            type="text"
+                                            value={option.displayText}
+                                            onChange={(e) => updateOption(index, { displayText: e.target.value })}
+                                            placeholder="Ativo"
+                                            style={{ width: '100%', padding: '4px', fontSize: '0.75rem' }}
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={() => removeOption(index)}
+                                        style={{
+                                            padding: '4px',
+                                            background: 'transparent',
+                                            border: 'none',
+                                            color: '#ef4444',
+                                            cursor: 'pointer',
+                                            marginTop: '16px',
+                                        }}
+                                        title="Remove option"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

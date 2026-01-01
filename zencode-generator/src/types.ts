@@ -1,4 +1,4 @@
-export type FieldType = 'string' | 'int' | 'bool' | 'guid' | 'datetime' | 'long' | 'double' | 'decimal' | 'float' | 'char' | 'byte' | 'short';
+export type FieldType = 'string' | 'int' | 'bool' | 'guid' | 'datetime' | 'long' | 'double' | 'decimal' | 'float' | 'char' | 'byte' | 'short' | 'enum';
 
 export type EntityBaseClass =
     | 'Entity'
@@ -14,6 +14,23 @@ export interface LookupConfig {
     displayField: string;       // Field to display (e.g., "name")
     searchFields?: string[];    // Fields to search
     valueField?: string;        // Field to save (default: "id")
+}
+
+/**
+ * Enum option definition
+ */
+export interface EnumOption {
+    value: number;              // The numeric value (0, 1, 2, ...)
+    name: string;               // The C# enum name (e.g., "Active", "Inactive")
+    displayText: string;        // The localized display text (e.g., "Ativo", "Inativo")
+}
+
+/**
+ * Enum field configuration
+ */
+export interface EnumConfig {
+    enumName: string;           // The enum type name (e.g., "OrderStatus")
+    options: EnumOption[];      // The enum options
 }
 
 export interface EntityField {
@@ -47,6 +64,9 @@ export interface EntityField {
     // Relationship Lookup Configuration (for FK fields)
     isLookup?: boolean;          // Is this a lookup/FK field?
     lookupConfig?: LookupConfig;
+
+    // Enum Configuration (for enum fields)
+    enumConfig?: EnumConfig;     // Config when type is 'enum'
 }
 
 export interface EntityData {

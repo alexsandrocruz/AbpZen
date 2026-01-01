@@ -15,6 +15,12 @@ import { getAppServiceTemplate, getAppServiceInterfaceTemplate } from './templat
 import { getDtoTemplate, getCreateUpdateDtoTemplate, getGetListInputTemplate } from './templates/dto';
 import { getDbContextExtensionsTemplate } from './templates/efcore';
 import { getPermissionsTemplate } from './templates/permissions';
+import { getEntityTemplate, getEntityConstsTemplate } from './templates/entity';
+import { getRepositoryInterfaceTemplate, getRepositoryImplementationTemplate } from './templates/repository';
+import { getAutoMapperProfileTemplate } from './templates/automapper';
+import { getMenuContributorTemplate } from './templates/menu';
+import { getLocalizationJsonTemplate, getLocalizationJsonPtBrTemplate } from './templates/localization';
+import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum';
 
 /**
  * Context passed to templates
@@ -106,20 +112,52 @@ export class CodeGenerator {
         const ctx = this.createContext(entity, projectName, projectNamespace);
         const files: GeneratedFile[] = [];
 
-        // Application layer
+        // ============ DOMAIN LAYER ============
+        // Entity class
+        files.push({
+            path: `${projectNamespace}.Domain/${entity.name}/${entity.name}.cs`,
+            content: await this.engine.parseAndRender(getEntityTemplate(), ctx),
+            layer: 'Domain',
+        });
+
+        // Entity consts
+        files.push({
+            path: `${projectNamespace}.Domain/${entity.name}/${entity.name}Consts.cs`,
+            content: await this.engine.parseAndRender(getEntityConstsTemplate(), ctx),
+            layer: 'Domain',
+        });
+
+        // Repository interface
+        files.push({
+            path: `${projectNamespace}.Domain/${entity.name}/I${entity.name}Repository.cs`,
+            content: await this.engine.parseAndRender(getRepositoryInterfaceTemplate(), ctx),
+            layer: 'Domain',
+        });
+
+        // ============ APPLICATION LAYER ============
+        // AppService
         files.push({
             path: `${projectNamespace}.Application/${entity.name}/${entity.name}AppService.cs`,
             content: await this.engine.parseAndRender(getAppServiceTemplate(), ctx),
             layer: 'Application',
         });
 
-        // Application.Contracts layer
+        // AutoMapper profile
+        files.push({
+            path: `${projectNamespace}.Application/${entity.name}/${entity.name}AutoMapperProfile.cs`,
+            content: await this.engine.parseAndRender(getAutoMapperProfileTemplate(), ctx),
+            layer: 'Application',
+        });
+
+        // ============ APPLICATION.CONTRACTS LAYER ============
+        // AppService interface
         files.push({
             path: `${projectNamespace}.Application.Contracts/${entity.name}/I${entity.name}AppService.cs`,
             content: await this.engine.parseAndRender(getAppServiceInterfaceTemplate(), ctx),
             layer: 'Application.Contracts',
         });
 
+        // DTOs
         files.push({
             path: `${projectNamespace}.Application.Contracts/${entity.name}/Dtos/${entity.name}Dto.cs`,
             content: await this.engine.parseAndRender(getDtoTemplate(), ctx),
@@ -145,12 +183,73 @@ export class CodeGenerator {
             layer: 'Application.Contracts',
         });
 
-        // EF Core
+        // ============ EF CORE LAYER ============
+        // DbContext extensions
         files.push({
-            path: `${projectNamespace}.EntityFrameworkCore/${entity.name}DbContextExtensions.cs`,
+            path: `${projectNamespace}.EntityFrameworkCore/${entity.name}/${entity.name}DbContextExtensions.cs`,
             content: await this.engine.parseAndRender(getDbContextExtensionsTemplate(), ctx),
             layer: 'EntityFrameworkCore',
         });
+
+        // Repository implementation
+        files.push({
+            path: `${projectNamespace}.EntityFrameworkCore/${entity.name}/Ef${entity.name}Repository.cs`,
+            content: await this.engine.parseAndRender(getRepositoryImplementationTemplate(), ctx),
+            layer: 'EntityFrameworkCore',
+        });
+
+        // ============ WEB LAYER ============
+        // Menu contributor
+        files.push({
+            path: `${projectNamespace}.Web/Menus/${entity.name}MenuContributor.cs`,
+            content: await this.engine.parseAndRender(getMenuContributorTemplate(), ctx),
+            layer: 'Web',
+        });
+
+        // Localization EN
+        files.push({
+            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/en-${entity.name}.json`,
+            content: await this.engine.parseAndRender(getLocalizationJsonTemplate(), ctx),
+            layer: 'Domain',
+        });
+
+        // Localization PT-BR
+        files.push({
+            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/pt-BR-${entity.name}.json`,
+            content: await this.engine.parseAndRender(getLocalizationJsonPtBrTemplate(), ctx),
+            layer: 'Domain',
+        });
+
+        // ============ ENUM FILES (for enum fields) ============
+        const enumFields = entity.fields.filter(f => f.type === 'enum' && f.enumConfig);
+        for (const field of enumFields) {
+            const enumCtx = {
+                project: ctx.project,
+                enumName: field.enumConfig!.enumName,
+                options: field.enumConfig!.options,
+            };
+
+            // Enum class
+            files.push({
+                path: `${projectNamespace}.Domain.Shared/${field.enumConfig!.enumName}.cs`,
+                content: await this.engine.parseAndRender(getEnumTemplate(), enumCtx),
+                layer: 'Domain',
+            });
+
+            // Enum localization EN
+            files.push({
+                path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/en-${field.enumConfig!.enumName}.json`,
+                content: await this.engine.parseAndRender(getEnumLocalizationEnTemplate(), enumCtx),
+                layer: 'Domain',
+            });
+
+            // Enum localization PT-BR
+            files.push({
+                path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/pt-BR-${field.enumConfig!.enumName}.json`,
+                content: await this.engine.parseAndRender(getEnumLocalizationPtBrTemplate(), enumCtx),
+                layer: 'Domain',
+            });
+        }
 
         return files;
     }
