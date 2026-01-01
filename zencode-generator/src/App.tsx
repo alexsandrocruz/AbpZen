@@ -20,6 +20,7 @@ import Sidebar from './components/Sidebar';
 import MetadataPreview from './components/MetadataPreview';
 import ImportSqlModal from './components/ImportSqlModal';
 import CrudPreview from './components/CrudPreview';
+import GenerateCodeModal from './components/GenerateCodeModal';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
@@ -44,6 +45,7 @@ function App() {
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showCrudPreview, setShowCrudPreview] = useState(false);
+  const [showGenerateCode, setShowGenerateCode] = useState(false);
   const [previewEntityId, setPreviewEntityId] = useState<string | null>(null);
   const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
   const [projectName, setProjectName] = useState('Untitled');
@@ -510,6 +512,10 @@ function App() {
           <Download size={18} />
           Export JSON
         </button>
+        <button className="btn-primary" onClick={() => setShowGenerateCode(true)}>
+          <Download size={18} />
+          Generate Code
+        </button>
       </div>
 
       <div className="canvas-container">
@@ -592,6 +598,15 @@ function App() {
           />
         );
       })()}
+
+      {showGenerateCode && (
+        <GenerateCodeModal
+          entities={nodes.map(n => n.data)}
+          projectName={generatedMetadata?.projectName || 'ZenGenerated'}
+          projectNamespace={generatedMetadata?.namespace || 'ZenApp'}
+          onClose={() => setShowGenerateCode(false)}
+        />
+      )}
     </div>
   );
 }

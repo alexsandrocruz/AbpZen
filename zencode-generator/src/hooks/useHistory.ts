@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from 'react';
-import type { Node, Edge } from 'reactflow';
 
 interface HistoryState<T, E> {
     nodes: T[];

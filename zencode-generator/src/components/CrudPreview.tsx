@@ -435,7 +435,7 @@ interface FormFieldProps {
     allEntities: EntityData[];
 }
 
-function FormField({ field, allEntities }: FormFieldProps) {
+function FormField({ field, allEntities: _allEntities }: FormFieldProps) {
     const widthClass = field.formWidth || 'full';
 
     // Get placeholder text
