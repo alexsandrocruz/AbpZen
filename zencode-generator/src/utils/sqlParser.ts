@@ -1,4 +1,5 @@
 import type { EntityData, EntityField, FieldType } from '../types';
+import { pluralize } from './pluralize';
 
 export const parseSqlToEntities = (sql: string): EntityData[] => {
     const entities: EntityData[] = [];
@@ -75,8 +76,8 @@ export const parseSqlToEntities = (sql: string): EntityData[] => {
         if (fields.length > 0) {
             entities.push({
                 name: tableName,
-                pluralName: `${tableName}s`,
-                tableName: tableName,
+                pluralName: pluralize(tableName),
+                tableName: pluralize(tableName),
                 namespace: 'ZenDoctor',
                 baseClass: 'FullAuditedAggregateRoot',
                 isMaster: true,

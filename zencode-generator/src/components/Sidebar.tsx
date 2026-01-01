@@ -1,5 +1,6 @@
 import { Plus, Trash2, X, Copy } from 'lucide-react';
 import type { EntityData, EntityField, FieldType, RelationshipData } from '../types';
+import { pluralize } from '../utils/pluralize';
 
 interface SidebarProps {
     selectedEntity: { id: string; data: EntityData } | null;
@@ -148,8 +149,8 @@ const Sidebar = ({ selectedEntity, selectedEdge, onUpdateEntity, onUpdateEdge, o
                                 onUpdateEntity(id, {
                                     ...data,
                                     name: newName,
-                                    pluralName: `${newName}s`,
-                                    tableName: `${newName}s`
+                                    pluralName: pluralize(newName),
+                                    tableName: pluralize(newName)
                                 });
                             }}
                         />

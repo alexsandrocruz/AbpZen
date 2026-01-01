@@ -23,6 +23,7 @@ import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
 import { createProjectFile, saveProjectToFile, loadProjectFromFile } from './utils/projectFile';
+import { pluralize } from './utils/pluralize';
 import './App.css';
 
 const nodeTypes = {
@@ -92,8 +93,8 @@ function App() {
             data: {
               ...node.data,
               name,
-              pluralName: `${name}s`,
-              tableName: `${name}s`
+              pluralName: pluralize(name),
+              tableName: pluralize(name),
             }
           };
         }
@@ -248,8 +249,8 @@ function App() {
       data: {
         ...node.data,
         name: newName,
-        pluralName: `${newName}s`,
-        tableName: `${newName}s`,
+        pluralName: pluralize(newName),
+        tableName: pluralize(newName),
         fields: node.data.fields.map(f => ({ ...f, id: `field_${Date.now()}_${Math.random().toString(36).substr(2, 5)}` }))
       },
       position: { x: node.position.x + 50, y: node.position.y + 50 },
