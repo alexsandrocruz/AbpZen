@@ -61,12 +61,25 @@ export interface EntityData {
 
 export type RelationshipType = 'one-to-many' | 'many-to-many' | 'one-to-one';
 
+export interface ChildGridConfig {
+    title?: string;                      // Section title (e.g., "Order Items")
+    allowAdd?: boolean;                  // Allow adding new child items
+    allowRemove?: boolean;               // Allow removing child items
+    allowEdit?: boolean;                 // Allow editing child items inline
+    displayFields?: string[];            // Fields to show in the child grid (if empty, show all)
+    defaultExpanded?: boolean;           // Start expanded
+}
+
 export interface RelationshipData {
     type: RelationshipType;
     sourceNavigationName: string;
     targetNavigationName: string;
     isRequired: boolean;
     description?: string;
+
+    // Master-Detail (Child Grid) configuration
+    isChildGrid?: boolean;               // Is this a master-detail relationship?
+    childGridConfig?: ChildGridConfig;   // Configuration for the child grid
 }
 
 export interface ZenMetadata {

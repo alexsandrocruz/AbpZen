@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { X, Search } from 'lucide-react';
-import type { EntityData, EntityField } from '../types';
+import { X, Search, Pencil, Trash2, Plus } from 'lucide-react';
+import type { EntityData, EntityField, RelationshipData } from '../types';
 import './ui/styles.css';
+
+interface ChildRelation {
+    childEntity: EntityData;
+    config: RelationshipData;
+}
 
 interface CrudPreviewProps {
     entity: EntityData;
     allEntities: EntityData[];
+    childRelations: ChildRelation[];
     onClose: () => void;
 }
 
@@ -37,13 +43,16 @@ const sortFieldsByOrder = (fields: EntityField[]): EntityField[] => {
     return [...fields].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 };
 
-export default function CrudPreview({ entity, allEntities, onClose }: CrudPreviewProps) {
+export default function CrudPreview({ entity, allEntities, childRelations, onClose }: CrudPreviewProps) {
     const [activeTab, setActiveTab] = useState<TabType>('grid');
 
     const sortedFields = sortFieldsByOrder(entity.fields);
     const gridFields = sortedFields.filter(f => f.showInGrid !== false);
     const formFields = sortedFields.filter(f => f.showInForm !== false);
     const sampleData = generateSampleData(sortedFields);
+
+    // Get child grids for this entity
+    const childGrids = childRelations.filter(r => r.config.isChildGrid);
 
     return (
         <div className="ui-dialog-overlay" onClick={onClose}>
@@ -89,6 +98,7 @@ export default function CrudPreview({ entity, allEntities, onClose }: CrudPrevie
                             fields={formFields}
                             entityName={entity.name}
                             allEntities={allEntities}
+                            childGrids={childGrids}
                         />
                     )}
                 </div>
@@ -151,12 +161,12 @@ function GridPreview({ fields, data, entityName }: GridPreviewProps) {
                                 </td>
                             ))}
                             <td>
-                                <div style={{ display: 'flex', gap: '4px' }}>
-                                    <button className="ui-button ui-button-ghost" style={{ padding: '4px 8px' }}>
-                                        Edit
+                                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                                    <button className="ui-button ui-button-ghost" style={{ padding: '6px' }} title="Edit">
+                                        <Pencil size={16} />
                                     </button>
-                                    <button className="ui-button ui-button-ghost" style={{ padding: '4px 8px', color: '#ef4444' }}>
-                                        Delete
+                                    <button className="ui-button ui-button-ghost" style={{ padding: '6px', color: '#ef4444' }} title="Delete">
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             </td>
@@ -172,9 +182,10 @@ interface FormPreviewProps {
     fields: EntityField[];
     entityName: string;
     allEntities: EntityData[];
+    childGrids: ChildRelation[];
 }
 
-function FormPreview({ fields, entityName, allEntities }: FormPreviewProps) {
+function FormPreview({ fields, entityName, allEntities, childGrids }: FormPreviewProps) {
     return (
         <div className="preview-form-container">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -199,6 +210,15 @@ function FormPreview({ fields, entityName, allEntities }: FormPreviewProps) {
                 ))}
             </div>
 
+            {/* Child Grid Sections */}
+            {childGrids.map(childGrid => (
+                <ChildGridSection
+                    key={childGrid.childEntity.name}
+                    childEntity={childGrid.childEntity}
+                    config={childGrid.config}
+                />
+            ))}
+
             <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                 <button className="ui-button ui-button-secondary">
                     Cancel
@@ -206,6 +226,75 @@ function FormPreview({ fields, entityName, allEntities }: FormPreviewProps) {
                 <button className="ui-button ui-button-primary">
                     Save Changes
                 </button>
+            </div>
+        </div>
+    );
+}
+
+// Child Grid Section Component
+function ChildGridSection({ childEntity, config }: { childEntity: EntityData; config: RelationshipData }) {
+    const childConfig = config.childGridConfig;
+    const childFields = sortFieldsByOrder(childEntity.fields).filter(f => f.showInGrid !== false);
+    // Exclude the FK field pointing back to parent
+    const displayFields = childFields.filter(f => !f.isLookup || f.lookupConfig?.targetEntity !== config.targetNavigationName);
+    const sampleChildData = generateSampleData(displayFields);
+
+    return (
+        <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #334155' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h4 style={{ margin: 0, fontSize: '1rem', color: '#f8fafc' }}>
+                    {childConfig?.title || `${childEntity.pluralName}`}
+                </h4>
+                {childConfig?.allowAdd !== false && (
+                    <button className="ui-button ui-button-secondary" style={{ padding: '8px 12px' }}>
+                        <Plus size={16} />
+                        Add Item
+                    </button>
+                )}
+            </div>
+
+            <div className="preview-grid-container" style={{ background: '#0f172a' }}>
+                <table className="ui-table">
+                    <thead>
+                        <tr>
+                            {displayFields.map(field => (
+                                <th key={field.id} style={{ width: field.gridWidth ? `${field.gridWidth}px` : 'auto' }}>
+                                    {field.label || field.name}
+                                </th>
+                            ))}
+                            <th style={{ width: '80px' }}>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sampleChildData.slice(0, 2).map((row, idx) => (
+                            <tr key={idx}>
+                                {displayFields.map(field => (
+                                    <td key={field.id}>
+                                        {field.isLookup ? (
+                                            <span style={{ color: '#6366f1' }}>{row[field.name]}</span>
+                                        ) : (
+                                            row[field.name]
+                                        )}
+                                    </td>
+                                ))}
+                                <td>
+                                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                                        {childConfig?.allowEdit !== false && (
+                                            <button className="ui-button ui-button-ghost" style={{ padding: '4px' }} title="Edit">
+                                                <Pencil size={14} />
+                                            </button>
+                                        )}
+                                        {childConfig?.allowRemove !== false && (
+                                            <button className="ui-button ui-button-ghost" style={{ padding: '4px', color: '#ef4444' }} title="Remove">
+                                                <Trash2 size={14} />
+                                            </button>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

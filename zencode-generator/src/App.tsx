@@ -411,10 +411,26 @@ function App() {
       {showCrudPreview && previewEntityId && (() => {
         const previewNode = nodes.find(n => n.id === previewEntityId);
         if (!previewNode) return null;
+
+        // Find child relations where this entity is the SOURCE (parent) and isChildGrid is true
+        // In the relationship Proposta -> ItensProposta, Proposta is source and ItensProposta is target
+        const childRelations = edges
+          .filter(edge => edge.source === previewEntityId && edge.data?.isChildGrid)
+          .map(edge => {
+            const childNode = nodes.find(n => n.id === edge.target);
+            if (!childNode) return null;
+            return {
+              childEntity: childNode.data,
+              config: edge.data!,
+            };
+          })
+          .filter(Boolean) as { childEntity: typeof previewNode.data; config: typeof edges[0]['data'] }[];
+
         return (
           <CrudPreview
             entity={previewNode.data}
             allEntities={nodes.map(n => n.data)}
+            childRelations={childRelations}
             onClose={() => { setShowCrudPreview(false); setPreviewEntityId(null); }}
           />
         );

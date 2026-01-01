@@ -82,6 +82,80 @@ const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, on
                             />
                         </div>
                     </div>
+
+                    {/* Child Grid (Master-Detail) Configuration */}
+                    {data.type === 'one-to-many' && (
+                        <div className="form-section" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #334155' }}>
+                            <div className="form-group flex-row">
+                                <label style={{ color: '#f59e0b', fontWeight: 500 }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={data.isChildGrid || false}
+                                        onChange={(e) => onUpdateEdge(id, {
+                                            ...data,
+                                            isChildGrid: e.target.checked,
+                                            childGridConfig: e.target.checked ? {
+                                                title: `${sourceName} Items`,
+                                                allowAdd: true,
+                                                allowRemove: true,
+                                                allowEdit: true,
+                                                defaultExpanded: true,
+                                            } : undefined
+                                        })}
+                                    /> Master-Detail (Child Grid)
+                                </label>
+                            </div>
+
+                            {data.isChildGrid && (
+                                <>
+                                    <div className="form-group" style={{ marginTop: '12px' }}>
+                                        <label>Section Title</label>
+                                        <input
+                                            type="text"
+                                            value={data.childGridConfig?.title || ''}
+                                            onChange={(e) => onUpdateEdge(id, {
+                                                ...data,
+                                                childGridConfig: { ...data.childGridConfig!, title: e.target.value }
+                                            })}
+                                            placeholder="e.g. Order Items"
+                                        />
+                                    </div>
+                                    <div className="field-options" style={{ marginTop: '8px' }}>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={data.childGridConfig?.allowAdd !== false}
+                                                onChange={(e) => onUpdateEdge(id, {
+                                                    ...data,
+                                                    childGridConfig: { ...data.childGridConfig!, allowAdd: e.target.checked }
+                                                })}
+                                            /> Allow Add
+                                        </label>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={data.childGridConfig?.allowRemove !== false}
+                                                onChange={(e) => onUpdateEdge(id, {
+                                                    ...data,
+                                                    childGridConfig: { ...data.childGridConfig!, allowRemove: e.target.checked }
+                                                })}
+                                            /> Allow Remove
+                                        </label>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={data.childGridConfig?.allowEdit !== false}
+                                                onChange={(e) => onUpdateEdge(id, {
+                                                    ...data,
+                                                    childGridConfig: { ...data.childGridConfig!, allowEdit: e.target.checked }
+                                                })}
+                                            /> Allow Edit
+                                        </label>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );
