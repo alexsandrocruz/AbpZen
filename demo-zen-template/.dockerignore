@@ -1,0 +1,14 @@
+**/.dockerignore
+**/.git
+**/.gitignore
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/node_modules
+**/tye.yaml
+**/run-all.ps1
+**/run.sh
+**/docker-compose*.yml
+**/LICENSE
+**/README.md

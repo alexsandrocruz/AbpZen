@@ -1,0 +1,16 @@
+@using LeptonXDemoApp.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<LeptonXDemoAppResource> L
+<div class="lpx-footbar-container">
+    <div class="lpx-footbar">
+        <div class="lpx-footbar-copyright">
+            <span>@DateTime.UtcNow.Year©</span> 
+            <a href="https://www.sapienzae.com.br" target="_blank">Um projeto SAPIENZA</a>
+        </div>
+        <div class="lpx-footbar-solo-links"> 
+            <a href="#">@L["Footer:About"]</a>
+            <a href="#">@L["Footer:Privacy"]</a>
+            <a href="#">@L["Footer:Contact"]</a>
+        </div>
+    </div>
+</div>

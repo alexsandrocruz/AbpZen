@@ -1,0 +1,358 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.09kB done
+#1 DONE 0.0s
+
+#2 [web internal] load build definition from Dockerfile
+#2 transferring dockerfile: 838B done
+#2 DONE 0.0s
+
+#3 [httpapi-host internal] load build definition from Dockerfile
+#3 transferring dockerfile: 883B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#4 DONE 0.4s
+
+#5 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#5 DONE 0.4s
+
+#6 [web internal] load .dockerignore
+#6 transferring context: 213B done
+#6 DONE 0.0s
+
+#7 [httpapi-host base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5 done
+#7 DONE 0.0s
+
+#8 [httpapi-host build 1/9] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593
+#8 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593 done
+#8 DONE 0.0s
+
+#9 [httpapi-host base 2/2] WORKDIR /app
+#9 CACHED
+
+#10 [httpapi-host final 1/2] WORKDIR /app
+#10 CACHED
+
+#11 [web internal] load build context
+#11 transferring context: 53.14kB 0.0s done
+#11 DONE 0.0s
+
+#12 [httpapi-host build 2/9] WORKDIR /src
+#12 CACHED
+
+#13 [httpapi-host build 3/9] COPY nupkgs /nupkgs
+#13 CACHED
+
+#14 [web build 4/9] COPY . .
+#14 DONE 0.1s
+
+#15 [httpapi-host build 5/9] RUN ls -R /nupkgs
+#15 0.130 /nupkgs:
+#15 0.130 volo.abp.account.pro.admin.application.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.admin.web.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.installer.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.application.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.blazor.shared.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.web.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.web.identityserver.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.web.impersonation.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.web.openiddict.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.public.web.shared.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.shared.application.9.0.4.nupkg
+#15 0.130 volo.abp.account.pro.shared.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.aspnetcore.mvc.ui.theme.commercial.9.0.4.nupkg
+#15 0.130 volo.abp.aspnetcore.mvc.ui.theme.leptonx.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.application.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.pro.installer.9.0.4.nupkg
+#15 0.130 volo.abp.auditlogging.web.9.0.4.nupkg
+#15 0.130 volo.abp.commercial.core.9.0.4.nupkg
+#15 0.130 volo.abp.commercial.suitetemplates.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.application.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.domain.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.installer.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.mongodb.9.0.4.nupkg
+#15 0.130 volo.abp.gdpr.web.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.application.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.domain.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.installer.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.mongodb.9.0.4.nupkg
+#15 0.130 volo.abp.identity.pro.web.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.application.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.domain.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.installer.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.mongodb.9.0.4.nupkg
+#15 0.130 volo.abp.languagemanagement.web.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.application.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.domain.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.leptontheme.management.web.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.application.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.domain.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.host.shared.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.installer.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.mongodb.9.0.4.nupkg
+#15 0.130 volo.abp.openiddict.pro.web.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.application.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.application.contracts.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.blazor.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.blazor.server.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.domain.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.domain.shared.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.host.shared.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.httpapi.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.installer.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.mongodb.9.0.4.nupkg
+#15 0.130 volo.abp.texttemplatemanagement.web.9.0.4.nupkg
+#15 0.130 volo.chat.application.9.0.4.nupkg
+#15 0.130 volo.chat.application.contracts.9.0.4.nupkg
+#15 0.130 volo.chat.blazor.9.0.4.nupkg
+#15 0.130 volo.chat.blazor.server.9.0.4.nupkg
+#15 0.130 volo.chat.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.chat.domain.9.0.4.nupkg
+#15 0.130 volo.chat.domain.shared.9.0.4.nupkg
+#15 0.130 volo.chat.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.chat.host.shared.9.0.4.nupkg
+#15 0.130 volo.chat.httpapi.9.0.4.nupkg
+#15 0.130 volo.chat.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.chat.httpapi.client.consoletestapp.9.0.4.nupkg
+#15 0.130 volo.chat.installer.9.0.4.nupkg
+#15 0.130 volo.chat.mongodb.9.0.4.nupkg
+#15 0.130 volo.chat.signalr.9.0.4.nupkg
+#15 0.130 volo.chat.web.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.application.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.application.contracts.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.blazor.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.blazor.server.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.httpapi.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.admin.web.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.application.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.application.contracts.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.common.application.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.common.application.contracts.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.common.httpapi.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.common.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.common.web.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.domain.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.domain.shared.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.httpapi.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.installer.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.mongodb.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.public.application.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.public.application.contracts.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.public.httpapi.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.public.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.public.web.9.0.4.nupkg
+#15 0.130 volo.cmskit.pro.web.9.0.4.nupkg
+#15 0.130 volo.filemanagement.application.9.0.4.nupkg
+#15 0.130 volo.filemanagement.application.contracts.9.0.4.nupkg
+#15 0.130 volo.filemanagement.blazor.9.0.4.nupkg
+#15 0.130 volo.filemanagement.blazor.server.9.0.4.nupkg
+#15 0.130 volo.filemanagement.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.filemanagement.domain.9.0.4.nupkg
+#15 0.130 volo.filemanagement.domain.shared.9.0.4.nupkg
+#15 0.130 volo.filemanagement.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.filemanagement.host.shared.9.0.4.nupkg
+#15 0.130 volo.filemanagement.httpapi.9.0.4.nupkg
+#15 0.130 volo.filemanagement.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.filemanagement.installer.9.0.4.nupkg
+#15 0.130 volo.filemanagement.mongodb.9.0.4.nupkg
+#15 0.130 volo.filemanagement.web.9.0.4.nupkg
+#15 0.130 volo.forms.application.9.0.4.nupkg
+#15 0.130 volo.forms.application.contracts.9.0.4.nupkg
+#15 0.130 volo.forms.domain.9.0.4.nupkg
+#15 0.130 volo.forms.domain.shared.9.0.4.nupkg
+#15 0.130 volo.forms.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.forms.host.shared.9.0.4.nupkg
+#15 0.130 volo.forms.httpapi.9.0.4.nupkg
+#15 0.130 volo.forms.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.forms.httpapi.client.consoletestapp.9.0.4.nupkg
+#15 0.130 volo.forms.installer.9.0.4.nupkg
+#15 0.130 volo.forms.mongodb.9.0.4.nupkg
+#15 0.130 volo.forms.web.9.0.4.nupkg
+#15 0.130 volo.payment.admin.application.9.0.4.nupkg
+#15 0.130 volo.payment.admin.application.contracts.9.0.4.nupkg
+#15 0.130 volo.payment.admin.blazor.9.0.4.nupkg
+#15 0.130 volo.payment.admin.blazor.server.9.0.4.nupkg
+#15 0.130 volo.payment.admin.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.payment.admin.httpapi.9.0.4.nupkg
+#15 0.130 volo.payment.admin.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.payment.admin.web.9.0.4.nupkg
+#15 0.130 volo.payment.alipay.domain.9.0.4.nupkg
+#15 0.130 volo.payment.alipay.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.alipay.web.9.0.4.nupkg
+#15 0.130 volo.payment.application.9.0.4.nupkg
+#15 0.130 volo.payment.application.contracts.9.0.4.nupkg
+#15 0.130 volo.payment.domain.9.0.4.nupkg
+#15 0.130 volo.payment.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.payment.httpapi.9.0.4.nupkg
+#15 0.130 volo.payment.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.payment.installer.9.0.4.nupkg
+#15 0.130 volo.payment.iyzico.domain.9.0.4.nupkg
+#15 0.130 volo.payment.iyzico.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.iyzico.web.9.0.4.nupkg
+#15 0.130 volo.payment.mongodb.9.0.4.nupkg
+#15 0.130 volo.payment.paypal.domain.9.0.4.nupkg
+#15 0.130 volo.payment.paypal.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.paypal.web.9.0.4.nupkg
+#15 0.130 volo.payment.payu.domain.9.0.4.nupkg
+#15 0.130 volo.payment.payu.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.payu.web.9.0.4.nupkg
+#15 0.130 volo.payment.stripe.domain.9.0.4.nupkg
+#15 0.130 volo.payment.stripe.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.stripe.web.9.0.4.nupkg
+#15 0.130 volo.payment.twocheckout.domain.9.0.4.nupkg
+#15 0.130 volo.payment.twocheckout.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.twocheckout.web.9.0.4.nupkg
+#15 0.130 volo.payment.web.9.0.4.nupkg
+#15 0.130 volo.payment.wechatpay.domain.9.0.4.nupkg
+#15 0.130 volo.payment.wechatpay.domain.shared.9.0.4.nupkg
+#15 0.130 volo.payment.wechatpay.web.9.0.4.nupkg
+#15 0.130 volo.saas.domain.9.0.4.nupkg
+#15 0.130 volo.saas.domain.shared.9.0.4.nupkg
+#15 0.130 volo.saas.entityframeworkcore.9.0.4.nupkg
+#15 0.130 volo.saas.host.application.9.0.4.nupkg
+#15 0.130 volo.saas.host.application.contracts.9.0.4.nupkg
+#15 0.130 volo.saas.host.blazor.9.0.4.nupkg
+#15 0.130 volo.saas.host.blazor.server.9.0.4.nupkg
+#15 0.130 volo.saas.host.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.saas.host.httpapi.9.0.4.nupkg
+#15 0.130 volo.saas.host.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.saas.host.web.9.0.4.nupkg
+#15 0.130 volo.saas.installer.9.0.4.nupkg
+#15 0.130 volo.saas.mongodb.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.application.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.application.contracts.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.blazor.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.blazor.server.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.blazor.webassembly.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.httpapi.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.httpapi.client.9.0.4.nupkg
+#15 0.130 volo.saas.tenant.web.9.0.4.nupkg
+#15 DONE 0.1s
+
+#16 [web build 6/9] RUN dotnet nuget add source /nupkgs --name Local_Docker || true
+#16 0.247 error: The source specified has already been added to the list of available package sources. Provide a unique source.
+#16 DONE 0.3s
+
+#17 [web build 7/9] WORKDIR /src/LeptonXDemoApp.Web
+#17 DONE 0.0s
+
+#18 [httpapi-host build 7/9] WORKDIR /src/LeptonXDemoApp.HttpApi.Host
+#18 DONE 0.0s
+
+#19 [httpapi-host build 8/9] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json
+#19 0.625   Determining projects to restore...
+#19 ...
+
+#20 [web build 8/9] RUN dotnet restore "LeptonXDemoApp.Web.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json
+#20 0.621   Determining projects to restore...
+#20 12.15   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 10.85 sec).
+#20 12.15   Restored /src/LeptonXDemoApp.HttpApi.Client/LeptonXDemoApp.HttpApi.Client.csproj (in 10.85 sec).
+#20 12.15   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 10.85 sec).
+#20 ...
+
+#19 [httpapi-host build 8/9] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json
+#19 13.15   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 11.68 sec).
+#19 13.15   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.69 sec).
+#19 13.15   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 11.64 sec).
+#19 13.15   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 11.64 sec).
+#19 13.15   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 11.63 sec).
+#19 13.17   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 11.67 sec).
+#19 14.12 /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj : error NU1101: Unable to find package Volo.Abp.AspNetCore.LeptonX.Shared. No packages exist with this id in source(s): ABP Nightly, Local, nuget.org
+#19 14.25   Failed to restore /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 12.76 sec).
+#19 ERROR: process "/bin/sh -c dotnet restore \"LeptonXDemoApp.HttpApi.Host.csproj\" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json" did not complete successfully: exit code: 1
+
+#20 [web build 8/9] RUN dotnet restore "LeptonXDemoApp.Web.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json
+#20 CANCELED
+------
+ > [httpapi-host build 8/9] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json:
+0.625   Determining projects to restore...
+13.15   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 11.68 sec).
+13.15   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.69 sec).
+13.15   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 11.64 sec).
+13.15   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 11.64 sec).
+13.15   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 11.63 sec).
+13.17   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 11.67 sec).
+14.12 /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj : error NU1101: Unable to find package Volo.Abp.AspNetCore.LeptonX.Shared. No packages exist with this id in source(s): ABP Nightly, Local, nuget.org
+14.25   Failed to restore /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 12.76 sec).
+------
+Dockerfile:17
+
+--------------------
+
+  15 |     RUN dotnet nuget add source /nupkgs --name Local_Docker || true
+
+  16 |     WORKDIR "/src/LeptonXDemoApp.HttpApi.Host"
+
+  17 | >>> RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json
+
+  18 |     RUN dotnet build "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/build
+
+  19 |     
+
+--------------------
+
+target httpapi-host: failed to solve: process "/bin/sh -c dotnet restore \"LeptonXDemoApp.HttpApi.Host.csproj\" --source /nupkgs --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/abp-nightly/api/v3/index.json" did not complete successfully: exit code: 1
+
