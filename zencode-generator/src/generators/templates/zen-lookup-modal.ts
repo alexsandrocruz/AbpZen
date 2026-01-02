@@ -1,0 +1,121 @@
+/**
+ * ZenLookup Modal Partial View template
+ * Generates the shared modal for entity selection
+ */
+export function getZenLookupModalTemplate(): string {
+    return `@* Shared Lookup Modal for ZenCode Generator *@
+@* This modal is shared across all lookup inputs and dynamically populated via JavaScript *@
+
+<div class="modal fade" id="zenLookupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zenLookupModalTitle">Select</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="zenLookupSearchInput" placeholder="Search...">
+                            <button class="btn btn-primary" type="button" id="zenLookupSearchBtn">
+                                <i class="fa fa-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="zenLookupTable">
+                        <thead>
+                            <tr id="zenLookupTableHead"></tr>
+                        </thead>
+                        <tbody id="zenLookupTableBody">
+                            <tr>
+                                <td colspan="10" class="text-center text-muted">
+                                    <i class="fa fa-spinner fa-spin"></i> Loading...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav id="zenLookupPagination" class="d-flex justify-content-center">
+                    <ul class="pagination pagination-sm mb-0"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="zenLookupCreateNewBtn" style="display:none;">
+                    <i class="fa fa-plus"></i> Create New
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Quick Create Modal *@
+<div class="modal fade" id="zenQuickCreateModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="zenQuickCreateModalTitle">Create New</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="zenQuickCreateModalBody">
+                <form id="zenQuickCreateForm">
+                    @* Dynamic fields will be injected here *@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="zenQuickCreateSaveBtn">
+                    <i class="fa fa-check"></i> Save & Select
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+}
+
+/**
+ * ZenLookup CSS template
+ */
+export function getZenLookupCssTemplate(): string {
+    return `/* ZenLookup Component Styles */
+.zen-lookup-container {
+    position: relative;
+}
+
+.zen-lookup-container .zen-lookup-display {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.zen-lookup-container .zen-lookup-display:focus {
+    background-color: #fff;
+}
+
+.zen-lookup-container .input-group .btn {
+    border-color: #ced4da;
+}
+
+#zenLookupTable tbody tr {
+    cursor: pointer;
+}
+
+#zenLookupTable tbody tr:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+#zenLookupTable tbody tr.selected {
+    background-color: rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.zen-lookup-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+`;
+}

@@ -32,6 +32,20 @@ namespace LeptonXDemoApp.Permissions
             public const string Update = Default + ".Update";
             public const string Delete = Default + ".Delete";
         }
+      public static class Order
+        {
+            public const string Default = GroupName + ".Order";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Customer
+        {
+            public const string Default = GroupName + ".Customer";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
       // <ZenCode-Permissions-Marker>
     }
 }

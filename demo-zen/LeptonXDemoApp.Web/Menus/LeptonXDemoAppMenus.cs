@@ -15,5 +15,9 @@
         public const string Product = Prefix + ".Product";
         
         public const string Category = Prefix + ".Category";
+        
+        public const string Order = Prefix + ".Order";
+        
+        public const string Customer = Prefix + ".Customer";
     }
 }

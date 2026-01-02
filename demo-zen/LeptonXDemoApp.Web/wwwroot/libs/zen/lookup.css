@@ -1,0 +1,49 @@
+/* ZenLookup Component Styles */
+.zen-lookup-container {
+    position: relative;
+}
+
+.zen-lookup-container .zen-lookup-display {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.zen-lookup-container .zen-lookup-display:focus {
+    background-color: #fff;
+}
+
+.zen-lookup-container .input-group .btn {
+    border-color: #ced4da;
+}
+
+#zenLookupTable tbody tr {
+    cursor: pointer;
+}
+
+#zenLookupTable tbody tr:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+#zenLookupTable tbody tr.selected {
+    background-color: rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.zen-lookup-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+/* Improve button appearance */
+.zen-lookup-container .zen-lookup-btn {
+    border-left: none;
+}
+
+.zen-lookup-container .zen-lookup-create-btn {
+    border-left: none;
+}
+
+.zen-lookup-container .zen-lookup-clear-btn {
+    border-left: none;
+}

@@ -1,0 +1,51 @@
+@page
+@using LeptonXDemoApp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using LeptonXDemoApp.Web.Pages.Customer
+@using LeptonXDemoApp.Localization
+@using LeptonXDemoApp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["Customers"].Value;
+    PageLayout.Content.MenuItemName = LeptonXDemoAppMenus.Customer;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Customer/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Customer/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(LeptonXDemoAppPermissions.Customer.Create))
+    {
+        <abp-button id="NewCustomerButton"
+            text="@L["NewCustomer"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="CustomerCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="CustomerFilter" id="CustomerFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="CustomerCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="CustomerTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

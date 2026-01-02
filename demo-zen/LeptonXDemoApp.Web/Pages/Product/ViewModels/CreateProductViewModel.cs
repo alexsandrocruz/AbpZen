@@ -15,8 +15,9 @@ public class CreateProductViewModel
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
     [Display(Name = "Product:CategoryId")]
-    // Lookup mode: Modal - Rendering manual lookup input recommended
+    [DynamicFormIgnore] // Hidden - rendered via abp-lookup-input
     public Guid? CategoryId { get; set; }
 
+    [DynamicFormIgnore]
     public string? CategoryDisplayName { get; set; }
 }

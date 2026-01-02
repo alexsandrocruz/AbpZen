@@ -28,6 +28,16 @@ namespace LeptonXDemoApp.Permissions
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Create, L("Permission:Category.Create"));
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Update, L("Permission:Category.Update"));
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Delete, L("Permission:Category.Delete"));
+
+            var orderGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Order.Default, L("Permission:Order"));
+            orderGroup.AddChild(LeptonXDemoAppPermissions.Order.Create, L("Permission:Order.Create"));
+            orderGroup.AddChild(LeptonXDemoAppPermissions.Order.Update, L("Permission:Order.Update"));
+            orderGroup.AddChild(LeptonXDemoAppPermissions.Order.Delete, L("Permission:Order.Delete"));
+
+            var customerGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Customer.Default, L("Permission:Customer"));
+            customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Create, L("Permission:Customer.Create"));
+            customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Update, L("Permission:Customer.Update"));
+            customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Delete, L("Permission:Customer.Delete"));
             // <ZenCode-PermissionDefinition-Marker>
         }
 

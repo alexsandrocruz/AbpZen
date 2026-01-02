@@ -183,13 +183,13 @@ export function getRazorCreateModalViewTemplate(): string {
                     {%- assign ignoredProps = ignoredProps | append: rel.fkFieldName | append: "," | append: rel.parentEntityName | append: "DisplayName," -%}
                 {%- endif -%}
             {%- endfor -%}
-            <abp-form-content {% if hasModalLookup %}ignored-properties="{{ ignoredProps }}"{% endif %} />
+            <abp-form-content {% if hasModalLookup %}{% endif %} />
             {%- if hasModalLookup -%}
             {%- for rel in relationships.asChild -%}
                 {%- if rel.lookupMode == 'modal' -%}
-                <abp-lookup-input asp-for="ViewModel.{{ rel.fkFieldName }}" 
+                <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
                                   label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
-                                  lookup-service-method="Get{{ rel.parentEntityName }}LookupAsync" 
+                                   
                                   lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
                                   display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
                 {%- endif -%}
@@ -228,13 +228,13 @@ export function getRazorEditModalViewTemplate(): string {
                     {%- assign ignoredProps = ignoredProps | append: rel.fkFieldName | append: "," | append: rel.parentEntityName | append: "DisplayName," -%}
                 {%- endif -%}
             {%- endfor -%}
-            <abp-form-content {% if hasModalLookup %}ignored-properties="{{ ignoredProps }}"{% endif %} />
+            <abp-form-content {% if hasModalLookup %}{% endif %} />
             {%- if hasModalLookup -%}
             {%- for rel in relationships.asChild -%}
                 {%- if rel.lookupMode == 'modal' -%}
-                <abp-lookup-input asp-for="ViewModel.{{ rel.fkFieldName }}" 
+                <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
                                   label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
-                                  lookup-service-method="Get{{ rel.parentEntityName }}LookupAsync" 
+                                   
                                   lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
                                   display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
                 {%- endif -%}

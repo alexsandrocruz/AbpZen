@@ -30,6 +30,10 @@ import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBr
 import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index';
 import { getRazorCreateModalViewTemplate, getRazorCreateModalModelTemplate, getRazorEditModalViewTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
 import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
+// ZenLookup templates
+import { getZenLookupTagHelperTemplate } from './templates/zen-lookup-taghelper';
+import { getZenLookupModalTemplate, getZenLookupCssTemplate } from './templates/zen-lookup-modal';
+import { getZenLookupJsTemplate } from './templates/zen-lookup-js';
 
 export interface RelationshipInfo {
     id: string;
@@ -443,6 +447,43 @@ export class CodeGenerator {
                 asChild
             );
             allFiles.push(...entityFiles);
+        }
+
+        // Check if any entity has modal lookups - if so, generate shared ZenLookup files
+        const hasModalLookups = entities.some(entity =>
+            entity.fields.some(f => f.isLookup && f.lookupConfig?.mode === 'modal')
+        );
+
+        if (hasModalLookups) {
+            const sharedCtx = { project: { name: projectName, namespace: projectNamespace } };
+
+            // ZenLookup TagHelper
+            allFiles.push({
+                path: `${projectNamespace}.Web/TagHelpers/ZenLookupInputTagHelper.cs`,
+                content: await this.engine.parseAndRender(getZenLookupTagHelperTemplate(), sharedCtx),
+                layer: 'Web',
+            });
+
+            // ZenLookup Modal Partial
+            allFiles.push({
+                path: `${projectNamespace}.Web/Shared/_ZenLookupModal.cshtml`,
+                content: await this.engine.parseAndRender(getZenLookupModalTemplate(), sharedCtx),
+                layer: 'Web',
+            });
+
+            // ZenLookup JavaScript
+            allFiles.push({
+                path: `${projectNamespace}.Web/wwwroot/libs/zen/lookup.js`,
+                content: await this.engine.parseAndRender(getZenLookupJsTemplate(), sharedCtx),
+                layer: 'Web',
+            });
+
+            // ZenLookup CSS
+            allFiles.push({
+                path: `${projectNamespace}.Web/wwwroot/libs/zen/lookup.css`,
+                content: await this.engine.parseAndRender(getZenLookupCssTemplate(), sharedCtx),
+                layer: 'Web',
+            });
         }
 
         return allFiles;

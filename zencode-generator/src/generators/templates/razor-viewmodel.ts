@@ -62,9 +62,10 @@ public class Create{{ entity.name }}ViewModel
     {%- endif %}
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
     {%- if rel.lookupMode == 'modal' %}
-    // Lookup mode: Modal - Rendering manual lookup input recommended
+    [DynamicFormIgnore] // Hidden - rendered via abp-lookup-input
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
 
+    [DynamicFormIgnore]
     public string? {{ rel.parentEntityName }}DisplayName { get; set; }
     {%- else %}
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
@@ -144,9 +145,10 @@ public class Edit{{ entity.name }}ViewModel
     {%- endif %}
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
     {%- if rel.lookupMode == 'modal' %}
-    // Lookup mode: Modal - Rendering manual lookup input recommended
+    [DynamicFormIgnore] // Hidden - rendered via abp-lookup-input
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
 
+    [DynamicFormIgnore]
     public string? {{ rel.parentEntityName }}DisplayName { get; set; }
     {%- else %}
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
