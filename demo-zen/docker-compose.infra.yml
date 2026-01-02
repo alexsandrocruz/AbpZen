@@ -1,4 +1,5 @@
-version: '3.4'
+# Demo-Zen Infrastructure Only
+# For running API and Web locally with `dotnet run`
 
 services:
   mongodb:

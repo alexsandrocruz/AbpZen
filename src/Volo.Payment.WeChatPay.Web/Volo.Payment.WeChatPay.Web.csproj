@@ -14,16 +14,25 @@
 
     <ItemGroup>
         <PackageReference Include="Volo.Abp.Commercial.Core" VersionOverride="9.0.4" />
-    </ItemGroup>
+    
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BouncyCastle.Cryptography" />
+  </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" />
-    </ItemGroup>
+    
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BouncyCastle.Cryptography" />
+  </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Volo.Payment.WeChatPay.Domain.Shared\Volo.Payment.WeChatPay.Domain.Shared.csproj" />
         <ProjectReference Include="..\Volo.Payment.Web\Volo.Payment.Web.csproj" />
-    </ItemGroup>
+    
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BouncyCastle.Cryptography" />
+  </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Pages\**\*.css" />
@@ -37,6 +46,9 @@
         <Content Remove="Components\**\*.js" />
         <Content Remove="Components\**\*.css" />
         <Content Remove="Localization\Resources\**\*.json" />
-    </ItemGroup>
+    
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BouncyCastle.Cryptography" />
+  </ItemGroup>
 
 </Project>

@@ -21,6 +21,10 @@ import { getAutoMapperProfileTemplate } from './templates/automapper';
 import { getMenuContributorTemplate } from './templates/menu';
 import { getLocalizationJsonTemplate, getLocalizationJsonPtBrTemplate } from './templates/localization';
 import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum';
+// Razor page templates
+import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index';
+import { getRazorCreateModalTemplate, getRazorCreateModalModelTemplate, getRazorEditModalTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
+import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
 
 /**
  * Context passed to templates
@@ -250,6 +254,72 @@ export class CodeGenerator {
                 layer: 'Domain',
             });
         }
+
+        // ============ WEB/RAZOR PAGES ============
+        // Index page
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/Index.cshtml`,
+            content: await this.engine.parseAndRender(getRazorIndexTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/Index.cshtml.cs`,
+            content: await this.engine.parseAndRender(getRazorIndexModelTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/index.js`,
+            content: await this.engine.parseAndRender(getRazorIndexJsTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/index.css`,
+            content: await this.engine.parseAndRender(getRazorIndexCssTemplate(), ctx),
+            layer: 'Web',
+        });
+
+        // Create Modal
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml`,
+            content: await this.engine.parseAndRender(getRazorCreateModalTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml.cs`,
+            content: await this.engine.parseAndRender(getRazorCreateModalModelTemplate(), ctx),
+            layer: 'Web',
+        });
+
+        // Edit Modal
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml`,
+            content: await this.engine.parseAndRender(getRazorEditModalTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml.cs`,
+            content: await this.engine.parseAndRender(getRazorEditModalModelTemplate(), ctx),
+            layer: 'Web',
+        });
+
+        // ViewModels
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/ViewModels/Create${entity.name}ViewModel.cs`,
+            content: await this.engine.parseAndRender(getRazorCreateViewModelTemplate(), ctx),
+            layer: 'Web',
+        });
+        files.push({
+            path: `${projectNamespace}.Web/Pages/${entity.name}/ViewModels/Edit${entity.name}ViewModel.cs`,
+            content: await this.engine.parseAndRender(getRazorEditViewModelTemplate(), ctx),
+            layer: 'Web',
+        });
+
+        // Web AutoMapper profile
+        files.push({
+            path: `${projectNamespace}.Web/${entity.name}WebAutoMapperProfile.cs`,
+            content: await this.engine.parseAndRender(getRazorAutoMapperProfileTemplate(), ctx),
+            layer: 'Web',
+        });
 
         return files;
     }

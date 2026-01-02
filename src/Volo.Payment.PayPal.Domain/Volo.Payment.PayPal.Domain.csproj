@@ -4,7 +4,7 @@
     
     
     <PropertyGroup><LangVersion>latest</LangVersion>
-        <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <TargetFramework>net9.0</TargetFramework>
         <RootNamespace />
     </PropertyGroup>
 
@@ -17,6 +17,7 @@
     <ItemGroup>
       <PackageReference Include="PayPalCheckoutSdk" />
       <PackageReference Include="PayPalHttp" />
+      <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
     
 </Project>

@@ -63,8 +63,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volo.Chat.Blazor.Server", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volo.Chat.Blazor.WebAssembly", "src\Volo.Chat.Blazor.WebAssembly\Volo.Chat.Blazor.WebAssembly.csproj", "{B4F99FA9-E9CB-4A78-912A-C4E6389C8681}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Volo.Chat.Blazor.MauiBlazor", "src\Volo.Chat.Blazor.MauiBlazor\Volo.Chat.Blazor.MauiBlazor.csproj", "{0A3B9CE7-72A3-4049-ABC4-E107F1F29231}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,10 +177,6 @@ Global
 		{B4F99FA9-E9CB-4A78-912A-C4E6389C8681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4F99FA9-E9CB-4A78-912A-C4E6389C8681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4F99FA9-E9CB-4A78-912A-C4E6389C8681}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A3B9CE7-72A3-4049-ABC4-E107F1F29231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A3B9CE7-72A3-4049-ABC4-E107F1F29231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A3B9CE7-72A3-4049-ABC4-E107F1F29231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A3B9CE7-72A3-4049-ABC4-E107F1F29231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -215,7 +209,6 @@ Global
 		{47895B13-5C2A-48D2-A6C8-7BCC7D1997D1} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 		{3923DE02-D231-4BBF-A064-3446B1BDEB6C} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 		{B4F99FA9-E9CB-4A78-912A-C4E6389C8681} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
-		{0A3B9CE7-72A3-4049-ABC4-E107F1F29231} = {649A3FFA-182F-4E56-9717-E6A9A2BEC545}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3187709A-C5F5-BE03-A2EC-FDD74238C759}

@@ -3,7 +3,9 @@
   
   
 
-  <PropertyGroup><LangVersion>latest</LangVersion>
+  <PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <LangVersion>latest</LangVersion>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX</AssemblyName>
     <PackageId>Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX</PackageId>

@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="LSW.AlipayEasySDK" Version="2.1.5" />
@@ -49,11 +50,11 @@
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.5.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.5.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.5.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Features" Version="4.5.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Features" Version="4.12.0" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.Data.Sqlite" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />

@@ -1,0 +1,109 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.09kB done
+#1 DONE 0.0s
+
+#2 [web internal] load build definition from Dockerfile
+#2 transferring dockerfile: 631B done
+#2 DONE 0.0s
+
+#3 [httpapi-host internal] load build definition from Dockerfile
+#3 transferring dockerfile: 676B done
+#3 DONE 0.0s
+
+#4 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#4 DONE 0.4s
+
+#5 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#5 DONE 0.4s
+
+#6 [httpapi-host internal] load .dockerignore
+#6 transferring context: 213B done
+#6 DONE 0.0s
+
+#7 [httpapi-host base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5 done
+#7 DONE 0.0s
+
+#8 [httpapi-host base 2/2] WORKDIR /app
+#8 CACHED
+
+#9 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593
+#9 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593 done
+#9 DONE 0.0s
+
+#10 [web final 1/2] WORKDIR /app
+#10 CACHED
+
+#11 [web internal] load build context
+#11 transferring context: 573.53kB 0.0s done
+#11 DONE 0.0s
+
+#12 [httpapi-host build 2/7] WORKDIR /src
+#12 CACHED
+
+#13 [httpapi-host build 3/7] COPY nupkgs /nupkgs
+#13 DONE 0.1s
+
+#14 [httpapi-host build 4/7] COPY . .
+#14 DONE 0.1s
+
+#15 [web build 5/7] WORKDIR /src/LeptonXDemoApp.Web
+#15 DONE 0.0s
+
+#16 [httpapi-host build 5/7] WORKDIR /src/LeptonXDemoApp.HttpApi.Host
+#16 DONE 0.0s
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 0.524   Determining projects to restore...
+#17 ...
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 0.525   Determining projects to restore...
+#18 10.70   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 9.67 sec).
+#18 10.71   Restored /src/LeptonXDemoApp.HttpApi.Client/LeptonXDemoApp.HttpApi.Client.csproj (in 9.67 sec).
+#18 10.71   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 9.68 sec).
+#18 ...
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 11.92   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 10.81 sec).
+#17 11.92   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 10.81 sec).
+#17 11.92   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 10.81 sec).
+#17 11.93   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 10.81 sec).
+#17 11.93   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 10.81 sec).
+#17 12.97   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.85 sec).
+#17 15.55 /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj : error NU1101: Unable to find package Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX. No packages exist with this id in source(s): ABP Nightly, Local, nuget.org
+#17 16.04   Failed to restore /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 14.61 sec).
+#17 ERROR: process "/bin/sh -c dotnet restore \"LeptonXDemoApp.HttpApi.Host.csproj\"" did not complete successfully: exit code: 1
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 CANCELED
+------
+ > [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj":
+0.524   Determining projects to restore...
+11.92   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 10.81 sec).
+11.92   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 10.81 sec).
+11.92   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 10.81 sec).
+11.93   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 10.81 sec).
+11.93   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 10.81 sec).
+12.97   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.85 sec).
+15.55 /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj : error NU1101: Unable to find package Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX. No packages exist with this id in source(s): ABP Nightly, Local, nuget.org
+16.04   Failed to restore /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 14.61 sec).
+------
+Dockerfile:15
+
+--------------------
+
+  13 |     COPY . .
+
+  14 |     WORKDIR "/src/LeptonXDemoApp.HttpApi.Host"
+
+  15 | >>> RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+
+  16 |     RUN dotnet build "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/build
+
+  17 |     
+
+--------------------
+
+target httpapi-host: failed to solve: process "/bin/sh -c dotnet restore \"LeptonXDemoApp.HttpApi.Host.csproj\"" did not complete successfully: exit code: 1
+

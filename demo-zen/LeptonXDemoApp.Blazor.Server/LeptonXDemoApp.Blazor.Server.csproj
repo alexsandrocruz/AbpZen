@@ -51,8 +51,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Components.Server.LeptonXTheme\Volo.Abp.AspNetCore.Components.Server.LeptonXTheme.csproj" />
-    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX\Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.csproj" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.Server.LeptonXTheme" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

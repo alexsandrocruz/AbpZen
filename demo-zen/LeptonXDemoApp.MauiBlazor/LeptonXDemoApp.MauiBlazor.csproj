@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup><LangVersion>latest</LangVersion>
-    <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-    <!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+    <!-- <TargetFramework>net9.0</TargetFramework> -->
     <OutputType>Exe</OutputType>
     <RootNamespace>LeptonXDemoApp.MauiBlazor</RootNamespace>
     <UseMaui>true</UseMaui>
@@ -59,7 +59,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LeptonXDemoApp.HttpApi.Client\LeptonXDemoApp.HttpApi.Client.csproj" />
-    <ProjectReference Include="..\..\src\Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme\Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme.csproj" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

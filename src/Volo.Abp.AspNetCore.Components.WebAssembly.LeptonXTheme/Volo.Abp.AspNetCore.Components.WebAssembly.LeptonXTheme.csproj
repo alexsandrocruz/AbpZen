@@ -3,7 +3,8 @@
   
   
 
-  <PropertyGroup><LangVersion>latest</LangVersion>
+  <PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally><LangVersion>latest</LangVersion><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
     <TargetFramework>net9.0</TargetFramework>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     <IsPackable>true</IsPackable>

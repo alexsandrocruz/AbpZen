@@ -1,0 +1,311 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.09kB done
+#1 DONE 0.0s
+
+#2 [httpapi-host internal] load build definition from Dockerfile
+#2 transferring dockerfile: 793B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from Dockerfile
+#3 transferring dockerfile: 748B done
+#3 DONE 0.0s
+
+#4 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0-noble
+#4 DONE 1.3s
+
+#5 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0-noble
+#5 DONE 1.2s
+
+#6 [httpapi-host internal] load .dockerignore
+#6 transferring context: 213B done
+#6 DONE 0.0s
+
+#7 [httpapi-host internal] load build context
+#7 transferring context: 443.10kB 0.0s done
+#7 DONE 0.1s
+
+#8 [web base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble@sha256:d554595e85adca5c8dce1bc8f5d7eef0ce63b56c156c9b1d845142bd53b45dbc
+#8 resolve mcr.microsoft.com/dotnet/aspnet:9.0-noble@sha256:d554595e85adca5c8dce1bc8f5d7eef0ce63b56c156c9b1d845142bd53b45dbc 0.0s done
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 0B / 10.92MB 0.2s
+#8 sha256:5fb0434466bbf8fa1e18b4b57d1972faa5fc831582cc03ac139c10b9a64d7e55 0B / 155B 0.2s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 0B / 32.85MB 0.2s
+#8 sha256:81b203e822b420083e4ada7cc988293bbb9436b32ceab379f75e8a37942c3555 0B / 3.56kB 0.2s
+#8 sha256:81b203e822b420083e4ada7cc988293bbb9436b32ceab379f75e8a37942c3555 3.56kB / 3.56kB 0.6s done
+#8 sha256:5fb0434466bbf8fa1e18b4b57d1972faa5fc831582cc03ac139c10b9a64d7e55 155B / 155B 0.6s done
+#8 sha256:81b203e822b420083e4ada7cc988293bbb9436b32ceab379f75e8a37942c3555 3.56kB / 3.56kB 0.6s done
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 0B / 16.79MB 0.2s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 1.05MB / 10.92MB 1.2s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 2.10MB / 10.92MB 1.4s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 2.10MB / 32.85MB 1.5s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 1.05MB / 16.79MB 1.4s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 3.15MB / 10.92MB 2.0s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 2.10MB / 16.79MB 1.8s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 4.19MB / 10.92MB 2.6s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 3.15MB / 16.79MB 2.1s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 4.19MB / 32.85MB 2.9s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 4.19MB / 16.79MB 2.6s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 5.24MB / 16.79MB 2.9s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 5.24MB / 10.92MB 3.5s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 6.29MB / 16.79MB 3.2s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 7.34MB / 16.79MB 3.6s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 6.29MB / 10.92MB 4.4s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 8.39MB / 16.79MB 3.9s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 9.44MB / 16.79MB 4.2s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 6.29MB / 32.85MB 5.0s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 10.49MB / 16.79MB 4.5s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 7.34MB / 10.92MB 5.1s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 11.53MB / 16.79MB 4.8s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 12.58MB / 16.79MB 5.1s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 8.39MB / 10.92MB 5.9s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 13.63MB / 16.79MB 5.6s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 8.39MB / 32.85MB 6.3s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 14.68MB / 16.79MB 5.9s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 15.73MB / 16.79MB 6.3s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 9.44MB / 10.92MB 7.1s
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 16.79MB / 16.79MB 6.6s done
+#8 sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 16.79MB / 16.79MB 6.6s done
+#8 extracting sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 10.49MB / 32.85MB 7.4s
+#8 extracting sha256:2e2afa07b5f5f55b4c9402191dc78f48d78e8f9db15ec7d339d3911a94292894 0.2s done
+#8 extracting sha256:81b203e822b420083e4ada7cc988293bbb9436b32ceab379f75e8a37942c3555 done
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 10.49MB / 10.92MB 8.3s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 12.58MB / 32.85MB 8.4s
+#8 sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 10.92MB / 10.92MB 8.5s done
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 14.68MB / 32.85MB 9.2s
+#8 ...
+
+#9 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0-noble@sha256:7331fb5fb8798c58df1f263dc8cc843459965c00cfb29ebeb53bf4cc572d592d
+#9 resolve mcr.microsoft.com/dotnet/sdk:9.0-noble@sha256:7331fb5fb8798c58df1f263dc8cc843459965c00cfb29ebeb53bf4cc572d592d 0.0s done
+#9 sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 11.53MB / 17.50MB 9.3s
+#9 sha256:be9b392e46e304d60055d86107590b569a5d2c10d3c1302bfba3a174d4954b3d 2.69kB / 2.69kB 0.4s done
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 4.19MB / 173.11MB 2.4s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 2.10MB / 23.91MB 1.4s
+#9 sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 12.58MB / 17.50MB 9.5s
+#9 ...
+
+#8 [web base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble@sha256:d554595e85adca5c8dce1bc8f5d7eef0ce63b56c156c9b1d845142bd53b45dbc
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 16.78MB / 32.85MB 10.2s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 18.87MB / 32.85MB 11.3s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 20.97MB / 32.85MB 12.2s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 23.07MB / 32.85MB 13.1s
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 25.17MB / 32.85MB 15.0s
+#8 ...
+
+#9 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0-noble@sha256:7331fb5fb8798c58df1f263dc8cc843459965c00cfb29ebeb53bf4cc572d592d
+#9 sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 16.78MB / 17.50MB 16.1s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 12.58MB / 173.11MB 9.2s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 11.53MB / 23.91MB 8.1s
+#9 sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 17.50MB / 17.50MB 16.2s done
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 13.63MB / 23.91MB 9.3s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 15.73MB / 23.91MB 10.8s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 17.83MB / 23.91MB 11.8s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 19.92MB / 23.91MB 12.7s
+#9 ...
+
+#8 [web base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble@sha256:d554595e85adca5c8dce1bc8f5d7eef0ce63b56c156c9b1d845142bd53b45dbc
+#8 sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 32.85MB / 32.85MB 21.5s done
+#8 extracting sha256:833ecb5f8a9de56ec26b0d9810688321d236e12bddded9e63d88abece2edf880 0.3s done
+#8 extracting sha256:5fb0434466bbf8fa1e18b4b57d1972faa5fc831582cc03ac139c10b9a64d7e55 done
+#8 extracting sha256:ef48ae4004c7a40e10434a2e999c9be97e5c9227bac53a5034a5df08b99ec533 0.1s done
+#8 DONE 21.9s
+
+#9 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0-noble@sha256:7331fb5fb8798c58df1f263dc8cc843459965c00cfb29ebeb53bf4cc572d592d
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 20.97MB / 173.11MB 14.4s
+#9 ...
+
+#10 [httpapi-host base 2/2] WORKDIR /app
+#10 DONE 0.2s
+
+#11 [web final 1/2] WORKDIR /app
+#11 DONE 0.0s
+
+#9 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0-noble@sha256:7331fb5fb8798c58df1f263dc8cc843459965c00cfb29ebeb53bf4cc572d592d
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 22.02MB / 23.91MB 13.5s
+#9 sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 23.91MB / 23.91MB 14.1s done
+#9 extracting sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1
+#9 extracting sha256:dfa0f03191df030c2965a6d9aff67416b3dc92c2f115f6c46283fc15e56ab2c1 0.3s done
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 30.41MB / 173.11MB 17.1s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 39.85MB / 173.11MB 19.5s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 49.28MB / 173.11MB 23.0s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 58.72MB / 173.11MB 25.7s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 68.16MB / 173.11MB 28.1s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 77.59MB / 173.11MB 30.3s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 87.03MB / 173.11MB 34.2s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 96.47MB / 173.11MB 37.7s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 105.91MB / 173.11MB 40.2s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 115.34MB / 173.11MB 43.5s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 124.78MB / 173.11MB 46.7s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 134.22MB / 173.11MB 49.1s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 143.65MB / 173.11MB 51.8s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 153.09MB / 173.11MB 56.0s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 162.53MB / 173.11MB 59.0s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 171.97MB / 173.11MB 61.4s
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 173.11MB / 173.11MB 61.6s done
+#9 sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 173.11MB / 173.11MB 61.6s done
+#9 extracting sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db
+#9 extracting sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 1.5s done
+#9 extracting sha256:442775c3a14291ded259508f41deeb154508b5565812eefc7d4e3c2ba1b470db 1.5s done
+#9 extracting sha256:be9b392e46e304d60055d86107590b569a5d2c10d3c1302bfba3a174d4954b3d done
+#9 extracting sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15
+#9 extracting sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 0.2s done
+#9 extracting sha256:bfbb0da949ae9cfecba9f22b805bff22cf1a4f640323362028ee9f36aadb5f15 0.2s done
+#9 DONE 71.0s
+
+#12 [web build 2/7] WORKDIR /src
+#12 DONE 0.5s
+
+#13 [httpapi-host build 3/7] COPY nupkgs /nupkgs
+#13 DONE 0.0s
+
+#14 [httpapi-host build 4/7] COPY . .
+#14 DONE 0.1s
+
+#15 [web build 5/7] WORKDIR /src/LeptonXDemoApp.Web
+#15 DONE 0.0s
+
+#16 [httpapi-host build 5/7] WORKDIR /src/LeptonXDemoApp.HttpApi.Host
+#16 DONE 0.0s
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 0.539   Determining projects to restore...
+#17 ...
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 0.547   Determining projects to restore...
+#18 10.77   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 9.64 sec).
+#18 10.77   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 9.65 sec).
+#18 10.77   Restored /src/LeptonXDemoApp.HttpApi.Client/LeptonXDemoApp.HttpApi.Client.csproj (in 9.65 sec).
+#18 ...
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 12.30   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 11 sec).
+#17 12.30   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 11 sec).
+#17 12.30   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 11 sec).
+#17 12.30   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 11 sec).
+#17 12.30   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.02 sec).
+#17 18.18   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 16.83 sec).
+#17 18.20   Restored /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 16.86 sec).
+#17 DONE 19.2s
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 19.20   Restored /src/LeptonXDemoApp.Web/LeptonXDemoApp.Web.csproj (in 18.21 sec).
+#18 DONE 19.3s
+
+#19 [web build 7/7] RUN dotnet build "LeptonXDemoApp.Web.csproj" -c Release -o /app/build
+#19 0.627   Determining projects to restore...
+#19 0.981   All projects are up-to-date for restore.
+#19 2.987   LeptonXDemoApp.Domain.Shared -> /app/build/LeptonXDemoApp.Domain.Shared.dll
+#19 3.415   LeptonXDemoApp.Application.Contracts -> /app/build/LeptonXDemoApp.Application.Contracts.dll
+#19 3.724   LeptonXDemoApp.HttpApi.Client -> /app/build/LeptonXDemoApp.HttpApi.Client.dll
+#19 ...
+
+#20 [httpapi-host build 7/7] RUN dotnet build "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/build
+#20 0.710   Determining projects to restore...
+#20 1.273   All projects are up-to-date for restore.
+#20 3.270   LeptonXDemoApp.Domain.Shared -> /app/build/LeptonXDemoApp.Domain.Shared.dll
+#20 3.764   LeptonXDemoApp.Application.Contracts -> /app/build/LeptonXDemoApp.Application.Contracts.dll
+#20 3.977   LeptonXDemoApp.Domain -> /app/build/LeptonXDemoApp.Domain.dll
+#20 4.563   LeptonXDemoApp.Application -> /app/build/LeptonXDemoApp.Application.dll
+#20 4.743   LeptonXDemoApp.HttpApi -> /app/build/LeptonXDemoApp.HttpApi.dll
+#20 4.747   LeptonXDemoApp.MongoDB -> /app/build/LeptonXDemoApp.MongoDB.dll
+#20 6.240 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#20 6.265   LeptonXDemoApp.HttpApi.Host -> /app/build/LeptonXDemoApp.HttpApi.Host.dll
+#20 6.302 
+#20 6.302 Build succeeded.
+#20 6.303 
+#20 6.303 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#20 6.304     1 Warning(s)
+#20 6.306     0 Error(s)
+#20 6.307 
+#20 6.307 Time Elapsed 00:00:05.85
+#20 DONE 6.5s
+
+#21 [httpapi-host publish 1/1] RUN dotnet publish "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/publish
+#21 0.634   Determining projects to restore...
+#21 ...
+
+#19 [web build 7/7] RUN dotnet build "LeptonXDemoApp.Web.csproj" -c Release -o /app/build
+#19 7.841   LeptonXDemoApp.Web -> /app/build/LeptonXDemoApp.Web.dll
+#19 7.908 
+#19 7.908 Build succeeded.
+#19 7.908     0 Warning(s)
+#19 7.908     0 Error(s)
+#19 7.910 
+#19 7.910 Time Elapsed 00:00:07.54
+#19 DONE 8.0s
+
+#22 [web publish 1/1] RUN dotnet publish "LeptonXDemoApp.Web.csproj" -c Release -o /app/publish
+#22 0.637   Determining projects to restore...
+#22 0.937   All projects are up-to-date for restore.
+#22 1.614   LeptonXDemoApp.Domain.Shared -> /src/LeptonXDemoApp.Domain.Shared/bin/Release/net9.0/LeptonXDemoApp.Domain.Shared.dll
+#22 2.818   LeptonXDemoApp.Application.Contracts -> /src/LeptonXDemoApp.Application.Contracts/bin/Release/net9.0/LeptonXDemoApp.Application.Contracts.dll
+#22 3.196   LeptonXDemoApp.HttpApi.Client -> /src/LeptonXDemoApp.HttpApi.Client/bin/Release/net9.0/LeptonXDemoApp.HttpApi.Client.dll
+#22 ...
+
+#21 [httpapi-host publish 1/1] RUN dotnet publish "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/publish
+#21 1.767   All projects are up-to-date for restore.
+#21 2.382   LeptonXDemoApp.Domain.Shared -> /src/LeptonXDemoApp.Domain.Shared/bin/Release/net9.0/LeptonXDemoApp.Domain.Shared.dll
+#21 3.735   LeptonXDemoApp.Application.Contracts -> /src/LeptonXDemoApp.Application.Contracts/bin/Release/net9.0/LeptonXDemoApp.Application.Contracts.dll
+#21 3.735   LeptonXDemoApp.Domain -> /src/LeptonXDemoApp.Domain/bin/Release/net9.0/LeptonXDemoApp.Domain.dll
+#21 4.091   LeptonXDemoApp.Application -> /src/LeptonXDemoApp.Application/bin/Release/net9.0/LeptonXDemoApp.Application.dll
+#21 4.133   LeptonXDemoApp.MongoDB -> /src/LeptonXDemoApp.MongoDB/bin/Release/net9.0/LeptonXDemoApp.MongoDB.dll
+#21 4.253   LeptonXDemoApp.HttpApi -> /src/LeptonXDemoApp.HttpApi/bin/Release/net9.0/LeptonXDemoApp.HttpApi.dll
+#21 5.728 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#21 5.745   LeptonXDemoApp.HttpApi.Host -> /src/LeptonXDemoApp.HttpApi.Host/bin/Release/net9.0/LeptonXDemoApp.HttpApi.Host.dll
+#21 6.672   LeptonXDemoApp.HttpApi.Host -> /app/publish/
+#21 DONE 6.9s
+
+#22 [web publish 1/1] RUN dotnet publish "LeptonXDemoApp.Web.csproj" -c Release -o /app/publish
+#22 ...
+
+#23 [httpapi-host final 2/2] COPY --from=publish /app/publish .
+#23 DONE 0.2s
+
+#22 [web publish 1/1] RUN dotnet publish "LeptonXDemoApp.Web.csproj" -c Release -o /app/publish
+#22 ...
+
+#24 [httpapi-host] exporting to image
+#24 exporting layers
+#24 ...
+
+#22 [web publish 1/1] RUN dotnet publish "LeptonXDemoApp.Web.csproj" -c Release -o /app/publish
+#22 7.356   LeptonXDemoApp.Web -> /src/LeptonXDemoApp.Web/bin/Release/net9.0/LeptonXDemoApp.Web.dll
+#22 7.904   LeptonXDemoApp.Web -> /app/publish/
+#22 DONE 8.3s
+
+#24 [httpapi-host] exporting to image
+#24 ...
+
+#25 [web final 2/2] COPY --from=publish /app/publish .
+#25 DONE 0.8s
+
+#24 [httpapi-host] exporting to image
+#24 exporting layers 3.5s done
+#24 exporting manifest sha256:02060dc90471551fb47b49d883a2905071ebb712ae59bd8ac35e27c2784ebd7d 0.0s done
+#24 exporting config sha256:9a0f35e8e1d0e5121a9b47ed07d7b5ac83cd4354f23faeb707d2b83b15620a05 0.0s done
+#24 exporting attestation manifest sha256:cb696feb25adec240728bd93fefbaa982c9b3f45597596dee45b086ba0f51568 0.0s done
+#24 exporting manifest list sha256:a5649121cac5e4fb7e69abeff56432071776dc7c126070cb647f26d440b6543a done
+#24 naming to docker.io/library/demo-zen-httpapi-host:latest done
+#24 unpacking to docker.io/library/demo-zen-httpapi-host:latest
+#24 unpacking to docker.io/library/demo-zen-httpapi-host:latest 0.5s done
+#24 DONE 4.2s
+
+#26 [httpapi-host] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [web] exporting to image
+#27 exporting layers 6.4s done
+#27 exporting manifest sha256:a704a6b87d392d9b37687ac2d0d7d3b8602783f4c79ba43969511504ddbce7d8
+#27 exporting manifest sha256:a704a6b87d392d9b37687ac2d0d7d3b8602783f4c79ba43969511504ddbce7d8 done
+#27 exporting config sha256:fc863e35cc080f066e683760bd34ce2b4c2fdb52c0152161931b32248563c657 done
+#27 exporting attestation manifest sha256:93280cc831dc9fc7dd0f76bcf507d5808ca01969a269c56db9b89365f9848ff0 done
+#27 exporting manifest list sha256:d91303a6dbd7a4139094a8d0c2797eaacaefc3dec6d7bbe0f27a65066779bb52 done
+#27 naming to docker.io/library/demo-zen-web:latest done
+#27 unpacking to docker.io/library/demo-zen-web:latest
+#27 unpacking to docker.io/library/demo-zen-web:latest 1.1s done
+#27 DONE 7.6s
+
+#28 [web] resolving provenance for metadata file
+#28 DONE 0.0s
+ demo-zen-web  Built
+ demo-zen-httpapi-host  Built
