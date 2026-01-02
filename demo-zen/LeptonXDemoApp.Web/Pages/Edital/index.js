@@ -2,7 +2,7 @@ $(function () {
 
     function debounce(func, delay) {
         let timerId;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timerId);
             timerId = setTimeout(() => {
                 func.apply(this, args);
@@ -69,16 +69,16 @@ $(function () {
                 }
             },
             {
-                title: l('EditalObjeto'),
+                title: l('Edital:Objeto'),
                 data: "objeto"
             },
             {
-                title: l('EditalData'),
-                data: "data"
-                ,dataFormat: 'datetime'
+                title: l('Edital:Data'),
+                data: "data",
+                dataFormat: 'datetime'
             },
             {
-                title: l('EditalValor'),
+                title: l('Edital:Valor'),
                 data: "valor"
             },
         ]

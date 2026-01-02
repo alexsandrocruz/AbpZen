@@ -82,7 +82,7 @@ public class {{ entity.name }}FilterInput
     {%- for field in entity.fields %}
     {%- if field.isFilterable %}
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.type == 'string' %}
     public string? {{ field.name }} { get; set; }
     {%- elsif field.type == 'int' %}
@@ -181,16 +181,16 @@ export function getRazorIndexJsTemplate(): string {
             {%- for field in entity.fields %}
             {%- unless field.isLookup %}
             {
-                title: l('{{ entity.name }}{{ field.name }}'),
-                data: "{{ field.name | camelCase }}"
+                title: l('{{ entity.name }}:{{ field.name }}'),
+                data: "{{ field.name | camelCase }}",
                 {%- if field.type == 'datetime' %}
-                ,dataFormat: 'datetime'
+                dataFormat: 'datetime'
                 {%- endif %}
                 {%- if field.type == 'bool' %}
-                ,render: function (data) { return data ? l('Yes') : l('No'); }
+                render: function (data) { return data ? l('Yes') : l('No'); }
                 {%- endif %}
                 {%- if field.type == 'enum' and field.enumConfig %}
-                ,render: function (data) { return l('Enum:{{ field.enumConfig.enumName }}.' + data); }
+                render: function (data) { return l('Enum:{{ field.enumConfig.enumName }}.' + data); }
                 {%- endif %}
             },
             {%- endunless %}

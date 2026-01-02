@@ -18,12 +18,12 @@ public class IndexModel : LeptonXDemoAppPageModel
 public class EditalFilterInput
 {
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "EditalObjeto")]
+    [Display(Name = "Edital:Objeto")]
     public string? Objeto { get; set; }
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "EditalData")]
+    [Display(Name = "Edital:Data")]
     public DateTime? Data { get; set; }
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "EditalValor")]
+    [Display(Name = "Edital:Valor")]
     public decimal? Valor { get; set; }
 }
