@@ -7,6 +7,8 @@ namespace LeptonXDemoApp.Product.Dtos;
 public class ProductGetListInput : PagedAndSortedResultRequestDto
 {
     public string? Name { get; set; }
-    public decimal? Price { get; set; }
+    public string? Price { get; set; }
+
+    // ========== FK Filter Fields (Filter by parent entity) ==========
     public Guid? CategoryId { get; set; }
 }

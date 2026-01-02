@@ -7,7 +7,7 @@ namespace LeptonXDemoApp.Product.Dtos;
 public class ProductDto : FullAuditedEntityDto<Guid>
 {
     public string Name { get; set; }
-    public decimal? Price { get; set; }
+    public string Price { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
     public Guid? CategoryId { get; set; }

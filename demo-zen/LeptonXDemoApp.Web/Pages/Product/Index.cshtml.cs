@@ -44,7 +44,7 @@ public class ProductFilterInput
     public string? Name { get; set; }
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "Product:Price")]
-    public decimal? Price { get; set; }
+    public string? Price { get; set; }
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "Product:CategoryId")]
     public Guid? CategoryId { get; set; }

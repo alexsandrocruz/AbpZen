@@ -19,9 +19,9 @@ public class ProductAppService :
     LeptonXDemoAppAppService,
     IProductAppService
 {
-    private readonly IRepository<Product, Guid> _repository;
+    private readonly IRepository<LeptonXDemoApp.Product.Product, Guid> _repository;
 
-    public ProductAppService(IRepository<Product, Guid> repository)
+    public ProductAppService(IRepository<LeptonXDemoApp.Product.Product, Guid> repository)
     {
         _repository = repository;
     }
@@ -32,7 +32,7 @@ public class ProductAppService :
     public virtual async Task<ProductDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<Product, ProductDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Product.Product, ProductDto>(entity);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class ProductAppService :
 
         return new PagedResultDto<ProductDto>(
             totalCount,
-            ObjectMapper.Map<List<Product>, List<ProductDto>>(entities)
+            ObjectMapper.Map<List<LeptonXDemoApp.Product.Product>, List<ProductDto>>(entities)
         );
     }
 
@@ -68,11 +68,11 @@ public class ProductAppService :
     [Authorize(LeptonXDemoAppPermissions.Product.Create)]
     public virtual async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProductDto, Product>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProductDto, LeptonXDemoApp.Product.Product>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Product, ProductDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Product.Product, ProductDto>(entity);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class ProductAppService :
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Product, ProductDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Product.Product, ProductDto>(entity);
     }
 
     /// <summary>
@@ -102,11 +102,11 @@ public class ProductAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Product> ApplyFilters(IQueryable<Product> queryable, ProductGetListInput input)
+    protected virtual IQueryable<LeptonXDemoApp.Product.Product> ApplyFilters(IQueryable<LeptonXDemoApp.Product.Product> queryable, ProductGetListInput input)
     {
         return queryable
             .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Name))
-            .WhereIf(input.Price != null, x => x.Price == input.Price)
+            .WhereIf(!input.Price.IsNullOrWhiteSpace(), x => x.Price.Contains(input.Price))
             .WhereIf(input.CategoryId != null, x => x.CategoryId == input.CategoryId)
             // ========== FK Filters ==========
             .WhereIf(input.CategoryId != null, x => x.CategoryId == input.CategoryId)

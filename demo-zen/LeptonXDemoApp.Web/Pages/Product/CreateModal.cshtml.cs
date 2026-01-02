@@ -39,8 +39,9 @@ public class CreateModalModel : LeptonXDemoAppPageModel
         // Load lookup data for FK dropdowns
         var categoryList = await _categoryAppService.GetListAsync(new CategoryGetListInput { MaxResultCount = 1000 });
         CategoryList = categoryList.Items
-            .Select(x => new SelectListItem(x.Id.ToString(), x.Id.ToString()))
+            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             .ToList();
+        ViewModel.CategoryList = CategoryList;
     }
 
     public virtual async Task<IActionResult> OnPostAsync()

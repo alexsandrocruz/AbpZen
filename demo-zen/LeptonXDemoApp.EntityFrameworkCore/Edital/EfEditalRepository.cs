@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LeptonXDemoApp.Edital;
 
 public class EfEditalRepository 
-    : EfCoreRepository<LeptonXDemoAppDbContext, Edital, Guid>, 
+    : EfCoreRepository<LeptonXDemoAppDbContext, LeptonXDemoApp.Edital.Edital, Guid>, 
       IEditalRepository
 {
     public EfEditalRepository(IDbContextProvider<LeptonXDemoAppDbContext> dbContextProvider) 

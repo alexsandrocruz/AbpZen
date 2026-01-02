@@ -28,7 +28,7 @@ import {
 import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum';
 // Razor page templates
 import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index';
-import { getRazorCreateModalTemplate, getRazorCreateModalModelTemplate, getRazorEditModalTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
+import { getRazorCreateModalViewTemplate, getRazorCreateModalModelTemplate, getRazorEditModalViewTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
 import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
 
 /**
@@ -252,12 +252,6 @@ export class CodeGenerator {
         });
 
         // ============ WEB LAYER ============
-        // Menu contributor
-        files.push({
-            path: `${projectNamespace}.Web/Menus/${entity.name}MenuContributor.cs`,
-            content: await this.engine.parseAndRender(getMenuContributorTemplate(), ctx),
-            layer: 'Web',
-        });
 
         // Localization EN
         files.push({
@@ -330,7 +324,7 @@ export class CodeGenerator {
         // Create Modal
         files.push({
             path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml`,
-            content: await this.engine.parseAndRender(getRazorCreateModalTemplate(), ctx),
+            content: await this.engine.parseAndRender(getRazorCreateModalViewTemplate(), ctx),
             layer: 'Web',
         });
         files.push({
@@ -342,7 +336,7 @@ export class CodeGenerator {
         // Edit Modal
         files.push({
             path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml`,
-            content: await this.engine.parseAndRender(getRazorEditModalTemplate(), ctx),
+            content: await this.engine.parseAndRender(getRazorEditModalViewTemplate(), ctx),
             layer: 'Web',
         });
         files.push({

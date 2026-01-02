@@ -23,9 +23,9 @@ public class {{ entity.name }}AppService :
     {{ project.name }}AppService,
     I{{ entity.name }}AppService
 {
-    private readonly IRepository<{{ entity.name }}, {{ entity.primaryKey }}> _repository;
+    private readonly IRepository<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ entity.primaryKey }}> _repository;
 
-    public {{ entity.name }}AppService(IRepository<{{ entity.name }}, {{ entity.primaryKey }}> repository)
+    public {{ entity.name }}AppService(IRepository<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ entity.primaryKey }}> repository)
     {
         _repository = repository;
     }
@@ -36,7 +36,7 @@ public class {{ entity.name }}AppService :
     public virtual async Task<{{ dto.readTypeName }}> GetAsync({{ entity.primaryKey }} id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<{{ entity.name }}, {{ dto.readTypeName }}>(entity);
+        return ObjectMapper.Map<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ dto.readTypeName }}>(entity);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class {{ entity.name }}AppService :
 
         return new PagedResultDto<{{ dto.readTypeName }}>(
             totalCount,
-            ObjectMapper.Map<List<{{ entity.name }}>, List<{{ dto.readTypeName }}>>(entities)
+            ObjectMapper.Map<List<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}>, List<{{ dto.readTypeName }}>>(entities)
         );
     }
 
@@ -72,11 +72,11 @@ public class {{ entity.name }}AppService :
     [Authorize({{ project.name }}Permissions.{{ entity.name }}.Create)]
     public virtual async Task<{{ dto.readTypeName }}> CreateAsync({{ dto.createTypeName }} input)
     {
-        var entity = ObjectMapper.Map<{{ dto.createTypeName }}, {{ entity.name }}>(input);
+        var entity = ObjectMapper.Map<{{ dto.createTypeName }}, {{ project.namespace }}.{{ entity.name }}.{{ entity.name }}>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<{{ entity.name }}, {{ dto.readTypeName }}>(entity);
+        return ObjectMapper.Map<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ dto.readTypeName }}>(entity);
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public class {{ entity.name }}AppService :
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<{{ entity.name }}, {{ dto.readTypeName }}>(entity);
+        return ObjectMapper.Map<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ dto.readTypeName }}>(entity);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public class {{ entity.name }}AppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<{{ entity.name }}> ApplyFilters(IQueryable<{{ entity.name }}> queryable, {{ entity.name }}GetListInput input)
+    protected virtual IQueryable<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}> ApplyFilters(IQueryable<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}> queryable, {{ entity.name }}GetListInput input)
     {
         return queryable
             {%- for field in entity.fields %}

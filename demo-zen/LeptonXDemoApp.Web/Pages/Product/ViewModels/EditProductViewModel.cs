@@ -9,11 +9,14 @@ namespace LeptonXDemoApp.Web.Pages.Product.ViewModels;
 public class EditProductViewModel
 {
     [Display(Name = "Product:Name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     [Display(Name = "Product:Price")]
-    public decimal? Price { get; set; }
+    public string? Price { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
     [Display(Name = "Product:CategoryId")]
+    [SelectItems(nameof(CategoryList))]
     public Guid? CategoryId { get; set; }
+
+    public List<SelectListItem> CategoryList { get; set; } = new();
 }

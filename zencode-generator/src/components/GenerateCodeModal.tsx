@@ -257,7 +257,7 @@ export default function GenerateCodeModal({
             // 2. Send merge files to /api/inject-code as 'json-merge' type
             if (mergeFiles.length > 0) {
                 const instructions = mergeFiles.map(f => ({
-                    file: f.path.replace('.json-merge', ''),
+                    file: f.path.replace('.json-merge', '.json'),
                     content: f.content,
                     type: 'json-merge' as const
                 }));
@@ -302,7 +302,7 @@ export default function GenerateCodeModal({
                 {
                     file: 'LeptonXDemoApp.Web/Menus/LeptonXDemoAppMenuContributor.cs',
                     marker: 'ZenCode-Menu-Marker',
-                    content: `context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.name}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
+                    content: `context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.pluralName}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
                 },
                 {
                     file: 'LeptonXDemoApp.MongoDB/MongoDb/LeptonXDemoAppMongoDbContext.cs',

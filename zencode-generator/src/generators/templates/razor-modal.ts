@@ -1,30 +1,6 @@
-/**
- * Razor CreateModal template for ABP Web layer
- */
-export function getRazorCreateModalTemplate(): string {
-    return `@page
-@using Microsoft.AspNetCore.Mvc.Localization
-@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
-@using {{ project.namespace }}.Localization
-@inject IHtmlLocalizer<{{ project.name }}Resource> L
-@model {{ project.namespace }}.Web.Pages.{{ entity.name }}.CreateModalModel
-@{
-    Layout = null;
-}
-<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="CreateModal">
-    <abp-modal>
-        <abp-modal-header title="@L[\\"New{{ entity.name }}\\"].Value"></abp-modal-header>
-        <abp-modal-body>
-            <abp-form-content />
-        </abp-modal-body>
-        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
-    </abp-modal>
-</abp-dynamic-form>
-`;
-}
 
 /**
- * Razor CreateModal PageModel template
+ * Create Modal PageModel template
  */
 export function getRazorCreateModalModelTemplate(): string {
     return `using System;
@@ -38,6 +14,7 @@ using {{ project.namespace }}.{{ entity.name }}.Dtos;
 using {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 {%- for rel in relationships.asChild %}
 using {{ project.namespace }}.{{ rel.parentEntityName }};
+using {{ project.namespace }}.{{ rel.parentEntityName }}.Dtos;
 {%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
@@ -78,14 +55,15 @@ public class CreateModalModel : {{ project.name }}PageModel
         {%- for rel in relationships.asChild %}
         var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
         {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
-            .Select(x => new SelectListItem(x.Id.ToString(), x.Id.ToString()))
+            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             .ToList();
+        ViewModel.{{ rel.parentEntityName }}List = {{ rel.parentEntityName }}List;
         {%- endfor %}
     }
 
     public virtual async Task<IActionResult> OnPostAsync()
     {
-        var dto = ObjectMapper.Map<Create{{ entity.name }}ViewModel, {{ dto.createTypeName }}>(ViewModel);
+        var dto = ObjectMapper.Map<Create{{ entity.name }}ViewModel, CreateUpdate{{ entity.name }}Dto>(ViewModel);
         await _{{ entity.name | camelCase }}AppService.CreateAsync(dto);
         return NoContent();
     }
@@ -94,33 +72,7 @@ public class CreateModalModel : {{ project.name }}PageModel
 }
 
 /**
- * Razor EditModal template for ABP Web layer
- */
-export function getRazorEditModalTemplate(): string {
-    return `@page
-@using Microsoft.AspNetCore.Mvc.Localization
-@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
-@using {{ project.namespace }}.Localization
-@inject IHtmlLocalizer<{{ project.name }}Resource> L
-@model {{ project.namespace }}.Web.Pages.{{ entity.name }}.EditModalModel
-@{
-    Layout = null;
-}
-<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditModal">
-    <abp-modal>
-        <abp-modal-header title="@L[\\"Edit{{ entity.name }}\\"].Value"></abp-modal-header>
-        <abp-modal-body>
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <abp-form-content />
-        </abp-modal-body>
-        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
-    </abp-modal>
-</abp-dynamic-form>
-`;
-}
-
-/**
- * Razor EditModal PageModel template
+ * Edit Modal PageModel template
  */
 export function getRazorEditModalModelTemplate(): string {
     return `using System;
@@ -134,6 +86,7 @@ using {{ project.namespace }}.{{ entity.name }}.Dtos;
 using {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 {%- for rel in relationships.asChild %}
 using {{ project.namespace }}.{{ rel.parentEntityName }};
+using {{ project.namespace }}.{{ rel.parentEntityName }}.Dtos;
 {%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
@@ -142,7 +95,7 @@ public class EditModalModel : {{ project.name }}PageModel
 {
     [HiddenInput]
     [BindProperty(SupportsGet = true)]
-    public Guid Id { get; set; }
+    public {{ entity.primaryKey }} Id { get; set; }
 
     [BindProperty]
     public Edit{{ entity.name }}ViewModel ViewModel { get; set; }
@@ -173,23 +126,75 @@ public class EditModalModel : {{ project.name }}PageModel
     public virtual async Task OnGetAsync()
     {
         var dto = await _{{ entity.name | camelCase }}AppService.GetAsync(Id);
-        ViewModel = ObjectMapper.Map<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>(dto);
+        ViewModel = ObjectMapper.Map<{{ entity.name }}Dto, Edit{{ entity.name }}ViewModel>(dto);
 
         // Load lookup data for FK dropdowns
         {%- for rel in relationships.asChild %}
         var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
         {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
-            .Select(x => new SelectListItem(x.Id.ToString(), x.Id.ToString()))
+            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             .ToList();
+        ViewModel.{{ rel.parentEntityName }}List = {{ rel.parentEntityName }}List;
         {%- endfor %}
     }
 
     public virtual async Task<IActionResult> OnPostAsync()
     {
-        var dto = ObjectMapper.Map<Edit{{ entity.name }}ViewModel, {{ dto.updateTypeName }}>(ViewModel);
+        var dto = ObjectMapper.Map<Edit{{ entity.name }}ViewModel, CreateUpdate{{ entity.name }}Dto>(ViewModel);
         await _{{ entity.name | camelCase }}AppService.UpdateAsync(Id, dto);
         return NoContent();
     }
 }
+`;
+}
+
+/**
+ * Razor View template for Create Modal
+ */
+export function getRazorCreateModalViewTemplate(): string {
+    return `@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using {{ project.namespace }}.Localization
+@inject IHtmlLocalizer<{{ project.name }}Resource> L
+@model {{ project.namespace }}.Web.Pages.{{ entity.name }}.CreateModalModel
+@{
+    Layout = null;
+}
+<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["New{{ entity.name }}"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-form-content />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>
+`;
+}
+
+/**
+ * Razor View template for Edit Modal
+ */
+export function getRazorEditModalViewTemplate(): string {
+    return `@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using {{ project.namespace }}.Localization
+@inject IHtmlLocalizer<{{ project.name }}Resource> L
+@model {{ project.namespace }}.Web.Pages.{{ entity.name }}.EditModalModel
+@{
+    Layout = null;
+}
+<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditModal">
+    <abp-modal>
+        <abp-modal-header title="@L["Edit{{ entity.name }}"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <abp-form-content />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>
 `;
 }

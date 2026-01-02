@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LeptonXDemoApp.Product;
 
 public class EfProductRepository 
-    : EfCoreRepository<LeptonXDemoAppDbContext, Product, Guid>, 
+    : EfCoreRepository<LeptonXDemoAppDbContext, LeptonXDemoApp.Product.Product, Guid>, 
       IProductRepository
 {
     public EfProductRepository(IDbContextProvider<LeptonXDemoAppDbContext> dbContextProvider) 

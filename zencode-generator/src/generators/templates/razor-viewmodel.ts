@@ -14,6 +14,11 @@ public class Create{{ entity.name }}ViewModel
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.isRequired %}
     [Required]
     {%- endif %}
@@ -46,7 +51,7 @@ public class Create{{ entity.name }}ViewModel
     {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endif %}
-
+    {%- endunless %}
     {%- endunless %}
     {%- endfor %}
 
@@ -58,6 +63,8 @@ public class Create{{ entity.name }}ViewModel
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
     {%- endfor %}
 }
 `;
@@ -79,6 +86,11 @@ public class Edit{{ entity.name }}ViewModel
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.isRequired %}
     [Required]
     {%- endif %}
@@ -114,7 +126,7 @@ public class Edit{{ entity.name }}ViewModel
     {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endif %}
-
+    {%- endunless %}
     {%- endunless %}
     {%- endfor %}
 
@@ -126,6 +138,8 @@ public class Edit{{ entity.name }}ViewModel
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
     {%- endfor %}
 }
 `;

@@ -19,9 +19,9 @@ public class CategoryAppService :
     LeptonXDemoAppAppService,
     ICategoryAppService
 {
-    private readonly IRepository<Category, Guid> _repository;
+    private readonly IRepository<LeptonXDemoApp.Category.Category, Guid> _repository;
 
-    public CategoryAppService(IRepository<Category, Guid> repository)
+    public CategoryAppService(IRepository<LeptonXDemoApp.Category.Category, Guid> repository)
     {
         _repository = repository;
     }
@@ -32,7 +32,7 @@ public class CategoryAppService :
     public virtual async Task<CategoryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<Category, CategoryDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Category.Category, CategoryDto>(entity);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class CategoryAppService :
 
         return new PagedResultDto<CategoryDto>(
             totalCount,
-            ObjectMapper.Map<List<Category>, List<CategoryDto>>(entities)
+            ObjectMapper.Map<List<LeptonXDemoApp.Category.Category>, List<CategoryDto>>(entities)
         );
     }
 
@@ -68,11 +68,11 @@ public class CategoryAppService :
     [Authorize(LeptonXDemoAppPermissions.Category.Create)]
     public virtual async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateCategoryDto, Category>(input);
+        var entity = ObjectMapper.Map<CreateUpdateCategoryDto, LeptonXDemoApp.Category.Category>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Category, CategoryDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Category.Category, CategoryDto>(entity);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class CategoryAppService :
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Category, CategoryDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Category.Category, CategoryDto>(entity);
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class CategoryAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Category> ApplyFilters(IQueryable<Category> queryable, CategoryGetListInput input)
+    protected virtual IQueryable<LeptonXDemoApp.Category.Category> ApplyFilters(IQueryable<LeptonXDemoApp.Category.Category> queryable, CategoryGetListInput input)
     {
         return queryable
             .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Name))

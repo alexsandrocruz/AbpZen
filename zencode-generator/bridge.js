@@ -113,7 +113,7 @@ app.post('/api/save-metadata', (req, res) => {
 
 app.post('/api/generate-code', (req, res) => {
     const { projectPath, files } = req.body;
-    // files is an array of { path: string, content: string }
+    console.log(`[Bridge] Generating ${files.length} files in ${projectPath}`);
     if (!projectPath || !files) {
         return res.status(400).json({ error: 'Missing projectPath or files' });
     }
@@ -136,7 +136,6 @@ app.post('/api/generate-code', (req, res) => {
 app.post('/api/list-dirs', (req, res) => {
     let { directory } = req.body;
 
-    // Default to home directory if not provided
     if (!directory) {
         directory = os.homedir();
     }
@@ -164,6 +163,7 @@ app.post('/api/list-dirs', (req, res) => {
 
 app.post('/api/inject-code', (req, res) => {
     const { projectPath, instructions } = req.body;
+    console.log(`[Bridge] Injecting/Merging for ${instructions.length} instructions in ${projectPath}`);
     if (!projectPath || !instructions) {
         return res.status(400).json({ error: 'Missing projectPath or instructions' });
     }

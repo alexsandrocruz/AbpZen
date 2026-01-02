@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
-using ProductEntity = LeptonXDemoApp.Product.Product;
 
 namespace LeptonXDemoApp.Category;
 
@@ -10,14 +9,14 @@ namespace LeptonXDemoApp.Category;
 /// </summary>
 public class Category : FullAuditedAggregateRoot<Guid>
 {
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
 
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<ProductEntity> Products { get; set; } = new List<ProductEntity>();
+    public virtual ICollection<LeptonXDemoApp.Product.Product> Products { get; set; } = new List<LeptonXDemoApp.Product.Product>();
 
     protected Category()
     {

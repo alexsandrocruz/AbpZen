@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace LeptonXDemoApp.Edital;
 
-public interface IEditalRepository : IRepository<Edital, Guid>
+public interface IEditalRepository : IRepository<LeptonXDemoApp.Edital.Edital, Guid>
 {
 }

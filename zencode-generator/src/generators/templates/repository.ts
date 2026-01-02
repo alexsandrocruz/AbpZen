@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace {{ project.namespace }}.{{ entity.name }};
 
-public interface I{{ entity.name }}Repository : IRepository<{{ entity.name }}, {{ entity.primaryKey }}>
+public interface I{{ entity.name }}Repository : IRepository<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ entity.primaryKey }}>
 {
 }
 `;
@@ -25,7 +25,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace {{ project.namespace }}.{{ entity.name }};
 
 public class Ef{{ entity.name }}Repository 
-    : EfCoreRepository<{{ project.name }}DbContext, {{ entity.name }}, {{ entity.primaryKey }}>, 
+    : EfCoreRepository<{{ project.name }}DbContext, {{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ entity.primaryKey }}>, 
       I{{ entity.name }}Repository
 {
     public Ef{{ entity.name }}Repository(IDbContextProvider<{{ project.name }}DbContext> dbContextProvider) 

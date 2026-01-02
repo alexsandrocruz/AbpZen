@@ -19,9 +19,9 @@ public class EditalAppService :
     LeptonXDemoAppAppService,
     IEditalAppService
 {
-    private readonly IRepository<Edital, Guid> _repository;
+    private readonly IRepository<LeptonXDemoApp.Edital.Edital, Guid> _repository;
 
-    public EditalAppService(IRepository<Edital, Guid> repository)
+    public EditalAppService(IRepository<LeptonXDemoApp.Edital.Edital, Guid> repository)
     {
         _repository = repository;
     }
@@ -32,7 +32,7 @@ public class EditalAppService :
     public virtual async Task<EditalDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<Edital, EditalDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Edital.Edital, EditalDto>(entity);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class EditalAppService :
 
         return new PagedResultDto<EditalDto>(
             totalCount,
-            ObjectMapper.Map<List<Edital>, List<EditalDto>>(entities)
+            ObjectMapper.Map<List<LeptonXDemoApp.Edital.Edital>, List<EditalDto>>(entities)
         );
     }
 
@@ -68,11 +68,11 @@ public class EditalAppService :
     [Authorize(LeptonXDemoAppPermissions.Edital.Create)]
     public virtual async Task<EditalDto> CreateAsync(CreateUpdateEditalDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateEditalDto, Edital>(input);
+        var entity = ObjectMapper.Map<CreateUpdateEditalDto, LeptonXDemoApp.Edital.Edital>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Edital, EditalDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Edital.Edital, EditalDto>(entity);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class EditalAppService :
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Edital, EditalDto>(entity);
+        return ObjectMapper.Map<LeptonXDemoApp.Edital.Edital, EditalDto>(entity);
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class EditalAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Edital> ApplyFilters(IQueryable<Edital> queryable, EditalGetListInput input)
+    protected virtual IQueryable<LeptonXDemoApp.Edital.Edital> ApplyFilters(IQueryable<LeptonXDemoApp.Edital.Edital> queryable, EditalGetListInput input)
     {
         return queryable
             .WhereIf(!input.Objeto.IsNullOrWhiteSpace(), x => x.Objeto.Contains(input.Objeto))

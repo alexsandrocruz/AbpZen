@@ -12,7 +12,13 @@ public class {{ dto.readTypeName }} : FullAuditedEntityDto<{{ entity.primaryKey 
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
+    {%- endunless %}
     {%- endunless %}
     {%- endfor %}
 
@@ -39,6 +45,11 @@ public class {{ dto.createTypeName }}
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.isRequired %}
     [Required]
     {%- endif %}
@@ -46,6 +57,7 @@ public class {{ dto.createTypeName }}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
+    {%- endunless %}
     {%- endunless %}
     {%- endfor %}
 
@@ -74,11 +86,17 @@ public class {{ entity.name }}GetListInput : PagedAndSortedResultRequestDto
 {
     {%- for field in entity.fields %}
     {%- if field.isFilterable %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.type == 'string' %}
     public string? {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' or field.type == 'int' or field.type == 'long' or field.type == 'datetime' or field.type == 'bool' or field.type == 'decimal' %}
     public {{ field.type | csharpType: true }} {{ field.name }} { get; set; }
     {%- endif %}
+    {%- endunless %}
     {%- endif %}
     {%- endfor %}
 

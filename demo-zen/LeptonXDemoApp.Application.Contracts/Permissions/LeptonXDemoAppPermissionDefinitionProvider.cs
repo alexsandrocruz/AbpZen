@@ -28,7 +28,6 @@ namespace LeptonXDemoApp.Permissions
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Create, L("Permission:Category.Create"));
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Update, L("Permission:Category.Update"));
             categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Delete, L("Permission:Category.Delete"));
-
             // <ZenCode-PermissionDefinition-Marker>
         }
 

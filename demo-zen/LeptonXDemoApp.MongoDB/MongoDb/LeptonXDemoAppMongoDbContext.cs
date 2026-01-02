@@ -3,9 +3,6 @@ using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 using Volo.Chat.MongoDB;
 using Volo.FileManagement.MongoDB;
-using EditalEntity = LeptonXDemoApp.Edital.Edital;
-using ProductEntity = LeptonXDemoApp.Product.Product;
-using CategoryEntity = LeptonXDemoApp.Category.Category;
 
 namespace LeptonXDemoApp.MongoDB
 {
@@ -16,9 +13,9 @@ namespace LeptonXDemoApp.MongoDB
         /* Add mongo collections here. Example:
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
-        public IMongoCollection<EditalEntity> Editais => Collection<EditalEntity>();
-        public IMongoCollection<ProductEntity> Products => Collection<ProductEntity>();
-        public IMongoCollection<CategoryEntity> Categories => Collection<CategoryEntity>();
+        public IMongoCollection<LeptonXDemoApp.Edital.Edital> Editais => Collection<LeptonXDemoApp.Edital.Edital>();
+        public IMongoCollection<LeptonXDemoApp.Product.Product> Products => Collection<LeptonXDemoApp.Product.Product>();
+        public IMongoCollection<LeptonXDemoApp.Category.Category> Categories => Collection<LeptonXDemoApp.Category.Category>();
         // <ZenCode-MongoCollections-Marker>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)

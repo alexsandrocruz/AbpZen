@@ -15,6 +15,11 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.type == 'string' %}
     public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
 
@@ -34,6 +39,7 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
     public {{ field.type }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- endif %}
     {%- endunless %}
+    {%- endunless %}
     {%- endfor %}
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
@@ -43,12 +49,12 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
 
     // ========== Navigation Properties ==========
     {%- for rel in relationships.asChild %}
-    public virtual {{ rel.parentEntityName }}{% unless rel.isRequired %}?{% endunless %} {{ rel.navigationName }} { get; set; }
+    public virtual {{ project.namespace }}.{{ rel.parentEntityName }}.{{ rel.parentEntityName }}{% unless rel.isRequired %}?{% endunless %} {{ rel.navigationName }} { get; set; }
     {%- endfor %}
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
     {%- for rel in relationships.asParent %}
-    public virtual ICollection<{{ rel.childEntityName }}> {{ rel.navigationName }} { get; set; } = new List<{{ rel.childEntityName }}>();
+    public virtual ICollection<{{ project.namespace }}.{{ rel.childEntityName }}.{{ rel.childEntityName }}> {{ rel.navigationName }} { get; set; } = new List<{{ project.namespace }}.{{ rel.childEntityName }}.{{ rel.childEntityName }}>();
     {%- endfor %}
 
     protected {{ entity.name }}()

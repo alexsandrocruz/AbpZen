@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LeptonXDemoApp.Category;
 
 public class EfCategoryRepository 
-    : EfCoreRepository<LeptonXDemoAppDbContext, Category, Guid>, 
+    : EfCoreRepository<LeptonXDemoAppDbContext, LeptonXDemoApp.Category.Category, Guid>, 
       ICategoryRepository
 {
     public EfCategoryRepository(IDbContextProvider<LeptonXDemoAppDbContext> dbContextProvider) 

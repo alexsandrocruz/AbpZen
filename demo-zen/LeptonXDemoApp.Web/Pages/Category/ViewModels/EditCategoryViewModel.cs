@@ -9,7 +9,7 @@ namespace LeptonXDemoApp.Web.Pages.Category.ViewModels;
 public class EditCategoryViewModel
 {
     [Display(Name = "Category:Name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 }

@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace LeptonXDemoApp.Product;
 
-public interface IProductRepository : IRepository<Product, Guid>
+public interface IProductRepository : IRepository<LeptonXDemoApp.Product.Product, Guid>
 {
 }

@@ -9,11 +9,13 @@ export function injectCode(projectPath, instructions) {
     const results = [];
 
     for (const inst of instructions) {
-        const fullPath = path.join(projectPath, inst.file);
+        const fullPath = path.resolve(projectPath, inst.file);
         if (!fs.existsSync(fullPath)) {
+            console.error(`[Injector] File not found: ${fullPath}`);
             results.push({ file: inst.file, success: false, error: 'File not found' });
             continue;
         }
+        console.log(`[Injector] Processing ${fullPath} (type: ${inst.type || 'marker'})`);
 
         try {
             let content = fs.readFileSync(fullPath, 'utf8');
