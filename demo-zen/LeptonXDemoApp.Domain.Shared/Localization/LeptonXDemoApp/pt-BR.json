@@ -33,6 +33,18 @@
     "Permission:Edital": "Gerenciamento de Edital",
     "Permission:Edital.Create": "Criar Edital",
     "Permission:Edital.Update": "Editar Edital",
-    "Permission:Edital.Delete": "Excluir Edital"
+    "Permission:Edital.Delete": "Excluir Edital",
+    "Menu:Editais": "Editais",
+    "Edital": "Edital",
+    "Editais": "Editais",
+    "NewEdital": "Novo Edital",
+    "EditEdital": "Editar Edital",
+    "EditalDeletionConfirmationMessage": "Tem certeza que deseja excluir este Edital?",
+    "SuccessfullyEditalCreated": "Edital criado com sucesso.",
+    "SuccessfullyEditalUpdated": "Edital atualizado com sucesso.",
+    "SuccessfullyEditalDeleted": "Edital excluído com sucesso.",
+    "Edital:Objeto": "Objeto",
+    "Edital:Data": "Data",
+    "Edital:Valor": "Valor"
   }
 }

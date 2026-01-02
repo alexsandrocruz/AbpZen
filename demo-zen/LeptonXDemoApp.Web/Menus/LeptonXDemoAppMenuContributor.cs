@@ -98,7 +98,7 @@ namespace LeptonXDemoApp.Web.Menus
             administration.SetSubItemOrder(AbpAuditLoggingMainMenuNames.GroupName, 5);
 
             //Administration->Settings
-            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Edital, l["Menu:Edital"], "~/Edital", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Edital.Default));
+            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Edital, l["Menu:Editais"], "~/Edital", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Edital.Default));
       // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;

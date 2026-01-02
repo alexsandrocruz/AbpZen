@@ -26,7 +26,7 @@ public class {{ entity.name }}MenuContributor : IMenuContributor
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 {{ project.name }}Menus.{{ entity.name }},
-                l["Menu:{{ entity.name }}"],
+                l["Menu:{{ entity.pluralName }}"],
                 url: "/{{ entity.pluralName }}",
                 icon: "fas fa-list",
                 requiredPermissionName: {{ project.name }}Permissions.{{ entity.name }}.Default
