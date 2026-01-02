@@ -12,6 +12,7 @@ namespace LeptonXDemoApp.MongoDB
         /* Add mongo collections here. Example:
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
+        // <ZenCode-MongoCollections-Marker>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

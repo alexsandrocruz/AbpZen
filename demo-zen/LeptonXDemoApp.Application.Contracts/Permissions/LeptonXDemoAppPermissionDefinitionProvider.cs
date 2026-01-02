@@ -14,8 +14,7 @@ namespace LeptonXDemoApp.Permissions
             myGroup.AddPermission(LeptonXDemoAppPermissions.Dashboard.Host, L("Permission:Dashboard"), MultiTenancySides.Host);
             myGroup.AddPermission(LeptonXDemoAppPermissions.Dashboard.Tenant, L("Permission:Dashboard"), MultiTenancySides.Tenant);
 
-            //Define your own permissions here. Example:
-            //myGroup.AddPermission(LeptonXDemoAppPermissions.MyPermission1, L("Permission:MyPermission1"));
+            // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)

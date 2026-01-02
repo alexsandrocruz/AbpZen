@@ -98,7 +98,7 @@ namespace LeptonXDemoApp.Web.Menus
             administration.SetSubItemOrder(AbpAuditLoggingMainMenuNames.GroupName, 5);
 
             //Administration->Settings
-            administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 6);
+            // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;
         }

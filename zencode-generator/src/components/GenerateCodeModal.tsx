@@ -8,6 +8,7 @@ interface GenerateCodeModalProps {
     entities: EntityData[];
     projectName: string;
     projectNamespace: string;
+    projectPath: string;
     onClose: () => void;
 }
 
@@ -15,12 +16,18 @@ export default function GenerateCodeModal({
     entities,
     projectName,
     projectNamespace,
+    projectPath,
     onClose
 }: GenerateCodeModalProps) {
     const [files, setFiles] = useState<GeneratedFile[]>([]);
     const [generating, setGenerating] = useState(false);
     const [selectedFile, setSelectedFile] = useState<GeneratedFile | null>(null);
     const [expandedLayers, setExpandedLayers] = useState<Set<string>>(new Set(['Application', 'Application.Contracts']));
+    const [applying, setApplying] = useState(false);
+    const [injecting, setInjecting] = useState(false);
+    const [applyStatus, setApplyStatus] = useState<{ success: boolean; message: string } | null>(null);
+
+    const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
 
     const handleGenerate = async () => {
         setGenerating(true);
@@ -39,6 +46,90 @@ export default function GenerateCodeModal({
 
     const handleDownload = async () => {
         await downloadAsZip(files, projectName);
+    };
+
+    const handleApply = async () => {
+        if (!projectPath) return;
+        setApplying(true);
+        setApplyStatus(null);
+        try {
+            const response = await fetch('http://localhost:3001/api/generate-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectPath,
+                    files: files.map(f => ({ path: f.path, content: f.content }))
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setApplyStatus({ success: true, message: `Successfully applied ${data.count} files to project!` });
+            } else {
+                const data = await response.json();
+                setApplyStatus({ success: false, message: data.error || 'Failed to apply code' });
+            }
+        } catch (error) {
+            setApplyStatus({ success: false, message: 'Bridge not responding. is "node bridge.js" running?' });
+        } finally {
+            setApplying(false);
+        }
+    };
+
+    const handleInject = async () => {
+        if (!projectPath) return;
+        setInjecting(true);
+        setApplyStatus(null);
+        try {
+            // Define instructions for each entity
+            const instructions = entities.flatMap(entity => [
+                {
+                    file: 'LeptonXDemoApp.Web/Menus/LeptonXDemoAppMenuContributor.cs',
+                    marker: 'ZenCode-Menu-Marker',
+                    content: `context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.name}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
+                },
+                {
+                    file: 'LeptonXDemoApp.MongoDB/MongoDb/LeptonXDemoAppMongoDbContext.cs',
+                    marker: 'ZenCode-MongoCollections-Marker',
+                    content: `public IMongoCollection<${entity.name}> ${entity.pluralName} => Collection<${entity.name}>();`
+                },
+                {
+                    file: 'LeptonXDemoApp.Application.Contracts/Permissions/LeptonXDemoAppPermissions.cs',
+                    marker: 'ZenCode-Permissions-Marker',
+                    content: `public static class ${entity.name}\n        {\n            public const string Default = GroupName + ".${entity.name}";\n            public const string Create = Default + ".Create";\n            public const string Update = Default + ".Update";\n            public const string Delete = Default + ".Delete";\n        }`
+                },
+                {
+                    file: 'LeptonXDemoApp.Application.Contracts/Permissions/LeptonXDemoAppPermissionDefinitionProvider.cs',
+                    marker: 'ZenCode-PermissionDefinition-Marker',
+                    content: `var ${camelCase(entity.name)}Group = myGroup.AddPermission(LeptonXDemoAppPermissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Group.AddChild(LeptonXDemoAppPermissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Group.AddChild(LeptonXDemoAppPermissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Group.AddChild(LeptonXDemoAppPermissions.${entity.name}.Delete, L("Permission:Delete"));`
+                }
+            ]);
+
+            const response = await fetch('http://localhost:3001/api/inject-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectPath,
+                    instructions
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const failed = data.results.filter((r: any) => !r.success);
+                if (failed.length === 0) {
+                    setApplyStatus({ success: true, message: 'Successfully injected all markers!' });
+                } else {
+                    setApplyStatus({ success: false, message: `Injected with errors: ${failed[0].error}` });
+                }
+            } else {
+                setApplyStatus({ success: false, message: 'Failed to inject code' });
+            }
+        } catch (error) {
+            setApplyStatus({ success: false, message: 'Bridge error' });
+        } finally {
+            setInjecting(false);
+        }
     };
 
     const toggleLayer = (layer: string) => {
@@ -224,10 +315,47 @@ export default function GenerateCodeModal({
                         <button className="ui-button ui-button-secondary" onClick={() => setFiles([])}>
                             Regenerate
                         </button>
-                        <button className="ui-button ui-button-primary" onClick={handleDownload}>
+                        {projectPath && (
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                <button
+                                    className="ui-button ui-button-primary"
+                                    onClick={handleApply}
+                                    disabled={applying}
+                                    style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
+                                >
+                                    {applying ? <Loader2 size={18} className="animate-spin" /> : <FolderOpen size={18} />}
+                                    Write Files
+                                </button>
+                                <button
+                                    className="ui-button ui-button-primary"
+                                    onClick={handleInject}
+                                    disabled={injecting}
+                                    style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
+                                >
+                                    {injecting ? <Loader2 size={18} className="animate-spin" /> : <FileCode size={18} />}
+                                    Smart Inject
+                                </button>
+                            </div>
+                        )}
+                        <button className="ui-button ui-button-secondary" onClick={handleDownload} style={{ background: 'transparent', border: '1px solid #334155' }}>
                             <Download size={18} />
                             Download ZIP
                         </button>
+                    </div>
+                )}
+                {applyStatus && (
+                    <div style={{
+                        padding: '10px 24px',
+                        background: applyStatus.success ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                        color: applyStatus.success ? '#4ade80' : '#f87171',
+                        fontSize: '0.8rem',
+                        borderTop: '1px solid #334155',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                    }}>
+                        {applyStatus.success ? <FolderOpen size={14} /> : <X size={14} />}
+                        {applyStatus.message}
                     </div>
                 )}
             </div>

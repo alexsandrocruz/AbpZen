@@ -11,7 +11,6 @@ namespace LeptonXDemoApp.Permissions
             public const string Tenant = DashboardGroup + ".Tenant";
         }
 
-        //Add your own permission names. Example:
-        //public const string MyPermission1 = GroupName + ".MyPermission1";
+        // <ZenCode-Permissions-Marker>
     }
 }

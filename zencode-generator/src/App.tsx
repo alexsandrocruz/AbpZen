@@ -11,7 +11,7 @@ import ReactFlow, {
   type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, FileJson, Upload, Undo2, Redo2, Save, FolderOpen } from 'lucide-react';
+import { Plus, Download, FileJson, Upload, Undo2, Redo2, Save, FolderOpen, Folder } from 'lucide-react';
 import { useState } from 'react';
 
 import EntityNode from './components/EntityNode';
@@ -21,6 +21,8 @@ import MetadataPreview from './components/MetadataPreview';
 import ImportSqlModal from './components/ImportSqlModal';
 import CrudPreview from './components/CrudPreview';
 import GenerateCodeModal from './components/GenerateCodeModal';
+import SettingsModal from './components/SettingsModal';
+import { Settings } from 'lucide-react';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
@@ -48,7 +50,10 @@ function App() {
   const [showGenerateCode, setShowGenerateCode] = useState(false);
   const [previewEntityId, setPreviewEntityId] = useState<string | null>(null);
   const [generatedMetadata, setGeneratedMetadata] = useState<ZenMetadata | null>(null);
-  const [projectName, setProjectName] = useState('Untitled');
+  const [projectName, setProjectName] = useState(() => localStorage.getItem('zen_project_name') || 'Untitled');
+  const [projectNamespace, setProjectNamespace] = useState(() => localStorage.getItem('zen_project_namespace') || '');
+  const [projectPath, setProjectPath] = useState(() => localStorage.getItem('zen_project_path') || '');
+  const [showSettings, setShowSettings] = useState(false);
 
   // Undo/Redo history
   const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialNodes, initialEdges);
@@ -479,6 +484,10 @@ function App() {
           <button className="btn-icon-sm" onClick={handleRedo} disabled={!canRedo} title="Redo">
             <Redo2 size={18} />
           </button>
+          <div className="controls-divider" />
+          <button className="btn-icon-sm" onClick={() => setShowSettings(true)} title="Settings">
+            <Settings size={18} />
+          </button>
         </div>
         <button className="btn-primary" onClick={addEntity}>
           <Plus size={18} />
@@ -602,10 +611,37 @@ function App() {
       {showGenerateCode && (
         <GenerateCodeModal
           entities={nodes.map(n => n.data)}
-          projectName={generatedMetadata?.projectName || 'ZenGenerated'}
-          projectNamespace={generatedMetadata?.namespace || 'ZenApp'}
+          projectName={projectName || generatedMetadata?.projectName || 'ZenGenerated'}
+          projectNamespace={projectNamespace || generatedMetadata?.namespace || 'ZenApp'}
+          projectPath={projectPath}
           onClose={() => setShowGenerateCode(false)}
         />
+      )}
+
+
+      {showSettings && (
+        <SettingsModal
+          projectPath={projectPath}
+          projectName={projectName}
+          projectNamespace={projectNamespace}
+          onSave={(config) => {
+            setProjectPath(config.path);
+            setProjectName(config.projectName);
+            setProjectNamespace(config.namespace);
+            localStorage.setItem('zen_project_path', config.path);
+            localStorage.setItem('zen_project_name', config.projectName);
+            localStorage.setItem('zen_project_namespace', config.namespace);
+            setShowSettings(false);
+          }}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
+
+      {projectPath && (
+        <div className="project-indicator">
+          <Folder size={14} />
+          <span>Modeling: {projectPath.split('/').pop()}</span>
+        </div>
       )}
     </div>
   );
