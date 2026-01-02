@@ -31,6 +31,13 @@ import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTempl
 import { getRazorCreateModalViewTemplate, getRazorCreateModalModelTemplate, getRazorEditModalViewTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
 import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
 
+export interface RelationshipInfo {
+    id: string;
+    source: string;  // Source entity name
+    target: string;  // Target entity name
+    data: RelationshipData;
+}
+
 /**
  * Parent relationship context (this entity has a collection of children)
  */
@@ -52,6 +59,8 @@ export interface ChildRelationshipContext {
     navigationName: string;        // Navigation property name (e.g., "Category")
     parentNavigationName: string;  // Parent's collection name (e.g., "Products")
     isRequired: boolean;
+    lookupMode?: 'dropdown' | 'modal';
+    displayField: string;          // Human readable field (e.g., "Name")
 }
 
 /**
@@ -370,55 +379,56 @@ export class CodeGenerator {
     /**
      * Generate all files for multiple entities with relationship support
      */
-    async generateAll(
+    public async generateAll(
         entities: EntityData[],
+        relationships: RelationshipInfo[],
         projectName: string,
-        projectNamespace: string,
-        relationships: { id: string; source: string; target: string; data: RelationshipData }[] = []
+        projectNamespace: string
     ): Promise<GeneratedFile[]> {
         const allFiles: GeneratedFile[] = [];
-
-        // Build entity lookup map (id -> EntityData with pluralName)
-        const entityMap = new Map<string, EntityData>();
-        for (const entity of entities) {
-            // We need to find the entity ID, but entities array has EntityData, not {id, data}
-            // This assumes entities are passed with their IDs tracked elsewhere
-            // For now, we'll use entity.name as the key
-            entityMap.set(entity.name, entity);
-        }
+        const entityMap = new Map<string, EntityData>(entities.map(e => [e.name, e]));
 
         for (const entity of entities) {
-            // Compute relationships for this entity
             const asParent: ParentRelationshipContext[] = [];
             const asChild: ChildRelationshipContext[] = [];
 
             for (const rel of relationships) {
                 if (rel.data.type === 'one-to-many') {
-                    // Source is the "One" side (parent), Target is the "Many" side (child)
-                    const sourceEntity = entityMap.get(rel.source);
-                    const targetEntity = entityMap.get(rel.target);
+                    const sourceEntity = entityMap.get(rel.source); // Child
+                    const targetEntity = entityMap.get(rel.target); // Parent
 
                     if (sourceEntity && targetEntity) {
-                        // If this entity is the source (parent)
-                        if (rel.source === entity.name) {
+                        // If this entity is the parent (target)
+                        if (rel.target === entity.name) {
                             asParent.push({
-                                childEntityName: targetEntity.name,
-                                childPluralName: targetEntity.pluralName,
-                                navigationName: rel.data.sourceNavigationName || targetEntity.pluralName,
-                                childNavigationName: rel.data.targetNavigationName || sourceEntity.name,
-                                childFkFieldName: `${sourceEntity.name}Id`,
+                                childEntityName: sourceEntity.name,
+                                childPluralName: sourceEntity.pluralName,
+                                navigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
+                                childNavigationName: rel.data.targetNavigationName || targetEntity.name,
+                                childFkFieldName: `${targetEntity.name}Id`,
                             });
                         }
 
-                        // If this entity is the target (child)
-                        if (rel.target === entity.name) {
+                        // If this entity is the child (source)
+                        if (rel.source === entity.name) {
+                            const fkField = sourceEntity.fields.find(f =>
+                                f.isLookup && f.lookupConfig?.targetEntity === targetEntity.name
+                            );
+
+                            const displayFieldField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                || targetEntity.fields.find(f => f.name === 'Title' || f.name === 'title')
+                                || targetEntity.fields.find(f => f.type === 'string')
+                                || { name: 'Id' };
+
                             asChild.push({
-                                parentEntityName: sourceEntity.name,
-                                parentPluralName: sourceEntity.pluralName,
-                                fkFieldName: `${sourceEntity.name}Id`,
-                                navigationName: rel.data.targetNavigationName || sourceEntity.name,
-                                parentNavigationName: rel.data.sourceNavigationName || targetEntity.pluralName,
+                                parentEntityName: targetEntity.name,
+                                parentPluralName: targetEntity.pluralName,
+                                fkFieldName: fkField?.name || `${targetEntity.name}Id`,
+                                navigationName: rel.data.targetNavigationName || targetEntity.name,
+                                parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
                                 isRequired: rel.data.isRequired,
+                                lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
+                                displayField: displayFieldField.name
                             });
                         }
                     }

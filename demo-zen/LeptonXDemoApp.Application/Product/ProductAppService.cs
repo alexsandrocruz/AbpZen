@@ -20,10 +20,15 @@ public class ProductAppService :
     IProductAppService
 {
     private readonly IRepository<LeptonXDemoApp.Product.Product, Guid> _repository;
+    private readonly IRepository<LeptonXDemoApp.Category.Category, Guid> _categoryRepository;
 
-    public ProductAppService(IRepository<LeptonXDemoApp.Product.Product, Guid> repository)
+    public ProductAppService(
+        IRepository<LeptonXDemoApp.Product.Product, Guid> repository,
+        IRepository<LeptonXDemoApp.Category.Category, Guid> categoryRepository
+    )
     {
         _repository = repository;
+        _categoryRepository = categoryRepository;
     }
 
     /// <summary>
@@ -32,7 +37,14 @@ public class ProductAppService :
     public virtual async Task<ProductDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<LeptonXDemoApp.Product.Product, ProductDto>(entity);
+        var dto = ObjectMapper.Map<LeptonXDemoApp.Product.Product, ProductDto>(entity);
+        if (entity.CategoryId != null)
+        {
+            var parent = await _categoryRepository.FindAsync(entity.CategoryId.Value);
+            dto.CategoryDisplayName = parent?.Name;
+        }
+
+        return dto;
     }
 
     /// <summary>
@@ -55,10 +67,30 @@ public class ProductAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
+        var dtoList = ObjectMapper.Map<List<LeptonXDemoApp.Product.Product>, List<ProductDto>>(entities);
+        var categoryIds = entities
+            .Where(x => x.CategoryId != null)
+            .Select(x => x.CategoryId.Value)
+            .Distinct()
+            .ToList();
+
+        if (categoryIds.Any())
+        {
+            var parents = await _categoryRepository.GetListAsync(x => categoryIds.Contains(x.Id));
+            var parentMap = parents.ToDictionary(x => x.Id, x => x.Name);
+
+            foreach (var dto in dtoList.Where(x => x.CategoryId != null))
+            {
+                if (parentMap.TryGetValue(dto.CategoryId.Value, out var displayName))
+                {
+                    dto.CategoryDisplayName = displayName;
+                }
+            }
+        }
 
         return new PagedResultDto<ProductDto>(
             totalCount,
-            ObjectMapper.Map<List<LeptonXDemoApp.Product.Product>, List<ProductDto>>(entities)
+            dtoList
         );
     }
 
@@ -97,6 +129,17 @@ public class ProductAppService :
     public virtual async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public virtual async Task<ListResultDto<LookupDto<Guid>>> GetProductLookupAsync()
+    {
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
+            entities.Select(x => new LookupDto<Guid>
+            {
+                Id = x.Id,
+                DisplayName = x.Name
+            }).ToList()
+        );
     }
 
     /// <summary>

@@ -61,10 +61,17 @@ public class Create{{ entity.name }}ViewModel
     [Required]
     {%- endif %}
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    {%- if rel.lookupMode == 'modal' %}
+    // Lookup mode: Modal - Rendering manual lookup input recommended
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public string? {{ rel.parentEntityName }}DisplayName { get; set; }
+    {%- else %}
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
 
     public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endif %}
     {%- endfor %}
 }
 `;
@@ -136,10 +143,17 @@ public class Edit{{ entity.name }}ViewModel
     [Required]
     {%- endif %}
     [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    {%- if rel.lookupMode == 'modal' %}
+    // Lookup mode: Modal - Rendering manual lookup input recommended
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public string? {{ rel.parentEntityName }}DisplayName { get; set; }
+    {%- else %}
     [SelectItems(nameof({{ rel.parentEntityName }}List))]
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
 
     public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endif %}
     {%- endfor %}
 }
 `;
@@ -159,7 +173,12 @@ public class {{ entity.name }}WebAutoMapperProfile : Profile
 {
     public {{ entity.name }}WebAutoMapperProfile()
     {
-        CreateMap<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>();
+        CreateMap<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>()
+            {%- for rel in relationships.asChild %}
+            {%- if rel.lookupMode == 'modal' %}
+            .ForMember(dest => dest.{{ rel.parentEntityName }}DisplayName, opt => opt.MapFrom(src => src.{{ rel.parentEntityName }}DisplayName))
+            {%- endif %}
+            {%- endfor %};
         CreateMap<Create{{ entity.name }}ViewModel, {{ dto.createTypeName }}>();
         CreateMap<Edit{{ entity.name }}ViewModel, {{ dto.updateTypeName }}>();
     }

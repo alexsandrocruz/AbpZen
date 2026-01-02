@@ -8,7 +8,8 @@ public class ProductWebAutoMapperProfile : Profile
 {
     public ProductWebAutoMapperProfile()
     {
-        CreateMap<ProductDto, EditProductViewModel>();
+        CreateMap<ProductDto, EditProductViewModel>()
+            .ForMember(dest => dest.CategoryDisplayName, opt => opt.MapFrom(src => src.CategoryDisplayName));
         CreateMap<CreateProductViewModel, CreateUpdateProductDto>();
         CreateMap<EditProductViewModel, CreateUpdateProductDto>();
     }

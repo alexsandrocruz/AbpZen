@@ -113,7 +113,7 @@ app.post('/api/save-metadata', (req, res) => {
 
 app.post('/api/generate-code', (req, res) => {
     const { projectPath, files } = req.body;
-    console.log(`[Bridge] Generating ${files.length} files in ${projectPath}`);
+    console.log(`[Bridge] Received code generation request for ${files?.length} files in ${projectPath}`);
     if (!projectPath || !files) {
         return res.status(400).json({ error: 'Missing projectPath or files' });
     }
@@ -122,13 +122,16 @@ app.post('/api/generate-code', (req, res) => {
         for (const file of files) {
             const fullPath = path.join(projectPath, file.path);
             const dir = path.dirname(fullPath);
+            console.log(`[Bridge] Writing file: ${file.path}`);
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
             fs.writeFileSync(fullPath, file.content);
         }
+        console.log(`[Bridge] Successfully wrote ${files.length} files`);
         res.json({ success: true, count: files.length });
     } catch (error) {
+        console.error(`[Bridge] Error writing files: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
 });

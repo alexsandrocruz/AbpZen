@@ -1,15 +1,8 @@
 import { useState } from 'react';
 import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
-import type { EntityData, RelationshipData } from '../types';
-import { codeGenerator, type GeneratedFile, type ParentRelationshipContext, type ChildRelationshipContext } from '../generators';
+import type { EntityData } from '../types';
+import { codeGenerator, type GeneratedFile, type ParentRelationshipContext, type ChildRelationshipContext, type RelationshipInfo } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
-
-interface RelationshipInfo {
-    id: string;
-    source: string;  // Source entity name
-    target: string;  // Target entity name
-    data: RelationshipData;
-}
 
 interface GenerateCodeModalProps {
     entities: EntityData[];
@@ -55,8 +48,15 @@ export default function GenerateCodeModal({
         const asParent: ParentRelationshipContext[] = [];
         const asChild: ChildRelationshipContext[] = [];
 
-        // Build entity lookup
+        // Build entity lookup by name
         const entityMap = new Map(entities.map(e => [e.name, e]));
+
+        // Build entity lookup by ID if we can find it (searching the relationships)
+        // Actually, we should pass have the IDs in EntityData or pass a mapping.
+        // Let's assume rel.source/rel.target might be names OR IDs.
+        // If they are IDs, we need to find which entity they belong to.
+        // Since we don't have the ID->Name mapping here easily, 
+        // let's look at how App.tsx passes them.
 
         for (const rel of relationships) {
             if (rel.data.type === 'one-to-many') {
@@ -77,13 +77,25 @@ export default function GenerateCodeModal({
 
                     // If this entity is the SOURCE (child - the "Many" side, has FK)
                     if (rel.source === entityName) {
+                        // Find the field that is marked as lookup for this target entity
+                        const fkField = sourceEntity.fields.find(f =>
+                            f.isLookup && f.lookupConfig?.targetEntity === targetEntity.name
+                        );
+
+                        const displayFieldField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                            || targetEntity.fields.find(f => f.name === 'Title' || f.name === 'title')
+                            || targetEntity.fields.find(f => f.type === 'string')
+                            || { name: 'Id' };
+
                         asChild.push({
                             parentEntityName: targetEntity.name,
                             parentPluralName: targetEntity.pluralName,
-                            fkFieldName: `${targetEntity.name}Id`,
+                            fkFieldName: fkField?.name || `${targetEntity.name}Id`,
                             navigationName: rel.data.targetNavigationName || targetEntity.name,
                             parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
                             isRequired: rel.data.isRequired,
+                            lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
+                            displayField: displayFieldField.name
                         });
                     }
                 }
@@ -239,18 +251,29 @@ export default function GenerateCodeModal({
 
             // 1. Send normal files to /api/generate-code
             if (normalFiles.length > 0) {
-                const response = await fetch('http://localhost:3001/api/generate-code', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        projectPath,
-                        files: normalFiles.map(f => ({ path: f.path, content: f.content }))
-                    })
-                });
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
-                if (!response.ok) {
-                    const data = await response.json();
-                    throw new Error(data.error || 'Failed to apply normal files');
+                try {
+                    const response = await fetch('http://localhost:3001/api/generate-code', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            projectPath,
+                            files: normalFiles.map(f => ({ path: f.path, content: f.content }))
+                        }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Failed to apply normal files');
+                    }
+                } catch (err: any) {
+                    if (err.name === 'AbortError') throw new Error('Request timed out after 15 seconds');
+                    throw err;
                 }
             }
 

@@ -21,7 +21,9 @@ public class CategoryAppService :
 {
     private readonly IRepository<LeptonXDemoApp.Category.Category, Guid> _repository;
 
-    public CategoryAppService(IRepository<LeptonXDemoApp.Category.Category, Guid> repository)
+    public CategoryAppService(
+        IRepository<LeptonXDemoApp.Category.Category, Guid> repository
+    )
     {
         _repository = repository;
     }
@@ -32,7 +34,9 @@ public class CategoryAppService :
     public virtual async Task<CategoryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<LeptonXDemoApp.Category.Category, CategoryDto>(entity);
+        var dto = ObjectMapper.Map<LeptonXDemoApp.Category.Category, CategoryDto>(entity);
+
+        return dto;
     }
 
     /// <summary>
@@ -55,10 +59,11 @@ public class CategoryAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
+        var dtoList = ObjectMapper.Map<List<LeptonXDemoApp.Category.Category>, List<CategoryDto>>(entities);
 
         return new PagedResultDto<CategoryDto>(
             totalCount,
-            ObjectMapper.Map<List<LeptonXDemoApp.Category.Category>, List<CategoryDto>>(entities)
+            dtoList
         );
     }
 
@@ -97,6 +102,17 @@ public class CategoryAppService :
     public virtual async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public virtual async Task<ListResultDto<LookupDto<Guid>>> GetCategoryLookupAsync()
+    {
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
+            entities.Select(x => new LookupDto<Guid>
+            {
+                Id = x.Id,
+                DisplayName = x.Name
+            }).ToList()
+        );
     }
 
     /// <summary>

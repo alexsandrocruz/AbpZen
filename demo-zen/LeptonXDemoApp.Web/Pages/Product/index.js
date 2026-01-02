@@ -84,6 +84,10 @@ $(function () {
                 title: l('Product:Price'),
                 data: "price",
             },
+            {
+                title: l('Category'),
+                data: "categoryDisplayName"
+            },
         ]
     }));
 

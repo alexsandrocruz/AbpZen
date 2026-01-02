@@ -21,7 +21,9 @@ public class EditalAppService :
 {
     private readonly IRepository<LeptonXDemoApp.Edital.Edital, Guid> _repository;
 
-    public EditalAppService(IRepository<LeptonXDemoApp.Edital.Edital, Guid> repository)
+    public EditalAppService(
+        IRepository<LeptonXDemoApp.Edital.Edital, Guid> repository
+    )
     {
         _repository = repository;
     }
@@ -32,7 +34,9 @@ public class EditalAppService :
     public virtual async Task<EditalDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        return ObjectMapper.Map<LeptonXDemoApp.Edital.Edital, EditalDto>(entity);
+        var dto = ObjectMapper.Map<LeptonXDemoApp.Edital.Edital, EditalDto>(entity);
+
+        return dto;
     }
 
     /// <summary>
@@ -55,10 +59,11 @@ public class EditalAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
+        var dtoList = ObjectMapper.Map<List<LeptonXDemoApp.Edital.Edital>, List<EditalDto>>(entities);
 
         return new PagedResultDto<EditalDto>(
             totalCount,
-            ObjectMapper.Map<List<LeptonXDemoApp.Edital.Edital>, List<EditalDto>>(entities)
+            dtoList
         );
     }
 
@@ -97,6 +102,17 @@ public class EditalAppService :
     public virtual async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
+    }
+
+    public virtual async Task<ListResultDto<LookupDto<Guid>>> GetEditalLookupAsync()
+    {
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
+            entities.Select(x => new LookupDto<Guid>
+            {
+                Id = x.Id,
+                DisplayName = x.Objeto
+            }).ToList()
+        );
     }
 
     /// <summary>

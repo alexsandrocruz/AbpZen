@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using LeptonXDemoApp.Product.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,4 +14,11 @@ public interface IProductAppService :
         CreateUpdateProductDto,
         CreateUpdateProductDto>
 {
+    Task<ListResultDto<LookupDto<Guid>>> GetProductLookupAsync();
+}
+
+public class LookupDto<TKey>
+{
+    public TKey Id { get; set; }
+    public string DisplayName { get; set; }
 }

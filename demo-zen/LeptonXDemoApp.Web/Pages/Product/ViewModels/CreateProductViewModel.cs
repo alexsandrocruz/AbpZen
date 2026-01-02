@@ -15,8 +15,8 @@ public class CreateProductViewModel
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
     [Display(Name = "Product:CategoryId")]
-    [SelectItems(nameof(CategoryList))]
+    // Lookup mode: Modal - Rendering manual lookup input recommended
     public Guid? CategoryId { get; set; }
 
-    public List<SelectListItem> CategoryList { get; set; } = new();
+    public string? CategoryDisplayName { get; set; }
 }

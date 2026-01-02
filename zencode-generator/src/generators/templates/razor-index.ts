@@ -225,6 +225,12 @@ export function getRazorIndexJsTemplate(): string {
             },
             {%- endunless %}
             {%- endfor %}
+            {%- for rel in relationships.asChild %}
+            {
+                title: l('{{ rel.parentEntityName }}'),
+                data: "{{ rel.parentEntityName | camelCase }}DisplayName"
+            },
+            {%- endfor %}
         ]
     }));
 

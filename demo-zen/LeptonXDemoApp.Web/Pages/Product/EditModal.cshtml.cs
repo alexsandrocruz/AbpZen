@@ -42,11 +42,11 @@ public class EditModalModel : LeptonXDemoAppPageModel
         ViewModel = ObjectMapper.Map<ProductDto, EditProductViewModel>(dto);
 
         // Load lookup data for FK dropdowns
-        var categoryList = await _categoryAppService.GetListAsync(new CategoryGetListInput { MaxResultCount = 1000 });
-        CategoryList = categoryList.Items
-            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
-            .ToList();
-        ViewModel.CategoryList = CategoryList;
+        if (ViewModel.CategoryId != null)
+        {
+            var category = await _categoryAppService.GetAsync(ViewModel.CategoryId.Value);
+            ViewModel.CategoryDisplayName = category.Name;
+        }
     }
 
     public virtual async Task<IActionResult> OnPostAsync()
