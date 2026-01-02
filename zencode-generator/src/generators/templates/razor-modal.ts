@@ -28,11 +28,17 @@ export function getRazorCreateModalTemplate(): string {
  */
 export function getRazorCreateModalModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using {{ project.namespace }}.{{ entity.name }};
 using {{ project.namespace }}.{{ entity.name }}.Dtos;
 using {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
+{%- for rel in relationships.asChild %}
+using {{ project.namespace }}.{{ rel.parentEntityName }};
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
 
@@ -41,17 +47,40 @@ public class CreateModalModel : {{ project.name }}PageModel
     [BindProperty]
     public Create{{ entity.name }}ViewModel ViewModel { get; set; }
 
-    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+    // ========== Lookup Lists for FK Dropdowns ==========
+    {%- for rel in relationships.asChild %}
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endfor %}
 
-    public CreateModalModel(I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService)
+    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+    {%- for rel in relationships.asChild %}
+    private readonly I{{ rel.parentEntityName }}AppService _{{ rel.parentEntityName | camelCase }}AppService;
+    {%- endfor %}
+
+    public CreateModalModel(
+        I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService{% if relationships.asChild.size > 0 %},{% endif %}
+        {%- for rel in relationships.asChild %}
+        I{{ rel.parentEntityName }}AppService {{ rel.parentEntityName | camelCase }}AppService{% unless forloop.last %},{% endunless %}
+        {%- endfor %}
+    )
     {
         _{{ entity.name | camelCase }}AppService = {{ entity.name | camelCase }}AppService;
+        {%- for rel in relationships.asChild %}
+        _{{ rel.parentEntityName | camelCase }}AppService = {{ rel.parentEntityName | camelCase }}AppService;
+        {%- endfor %}
     }
 
     public virtual async Task OnGetAsync()
     {
         ViewModel = new Create{{ entity.name }}ViewModel();
-        await Task.CompletedTask;
+
+        // Load lookup data for FK dropdowns
+        {%- for rel in relationships.asChild %}
+        var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
+        {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
+            .Select(x => new SelectListItem(x.Id.ToString(), x.Id.ToString()))
+            .ToList();
+        {%- endfor %}
     }
 
     public virtual async Task<IActionResult> OnPostAsync()
@@ -95,11 +124,17 @@ export function getRazorEditModalTemplate(): string {
  */
 export function getRazorEditModalModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using {{ project.namespace }}.{{ entity.name }};
 using {{ project.namespace }}.{{ entity.name }}.Dtos;
 using {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
+{%- for rel in relationships.asChild %}
+using {{ project.namespace }}.{{ rel.parentEntityName }};
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
 
@@ -112,17 +147,41 @@ public class EditModalModel : {{ project.name }}PageModel
     [BindProperty]
     public Edit{{ entity.name }}ViewModel ViewModel { get; set; }
 
-    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+    // ========== Lookup Lists for FK Dropdowns ==========
+    {%- for rel in relationships.asChild %}
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endfor %}
 
-    public EditModalModel(I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService)
+    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+    {%- for rel in relationships.asChild %}
+    private readonly I{{ rel.parentEntityName }}AppService _{{ rel.parentEntityName | camelCase }}AppService;
+    {%- endfor %}
+
+    public EditModalModel(
+        I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService{% if relationships.asChild.size > 0 %},{% endif %}
+        {%- for rel in relationships.asChild %}
+        I{{ rel.parentEntityName }}AppService {{ rel.parentEntityName | camelCase }}AppService{% unless forloop.last %},{% endunless %}
+        {%- endfor %}
+    )
     {
         _{{ entity.name | camelCase }}AppService = {{ entity.name | camelCase }}AppService;
+        {%- for rel in relationships.asChild %}
+        _{{ rel.parentEntityName | camelCase }}AppService = {{ rel.parentEntityName | camelCase }}AppService;
+        {%- endfor %}
     }
 
     public virtual async Task OnGetAsync()
     {
         var dto = await _{{ entity.name | camelCase }}AppService.GetAsync(Id);
         ViewModel = ObjectMapper.Map<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>(dto);
+
+        // Load lookup data for FK dropdowns
+        {%- for rel in relationships.asChild %}
+        var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
+        {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
+            .Select(x => new SelectListItem(x.Id.ToString(), x.Id.ToString()))
+            .ToList();
+        {%- endfor %}
     }
 
     public virtual async Task<IActionResult> OnPostAsync()

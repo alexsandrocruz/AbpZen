@@ -3,6 +3,7 @@
  */
 export function getEntityTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace {{ project.namespace }}.{{ entity.name }};
@@ -33,6 +34,21 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
     public {{ field.type }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- endif %}
     {%- endunless %}
+    {%- endfor %}
+
+    // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
+    {%- for rel in relationships.asChild %}
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+    {%- endfor %}
+
+    // ========== Navigation Properties ==========
+    {%- for rel in relationships.asChild %}
+    public virtual {{ rel.parentEntityName }}{% unless rel.isRequired %}?{% endunless %} {{ rel.navigationName }} { get; set; }
+    {%- endfor %}
+
+    // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
+    {%- for rel in relationships.asParent %}
+    public virtual ICollection<{{ rel.childEntityName }}> {{ rel.navigationName }} { get; set; } = new List<{{ rel.childEntityName }}>();
     {%- endfor %}
 
     protected {{ entity.name }}()

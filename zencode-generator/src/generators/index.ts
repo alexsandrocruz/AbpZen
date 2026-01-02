@@ -1,5 +1,5 @@
 import { Liquid } from 'liquidjs';
-import type { EntityData, EntityField } from '../types';
+import type { EntityData, EntityField, RelationshipData } from '../types';
 import {
     pluralize,
     camelCase,
@@ -19,12 +19,40 @@ import { getEntityTemplate, getEntityConstsTemplate } from './templates/entity';
 import { getRepositoryInterfaceTemplate, getRepositoryImplementationTemplate } from './templates/repository';
 import { getAutoMapperProfileTemplate } from './templates/automapper';
 import { getMenuContributorTemplate } from './templates/menu';
-import { getLocalizationJsonTemplate, getLocalizationJsonPtBrTemplate } from './templates/localization';
+import {
+    getLocalizationEntriesEnTemplate,
+    getLocalizationEntriesPtBrTemplate,
+    getLocalizationJsonTemplate,
+    getLocalizationJsonPtBrTemplate
+} from './templates/localization';
 import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum';
 // Razor page templates
 import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index';
 import { getRazorCreateModalTemplate, getRazorCreateModalModelTemplate, getRazorEditModalTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
 import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
+
+/**
+ * Parent relationship context (this entity has a collection of children)
+ */
+export interface ParentRelationshipContext {
+    childEntityName: string;
+    childPluralName: string;
+    navigationName: string;        // Collection property name (e.g., "Products")
+    childNavigationName: string;   // Child's FK navigation name (e.g., "Category")
+    childFkFieldName: string;      // Child's FK field (e.g., "CategoryId")
+}
+
+/**
+ * Child relationship context (this entity has a FK to parent)
+ */
+export interface ChildRelationshipContext {
+    parentEntityName: string;
+    parentPluralName: string;
+    fkFieldName: string;           // FK field name (e.g., "CategoryId")
+    navigationName: string;        // Navigation property name (e.g., "Category")
+    parentNavigationName: string;  // Parent's collection name (e.g., "Products")
+    isRequired: boolean;
+}
 
 /**
  * Context passed to templates
@@ -48,6 +76,11 @@ export interface GeneratorContext {
         readTypeName: string;
         createTypeName: string;
         updateTypeName: string;
+    };
+    // Relationship context
+    relationships: {
+        asParent: ParentRelationshipContext[];  // This entity is the "One" side
+        asChild: ChildRelationshipContext[];    // This entity is the "Many" side
     };
 }
 
@@ -83,9 +116,15 @@ export class CodeGenerator {
     }
 
     /**
-     * Create context from EntityData
+     * Create context from EntityData with relationship information
      */
-    createContext(entity: EntityData, projectName: string, projectNamespace: string): GeneratorContext {
+    createContext(
+        entity: EntityData,
+        projectName: string,
+        projectNamespace: string,
+        asParent: ParentRelationshipContext[] = [],
+        asChild: ChildRelationshipContext[] = []
+    ): GeneratorContext {
         return {
             project: {
                 name: projectName,
@@ -106,14 +145,24 @@ export class CodeGenerator {
                 createTypeName: `CreateUpdate${entity.name}Dto`,
                 updateTypeName: `CreateUpdate${entity.name}Dto`,
             },
+            relationships: {
+                asParent,
+                asChild,
+            },
         };
     }
 
     /**
      * Generate all files for an entity
      */
-    async generateEntity(entity: EntityData, projectName: string, projectNamespace: string): Promise<GeneratedFile[]> {
-        const ctx = this.createContext(entity, projectName, projectNamespace);
+    async generateEntity(
+        entity: EntityData,
+        projectName: string,
+        projectNamespace: string,
+        asParent: ParentRelationshipContext[] = [],
+        asChild: ChildRelationshipContext[] = []
+    ): Promise<GeneratedFile[]> {
+        const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
         const files: GeneratedFile[] = [];
 
         // ============ DOMAIN LAYER ============
@@ -212,15 +261,15 @@ export class CodeGenerator {
 
         // Localization EN
         files.push({
-            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/en-${entity.name}.json`,
-            content: await this.engine.parseAndRender(getLocalizationJsonTemplate(), ctx),
+            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/en.json-merge`,
+            content: await this.engine.parseAndRender(getLocalizationEntriesEnTemplate(), ctx),
             layer: 'Domain',
         });
 
         // Localization PT-BR
         files.push({
-            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/pt-BR-${entity.name}.json`,
-            content: await this.engine.parseAndRender(getLocalizationJsonPtBrTemplate(), ctx),
+            path: `${projectNamespace}.Domain.Shared/Localization/${projectName}/pt-BR.json-merge`,
+            content: await this.engine.parseAndRender(getLocalizationEntriesPtBrTemplate(), ctx),
             layer: 'Domain',
         });
 
@@ -325,13 +374,70 @@ export class CodeGenerator {
     }
 
     /**
-     * Generate all files for multiple entities
+     * Generate all files for multiple entities with relationship support
      */
-    async generateAll(entities: EntityData[], projectName: string, projectNamespace: string): Promise<GeneratedFile[]> {
+    async generateAll(
+        entities: EntityData[],
+        projectName: string,
+        projectNamespace: string,
+        relationships: { id: string; source: string; target: string; data: RelationshipData }[] = []
+    ): Promise<GeneratedFile[]> {
         const allFiles: GeneratedFile[] = [];
 
+        // Build entity lookup map (id -> EntityData with pluralName)
+        const entityMap = new Map<string, EntityData>();
         for (const entity of entities) {
-            const entityFiles = await this.generateEntity(entity, projectName, projectNamespace);
+            // We need to find the entity ID, but entities array has EntityData, not {id, data}
+            // This assumes entities are passed with their IDs tracked elsewhere
+            // For now, we'll use entity.name as the key
+            entityMap.set(entity.name, entity);
+        }
+
+        for (const entity of entities) {
+            // Compute relationships for this entity
+            const asParent: ParentRelationshipContext[] = [];
+            const asChild: ChildRelationshipContext[] = [];
+
+            for (const rel of relationships) {
+                if (rel.data.type === 'one-to-many') {
+                    // Source is the "One" side (parent), Target is the "Many" side (child)
+                    const sourceEntity = entityMap.get(rel.source);
+                    const targetEntity = entityMap.get(rel.target);
+
+                    if (sourceEntity && targetEntity) {
+                        // If this entity is the source (parent)
+                        if (rel.source === entity.name) {
+                            asParent.push({
+                                childEntityName: targetEntity.name,
+                                childPluralName: targetEntity.pluralName,
+                                navigationName: rel.data.sourceNavigationName || targetEntity.pluralName,
+                                childNavigationName: rel.data.targetNavigationName || sourceEntity.name,
+                                childFkFieldName: `${sourceEntity.name}Id`,
+                            });
+                        }
+
+                        // If this entity is the target (child)
+                        if (rel.target === entity.name) {
+                            asChild.push({
+                                parentEntityName: sourceEntity.name,
+                                parentPluralName: sourceEntity.pluralName,
+                                fkFieldName: `${sourceEntity.name}Id`,
+                                navigationName: rel.data.targetNavigationName || sourceEntity.name,
+                                parentNavigationName: rel.data.sourceNavigationName || targetEntity.pluralName,
+                                isRequired: rel.data.isRequired,
+                            });
+                        }
+                    }
+                }
+            }
+
+            const entityFiles = await this.generateEntity(
+                entity,
+                projectName,
+                projectNamespace,
+                asParent,
+                asChild
+            );
             allFiles.push(...entityFiles);
         }
 

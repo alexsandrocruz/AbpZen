@@ -2,7 +2,7 @@ $(function () {
 
     function debounce(func, delay) {
         let timerId;
-        return function (...args) {
+        return function(...args) {
             clearTimeout(timerId);
             timerId = setTimeout(() => {
                 func.apply(this, args);
@@ -67,10 +67,10 @@ $(function () {
                                     url: '?handler=Delete&id=' + data.record.id,
                                     type: 'POST'
                                 })
-                                    .then(function () {
-                                        abp.notify.info(l('SuccessfullyDeleted'));
-                                        dataTable.ajax.reload(null, false);
-                                    });
+                                .then(function () {
+                                    abp.notify.info(l('SuccessfullyDeleted'));
+                                    dataTable.ajax.reload(null, false);
+                                });
                             }
                         }
                     ]
@@ -78,7 +78,7 @@ $(function () {
             },
             {
                 title: l('Edital:Objeto'),
-                data: "objeto"
+                data: "objeto",
             },
             {
                 title: l('Edital:Data'),
@@ -87,7 +87,7 @@ $(function () {
             },
             {
                 title: l('Edital:Valor'),
-                data: "valor"
+                data: "valor",
             },
         ]
     }));

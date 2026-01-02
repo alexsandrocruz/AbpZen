@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using LeptonXDemoApp.Edital;
 using LeptonXDemoApp.Edital.Dtos;
 using LeptonXDemoApp.Web.Pages.Edital.ViewModels;
@@ -16,9 +19,13 @@ public class EditModalModel : LeptonXDemoAppPageModel
     [BindProperty]
     public EditEditalViewModel ViewModel { get; set; }
 
+    // ========== Lookup Lists for FK Dropdowns ==========
+
     private readonly IEditalAppService _editalAppService;
 
-    public EditModalModel(IEditalAppService editalAppService)
+    public EditModalModel(
+        IEditalAppService editalAppService
+    )
     {
         _editalAppService = editalAppService;
     }
@@ -27,6 +34,8 @@ public class EditModalModel : LeptonXDemoAppPageModel
     {
         var dto = await _editalAppService.GetAsync(Id);
         ViewModel = ObjectMapper.Map<EditalDto, EditEditalViewModel>(dto);
+
+        // Load lookup data for FK dropdowns
     }
 
     public virtual async Task<IActionResult> OnPostAsync()

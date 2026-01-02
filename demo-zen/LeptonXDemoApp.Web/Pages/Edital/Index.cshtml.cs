@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using LeptonXDemoApp.Edital;
-using LeptonXDemoApp.Edital.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+using LeptonXDemoApp.Edital;
+using LeptonXDemoApp.Edital.Dtos;
 
 namespace LeptonXDemoApp.Web.Pages.Edital;
 
@@ -24,13 +24,13 @@ public class IndexModel : LeptonXDemoAppPageModel
         await Task.CompletedTask;
     }
 
-    public async Task<JsonResult> OnGetListAsync(EditalGetListInput input)
+    public virtual async Task<JsonResult> OnGetListAsync(EditalGetListInput input)
     {
         var result = await _editalAppService.GetListAsync(input);
         return new JsonResult(result);
     }
-    
-    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+
+    public virtual async Task<IActionResult> OnPostDeleteAsync(Guid id)
     {
         await _editalAppService.DeleteAsync(id);
         return new NoContentResult();

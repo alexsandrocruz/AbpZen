@@ -3,7 +3,9 @@
  */
 export function getRazorCreateViewModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
@@ -18,7 +20,7 @@ public class Create{{ entity.name }}ViewModel
     {%- if field.type == 'string' and field.maxLength %}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.isTextArea %}
     [TextArea(Rows = 3)]
     {%- endif %}
@@ -47,6 +49,16 @@ public class Create{{ entity.name }}ViewModel
 
     {%- endunless %}
     {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    {%- if rel.isRequired %}
+    [Required]
+    {%- endif %}
+    [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    [SelectItems(nameof({{ rel.parentEntityName }}List))]
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+    {%- endfor %}
 }
 `;
 }
@@ -56,7 +68,9 @@ public class Create{{ entity.name }}ViewModel
  */
 export function getRazorEditViewModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
@@ -71,7 +85,7 @@ public class Edit{{ entity.name }}ViewModel
     {%- if field.type == 'string' and field.maxLength %}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.isTextArea %}
     [TextArea(Rows = 3)]
     {%- endif %}
@@ -102,6 +116,16 @@ public class Edit{{ entity.name }}ViewModel
     {%- endif %}
 
     {%- endunless %}
+    {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    {%- if rel.isRequired %}
+    [Required]
+    {%- endif %}
+    [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    [SelectItems(nameof({{ rel.parentEntityName }}List))]
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
     {%- endfor %}
 }
 `;

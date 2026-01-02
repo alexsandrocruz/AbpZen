@@ -15,6 +15,12 @@ public class {{ dto.readTypeName }} : FullAuditedEntityDto<{{ entity.primaryKey 
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endunless %}
     {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+    public string? {{ rel.parentEntityName }}DisplayName { get; set; }
+    {%- endfor %}
 }
 `;
 }
@@ -42,6 +48,14 @@ public class {{ dto.createTypeName }}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endunless %}
     {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    {%- if rel.isRequired %}
+    [Required]
+    {%- endif %}
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+    {%- endfor %}
 }
 `;
 }
@@ -66,6 +80,11 @@ public class {{ entity.name }}GetListInput : PagedAndSortedResultRequestDto
     public {{ field.type | csharpType: true }} {{ field.name }} { get; set; }
     {%- endif %}
     {%- endif %}
+    {%- endfor %}
+
+    // ========== FK Filter Fields (Filter by parent entity) ==========
+    {%- for rel in relationships.asChild %}
+    public Guid? {{ rel.fkFieldName }} { get; set; }
     {%- endfor %}
 }
 `;

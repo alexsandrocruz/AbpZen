@@ -22,7 +22,7 @@ public class EditalMenuContributor : IMenuContributor
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 LeptonXDemoAppMenus.Edital,
-                l["Menu:Edital"],
+                l["Menu:Editais"],
                 url: "/Editais",
                 icon: "fas fa-list",
                 requiredPermissionName: LeptonXDemoAppPermissions.Edital.Default

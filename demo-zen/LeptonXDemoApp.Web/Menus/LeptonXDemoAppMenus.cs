@@ -11,5 +11,9 @@
         public const string TenantDashboard = Prefix + ".TenantDashboard";
 
         public const string Edital = Prefix + ".Edital";
+        
+        public const string Product = Prefix + ".Product";
+        
+        public const string Category = Prefix + ".Category";
     }
 }

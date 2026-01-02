@@ -18,7 +18,18 @@ namespace LeptonXDemoApp.Permissions
             editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Create, L("Permission:Edital.Create"));
             editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Update, L("Permission:Edital.Update"));
             editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Delete, L("Permission:Edital.Delete"));
-      // <ZenCode-PermissionDefinition-Marker>
+
+            var productGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Product.Default, L("Permission:Product"));
+            productGroup.AddChild(LeptonXDemoAppPermissions.Product.Create, L("Permission:Product.Create"));
+            productGroup.AddChild(LeptonXDemoAppPermissions.Product.Update, L("Permission:Product.Update"));
+            productGroup.AddChild(LeptonXDemoAppPermissions.Product.Delete, L("Permission:Product.Delete"));
+
+            var categoryGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Category.Default, L("Permission:Category"));
+            categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Create, L("Permission:Category.Create"));
+            categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Update, L("Permission:Category.Update"));
+            categoryGroup.AddChild(LeptonXDemoAppPermissions.Category.Delete, L("Permission:Category.Delete"));
+
+            // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)

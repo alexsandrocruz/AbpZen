@@ -629,6 +629,17 @@ function App() {
       {showGenerateCode && (
         <GenerateCodeModal
           entities={nodes.map(n => n.data)}
+          relationships={edges.map(e => {
+            // Convert node IDs to entity names
+            const sourceNode = nodes.find(n => n.id === e.source);
+            const targetNode = nodes.find(n => n.id === e.target);
+            return {
+              id: e.id,
+              source: sourceNode?.data.name || e.source,
+              target: targetNode?.data.name || e.target,
+              data: e.data as RelationshipData,
+            };
+          })}
           projectName={projectName || generatedMetadata?.projectName || 'ZenGenerated'}
           projectNamespace={projectNamespace || generatedMetadata?.namespace || 'ZenApp'}
           projectPath={projectPath}

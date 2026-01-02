@@ -4,6 +4,8 @@ using Volo.Abp.MongoDB;
 using Volo.Chat.MongoDB;
 using Volo.FileManagement.MongoDB;
 using EditalEntity = LeptonXDemoApp.Edital.Edital;
+using ProductEntity = LeptonXDemoApp.Product.Product;
+using CategoryEntity = LeptonXDemoApp.Category.Category;
 
 namespace LeptonXDemoApp.MongoDB
 {
@@ -15,7 +17,9 @@ namespace LeptonXDemoApp.MongoDB
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
         public IMongoCollection<EditalEntity> Editais => Collection<EditalEntity>();
-      // <ZenCode-MongoCollections-Marker>
+        public IMongoCollection<ProductEntity> Products => Collection<ProductEntity>();
+        public IMongoCollection<CategoryEntity> Categories => Collection<CategoryEntity>();
+        // <ZenCode-MongoCollections-Marker>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

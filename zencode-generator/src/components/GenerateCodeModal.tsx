@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
-import type { EntityData } from '../types';
-import { codeGenerator, type GeneratedFile } from '../generators';
+import type { EntityData, RelationshipData } from '../types';
+import { codeGenerator, type GeneratedFile, type ParentRelationshipContext, type ChildRelationshipContext } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
+
+interface RelationshipInfo {
+    id: string;
+    source: string;  // Source entity name
+    target: string;  // Target entity name
+    data: RelationshipData;
+}
 
 interface GenerateCodeModalProps {
     entities: EntityData[];
+    relationships: RelationshipInfo[];
     projectName: string;
     projectNamespace: string;
     projectPath: string;
@@ -14,6 +22,7 @@ interface GenerateCodeModalProps {
 
 export default function GenerateCodeModal({
     entities,
+    relationships,
     projectName,
     projectNamespace,
     projectPath,
@@ -30,26 +39,138 @@ export default function GenerateCodeModal({
     const [generationError, setGenerationError] = useState<string | null>(null);
     const [currentEntityIndex, setCurrentEntityIndex] = useState(0);
 
+    // Entity selection state - all selected by default
+    const [selectedEntities, setSelectedEntities] = useState<Set<string>>(
+        () => new Set(entities.map(e => e.name))
+    );
+
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
+
+    // Helper: compute relationship context for an entity
+    // CONVENTION: In 1:N relationship edge:
+    //   - Source = child entity (the "Many" side, has the FK)
+    //   - Target = parent entity (the "One" side, has the collection)
+    // Example: Product → Category means Product has CategoryId (Product is child of Category)
+    const getRelationshipContext = (entityName: string) => {
+        const asParent: ParentRelationshipContext[] = [];
+        const asChild: ChildRelationshipContext[] = [];
+
+        // Build entity lookup
+        const entityMap = new Map(entities.map(e => [e.name, e]));
+
+        for (const rel of relationships) {
+            if (rel.data.type === 'one-to-many') {
+                const sourceEntity = entityMap.get(rel.source); // Child (has FK)
+                const targetEntity = entityMap.get(rel.target); // Parent (has collection)
+
+                if (sourceEntity && targetEntity) {
+                    // If this entity is the TARGET (parent - the "One" side)
+                    if (rel.target === entityName) {
+                        asParent.push({
+                            childEntityName: sourceEntity.name,
+                            childPluralName: sourceEntity.pluralName,
+                            navigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
+                            childNavigationName: rel.data.targetNavigationName || targetEntity.name,
+                            childFkFieldName: `${targetEntity.name}Id`,
+                        });
+                    }
+
+                    // If this entity is the SOURCE (child - the "Many" side, has FK)
+                    if (rel.source === entityName) {
+                        asChild.push({
+                            parentEntityName: targetEntity.name,
+                            parentPluralName: targetEntity.pluralName,
+                            fkFieldName: `${targetEntity.name}Id`,
+                            navigationName: rel.data.targetNavigationName || targetEntity.name,
+                            parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
+                            isRequired: rel.data.isRequired,
+                        });
+                    }
+                }
+            }
+        }
+
+        return { asParent, asChild };
+    };
+
+    // Get all related entities (both parents and children) for a given entity
+    // With convention: source=child, target=parent
+    const getRelatedEntities = (entityName: string): string[] => {
+        const related: Set<string> = new Set();
+        for (const rel of relationships) {
+            if (rel.data.type === 'one-to-many') {
+                if (rel.source === entityName) {
+                    related.add(rel.target); // Parent entity (we are the child)
+                }
+                if (rel.target === entityName) {
+                    related.add(rel.source); // Child entity (we are the parent)
+                }
+            }
+        }
+        return Array.from(related);
+    };
+
+    // Toggle entity selection with relationship awareness
+    const toggleEntitySelection = (entityName: string, checked: boolean) => {
+        setSelectedEntities(prev => {
+            const next = new Set(prev);
+            if (checked) {
+                next.add(entityName);
+                // Auto-select related entities
+                const related = getRelatedEntities(entityName);
+                related.forEach(r => next.add(r));
+            } else {
+                next.delete(entityName);
+                // Note: We don't auto-deselect related entities
+                // because they might be needed by other selected entities
+            }
+            return next;
+        });
+    };
+
+    // Select/Deselect all entities
+    const toggleSelectAll = () => {
+        if (selectedEntities.size === entities.length) {
+            setSelectedEntities(new Set());
+        } else {
+            setSelectedEntities(new Set(entities.map(e => e.name)));
+        }
+    };
 
     const handleGenerate = async () => {
         setGenerating(true);
         setGenerationError(null);
         const allFiles: GeneratedFile[] = [];
 
-        // Initialize all entities as pending
+        // Filter to only selected entities
+        const entitiesToGenerate = entities.filter(e => selectedEntities.has(e.name));
+
+        if (entitiesToGenerate.length === 0) {
+            setGenerationError('No entities selected for generation.');
+            setGenerating(false);
+            return;
+        }
+
+        // Initialize selected entities as pending
         const initialStatus: Record<string, 'pending' | 'generating' | 'done' | 'error'> = {};
-        entities.forEach(e => { initialStatus[e.name] = 'pending'; });
+        entitiesToGenerate.forEach(e => { initialStatus[e.name] = 'pending'; });
         setEntityStatus(initialStatus);
 
         try {
-            for (let i = 0; i < entities.length; i++) {
-                const entity = entities[i];
+            for (let i = 0; i < entitiesToGenerate.length; i++) {
+                const entity = entitiesToGenerate[i];
                 setCurrentEntityIndex(i);
                 setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
 
                 try {
-                    const entityFiles = await codeGenerator.generateEntity(entity, projectName, projectNamespace);
+                    const { asParent, asChild } = getRelationshipContext(entity.name);
+                    const entityFiles = await codeGenerator.generateEntity(
+                        entity,
+                        projectName,
+                        projectNamespace,
+                        asParent,
+                        asChild
+                    );
                     allFiles.push(...entityFiles);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
                 } catch (err) {
@@ -76,7 +197,14 @@ export default function GenerateCodeModal({
         setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
 
         try {
-            const entityFiles = await codeGenerator.generateEntity(entity, projectName, projectNamespace);
+            const { asParent, asChild } = getRelationshipContext(entity.name);
+            const entityFiles = await codeGenerator.generateEntity(
+                entity,
+                projectName,
+                projectNamespace,
+                asParent,
+                asChild
+            );
 
             // Remove old files for this entity and add new ones
             setFiles(prev => {
@@ -105,24 +233,60 @@ export default function GenerateCodeModal({
         setApplying(true);
         setApplyStatus(null);
         try {
-            const response = await fetch('http://localhost:3001/api/generate-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    projectPath,
-                    files: files.map(f => ({ path: f.path, content: f.content }))
-                })
-            });
+            // Separate files to overwrite and files to merge
+            const normalFiles = files.filter(f => !f.path.endsWith('.json-merge'));
+            const mergeFiles = files.filter(f => f.path.endsWith('.json-merge'));
 
-            if (response.ok) {
-                const data = await response.json();
-                setApplyStatus({ success: true, message: `Successfully applied ${data.count} files to project!` });
-            } else {
-                const data = await response.json();
-                setApplyStatus({ success: false, message: data.error || 'Failed to apply code' });
+            // 1. Send normal files to /api/generate-code
+            if (normalFiles.length > 0) {
+                const response = await fetch('http://localhost:3001/api/generate-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        projectPath,
+                        files: normalFiles.map(f => ({ path: f.path, content: f.content }))
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to apply normal files');
+                }
             }
-        } catch (error) {
-            setApplyStatus({ success: false, message: 'Bridge not responding. is "node bridge.js" running?' });
+
+            // 2. Send merge files to /api/inject-code as 'json-merge' type
+            if (mergeFiles.length > 0) {
+                const instructions = mergeFiles.map(f => ({
+                    file: f.path.replace('.json-merge', ''),
+                    content: f.content,
+                    type: 'json-merge' as const
+                }));
+
+                const response = await fetch('http://localhost:3001/api/inject-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        projectPath,
+                        instructions
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to merge localization files');
+                }
+
+                const data = await response.json();
+                const failed = data.results.filter((r: any) => !r.success);
+                if (failed.length > 0) {
+                    throw new Error(`Merge failed: ${failed[0].error}`);
+                }
+            }
+
+            setApplyStatus({ success: true, message: `Successfully applied code and merged localizations!` });
+        } catch (error: any) {
+            console.error('Apply error:', error);
+            setApplyStatus({ success: false, message: error.message || 'Failed to apply code' });
         } finally {
             setApplying(false);
         }
@@ -264,14 +428,27 @@ export default function GenerateCodeModal({
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }}>
-                                    <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Entities</span>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedEntities.size === entities.length}
+                                            onChange={toggleSelectAll}
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                        <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
+                                            Entities ({selectedEntities.size} / {entities.length} selected)
+                                        </span>
+                                    </div>
                                     <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
-                                        {Object.values(entityStatus).filter(s => s === 'done').length} / {entities.length} done
+                                        {Object.values(entityStatus).filter(s => s === 'done').length} done
                                     </span>
                                 </div>
                                 <div style={{ maxHeight: '200px', overflow: 'auto' }}>
                                     {entities.map((entity, idx) => {
                                         const status = entityStatus[entity.name] || 'pending';
+                                        const isSelected = selectedEntities.has(entity.name);
+                                        const relatedEntities = getRelatedEntities(entity.name);
+                                        const hasRelationships = relatedEntities.length > 0;
                                         return (
                                             <div
                                                 key={entity.name}
@@ -281,11 +458,19 @@ export default function GenerateCodeModal({
                                                     alignItems: 'center',
                                                     justifyContent: 'space-between',
                                                     borderBottom: idx < entities.length - 1 ? '1px solid #1e293b' : 'none',
-                                                    background: status === 'generating' ? 'rgba(99, 102, 241, 0.1)' : 'transparent'
+                                                    background: status === 'generating' ? 'rgba(99, 102, 241, 0.1)' :
+                                                        !isSelected ? 'rgba(100, 116, 139, 0.1)' : 'transparent',
+                                                    opacity: isSelected ? 1 : 0.6
                                                 }}
                                             >
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    {status === 'pending' && <span style={{ color: '#64748b' }}>⏳</span>}
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={isSelected}
+                                                        onChange={(e) => toggleEntitySelection(entity.name, e.target.checked)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                    {status === 'pending' && isSelected && <span style={{ color: '#64748b' }}>⏳</span>}
                                                     {status === 'generating' && <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />}
                                                     {status === 'done' && <span style={{ color: '#22c55e' }}>✅</span>}
                                                     {status === 'error' && <span style={{ color: '#ef4444' }}>❌</span>}
@@ -293,6 +478,20 @@ export default function GenerateCodeModal({
                                                     <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
                                                         ({entity.fields.length} fields)
                                                     </span>
+                                                    {hasRelationships && (
+                                                        <span
+                                                            title={`Related: ${relatedEntities.join(', ')}`}
+                                                            style={{
+                                                                color: '#6366f1',
+                                                                fontSize: '0.7rem',
+                                                                background: 'rgba(99, 102, 241, 0.15)',
+                                                                padding: '2px 6px',
+                                                                borderRadius: '4px'
+                                                            }}
+                                                        >
+                                                            🔗 {relatedEntities.length}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <button
                                                     className="btn-icon-sm"
@@ -327,18 +526,18 @@ export default function GenerateCodeModal({
                                 <button
                                     className="ui-button ui-button-primary"
                                     onClick={handleGenerate}
-                                    disabled={generating}
+                                    disabled={generating || selectedEntities.size === 0}
                                     style={{ padding: '12px 32px' }}
                                 >
                                     {generating ? (
                                         <>
                                             <Loader2 size={18} className="animate-spin" />
-                                            Generating {currentEntityIndex + 1}/{entities.length}...
+                                            Generating {currentEntityIndex + 1}/{selectedEntities.size}...
                                         </>
                                     ) : (
                                         <>
                                             <FileCode size={18} />
-                                            Generate All Code
+                                            Generate Selected ({selectedEntities.size})
                                         </>
                                     )}
                                 </button>

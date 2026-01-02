@@ -11,6 +11,8 @@ public static class EditalDbContextModelCreatingExtensions
         {
             b.ToTable(LeptonXDemoAppConsts.DbTablePrefix + "Editais", LeptonXDemoAppConsts.DbSchema);
             b.ConfigureByConvention();
+
+            // ========== Relationship Configuration (1:N) ==========
         });
     }
 }
