@@ -19,35 +19,22 @@
      * Initialize the lookup component
      */
     ZenLookup.init = function () {
-        // Ensure modal exists in DOM
-        ZenLookup.ensureModalExists();
-
-        var lookupModalEl = document.getElementById('zenLookupModal');
-        var quickCreateModalEl = document.getElementById('zenQuickCreateModal');
-
-        if (lookupModalEl) {
-            _lookupModal = new bootstrap.Modal(lookupModalEl);
-        }
-        if (quickCreateModalEl) {
-            _quickCreateModal = new bootstrap.Modal(quickCreateModalEl);
-        }
-
-        // Bind search button click
-        $(document).on('click', '.zen-lookup-btn', function (e) {
+        // Bind search button click (Use event delegation for dynamic content)
+        $(document).off('click', '.zen-lookup-btn').on('click', '.zen-lookup-btn', function (e) {
             e.preventDefault();
             var targetId = $(this).data('target');
             ZenLookup.open(targetId);
         });
 
         // Bind clear button click
-        $(document).on('click', '.zen-lookup-clear-btn', function (e) {
+        $(document).off('click', '.zen-lookup-clear-btn').on('click', '.zen-lookup-clear-btn', function (e) {
             e.preventDefault();
             var targetId = $(this).data('target');
             ZenLookup.clear(targetId);
         });
 
         // Bind create new button in input group
-        $(document).on('click', '.zen-lookup-create-btn', function (e) {
+        $(document).off('click', '.zen-lookup-create-btn').on('click', '.zen-lookup-create-btn', function (e) {
             e.preventDefault();
             var targetId = $(this).data('target');
             var entity = $(this).data('entity');
@@ -55,7 +42,7 @@
         });
 
         // Bind search input enter key
-        $(document).on('keypress', '#zenLookupSearchInput', function (e) {
+        $(document).off('keypress', '#zenLookupSearchInput').on('keypress', '#zenLookupSearchInput', function (e) {
             if (e.which === 13) {
                 e.preventDefault();
                 ZenLookup.search();
@@ -63,29 +50,29 @@
         });
 
         // Bind search button in modal
-        $(document).on('click', '#zenLookupSearchBtn', function () {
+        $(document).off('click', '#zenLookupSearchBtn').on('click', '#zenLookupSearchBtn', function () {
             ZenLookup.search();
         });
 
         // Bind row selection
-        $(document).on('click', '#zenLookupTableBody tr[data-id]', function () {
+        $(document).off('click', '#zenLookupTableBody tr[data-id]').on('click', '#zenLookupTableBody tr[data-id]', function () {
             var id = $(this).data('id');
             var displayValue = $(this).data('display');
             ZenLookup.select(id, displayValue);
         });
 
         // Bind create new button in modal footer
-        $(document).on('click', '#zenLookupCreateNewBtn', function () {
+        $(document).off('click', '#zenLookupCreateNewBtn').on('click', '#zenLookupCreateNewBtn', function () {
             ZenLookup.openQuickCreateFromModal();
         });
 
         // Bind quick create save
-        $(document).on('click', '#zenQuickCreateSaveBtn', function () {
+        $(document).off('click', '#zenQuickCreateSaveBtn').on('click', '#zenQuickCreateSaveBtn', function () {
             ZenLookup.saveQuickCreate();
         });
 
         // Bind pagination
-        $(document).on('click', '#zenLookupPagination .page-link', function (e) {
+        $(document).off('click', '#zenLookupPagination .page-link').on('click', '#zenLookupPagination .page-link', function (e) {
             e.preventDefault();
             var page = $(this).data('page');
             if (page !== undefined) {
@@ -100,19 +87,27 @@
      * Open the lookup modal for a specific input
      */
     ZenLookup.open = function (targetId) {
+        ZenLookup.ensureModalExists();
+
         var $input = $('#' + targetId);
         _currentTarget = targetId;
+
+        if ($input.length === 0) {
+            console.error('ZenLookup: Target input not found: ' + targetId);
+            return;
+        }
 
         _currentConfig = {
             entity: $input.data('lookup-entity'),
             displayField: $input.data('display-field'),
             lookupUrl: $input.data('lookup-url'),
             columns: [{ field: $input.data('display-field') || 'name', title: 'Name' }],
-            allowCreate: $input.data('allow-create') === true || $input.data('allow-create') === 'true'
+            allowCreate: ($input.data('allow-create') === true || $input.data('allow-create') === 'true'),
+            modalTitle: $input.data('modal-title') || ('Select ' + $input.data('lookup-entity'))
         };
 
         // Update modal title
-        $('#zenLookupModalTitle').text('Select ' + _currentConfig.entity);
+        $('#zenLookupModalTitle').text(_currentConfig.modalTitle);
 
         // Show/hide create button
         if (_currentConfig.allowCreate) {
@@ -151,21 +146,44 @@
 
         $('#zenLookupTableBody').html('<tr><td colspan="10" class="text-center"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr>');
 
-        var url = _currentConfig.lookupUrl + '?skipCount=' + (page * _pageSize) + '&maxResultCount=' + _pageSize;
+        var url = _currentConfig.lookupUrl;
+
+        // Handle URL parameters (check if URL already has query string)
+        var separator = url.indexOf('?') !== -1 ? '&' : '?';
+        url += separator + 'skipCount=' + (page * _pageSize) + '&maxResultCount=' + _pageSize;
+
+        // Re-calculate separator because we just added params
+        separator = '&';
+
         if (searchText) {
-            url += '&filter=' + encodeURIComponent(searchText);
+            url += separator + 'filter=' + encodeURIComponent(searchText);
         }
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (result) {
+        console.log('ZenLookup: Requesting ' + url);
+
+        if (window.abp && abp.ajax) {
+            abp.ajax({
+                url: url,
+                type: 'GET'
+            }).done(function (result) {
                 ZenLookup.renderTable(result);
-            },
-            error: function () {
-                $('#zenLookupTableBody').html('<tr><td colspan="10" class="text-center text-danger">Error loading data</td></tr>');
-            }
-        });
+            }).fail(function (err) {
+                console.error('ZenLookup search error:', err);
+                $('#zenLookupTableBody').html('<tr><td colspan="10" class="text-center text-danger py-4">Error loading data. Status: ' + (err.status || 'Error') + '</td></tr>');
+            });
+        } else {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (result) {
+                    ZenLookup.renderTable(result);
+                },
+                error: function (err) {
+                    console.error('ZenLookup search error:', err);
+                    $('#zenLookupTableBody').html('<tr><td colspan="10" class="text-center text-danger py-4">Error loading data. Status: ' + err.status + '</td></tr>');
+                }
+            });
+        }
     };
 
     /**
@@ -173,9 +191,9 @@
      */
     ZenLookup.renderTable = function (result) {
         var items = result.items || result;
-        var totalCount = result.totalCount || items.length;
+        var totalCount = result.totalCount || (Array.isArray(items) ? items.length : 0);
 
-        if (!items || items.length === 0) {
+        if (!Array.isArray(items) || items.length === 0) {
             $('#zenLookupTableBody').html('<tr><td colspan="10" class="text-center text-muted">No records found</td></tr>');
             $('#zenLookupPagination ul').html('');
             return;
@@ -183,10 +201,29 @@
 
         var bodyHtml = '';
         items.forEach(function (item) {
-            var displayValue = item[toCamelCase(_currentConfig.displayField)] || item.displayName || item.name || '';
+            console.log('ZenLookup Item:', item);
+
+            // Robust property lookup function
+            var getValue = function (obj, prop) {
+                if (!prop) return undefined;
+                if (obj[prop] !== undefined) return obj[prop];
+                if (obj[toCamelCase(prop)] !== undefined) return obj[toCamelCase(prop)];
+                var key = Object.keys(obj).find(function (k) { return k.toLowerCase() === prop.toLowerCase(); });
+                return key ? obj[key] : undefined;
+            };
+
+            var displayField = _currentConfig.displayField;
+            var displayValue = getValue(item, displayField) || item.displayName || item.name || '';
+
             bodyHtml += '<tr data-id="' + item.id + '" data-display="' + escapeHtml(displayValue) + '">';
             _currentConfig.columns.forEach(function (col) {
-                var value = item[toCamelCase(col.field)] || '';
+                var value;
+                // If column field matches the main display field, reuse the robust display value we already calculated
+                if (col.field === displayField || col.field === 'name') { // 'name' check is for robustness if field defaults to 'name'
+                    value = displayValue;
+                } else {
+                    value = getValue(item, col.field) || '';
+                }
                 bodyHtml += '<td>' + escapeHtml(value) + '</td>';
             });
             bodyHtml += '<td><button class="btn btn-sm btn-primary">Select</button></td>';
@@ -202,14 +239,13 @@
             paginationHtml += '<li class="page-item ' + (_currentPage === 0 ? 'disabled' : '') + '">';
             paginationHtml += '<a class="page-link" href="#" data-page="' + (_currentPage - 1) + '">&laquo;</a></li>';
 
-            for (var i = 0; i < totalPages && i < 5; i++) {
-                var pageNum = i;
-                if (totalPages > 5 && _currentPage > 2) {
-                    pageNum = _currentPage - 2 + i;
-                    if (pageNum >= totalPages) pageNum = totalPages - 5 + i;
-                }
-                paginationHtml += '<li class="page-item ' + (pageNum === _currentPage ? 'active' : '') + '">';
-                paginationHtml += '<a class="page-link" href="#" data-page="' + pageNum + '">' + (pageNum + 1) + '</a></li>';
+            var startPage = Math.max(0, _currentPage - 2);
+            var endPage = Math.min(totalPages, startPage + 5);
+            if (endPage - startPage < 5) startPage = Math.max(0, endPage - 5);
+
+            for (var i = startPage; i < endPage; i++) {
+                paginationHtml += '<li class="page-item ' + (i === _currentPage ? 'active' : '') + '">';
+                paginationHtml += '<a class="page-link" href="#" data-page="' + i + '">' + (i + 1) + '</a></li>';
             }
 
             paginationHtml += '<li class="page-item ' + (_currentPage >= totalPages - 1 ? 'disabled' : '') + '">';
@@ -233,7 +269,8 @@
     ZenLookup.select = function (id, displayValue) {
         var $input = $('#' + _currentTarget);
         var $display = $('#' + _currentTarget + '_Display');
-        var $clearBtn = $input.closest('.input-group').find('.zen-lookup-clear-btn');
+        var group = $input.closest('.input-group');
+        var $clearBtn = group.find('.zen-lookup-clear-btn');
 
         $input.val(id);
         $display.val(displayValue);
@@ -253,7 +290,8 @@
     ZenLookup.clear = function (targetId) {
         var $input = $('#' + targetId);
         var $display = $('#' + targetId + '_Display');
-        var $clearBtn = $input.closest('.input-group').find('.zen-lookup-clear-btn');
+        var group = $input.closest('.input-group');
+        var $clearBtn = group.find('.zen-lookup-clear-btn');
 
         $input.val('');
         $display.val('');
@@ -266,13 +304,15 @@
      * Open quick create modal from input button
      */
     ZenLookup.openQuickCreate = function (targetId, entity) {
+        ZenLookup.ensureModalExists();
+
         _currentTarget = targetId;
         var $input = $('#' + targetId);
 
         _currentConfig = {
             entity: entity,
             displayField: $input.data('display-field') || 'Name',
-            createUrl: '/api/app/' + entity.toLowerCase()
+            createUrl: '/ZenLookup?handler=' + entity
         };
 
         ZenLookup.renderQuickCreateForm();
@@ -313,32 +353,53 @@
      * Save quick create and select the new item
      */
     ZenLookup.saveQuickCreate = function () {
-        var data = {};
-        data[toCamelCase(_currentConfig.displayField)] = $('#zenQuickCreate_' + _currentConfig.displayField).val();
+        var fieldId = 'zenQuickCreate_' + _currentConfig.displayField;
+        var val = $('#' + fieldId).val();
 
-        if (!data[toCamelCase(_currentConfig.displayField)]) {
-            abp.notify.warn('Please fill in the required field');
+        var data = {};
+        data[toCamelCase(_currentConfig.displayField)] = val;
+
+        if (!val) {
+            if (window.abp && abp.notify) abp.notify.warn('Please fill in the required field');
             return;
         }
 
-        $.ajax({
-            url: _currentConfig.createUrl,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (result) {
-                var displayValue = result[toCamelCase(_currentConfig.displayField)] || result.name || '';
+        if (window.abp && abp.ajax) {
+            abp.ajax({
+                url: _currentConfig.createUrl,
+                type: 'POST',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                var displayValue = result[toCamelCase(_currentConfig.displayField)] || result.displayName || result.name || '';
                 ZenLookup.select(result.id, displayValue);
                 if (_quickCreateModal) {
                     _quickCreateModal.hide();
                 }
-                abp.notify.success('Created successfully');
-            },
-            error: function (err) {
+                if (abp.notify) abp.notify.success('Created successfully');
+            }).fail(function (err) {
                 var message = err.responseJSON?.error?.message || 'Error creating record';
-                abp.notify.error(message);
-            }
-        });
+                if (abp.notify) abp.notify.error(message);
+            });
+        } else {
+            $.ajax({
+                url: _currentConfig.createUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    var displayValue = result[toCamelCase(_currentConfig.displayField)] || result.name || '';
+                    ZenLookup.select(result.id, displayValue);
+                    if (_quickCreateModal) {
+                        _quickCreateModal.hide();
+                    }
+                    if (window.abp && abp.notify) abp.notify.success('Created successfully');
+                },
+                error: function (err) {
+                    var message = err.responseJSON?.error?.message || 'Error creating record';
+                    if (window.abp && abp.notify) abp.notify.error(message);
+                }
+            });
+        }
     };
 
     /**
@@ -346,68 +407,77 @@
      */
     ZenLookup.ensureModalExists = function () {
         if (document.getElementById('zenLookupModal')) {
-            return; // Already exists
+            // Re-initialize bootstrap modal instances if needed
+            if (!_lookupModal) {
+                var el = document.getElementById('zenLookupModal');
+                if (el) _lookupModal = new bootstrap.Modal(el);
+            }
+            if (!_quickCreateModal) {
+                var el = document.getElementById('zenQuickCreateModal');
+                if (el) _quickCreateModal = new bootstrap.Modal(el);
+            }
+            return;
         }
 
         var modalHtml = `
-            <div class="modal fade" id="zenLookupModal" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="zenLookupModal" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="zenLookupModalTitle">Select</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content shadow-lg border-0">
+                        <div class="modal-header bg-primary text-white py-3">
+                            <h5 class="modal-title fw-bold" id="zenLookupModalTitle" style="color: white !important;">Select</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="row mb-3">
+                        <div class="modal-body p-4">
+                            <div class="row pt-2 mb-4">
                                 <div class="col">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="zenLookupSearchInput" placeholder="Search...">
-                                        <button class="btn btn-primary" type="button" id="zenLookupSearchBtn">
+                                        <button class="btn btn-primary px-4" type="button" id="zenLookupSearchBtn">
                                             <i class="fa fa-search"></i> Search
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="zenLookupTable">
-                                    <thead>
+                            <div class="table-responsive" style="min-height: 200px;">
+                                <table class="table table-hover align-middle" id="zenLookupTable">
+                                    <thead class="table-light">
                                         <tr id="zenLookupTableHead"></tr>
                                     </thead>
                                     <tbody id="zenLookupTableBody">
                                         <tr>
-                                            <td colspan="10" class="text-center text-muted">
-                                                <i class="fa fa-spinner fa-spin"></i> Loading...
+                                            <td colspan="10" class="text-center text-muted py-5">
+                                                <i class="fa fa-spinner fa-spin fa-2x mb-2"></i><br>Loading...
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <nav id="zenLookupPagination" class="d-flex justify-content-center">
+                            <nav id="zenLookupPagination" class="d-flex justify-content-center mt-3">
                                 <ul class="pagination pagination-sm mb-0"></ul>
                             </nav>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-success" id="zenLookupCreateNewBtn" style="display:none;">
+                        <div class="modal-footer bg-light border-0 p-3">
+                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success px-4" id="zenLookupCreateNewBtn" style="display:none;">
                                 <i class="fa fa-plus"></i> Create New
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="zenQuickCreateModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal fade" id="zenQuickCreateModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" style="z-index: 1070;">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="zenQuickCreateModalTitle">Create New</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content shadow-lg border-0">
+                        <div class="modal-header bg-success text-white py-3">
+                            <h5 class="modal-title fw-bold" id="zenQuickCreateModalTitle" style="color: white !important;">Create New</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" id="zenQuickCreateModalBody">
+                        <div class="modal-body p-4" id="zenQuickCreateModalBody">
                             <form id="zenQuickCreateForm"></form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="zenQuickCreateSaveBtn">
+                        <div class="modal-footer bg-light border-0 p-3">
+                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary px-4" id="zenQuickCreateSaveBtn">
                                 <i class="fa fa-check"></i> Save & Select
                             </button>
                         </div>
@@ -417,6 +487,10 @@
         `;
 
         $('body').append(modalHtml);
+
+        // Initialize bootstrap modal instances
+        _lookupModal = new bootstrap.Modal(document.getElementById('zenLookupModal'));
+        _quickCreateModal = new bootstrap.Modal(document.getElementById('zenQuickCreateModal'));
     };
 
     // Utility functions
@@ -435,10 +509,15 @@
             .replace(/'/g, '&#039;');
     }
 
-    // Initialize on document ready - always init if there are lookup inputs
+    // Initialize on document ready
     $(function () {
-        if ($('[data-zen-lookup]').length > 0 || document.getElementById('zenLookupModal')) {
-            ZenLookup.init();
+        ZenLookup.init();
+
+        // Re-init on ABP modal events to ensure delegation works for new elements
+        if (window.abp && abp.event) {
+            abp.event.on('abp.modal.opened', function () {
+                ZenLookup.init();
+            });
         }
     });
 

@@ -75,8 +75,9 @@ public class ZenLookupInputTagHelper : TagHelper
             var currentValue = For.Model?.ToString() ?? string.Empty;
             var displayText = DisplayValue ?? string.Empty;
 
-            // Build the lookup URL if not provided
-            var lookupUrl = LookupUrl ?? $"/api/app/{LookupEntity.ToLower()}/lookup";
+            // Build the lookup URL if not provided - using local ZenLookup Razor Page handler
+            var entityLower = LookupEntity; // Case sensitive for C# method name mapping if needed, but handler is usually case-insensitive. Keeping original casing usually better for method mapping.
+            var lookupUrl = LookupUrl ?? $"/ZenLookup?handler={entityLower}";
 
             var html = $@"
                 {(string.IsNullOrEmpty(Label) ? "" : $"<label class='form-label' for='{fieldId}'>{Label}{(Required ? " <span class='text-danger'>*</span>" : "")}</label>")}
@@ -96,7 +97,8 @@ public class ZenLookupInputTagHelper : TagHelper
                            id='{fieldId}_Display' 
                            value='{System.Net.WebUtility.HtmlEncode(displayText)}'
                            placeholder='{Placeholder}'
-                           readonly />
+                           readonly
+                           style='background-color: transparent;' />
                     <button type='button' 
                             class='btn btn-outline-primary zen-lookup-btn' 
                             data-target='{fieldId}'
