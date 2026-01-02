@@ -25,6 +25,9 @@
     "NewsletterHeader": "Suscríbete a la newsletter!",
     "NewsletterInfo": "Obtenga información sobre los últimos acontecimientos.",
     "NewsletterPreference_Default": "Boletín de noticias predeterminado",
-    "NewsletterPrivacyAcceptMessage": "Acepto la <a href='/privacy-policy'> Política de privacidad </a>."
+    "NewsletterPrivacyAcceptMessage": "Acepto la <a href='/privacy-policy'> Política de privacidad </a>.",
+    "Footer:About": "Acerca de",
+    "Footer:Privacy": "Privacidad",
+    "Footer:Contact": "Contacto"
   }
 }
