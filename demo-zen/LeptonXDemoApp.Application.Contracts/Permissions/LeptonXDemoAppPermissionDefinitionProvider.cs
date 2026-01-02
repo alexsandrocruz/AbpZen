@@ -15,9 +15,9 @@ namespace LeptonXDemoApp.Permissions
             myGroup.AddPermission(LeptonXDemoAppPermissions.Dashboard.Tenant, L("Permission:Dashboard"), MultiTenancySides.Tenant);
 
             var editalGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Edital.Default, L("Permission:Edital"));
-            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Create, L("Permission:Create"));
-            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Update, L("Permission:Update"));
-            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Delete, L("Permission:Delete"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Create, L("Permission:Edital.Create"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Update, L("Permission:Edital.Update"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Delete, L("Permission:Edital.Delete"));
       // <ZenCode-PermissionDefinition-Marker>
         }
 

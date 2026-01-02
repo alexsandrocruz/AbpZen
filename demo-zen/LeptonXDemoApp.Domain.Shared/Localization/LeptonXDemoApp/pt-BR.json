@@ -28,6 +28,10 @@
     "NewsletterPrivacyAcceptMessage": "Eu aceito a <a href='/privacy-policy'> Política de Privacidade </a>.",
     "Footer:About": "Sobre",
     "Footer:Privacy": "Privacidade",
-    "Footer:Contact": "Contato"
+    "Footer:Contact": "Contato",
+    "Permission:Edital": "Gerenciamento de Edital",
+    "Permission:Edital.Create": "Criar Edital",
+    "Permission:Edital.Update": "Editar Edital",
+    "Permission:Edital.Delete": "Excluir Edital"
   }
 }
