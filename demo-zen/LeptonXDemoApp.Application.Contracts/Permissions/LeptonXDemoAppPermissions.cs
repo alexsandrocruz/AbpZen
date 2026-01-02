@@ -11,6 +11,13 @@ namespace LeptonXDemoApp.Permissions
             public const string Tenant = DashboardGroup + ".Tenant";
         }
 
-        // <ZenCode-Permissions-Marker>
+        public static class Edital
+        {
+            public const string Default = GroupName + ".Edital";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      // <ZenCode-Permissions-Marker>
     }
 }

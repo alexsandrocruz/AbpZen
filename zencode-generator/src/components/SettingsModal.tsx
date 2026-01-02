@@ -1,5 +1,5 @@
 import { X, CheckCircle, AlertCircle, FolderPlus, RefreshCw } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface ProjectConfig {
     path: string;

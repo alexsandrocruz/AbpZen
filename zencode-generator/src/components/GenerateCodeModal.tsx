@@ -26,19 +26,71 @@ export default function GenerateCodeModal({
     const [applying, setApplying] = useState(false);
     const [injecting, setInjecting] = useState(false);
     const [applyStatus, setApplyStatus] = useState<{ success: boolean; message: string } | null>(null);
+    const [entityStatus, setEntityStatus] = useState<Record<string, 'pending' | 'generating' | 'done' | 'error'>>({});
+    const [generationError, setGenerationError] = useState<string | null>(null);
+    const [currentEntityIndex, setCurrentEntityIndex] = useState(0);
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
 
     const handleGenerate = async () => {
         setGenerating(true);
+        setGenerationError(null);
+        const allFiles: GeneratedFile[] = [];
+
+        // Initialize all entities as pending
+        const initialStatus: Record<string, 'pending' | 'generating' | 'done' | 'error'> = {};
+        entities.forEach(e => { initialStatus[e.name] = 'pending'; });
+        setEntityStatus(initialStatus);
+
         try {
-            const generated = await codeGenerator.generateAll(entities, projectName, projectNamespace);
-            setFiles(generated);
-            if (generated.length > 0) {
-                setSelectedFile(generated[0]);
+            for (let i = 0; i < entities.length; i++) {
+                const entity = entities[i];
+                setCurrentEntityIndex(i);
+                setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
+
+                try {
+                    const entityFiles = await codeGenerator.generateEntity(entity, projectName, projectNamespace);
+                    allFiles.push(...entityFiles);
+                    setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
+                } catch (err) {
+                    console.error(`Error generating ${entity.name}:`, err);
+                    setEntityStatus(prev => ({ ...prev, [entity.name]: 'error' }));
+                    setGenerationError(`Failed to generate ${entity.name}: ${err}`);
+                }
+            }
+
+            setFiles(allFiles);
+            if (allFiles.length > 0) {
+                setSelectedFile(allFiles[0]);
             }
         } catch (error) {
             console.error('Generation error:', error);
+            setGenerationError(`Generation failed: ${error}`);
+        } finally {
+            setGenerating(false);
+        }
+    };
+
+    const handleGenerateSingle = async (entity: EntityData) => {
+        setGenerating(true);
+        setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
+
+        try {
+            const entityFiles = await codeGenerator.generateEntity(entity, projectName, projectNamespace);
+
+            // Remove old files for this entity and add new ones
+            setFiles(prev => {
+                const filtered = prev.filter(f => !f.path.includes(`/${entity.name}/`) && !f.path.includes(`${entity.name}Dto`));
+                return [...filtered, ...entityFiles];
+            });
+
+            setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
+            if (entityFiles.length > 0) {
+                setSelectedFile(entityFiles[0]);
+            }
+        } catch (err) {
+            console.error(`Error generating ${entity.name}:`, err);
+            setEntityStatus(prev => ({ ...prev, [entity.name]: 'error' }));
         } finally {
             setGenerating(false);
         }
@@ -170,14 +222,21 @@ export default function GenerateCodeModal({
 
                 <div className="ui-dialog-content" style={{ padding: 0 }}>
                     {files.length === 0 ? (
-                        <div style={{ padding: '48px', textAlign: 'center' }}>
-                            <FileCode size={48} style={{ color: '#6366f1', marginBottom: '16px' }} />
-                            <h3 style={{ color: '#f8fafc', marginBottom: '8px' }}>Ready to Generate</h3>
-                            <p style={{ color: '#64748b', marginBottom: '24px' }}>
-                                {entities.length} entities will be converted to ABP backend code
-                            </p>
+                        <div style={{ padding: '32px' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                                <FileCode size={48} style={{ color: '#6366f1', marginBottom: '16px' }} />
+                                <h3 style={{ color: '#f8fafc', marginBottom: '8px' }}>Ready to Generate</h3>
+                                <p style={{ color: '#64748b', marginBottom: '16px' }}>
+                                    {entities.length} entities will be converted to ABP backend code
+                                </p>
+                                {generating && (
+                                    <p style={{ color: '#6366f1', fontSize: '0.875rem' }}>
+                                        Generating: {currentEntityIndex + 1} of {entities.length} entities...
+                                    </p>
+                                )}
+                            </div>
 
-                            <div style={{ marginBottom: '24px', textAlign: 'left', maxWidth: '400px', margin: '0 auto 24px' }}>
+                            <div style={{ marginBottom: '24px', maxWidth: '500px', margin: '0 auto 24px' }}>
                                 <div className="form-group">
                                     <label>Project Name</label>
                                     <input type="text" value={projectName} disabled className="ui-input" />
@@ -188,24 +247,102 @@ export default function GenerateCodeModal({
                                 </div>
                             </div>
 
-                            <button
-                                className="ui-button ui-button-primary"
-                                onClick={handleGenerate}
-                                disabled={generating}
-                                style={{ padding: '12px 32px' }}
-                            >
-                                {generating ? (
-                                    <>
-                                        <Loader2 size={18} className="animate-spin" />
-                                        Generating...
-                                    </>
-                                ) : (
-                                    <>
-                                        <FileCode size={18} />
-                                        Generate Code
-                                    </>
-                                )}
-                            </button>
+                            {/* Entity List with Status */}
+                            <div style={{
+                                maxWidth: '500px',
+                                margin: '0 auto 24px',
+                                background: '#0f172a',
+                                borderRadius: '8px',
+                                border: '1px solid #334155',
+                                overflow: 'hidden'
+                            }}>
+                                <div style={{
+                                    padding: '12px 16px',
+                                    background: '#1e293b',
+                                    borderBottom: '1px solid #334155',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center'
+                                }}>
+                                    <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Entities</span>
+                                    <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                        {Object.values(entityStatus).filter(s => s === 'done').length} / {entities.length} done
+                                    </span>
+                                </div>
+                                <div style={{ maxHeight: '200px', overflow: 'auto' }}>
+                                    {entities.map((entity, idx) => {
+                                        const status = entityStatus[entity.name] || 'pending';
+                                        return (
+                                            <div
+                                                key={entity.name}
+                                                style={{
+                                                    padding: '10px 16px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    borderBottom: idx < entities.length - 1 ? '1px solid #1e293b' : 'none',
+                                                    background: status === 'generating' ? 'rgba(99, 102, 241, 0.1)' : 'transparent'
+                                                }}
+                                            >
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                    {status === 'pending' && <span style={{ color: '#64748b' }}>⏳</span>}
+                                                    {status === 'generating' && <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />}
+                                                    {status === 'done' && <span style={{ color: '#22c55e' }}>✅</span>}
+                                                    {status === 'error' && <span style={{ color: '#ef4444' }}>❌</span>}
+                                                    <span style={{ color: '#f8fafc', fontSize: '0.875rem' }}>{entity.name}</span>
+                                                    <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                                        ({entity.fields.length} fields)
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    className="btn-icon-sm"
+                                                    onClick={() => handleGenerateSingle(entity)}
+                                                    disabled={generating}
+                                                    title={`Generate ${entity.name}`}
+                                                    style={{ opacity: generating ? 0.5 : 1 }}
+                                                >
+                                                    <FileCode size={14} />
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {generationError && (
+                                <div style={{
+                                    maxWidth: '500px',
+                                    margin: '0 auto 16px',
+                                    padding: '12px',
+                                    background: 'rgba(239, 68, 68, 0.1)',
+                                    borderRadius: '6px',
+                                    color: '#f87171',
+                                    fontSize: '0.875rem'
+                                }}>
+                                    {generationError}
+                                </div>
+                            )}
+
+                            <div style={{ textAlign: 'center' }}>
+                                <button
+                                    className="ui-button ui-button-primary"
+                                    onClick={handleGenerate}
+                                    disabled={generating}
+                                    style={{ padding: '12px 32px' }}
+                                >
+                                    {generating ? (
+                                        <>
+                                            <Loader2 size={18} className="animate-spin" />
+                                            Generating {currentEntityIndex + 1}/{entities.length}...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FileCode size={18} />
+                                            Generate All Code
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <div style={{ display: 'flex', height: '500px' }}>
@@ -359,6 +496,6 @@ export default function GenerateCodeModal({
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

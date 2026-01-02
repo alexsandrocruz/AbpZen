@@ -15,21 +15,22 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'long' %}
-    public long{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public long{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- else %}
-    public {{ field.type }}{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public {{ field.type }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- endif %}
     {%- endunless %}
     {%- endfor %}

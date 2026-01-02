@@ -2,7 +2,7 @@
  * Localization JSON entries for an entity
  */
 export function getLocalizationJsonTemplate(): string {
-    return `{
+  return `{
   "Permission:{{ entity.name }}": "{{ entity.name }} Management",
   "Permission:{{ entity.name }}.Create": "Create {{ entity.name }}",
   "Permission:{{ entity.name }}.Update": "Edit {{ entity.name }}",
@@ -15,9 +15,9 @@ export function getLocalizationJsonTemplate(): string {
   "{{ entity.name }}DeletionConfirmationMessage": "Are you sure you want to delete this {{ entity.name }}?",
   "Successfully{{ entity.name }}Created": "{{ entity.name }} created successfully.",
   "Successfully{{ entity.name }}Updated": "{{ entity.name }} updated successfully.",
-  "Successfully{{ entity.name }}Deleted": "{{ entity.name }} deleted successfully."{{ entity.fields | size | if: ',' }}
+  "Successfully{{ entity.name }}Deleted": "{{ entity.name }} deleted successfully."{% if entity.fields.size > 0 %},{% endif %}
   {%- for field in entity.fields %}
-  "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{{ unless forloop.last }},{% endunless %}
+  "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% unless forloop.last %},{% endunless %}
   {%- endfor %}
 }`;
 }
@@ -26,7 +26,7 @@ export function getLocalizationJsonTemplate(): string {
  * Localization JSON for Portuguese (pt-BR)
  */
 export function getLocalizationJsonPtBrTemplate(): string {
-    return `{
+  return `{
   "Permission:{{ entity.name }}": "Gerenciamento de {{ entity.name }}",
   "Permission:{{ entity.name }}.Create": "Criar {{ entity.name }}",
   "Permission:{{ entity.name }}.Update": "Editar {{ entity.name }}",
@@ -39,9 +39,9 @@ export function getLocalizationJsonPtBrTemplate(): string {
   "{{ entity.name }}DeletionConfirmationMessage": "Tem certeza que deseja excluir este {{ entity.name }}?",
   "Successfully{{ entity.name }}Created": "{{ entity.name }} criado com sucesso.",
   "Successfully{{ entity.name }}Updated": "{{ entity.name }} atualizado com sucesso.",
-  "Successfully{{ entity.name }}Deleted": "{{ entity.name }} excluído com sucesso."{{ entity.fields | size | if: ',' }}
+  "Successfully{{ entity.name }}Deleted": "{{ entity.name }} excluído com sucesso."{% if entity.fields.size > 0 %},{% endif %}
   {%- for field in entity.fields %}
-  "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{{ unless forloop.last }},{% endunless %}
+  "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% unless forloop.last %},{% endunless %}
   {%- endfor %}
 }`;
 }

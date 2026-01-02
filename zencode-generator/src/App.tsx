@@ -428,9 +428,14 @@ function App() {
       name = input;
       setProjectName(name);
     }
-    const project = createProjectFile(name, nodes, edges);
+    const config = {
+      projectName: projectName,
+      namespace: projectNamespace,
+      projectPath: projectPath,
+    };
+    const project = createProjectFile(name, nodes, edges, config);
     saveProjectToFile(project);
-  }, [projectName, nodes, edges]);
+  }, [projectName, projectNamespace, projectPath, nodes, edges]);
 
   // Load project
   const handleLoad = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -441,7 +446,20 @@ function App() {
       const project = await loadProjectFromFile(file);
       setNodes(project.nodes);
       setEdges(project.edges);
-      setProjectName(project.name);
+
+      // Prioritize config values over file name
+      if (project.config) {
+        setProjectName(project.config.projectName || project.name);
+        setProjectNamespace(project.config.namespace || '');
+        setProjectPath(project.config.projectPath || '');
+        // Also persist to localStorage
+        localStorage.setItem('zen_project_name', project.config.projectName || project.name);
+        localStorage.setItem('zen_project_namespace', project.config.namespace || '');
+        localStorage.setItem('zen_project_path', project.config.projectPath || '');
+      } else {
+        // Fallback for older project files without config
+        setProjectName(project.name);
+      }
     } catch (error) {
       alert('Erro ao carregar projeto: ' + (error as Error).message);
     }

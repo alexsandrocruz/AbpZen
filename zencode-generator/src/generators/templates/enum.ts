@@ -2,7 +2,7 @@
  * Enum class template for ABP Domain.Shared layer
  */
 export function getEnumTemplate(): string {
-    return `namespace {{ project.namespace }};
+  return `namespace {{ project.namespace }};
 
 /// <summary>
 /// {{ enumName }} enum
@@ -13,7 +13,7 @@ public enum {{ enumName }}
     /// <summary>
     /// {{ option.displayText }}
     /// </summary>
-    {{ option.name }} = {{ option.value }}{{ unless forloop.last }},{% endunless %}
+    {{ option.name }} = {{ option.value }}{% unless forloop.last %},{% endunless %}
     {%- endfor %}
 }
 `;
@@ -23,19 +23,19 @@ public enum {{ enumName }}
  * Generate localization entries for enum options
  */
 export function getEnumLocalizationEnTemplate(): string {
-    return `{
+  return `{
   "Enum:{{ enumName }}": "{{ enumName }}",
   {%- for option in options %}
-  "Enum:{{ enumName }}.{{ option.name }}": "{{ option.displayText }}"{{ unless forloop.last }},{% endunless %}
+  "Enum:{{ enumName }}.{{ option.name }}": "{{ option.displayText }}"{% unless forloop.last %},{% endunless %}
   {%- endfor %}
 }`;
 }
 
 export function getEnumLocalizationPtBrTemplate(): string {
-    return `{
+  return `{
   "Enum:{{ enumName }}": "{{ enumName }}",
   {%- for option in options %}
-  "Enum:{{ enumName }}.{{ option.name }}": "{{ option.displayText }}"{{ unless forloop.last }},{% endunless %}
+  "Enum:{{ enumName }}.{{ option.name }}": "{{ option.displayText }}"{% unless forloop.last %},{% endunless %}
   {%- endfor %}
 }`;
 }

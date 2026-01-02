@@ -1,19 +1,27 @@
 import type { Node, Edge } from 'reactflow';
 import type { EntityData } from '../types';
 
+export interface ProjectConfig {
+    projectName: string;  // Detected/configured project name for code generation
+    namespace: string;    // Detected/configured namespace for code generation
+    projectPath: string;  // Path to the ABP project folder
+}
+
 export interface ProjectFile {
     version: string;
-    name: string;
+    name: string;         // File name (for display purposes)
     createdAt: string;
     updatedAt: string;
     nodes: Node<EntityData>[];
     edges: Edge[];
+    config?: ProjectConfig;  // Optional to maintain backward compatibility
 }
 
 export const createProjectFile = (
     name: string,
     nodes: Node<EntityData>[],
-    edges: Edge[]
+    edges: Edge[],
+    config?: ProjectConfig
 ): ProjectFile => {
     const now = new Date().toISOString();
     return {
@@ -23,6 +31,7 @@ export const createProjectFile = (
         updatedAt: now,
         nodes,
         edges,
+        config,
     };
 };
 

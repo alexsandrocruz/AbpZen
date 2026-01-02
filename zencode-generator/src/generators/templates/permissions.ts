@@ -4,15 +4,14 @@
 export function getPermissionsTemplate(): string {
     return `namespace {{ project.namespace }}.Permissions;
 
-public static partial class {{ project.name }}Permissions
+public static class {{ project.name }}{{ entity.name }}Permissions
 {
-    public static class {{ entity.name }}
-    {
-        public const string Default = GroupName + ".{{ entity.name }}";
-        public const string Create = Default + ".Create";
-        public const string Update = Default + ".Update";
-        public const string Delete = Default + ".Delete";
-    }
+    public const string GroupName = "{{ project.name }}";
+    
+    public const string Default = GroupName + ".{{ entity.name }}";
+    public const string Create = Default + ".Create";
+    public const string Update = Default + ".Update";
+    public const string Delete = Default + ".Delete";
 }
 `;
 }
@@ -40,7 +39,7 @@ export function getLocalizationTemplate(): string {
     "Permission:{{ entity.name }}.Delete": "Delete {{ entity.name }}",
     "Menu:{{ entity.name }}": "{{ entity.pluralName }}",
     {%- for field in entity.fields %}
-    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{{ unless forloop.last }},{% endunless %}
+    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% unless forloop.last %},{% endunless %}
     {%- endfor %}
 }`;
 }

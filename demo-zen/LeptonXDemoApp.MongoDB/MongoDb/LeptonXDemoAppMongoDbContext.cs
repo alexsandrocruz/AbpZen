@@ -1,7 +1,9 @@
-﻿using Volo.Abp.Data;
+﻿using MongoDB.Driver;
+using Volo.Abp.Data;
 using Volo.Abp.MongoDB;
 using Volo.Chat.MongoDB;
 using Volo.FileManagement.MongoDB;
+using EditalEntity = LeptonXDemoApp.Edital.Edital;
 
 namespace LeptonXDemoApp.MongoDB
 {
@@ -12,7 +14,8 @@ namespace LeptonXDemoApp.MongoDB
         /* Add mongo collections here. Example:
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
-        // <ZenCode-MongoCollections-Marker>
+        public IMongoCollection<EditalEntity> Editais => Collection<EditalEntity>();
+      // <ZenCode-MongoCollections-Marker>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

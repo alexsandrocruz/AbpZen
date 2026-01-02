@@ -23,17 +23,18 @@ public class Create{{ entity.name }}ViewModel
     [TextArea(Rows = 3)]
     {%- endif %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'enum' and field.enumConfig %}
     {%- if field.isNullable %}
     public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
@@ -78,17 +79,18 @@ public class Edit{{ entity.name }}ViewModel
     [ReadOnlyInput]
     {%- endif %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'enum' and field.enumConfig %}
     {%- if field.isNullable %}
     public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }

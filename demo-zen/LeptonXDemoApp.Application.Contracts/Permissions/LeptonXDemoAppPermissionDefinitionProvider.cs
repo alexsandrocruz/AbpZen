@@ -14,7 +14,11 @@ namespace LeptonXDemoApp.Permissions
             myGroup.AddPermission(LeptonXDemoAppPermissions.Dashboard.Host, L("Permission:Dashboard"), MultiTenancySides.Host);
             myGroup.AddPermission(LeptonXDemoAppPermissions.Dashboard.Tenant, L("Permission:Dashboard"), MultiTenancySides.Tenant);
 
-            // <ZenCode-PermissionDefinition-Marker>
+            var editalGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.Edital.Default, L("Permission:Edital"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Create, L("Permission:Create"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Update, L("Permission:Update"));
+            editalGroup.AddChild(LeptonXDemoAppPermissions.Edital.Delete, L("Permission:Delete"));
+      // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)
