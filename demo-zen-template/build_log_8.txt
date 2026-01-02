@@ -1,0 +1,182 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.09kB done
+#1 DONE 0.0s
+
+#2 [web internal] load build definition from Dockerfile
+#2 transferring dockerfile: 631B done
+#2 DONE 0.0s
+
+#3 [httpapi-host internal] load build definition from Dockerfile
+#3 transferring dockerfile: 676B done
+#3 DONE 0.0s
+
+#4 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0
+#4 DONE 0.4s
+
+#5 [httpapi-host internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0
+#5 DONE 0.4s
+
+#6 [httpapi-host internal] load .dockerignore
+#6 transferring context: 213B done
+#6 DONE 0.0s
+
+#7 [web base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5
+#7 resolve mcr.microsoft.com/dotnet/aspnet:9.0@sha256:f872f90df526f0282401c9be23a0b863ecd48fd452e4b413e74a5c321d2627b5 done
+#7 DONE 0.0s
+
+#8 [web base 2/2] WORKDIR /app
+#8 CACHED
+
+#9 [web final 1/2] WORKDIR /app
+#9 CACHED
+
+#10 [httpapi-host build 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593
+#10 resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:51060ced0e5dc1282a587a092783132ba8b0ec25150d3bc61e99bf0ef2d62593 done
+#10 DONE 0.0s
+
+#11 [web internal] load build context
+#11 transferring context: 66.66kB 0.0s done
+#11 DONE 0.0s
+
+#12 [web build 2/7] WORKDIR /src
+#12 CACHED
+
+#13 [web build 3/7] COPY nupkgs /nupkgs
+#13 CACHED
+
+#14 [web build 4/7] COPY . .
+#14 DONE 0.1s
+
+#15 [web build 5/7] WORKDIR /src/LeptonXDemoApp.Web
+#15 DONE 0.0s
+
+#16 [httpapi-host build 5/7] WORKDIR /src/LeptonXDemoApp.HttpApi.Host
+#16 DONE 0.0s
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 0.586   Determining projects to restore...
+#17 ...
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 0.589   Determining projects to restore...
+#18 10.44   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 9.4 sec).
+#18 10.45   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 9.38 sec).
+#18 10.45   Restored /src/LeptonXDemoApp.HttpApi.Client/LeptonXDemoApp.HttpApi.Client.csproj (in 9.41 sec).
+#18 ...
+
+#17 [httpapi-host build 6/7] RUN dotnet restore "LeptonXDemoApp.HttpApi.Host.csproj"
+#17 11.91   Restored /src/LeptonXDemoApp.Application.Contracts/LeptonXDemoApp.Application.Contracts.csproj (in 10.71 sec).
+#17 11.91   Restored /src/LeptonXDemoApp.Application/LeptonXDemoApp.Application.csproj (in 10.71 sec).
+#17 11.91   Restored /src/LeptonXDemoApp.Domain.Shared/LeptonXDemoApp.Domain.Shared.csproj (in 10.71 sec).
+#17 11.91   Restored /src/LeptonXDemoApp.Domain/LeptonXDemoApp.Domain.csproj (in 10.71 sec).
+#17 11.99   Restored /src/LeptonXDemoApp.MongoDB/LeptonXDemoApp.MongoDB.csproj (in 10.88 sec).
+#17 13.01   Restored /src/LeptonXDemoApp.HttpApi/LeptonXDemoApp.HttpApi.csproj (in 11.81 sec).
+#17 15.50   Restored /src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj (in 13.77 sec).
+#17 DONE 16.0s
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 ...
+
+#19 [httpapi-host build 7/7] RUN dotnet build "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/build
+#19 0.543   Determining projects to restore...
+#19 1.060   All projects are up-to-date for restore.
+#19 2.743   LeptonXDemoApp.Domain.Shared -> /app/build/LeptonXDemoApp.Domain.Shared.dll
+#19 3.005   LeptonXDemoApp.Application.Contracts -> /app/build/LeptonXDemoApp.Application.Contracts.dll
+#19 3.126   LeptonXDemoApp.Domain -> /app/build/LeptonXDemoApp.Domain.dll
+#19 3.582   LeptonXDemoApp.Application -> /app/build/LeptonXDemoApp.Application.dll
+#19 3.620   LeptonXDemoApp.MongoDB -> /app/build/LeptonXDemoApp.MongoDB.dll
+#19 4.094   LeptonXDemoApp.HttpApi -> /app/build/LeptonXDemoApp.HttpApi.dll
+#19 7.352 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#19 7.393   LeptonXDemoApp.HttpApi.Host -> /app/build/LeptonXDemoApp.HttpApi.Host.dll
+#19 7.474 
+#19 7.476 Build succeeded.
+#19 7.479 
+#19 7.479 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#19 7.479     1 Warning(s)
+#19 7.479     0 Error(s)
+#19 7.479 
+#19 7.479 Time Elapsed 00:00:07.13
+#19 DONE 8.1s
+
+#18 [web build 6/7] RUN dotnet restore "LeptonXDemoApp.Web.csproj"
+#18 24.19   Restored /src/LeptonXDemoApp.Web/LeptonXDemoApp.Web.csproj (in 23.3 sec).
+#18 DONE 24.2s
+
+#20 [httpapi-host publish 1/1] RUN dotnet publish "LeptonXDemoApp.HttpApi.Host.csproj" -c Release -o /app/publish
+#20 0.530   Determining projects to restore...
+#20 1.123   All projects are up-to-date for restore.
+#20 1.822   LeptonXDemoApp.Domain.Shared -> /src/LeptonXDemoApp.Domain.Shared/bin/Release/net9.0/LeptonXDemoApp.Domain.Shared.dll
+#20 3.372   LeptonXDemoApp.Application.Contracts -> /src/LeptonXDemoApp.Application.Contracts/bin/Release/net9.0/LeptonXDemoApp.Application.Contracts.dll
+#20 3.378   LeptonXDemoApp.Domain -> /src/LeptonXDemoApp.Domain/bin/Release/net9.0/LeptonXDemoApp.Domain.dll
+#20 4.286   LeptonXDemoApp.Application -> /src/LeptonXDemoApp.Application/bin/Release/net9.0/LeptonXDemoApp.Application.dll
+#20 4.331   LeptonXDemoApp.MongoDB -> /src/LeptonXDemoApp.MongoDB/bin/Release/net9.0/LeptonXDemoApp.MongoDB.dll
+#20 4.572   LeptonXDemoApp.HttpApi -> /src/LeptonXDemoApp.HttpApi/bin/Release/net9.0/LeptonXDemoApp.HttpApi.dll
+#20 6.812 /usr/share/dotnet/sdk/9.0.308/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.Sdk.targets(323,5): warning NETSDK1206: Found version-specific or distribution-specific runtime identifier(s): alpine-x64. Affected libraries: SQLitePCLRaw.lib.e_sqlite3. In .NET 8.0 and higher, assets for version-specific and distribution-specific runtime identifiers will not be found by default. See https://aka.ms/dotnet/rid-usage for details. [/src/LeptonXDemoApp.HttpApi.Host/LeptonXDemoApp.HttpApi.Host.csproj]
+#20 6.829   LeptonXDemoApp.HttpApi.Host -> /src/LeptonXDemoApp.HttpApi.Host/bin/Release/net9.0/LeptonXDemoApp.HttpApi.Host.dll
+#20 7.722   LeptonXDemoApp.HttpApi.Host -> /app/publish/
+#20 DONE 8.0s
+
+#21 [web build 7/7] RUN dotnet build "LeptonXDemoApp.Web.csproj" -c Release -o /app/build
+#21 0.583   Determining projects to restore...
+#21 0.940   All projects are up-to-date for restore.
+#21 2.804   LeptonXDemoApp.Domain.Shared -> /app/build/LeptonXDemoApp.Domain.Shared.dll
+#21 3.057   LeptonXDemoApp.Application.Contracts -> /app/build/LeptonXDemoApp.Application.Contracts.dll
+#21 3.381   LeptonXDemoApp.HttpApi.Client -> /app/build/LeptonXDemoApp.HttpApi.Client.dll
+#21 ...
+
+#22 [httpapi-host final 2/2] COPY --from=publish /app/publish .
+#22 DONE 0.5s
+
+#21 [web build 7/7] RUN dotnet build "LeptonXDemoApp.Web.csproj" -c Release -o /app/build
+#21 8.237   LeptonXDemoApp.Web -> /app/build/LeptonXDemoApp.Web.dll
+#21 8.369 
+#21 8.369 Build succeeded.
+#21 8.370     0 Warning(s)
+#21 8.370     0 Error(s)
+#21 8.370 
+#21 8.370 Time Elapsed 00:00:08.07
+#21 DONE 8.4s
+
+#23 [httpapi-host] exporting to image
+#23 exporting layers
+#23 exporting layers 3.5s done
+#23 exporting manifest sha256:f591792838e98111427b1efad86a566681b9ed973f2f036db75d5bd859568401 done
+#23 exporting config sha256:8fb7c7af34897a5554de70272a4309994594918787501533ab100131f7d9ed2f done
+#23 exporting attestation manifest sha256:7786f4e1fdcc2327440b0bfc7864dff75c77b3776f8a47921cccaed3d23a960e done
+#23 exporting manifest list sha256:619abea5c004e60c8490ac49354f3eb25c6d1ed7d642c5ea023d92cf02accbee done
+#23 naming to docker.io/library/demo-zen-httpapi-host:latest done
+#23 unpacking to docker.io/library/demo-zen-httpapi-host:latest
+#23 unpacking to docker.io/library/demo-zen-httpapi-host:latest 0.5s done
+#23 DONE 4.0s
+
+#24 [httpapi-host] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#25 [web publish 1/1] RUN dotnet publish "LeptonXDemoApp.Web.csproj" -c Release -o /app/publish
+#25 0.530   Determining projects to restore...
+#25 0.851   All projects are up-to-date for restore.
+#25 1.396   LeptonXDemoApp.Domain.Shared -> /src/LeptonXDemoApp.Domain.Shared/bin/Release/net9.0/LeptonXDemoApp.Domain.Shared.dll
+#25 3.104   LeptonXDemoApp.Application.Contracts -> /src/LeptonXDemoApp.Application.Contracts/bin/Release/net9.0/LeptonXDemoApp.Application.Contracts.dll
+#25 3.376   LeptonXDemoApp.HttpApi.Client -> /src/LeptonXDemoApp.HttpApi.Client/bin/Release/net9.0/LeptonXDemoApp.HttpApi.Client.dll
+#25 5.956   LeptonXDemoApp.Web -> /src/LeptonXDemoApp.Web/bin/Release/net9.0/LeptonXDemoApp.Web.dll
+#25 6.473   LeptonXDemoApp.Web -> /app/publish/
+#25 DONE 6.8s
+
+#26 [web final 2/2] COPY --from=publish /app/publish .
+#26 DONE 0.4s
+
+#27 [web] exporting to image
+#27 exporting layers 7.0s done
+#27 exporting manifest sha256:9ac2f4c4c66dfc7d67823a02d716b322447ee09a9ce7ba52d3febb3a6ff0b861 0.0s done
+#27 exporting config sha256:8824b3f4f115cb8efddf7c8b4b36b47d5948f7d38e64e422c7679865ee1be09f 0.0s done
+#27 exporting attestation manifest sha256:5f15d101bcf1b73ee69acb2eac034493284b620865b87e07de6bdb7dfc4e4e3c 0.0s done
+#27 exporting manifest list sha256:ac099755cb176a3afb3a14e09deefaf806e97a0157c85637d8ee719c79cd84c7 done
+#27 naming to docker.io/library/demo-zen-web:latest done
+#27 unpacking to docker.io/library/demo-zen-web:latest
+#27 unpacking to docker.io/library/demo-zen-web:latest 1.7s done
+#27 DONE 8.7s
+
+#28 [web] resolving provenance for metadata file
+#28 DONE 0.0s
+ demo-zen-web  Built
+ demo-zen-httpapi-host  Built

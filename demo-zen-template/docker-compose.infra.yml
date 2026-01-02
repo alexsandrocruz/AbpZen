@@ -1,0 +1,20 @@
+# Demo-Zen Infrastructure Only
+# For running API and Web locally with `dotnet run`
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: demo-zen-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: demo-zen-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongodb_data:
