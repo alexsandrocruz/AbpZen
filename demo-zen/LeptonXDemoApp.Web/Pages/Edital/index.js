@@ -27,7 +27,6 @@ $(function () {
     };
 
     var l = abp.localization.getResource('LeptonXDemoApp');
-    var service = leptonXDemoApp.edital;
     var createModal = new abp.ModalManager(abp.appPath + 'Edital/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + 'Edital/EditModal');
 
@@ -39,7 +38,13 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[0, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList, getFilter),
+        ajax: abp.libs.datatables.createAjax(function (input) {
+            return abp.ajax({
+                url: '?handler=List',
+                type: 'GET',
+                data: input
+            });
+        }, getFilter),
         columnDefs: [
             {
                 rowAction: {
@@ -58,7 +63,10 @@ $(function () {
                                 return l('EditalDeletionConfirmationMessage', data.record.id);
                             },
                             action: function (data) {
-                                service.delete(data.record.id)
+                                abp.ajax({
+                                    url: '?handler=Delete&id=' + data.record.id,
+                                    type: 'POST'
+                                })
                                     .then(function () {
                                         abp.notify.info(l('SuccessfullyDeleted'));
                                         dataTable.ajax.reload(null, false);

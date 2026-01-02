@@ -63,7 +63,10 @@ export function getRazorIndexModelTemplate(): string {
     return `using System;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+using {{ project.namespace }}.{{ entity.name }};
+using {{ project.namespace }}.{{ entity.name }}.Dtos;
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
 
@@ -71,9 +74,28 @@ public class IndexModel : {{ project.name }}PageModel
 {
     public {{ entity.name }}FilterInput {{ entity.name }}Filter { get; set; }
     
+    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+
+    public IndexModel(I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService)
+    {
+        _{{ entity.name | camelCase }}AppService = {{ entity.name | camelCase }}AppService;
+    }
+
     public virtual async Task OnGetAsync()
     {
         await Task.CompletedTask;
+    }
+
+    public virtual async Task<JsonResult> OnGetListAsync({{ entity.name }}GetListInput input)
+    {
+        var result = await _{{ entity.name | camelCase }}AppService.GetListAsync(input);
+        return new JsonResult(result);
+    }
+
+    public virtual async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        await _{{ entity.name | camelCase }}AppService.DeleteAsync(id);
+        return new NoContentResult();
     }
 }
 
@@ -137,7 +159,6 @@ export function getRazorIndexJsTemplate(): string {
     };
 
     var l = abp.localization.getResource('{{ project.name }}');
-    var service = {{ project.namespace | camelCase }}.{{ entity.name | camelCase }};
     var createModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/EditModal');
 
@@ -149,7 +170,13 @@ export function getRazorIndexJsTemplate(): string {
         autoWidth: false,
         scrollCollapse: true,
         order: [[0, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList, getFilter),
+        ajax: abp.libs.datatables.createAjax(function (input) {
+            return abp.ajax({
+                url: '?handler=List',
+                type: 'GET',
+                data: input
+            });
+        }, getFilter),
         columnDefs: [
             {
                 rowAction: {
@@ -168,11 +195,14 @@ export function getRazorIndexJsTemplate(): string {
                                 return l('{{ entity.name }}DeletionConfirmationMessage', data.record.id);
                             },
                             action: function (data) {
-                                service.delete(data.record.id)
-                                    .then(function () {
-                                        abp.notify.info(l('SuccessfullyDeleted'));
-                                        dataTable.ajax.reload(null, false);
-                                    });
+                                abp.ajax({
+                                    url: '?handler=Delete&id=' + data.record.id,
+                                    type: 'POST'
+                                })
+                                .then(function () {
+                                    abp.notify.info(l('SuccessfullyDeleted'));
+                                    dataTable.ajax.reload(null, false);
+                                });
                             }
                         }
                     ]
