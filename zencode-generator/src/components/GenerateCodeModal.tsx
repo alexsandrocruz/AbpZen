@@ -302,7 +302,7 @@ export default function GenerateCodeModal({
                 {
                     file: 'LeptonXDemoApp.Web/Menus/LeptonXDemoAppMenuContributor.cs',
                     marker: 'ZenCode-Menu-Marker',
-                    content: `context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.pluralName}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
+                    content: `context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
                 },
                 {
                     file: 'LeptonXDemoApp.MongoDB/MongoDb/LeptonXDemoAppMongoDbContext.cs',
