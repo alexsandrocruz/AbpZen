@@ -2,15 +2,19 @@ $(function () {
     var l = abp.localization.getResource('LeptonXDemoApp');
     var _orderItemList = [];
     var _addOrderItemModal = new bootstrap.Modal(document.getElementById('addOrderItemModal'));
-    
+
     // Load products into select with Select2
+    // Uses ABP lookup endpoint convention: /{entity}/{entity}-lookup
     function initProductSelect() {
         $('#child_ProductId').select2({
             dropdownParent: $('#addOrderItemModal'),
             ajax: {
-                url: '/api/app/product',
+                url: 'https://localhost:44322/api/app/product/product-lookup',
                 dataType: 'json',
                 delay: 250,
+                xhrFields: {
+                    withCredentials: true  // Send authentication cookies
+                },
                 data: function (params) {
                     return {
                         filter: params.term,
@@ -18,9 +22,10 @@ $(function () {
                     };
                 },
                 processResults: function (data) {
+                    // ABP LookupDto format: { items: [{ id, displayName }] }
                     return {
                         results: data.items.map(function (item) {
-                            return { id: item.id, text: item.name };
+                            return { id: item.id, text: item.displayName };
                         })
                     };
                 },
@@ -70,7 +75,7 @@ $(function () {
         $('#child_Quant').val(1);
         $('#child_Price').val('0.00');
         $('#child_Total').val('0.00');
-        
+
         _addOrderItemModal.show();
     });
 
@@ -110,15 +115,15 @@ $(function () {
     document.getElementById('addOrderItemModal').addEventListener('shown.bs.modal', function () {
         initProductSelect();
     });
-    
+
     // Initial Render
     renderOrderItemsTable();
-    
+
     // Form Submit Injection
     $('#CreateOrderForm').submit(function (e) {
         var $form = $(this);
         _orderItemList.forEach(function (item, index) {
-            if(item.productId) {
+            if (item.productId) {
                 $form.append('<input type="hidden" name="OrderItems[' + index + '].ProductId" value="' + item.productId + '" />');
             }
             $form.append('<input type="hidden" name="OrderItems[' + index + '].Quant" value="' + item.quant + '" />');

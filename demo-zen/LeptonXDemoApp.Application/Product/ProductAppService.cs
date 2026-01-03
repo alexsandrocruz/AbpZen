@@ -113,9 +113,7 @@ public class ProductAppService :
     [Authorize(LeptonXDemoAppPermissions.Product.Update)]
     public virtual async Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
     {
-        // Fetch with details for Master-Detail update
-        var query = await _repository.WithDetailsAsync();
-        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.Product.Product), id);

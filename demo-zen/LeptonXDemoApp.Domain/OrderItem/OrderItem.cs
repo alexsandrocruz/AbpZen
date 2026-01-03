@@ -7,17 +7,19 @@ namespace LeptonXDemoApp.OrderItem;
 /// <summary>
 /// OrderItem entity
 /// </summary>
-public class OrderItem : FullAuditedEntity<Guid>
+public class OrderItem : FullAuditedAggregateRoot<Guid>
 {
-    public int Quant { get; set; }
-    public decimal Price { get; set; }
-    public decimal Total { get; set; }
+    public decimal? Quant { get; set; }
+    public decimal? Price { get; set; }
+    public decimal? Total { get; set; }
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
-    public Guid OrderId { get; set; }
+    public Guid? ProductId { get; set; }
+    public Guid? OrderId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual LeptonXDemoApp.Order.Order Order { get; set; }
+    public virtual LeptonXDemoApp.Product.Product? Product { get; set; }
+    public virtual LeptonXDemoApp.Order.Order? Order { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

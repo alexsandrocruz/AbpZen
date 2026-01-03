@@ -2,7 +2,7 @@ $(function () {
 
     function debounce(func, delay) {
         let timerId;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timerId);
             timerId = setTimeout(() => {
                 func.apply(this, args);
@@ -27,7 +27,8 @@ $(function () {
     };
 
     var l = abp.localization.getResource('LeptonXDemoApp');
-    // Master-Detail: Full Page CRUD
+
+    // Master-Detail: Full Page CRUD (OrderItems child grid)
 
     var dataTable = $('#OrderTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -52,6 +53,7 @@ $(function () {
                             text: l('Edit'),
                             visible: abp.auth.isGranted('LeptonXDemoApp.Order.Update'),
                             action: function (data) {
+                                // Full Page navigation
                                 window.location.href = '/Order/Edit/' + data.record.id;
                             }
                         },
@@ -66,10 +68,10 @@ $(function () {
                                     url: '?handler=Delete&id=' + data.record.id,
                                     type: 'POST'
                                 })
-                                .then(function () {
-                                    abp.notify.info(l('SuccessfullyDeleted'));
-                                    dataTable.ajax.reload(null, false);
-                                });
+                                    .then(function () {
+                                        abp.notify.info(l('SuccessfullyDeleted'));
+                                        dataTable.ajax.reload(null, false);
+                                    });
                             }
                         }
                     ]
@@ -85,19 +87,16 @@ $(function () {
                 dataFormat: 'datetime'
             },
             {
-                title: l('Order:Status'),
-                data: "status",
-                render: function (data) { return l('Enum:OrderStatus.' + data); }
-            },
-            {
-                title: l('Order:Obs'),
-                data: "obs",
+                title: l('Customer'),
+                data: "customerDisplayName"
             },
         ]
     }));
 
     $('#NewOrderButton').click(function (e) {
         e.preventDefault();
+        // Full Page navigation
         window.location.href = '/Order/Create';
     });
 });
+

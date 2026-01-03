@@ -46,33 +46,6 @@
                         <span asp-validation-for="ViewModel.Date" class="text-danger"></span>
                     </div>
                 </abp-column>
-                <abp-column size-md="_12">
-                    <div class="mb-3">
-                        <label class="form-label" for="ViewModel_Status">
-                            @L["Order:Status"]<span class="text-danger">*</span>
-                        </label>
-                        <select asp-for="ViewModel.Status" class="form-control">
-                            <option value="">@L["Select"]</option>
-                            @foreach (var val in Enum.GetValues<OrderStatus>())
-                            {
-                                <option value="@((int)val)">@L["Enum:OrderStatus:" + val.ToString()]</option>
-                            }
-                        </select>
-                        <span asp-validation-for="ViewModel.Status" class="text-danger"></span>
-                    </div>
-                </abp-column>
-                <abp-column size-md="_12">
-                    <div class="mb-3">
-                        <label class="form-label" for="ViewModel_Obs">
-                            @L["Order:Obs"]
-                        </label>
-                        <textarea asp-for="ViewModel.Obs" 
-                                  class="form-control" 
-                                  rows="3"
-                                  placeholder=""></textarea>
-                        <span asp-validation-for="ViewModel.Obs" class="text-danger"></span>
-                    </div>
-                </abp-column>
             </abp-row>
             <hr class="my-4" />
             <div class="mt-2">

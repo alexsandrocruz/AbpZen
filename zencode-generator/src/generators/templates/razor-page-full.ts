@@ -571,13 +571,18 @@ export function getRazorCreatePageJsTemplate(): string {
     var _add{{ rel.targetEntityName }}Modal = new bootstrap.Modal(document.getElementById('add{{ rel.targetEntityName }}Modal'));
     
     // Load products into select with Select2
+    // Uses ABP lookup endpoint convention: /{entity}/{entity}-lookup
+    // TODO: Replace hardcoded URL with dynamic API base URL from ABP configuration
     function initProductSelect() {
         $('#child_ProductId').select2({
             dropdownParent: $('#add{{ rel.targetEntityName }}Modal'),
             ajax: {
-                url: '/api/app/product',
+                url: abp.appPath + 'api/app/product/product-lookup',
                 dataType: 'json',
                 delay: 250,
+                xhrFields: {
+                    withCredentials: true  // Send authentication cookies for cross-origin requests
+                },
                 data: function (params) {
                     return {
                         filter: params.term,
@@ -585,9 +590,10 @@ export function getRazorCreatePageJsTemplate(): string {
                     };
                 },
                 processResults: function (data) {
+                    // ABP LookupDto format: { items: [{ id, displayName }] }
                     return {
                         results: data.items.map(function (item) {
-                            return { id: item.id, text: item.name };
+                            return { id: item.id, text: item.displayName };
                         })
                     };
                 },
@@ -728,13 +734,18 @@ export function getRazorEditPageJsTemplate(): string {
     }
 
     // Load products into select with Select2
+    // Uses ABP lookup endpoint convention: /{entity}/{entity}-lookup
+    // TODO: Replace hardcoded URL with dynamic API base URL from ABP configuration
     function initProductSelect() {
         $('#child_ProductId').select2({
             dropdownParent: $('#add{{ rel.targetEntityName }}Modal'),
             ajax: {
-                url: '/api/app/product',
+                url: abp.appPath + 'api/app/product/product-lookup',
                 dataType: 'json',
                 delay: 250,
+                xhrFields: {
+                    withCredentials: true  // Send authentication cookies for cross-origin requests
+                },
                 data: function (params) {
                     return {
                         filter: params.term,
@@ -742,9 +753,10 @@ export function getRazorEditPageJsTemplate(): string {
                     };
                 },
                 processResults: function (data) {
+                    // ABP LookupDto format: { items: [{ id, displayName }] }
                     return {
                         results: data.items.map(function (item) {
-                            return { id: item.id, text: item.name };
+                            return { id: item.id, text: item.displayName };
                         })
                     };
                 },

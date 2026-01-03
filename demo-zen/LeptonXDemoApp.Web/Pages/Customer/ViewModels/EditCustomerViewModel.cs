@@ -12,4 +12,6 @@ public class EditCustomerViewModel
     public string? Name { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
+
+    // ========== Child Collections (1:N Master-Detail) ==========
 }

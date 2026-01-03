@@ -27,6 +27,7 @@ $(function () {
     };
 
     var l = abp.localization.getResource('LeptonXDemoApp');
+    // Standard: Modal CRUD
     var createModal = new abp.ModalManager(abp.appPath + 'Edital/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + 'Edital/EditModal');
 
@@ -91,7 +92,6 @@ $(function () {
             },
         ]
     }));
-
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });

@@ -78,10 +78,6 @@ $(function () {
                 }
             },
             {
-                title: l('OrderItem:OrderId'),
-                data: "orderId",
-            },
-            {
                 title: l('OrderItem:Quant'),
                 data: "quant",
             },
@@ -92,6 +88,10 @@ $(function () {
             {
                 title: l('OrderItem:Total'),
                 data: "total",
+            },
+            {
+                title: l('Product'),
+                data: "productDisplayName"
             },
             {
                 title: l('Order'),

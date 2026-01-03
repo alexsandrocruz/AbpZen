@@ -462,10 +462,26 @@ export class CodeGenerator {
         entities: EntityData[],
         relationships: RelationshipInfo[],
         projectName: string,
-        projectNamespace: string
+        projectNamespace: string,
+        entityIdMap?: Map<string, string> // Optional: maps entity ID to entity name
     ): Promise<GeneratedFile[]> {
         const allFiles: GeneratedFile[] = [];
-        const entityMap = new Map<string, EntityData>(entities.map(e => [e.name, e]));
+        const entityMapByName = new Map<string, EntityData>(entities.map(e => [e.name, e]));
+
+        // If entityIdMap is provided, use it; otherwise try to extract from relationship source/target
+        // by matching against entity names (fallback for when IDs are entity names)
+        const resolveEntityName = (idOrName: string): string | undefined => {
+            // First, check if it's an entity name directly
+            if (entityMapByName.has(idOrName)) {
+                return idOrName;
+            }
+            // Then, check if we have an ID map
+            if (entityIdMap && entityIdMap.has(idOrName)) {
+                return entityIdMap.get(idOrName);
+            }
+            // Fallback: check if any entity's lookupConfig.targetEntity matches
+            return undefined;
+        };
 
         for (const entity of entities) {
             const asParent: ParentRelationshipContext[] = [];
@@ -473,12 +489,15 @@ export class CodeGenerator {
 
             for (const rel of relationships) {
                 if (rel.data.type === 'one-to-many') {
-                    const sourceEntity = entityMap.get(rel.source); // Child
-                    const targetEntity = entityMap.get(rel.target); // Parent
+                    const sourceName = resolveEntityName(rel.source);
+                    const targetName = resolveEntityName(rel.target);
+
+                    const sourceEntity = sourceName ? entityMapByName.get(sourceName) : undefined;
+                    const targetEntity = targetName ? entityMapByName.get(targetName) : undefined;
 
                     if (sourceEntity && targetEntity) {
                         // If this entity is the parent (target)
-                        if (rel.target === entity.name) {
+                        if (targetEntity.name === entity.name) {
                             asParent.push({
                                 childEntityName: sourceEntity.name,
                                 childPluralName: sourceEntity.pluralName,
@@ -494,7 +513,7 @@ export class CodeGenerator {
                         }
 
                         // If this entity is the child (source)
-                        if (rel.source === entity.name) {
+                        if (sourceEntity.name === entity.name) {
                             const fkField = sourceEntity.fields.find(f =>
                                 f.isLookup && f.lookupConfig?.targetEntity === targetEntity.name
                             );

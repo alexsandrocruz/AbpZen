@@ -46,9 +46,6 @@ public class OrderFilterInput
     [Display(Name = "Order:Date")]
     public DateTime? Date { get; set; }
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "Order:Status")]
-    public OrderStatus? Status { get; set; }
-    [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "Order:CustomerId")]
     public Guid? CustomerId { get; set; }
 }

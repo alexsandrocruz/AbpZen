@@ -7,16 +7,16 @@ namespace LeptonXDemoApp.Order;
 /// <summary>
 /// Order entity
 /// </summary>
-public class Order : FullAuditedEntity<Guid>
+public class Order : FullAuditedAggregateRoot<Guid>
 {
-    public string Number { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
-    public enum Status { get; set; }
-    public string? Obs { get; set; }
+    public string? Number { get; set; }
+    public DateTime? Date { get; set; }
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
+    public Guid? CustomerId { get; set; }
 
     // ========== Navigation Properties ==========
+    public virtual LeptonXDemoApp.Customer.Customer? Customer { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
     public virtual ICollection<LeptonXDemoApp.OrderItem.OrderItem> OrderItems { get; set; } = new List<LeptonXDemoApp.OrderItem.OrderItem>();

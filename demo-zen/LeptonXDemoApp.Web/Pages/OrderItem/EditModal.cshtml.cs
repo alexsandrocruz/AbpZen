@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using LeptonXDemoApp.OrderItem;
 using LeptonXDemoApp.OrderItem.Dtos;
 using LeptonXDemoApp.Web.Pages.OrderItem.ViewModels;
+using LeptonXDemoApp.Product;
+using LeptonXDemoApp.Product.Dtos;
 using LeptonXDemoApp.Order;
 using LeptonXDemoApp.Order.Dtos;
 
@@ -22,17 +24,21 @@ public class EditModalModel : LeptonXDemoAppPageModel
     public EditOrderItemViewModel ViewModel { get; set; }
 
     // ========== Lookup Lists for FK Dropdowns ==========
+    public List<SelectListItem> ProductList { get; set; } = new();
     public List<SelectListItem> OrderList { get; set; } = new();
 
     private readonly IOrderItemAppService _orderItemAppService;
+    private readonly IProductAppService _productAppService;
     private readonly IOrderAppService _orderAppService;
 
     public EditModalModel(
         IOrderItemAppService orderItemAppService,
+        IProductAppService productAppService,
         IOrderAppService orderAppService
     )
     {
         _orderItemAppService = orderItemAppService;
+        _productAppService = productAppService;
         _orderAppService = orderAppService;
     }
 
@@ -42,6 +48,11 @@ public class EditModalModel : LeptonXDemoAppPageModel
         ViewModel = ObjectMapper.Map<OrderItemDto, EditOrderItemViewModel>(dto);
 
         // Load lookup data for FK dropdowns
+        var productList = await _productAppService.GetListAsync(new ProductGetListInput { MaxResultCount = 1000 });
+        ProductList = productList.Items
+            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+            .ToList();
+        ViewModel.ProductList = ProductList;
         var orderList = await _orderAppService.GetListAsync(new OrderGetListInput { MaxResultCount = 1000 });
         OrderList = orderList.Items
             .Select(x => new SelectListItem(x.Number, x.Id.ToString()))

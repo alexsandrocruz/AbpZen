@@ -42,4 +42,16 @@ public class OrderItemFilterInput
     [FormControlSize(AbpFormControlSize.Small)]
     [Display(Name = "OrderItem:ProductId")]
     public Guid? ProductId { get; set; }
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "OrderItem:Quant")]
+    public decimal? Quant { get; set; }
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "OrderItem:Price")]
+    public decimal? Price { get; set; }
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "OrderItem:Total")]
+    public decimal? Total { get; set; }
+    [FormControlSize(AbpFormControlSize.Small)]
+    [Display(Name = "OrderItem:OrderId")]
+    public Guid? OrderId { get; set; }
 }

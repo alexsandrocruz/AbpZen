@@ -20,14 +20,17 @@ public class OrderItemAppService :
     IOrderItemAppService
 {
     private readonly IRepository<LeptonXDemoApp.OrderItem.OrderItem, Guid> _repository;
+    private readonly IRepository<LeptonXDemoApp.Product.Product, Guid> _productRepository;
     private readonly IRepository<LeptonXDemoApp.Order.Order, Guid> _orderRepository;
 
     public OrderItemAppService(
         IRepository<LeptonXDemoApp.OrderItem.OrderItem, Guid> repository,
+        IRepository<LeptonXDemoApp.Product.Product, Guid> productRepository,
         IRepository<LeptonXDemoApp.Order.Order, Guid> orderRepository
     )
     {
         _repository = repository;
+        _productRepository = productRepository;
         _orderRepository = orderRepository;
     }
 
@@ -38,6 +41,11 @@ public class OrderItemAppService :
     {
         var entity = await _repository.GetAsync(id);
         var dto = ObjectMapper.Map<LeptonXDemoApp.OrderItem.OrderItem, OrderItemDto>(entity);
+        if (entity.ProductId != null)
+        {
+            var parent = await _productRepository.FindAsync(entity.ProductId.Value);
+            dto.ProductDisplayName = parent?.Name;
+        }
         if (entity.OrderId != null)
         {
             var parent = await _orderRepository.FindAsync(entity.OrderId.Value);
@@ -68,6 +76,25 @@ public class OrderItemAppService :
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
         var dtoList = ObjectMapper.Map<List<LeptonXDemoApp.OrderItem.OrderItem>, List<OrderItemDto>>(entities);
+        var productIds = entities
+            .Where(x => x.ProductId != null)
+            .Select(x => x.ProductId.Value)
+            .Distinct()
+            .ToList();
+
+        if (productIds.Any())
+        {
+            var parents = await _productRepository.GetListAsync(x => productIds.Contains(x.Id));
+            var parentMap = parents.ToDictionary(x => x.Id, x => x.Name);
+
+            foreach (var dto in dtoList.Where(x => x.ProductId != null))
+            {
+                if (parentMap.TryGetValue(dto.ProductId.Value, out var displayName))
+                {
+                    dto.ProductDisplayName = displayName;
+                }
+            }
+        }
         var orderIds = entities
             .Where(x => x.OrderId != null)
             .Select(x => x.OrderId.Value)
@@ -113,9 +140,7 @@ public class OrderItemAppService :
     [Authorize(LeptonXDemoAppPermissions.OrderItem.Update)]
     public virtual async Task<OrderItemDto> UpdateAsync(Guid id, CreateUpdateOrderItemDto input)
     {
-        // Fetch with details for Master-Detail update
-        var query = await _repository.WithDetailsAsync(x => x.);
-        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.OrderItem.OrderItem), id);
@@ -143,7 +168,7 @@ public class OrderItemAppService :
             entities.Select(x => new LookupDto<Guid>
             {
                 Id = x.Id,
-                DisplayName = x.Name
+                DisplayName = x.Id.ToString()
             }).ToList()
         );
     }
@@ -155,7 +180,12 @@ public class OrderItemAppService :
     {
         return queryable
             .WhereIf(input.ProductId != null, x => x.ProductId == input.ProductId)
+            .WhereIf(input.Quant != null, x => x.Quant == input.Quant)
+            .WhereIf(input.Price != null, x => x.Price == input.Price)
+            .WhereIf(input.Total != null, x => x.Total == input.Total)
+            .WhereIf(input.OrderId != null, x => x.OrderId == input.OrderId)
             // ========== FK Filters ==========
+            .WhereIf(input.ProductId != null, x => x.ProductId == input.ProductId)
             .WhereIf(input.OrderId != null, x => x.OrderId == input.OrderId)
             ;
     }

@@ -13,11 +13,16 @@ public static class OrderItemDbContextModelCreatingExtensions
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========
+            b.HasOne<Product>()
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(x => x.ProductId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
             b.HasOne<Order>()
                 .WithMany(p => p.OrderItems)
                 .HasForeignKey(x => x.OrderId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

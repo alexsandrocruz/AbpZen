@@ -20,4 +20,6 @@ public class EditProductViewModel
 
     [DynamicFormIgnore]
     public string? CategoryDisplayName { get; set; }
+
+    // ========== Child Collections (1:N Master-Detail) ==========
 }

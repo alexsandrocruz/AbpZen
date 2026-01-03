@@ -86,9 +86,7 @@ public class EditalAppService :
     [Authorize(LeptonXDemoAppPermissions.Edital.Update)]
     public virtual async Task<EditalDto> UpdateAsync(Guid id, CreateUpdateEditalDto input)
     {
-        // Fetch with details for Master-Detail update
-        var query = await _repository.WithDetailsAsync();
-        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.Edital.Edital), id);

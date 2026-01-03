@@ -63,8 +63,8 @@ public class ZenLookupInputTagHelper : TagHelper
         var currentValue = For.Model?.ToString() ?? string.Empty;
         var displayText = DisplayValue ?? string.Empty;
 
-        // Build the lookup URL if not provided
-        var lookupUrl = LookupUrl ?? $"/api/app/{LookupEntity.ToLower()}/lookup";
+        // Build the lookup URL if not provided (ABP convention: /{entity}-lookup)
+        var lookupUrl = LookupUrl ?? $"/api/app/{LookupEntity.ToLower()}/{LookupEntity.ToLower()}-lookup";
 
         var html = $@"
             {(string.IsNullOrEmpty(Label) ? "" : $"<label class='form-label' for='{fieldId}'>{Label}{(Required ? " <span class='text-danger'>*</span>" : "")}</label>")}

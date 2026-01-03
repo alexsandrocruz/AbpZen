@@ -143,9 +143,17 @@ public class {{ entity.name }}AppService :
     [Authorize({{ project.name }}Permissions.{{ entity.name }}.Update)]
     public virtual async Task<{{ dto.readTypeName }}> UpdateAsync({{ entity.primaryKey }} id, {{ dto.updateTypeName }} input)
     {
+        {%- assign hasChildGrids = false -%}
+        {%- for rel in relationships.asParent -%}
+            {%- if rel.isChildGrid -%}{%- assign hasChildGrids = true -%}{%- break -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if hasChildGrids %}
         // Fetch with details for Master-Detail update
         var query = await _repository.WithDetailsAsync(x => x.{% for rel in relationships.asParent %}{% if rel.isChildGrid %}{{ rel.targetPluralName }}{% endif %}{% endfor %});
         var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        {%- else %}
+        var entity = await _repository.GetAsync(id);
+        {%- endif %}
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof({{ project.namespace }}.{{ entity.name }}.{{ entity.name }}), id);
@@ -206,7 +214,7 @@ public class {{ entity.name }}AppService :
     public virtual async Task<ListResultDto<LookupDto<{{ entity.primaryKey }}>>> Get{{ entity.name }}LookupAsync()
     {
         var entities = await _repository.GetListAsync();
-        {%- assign displayField = "Name" -%}
+        {%- assign displayField = "" -%}
         {%- assign foundDisplay = false -%}
         {%- for field in entity.fields -%}
             {%- if field.name == "Name" or field.name == "name" -%}{%- assign displayField = field.name -%}{%- assign foundDisplay = true -%}{%- break -%}{%- endif -%}
@@ -225,7 +233,11 @@ public class {{ entity.name }}AppService :
             entities.Select(x => new LookupDto<{{ entity.primaryKey }}>
             {
                 Id = x.Id,
+                {%- if foundDisplay %}
                 DisplayName = x.{{ displayField }}
+                {%- else %}
+                DisplayName = x.Id.ToString()
+                {%- endif %}
             }).ToList()
         );
     }
