@@ -102,3 +102,45 @@
         </abp-card-footer>
     </abp-card>
 </form>
+<!-- Modal for Adding OrderItem -->
+<div class="modal fade" id="addOrderItemModal" tabindex="-1" aria-labelledby="addOrderItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addOrderItemModalLabel">@L["AddOrderItem"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="child_ProductId">@L["Product"]<span class="text-danger">*</span></label>
+                    <select class="form-control" id="child_ProductId">
+                        <option value="">@L["Select"]...</option>
+                    </select>
+                    <input type="hidden" id="child_ProductDisplayName" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Quant">@L["Quantity"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Quant" value="1" min="1" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Price">@L["UnitPrice"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Price" step="0.01" value="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">@L["Total"]</label>
+                    <input type="text" class="form-control" id="child_Total" readonly />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Cancel"]</button>
+                <button type="button" class="btn btn-primary" id="confirmOrderItemBtn">@L["Confirm"]</button>
+            </div>
+        </div>
+    </div>
+</div>

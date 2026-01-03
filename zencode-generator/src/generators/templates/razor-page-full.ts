@@ -303,6 +303,53 @@ export function getRazorCreatePageViewTemplate(): string {
         </abp-card-footer>
     </abp-card>
 </form>
+
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+<!-- Modal for Adding {{ rel.targetEntityName }} -->
+<div class="modal fade" id="add{{ rel.targetEntityName }}Modal" tabindex="-1" aria-labelledby="add{{ rel.targetEntityName }}ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add{{ rel.targetEntityName }}ModalLabel">@L["Add{{ rel.targetEntityName }}"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="child_ProductId">@L["Product"]<span class="text-danger">*</span></label>
+                    <select class="form-control" id="child_ProductId">
+                        <option value="">@L["Select"]...</option>
+                    </select>
+                    <input type="hidden" id="child_ProductDisplayName" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Quant">@L["Quantity"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Quant" value="1" min="1" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Price">@L["UnitPrice"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Price" step="0.01" value="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">@L["Total"]</label>
+                    <input type="text" class="form-control" id="child_Total" readonly />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Cancel"]</button>
+                <button type="button" class="btn btn-primary" id="confirm{{ rel.targetEntityName }}Btn">@L["Confirm"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%- endif %}
+{%- endfor %}
 `;
 }
 
@@ -461,6 +508,53 @@ export function getRazorEditPageViewTemplate(): string {
         </abp-card-footer>
     </abp-card>
 </form>
+
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+<!-- Modal for Adding {{ rel.targetEntityName }} -->
+<div class="modal fade" id="add{{ rel.targetEntityName }}Modal" tabindex="-1" aria-labelledby="add{{ rel.targetEntityName }}ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add{{ rel.targetEntityName }}ModalLabel">@L["Add{{ rel.targetEntityName }}"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="child_ProductId">@L["Product"]<span class="text-danger">*</span></label>
+                    <select class="form-control" id="child_ProductId">
+                        <option value="">@L["Select"]...</option>
+                    </select>
+                    <input type="hidden" id="child_ProductDisplayName" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Quant">@L["Quantity"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Quant" value="1" min="1" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="child_Price">@L["UnitPrice"]<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="child_Price" step="0.01" value="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">@L["Total"]</label>
+                    <input type="text" class="form-control" id="child_Total" readonly />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@L["Cancel"]</button>
+                <button type="button" class="btn btn-primary" id="confirm{{ rel.targetEntityName }}Btn">@L["Confirm"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%- endif %}
+{%- endfor %}
 `;
 }
 
@@ -474,17 +568,55 @@ export function getRazorCreatePageJsTemplate(): string {
     {%- for rel in relationships.asParent %}
     {%- if rel.isChildGrid %}
     var _{{ rel.targetEntityName | camelCase }}List = [];
+    var _add{{ rel.targetEntityName }}Modal = new bootstrap.Modal(document.getElementById('add{{ rel.targetEntityName }}Modal'));
     
+    // Load products into select with Select2
+    function initProductSelect() {
+        $('#child_ProductId').select2({
+            dropdownParent: $('#add{{ rel.targetEntityName }}Modal'),
+            ajax: {
+                url: '/api/app/product',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        filter: params.term,
+                        maxResultCount: 20
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.items.map(function (item) {
+                            return { id: item.id, text: item.name };
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: l('SelectProduct'),
+            allowClear: true
+        });
+    }
+
+    // Calculate total
+    function calculateTotal() {
+        var quant = parseFloat($('#child_Quant').val()) || 0;
+        var price = parseFloat($('#child_Price').val()) || 0;
+        var total = quant * price;
+        $('#child_Total').val(total.toFixed(2));
+    }
+
+    $('#child_Quant, #child_Price').on('input', calculateTotal);
+
     function render{{ rel.targetPluralName }}Table() {
         var tbody = $('#{{ rel.targetPluralName }}Table tbody');
         tbody.empty();
 
         _{{ rel.targetEntityName | camelCase }}List.forEach(function (item, index) {
             var row = '<tr>';
-            // TODO: Dynamic columns based on Child Entity Fields
-            row += '<td>' + (item.productDisplayName || item.name || 'Item ' + (index + 1)) + '</td>';
-            row += '<td>' + (item.quantity || 1) + '</td>';
-            row += '<td>' + (item.total || 0) + '</td>';
+            row += '<td>' + (item.productDisplayName || 'Item ' + (index + 1)) + '</td>';
+            row += '<td>' + (item.quant || 0) + '</td>';
+            row += '<td>' + (item.total || 0).toFixed(2) + '</td>';
             row += '<td><button type="button" class="btn btn-danger btn-sm delete-{{ rel.targetEntityName | camelCase }}-btn" data-index="' + index + '"><i class="fa fa-trash"></i></button></td>';
             row += '</tr>';
             tbody.append(row);
@@ -497,15 +629,53 @@ export function getRazorCreatePageJsTemplate(): string {
         });
     }
 
+    // Open modal on Add button click
     $('#Add{{ rel.targetEntityName }}Btn').click(function () {
-        // Mock Add Logic
+        // Reset modal fields
+        $('#child_ProductId').val(null).trigger('change');
+        $('#child_ProductDisplayName').val('');
+        $('#child_Quant').val(1);
+        $('#child_Price').val('0.00');
+        $('#child_Total').val('0.00');
+        
+        _add{{ rel.targetEntityName }}Modal.show();
+    });
+
+    // Confirm button adds item to list
+    $('#confirm{{ rel.targetEntityName }}Btn').click(function () {
+        var productId = $('#child_ProductId').val();
+        var productDisplayName = $('#child_ProductId option:selected').text();
+        var quant = parseInt($('#child_Quant').val()) || 0;
+        var price = parseFloat($('#child_Price').val()) || 0;
+        var total = quant * price;
+
+        if (!productId) {
+            abp.message.warn(l('SelectProduct'));
+            return;
+        }
+
+        if (quant <= 0) {
+            abp.message.warn(l('QuantityMustBePositive'));
+            return;
+        }
+
         var newItem = {
             id: abp.utils.createGuid(),
-            quantity: 1,
-            total: 100
+            productId: productId,
+            productDisplayName: productDisplayName,
+            quant: quant,
+            price: price,
+            total: total
         };
+
         _{{ rel.targetEntityName | camelCase }}List.push(newItem);
         render{{ rel.targetPluralName }}Table();
+        _add{{ rel.targetEntityName }}Modal.hide();
+    });
+
+    // Initialize Select2 after modal is shown
+    document.getElementById('add{{ rel.targetEntityName }}Modal').addEventListener('shown.bs.modal', function () {
+        initProductSelect();
     });
     
     // Initial Render
@@ -515,22 +685,13 @@ export function getRazorCreatePageJsTemplate(): string {
     $('#Create{{ entity.name }}Form').submit(function (e) {
         var $form = $(this);
         _{{ rel.targetEntityName | camelCase }}List.forEach(function (item, index) {
-            // In C#, Binding a List<T> requires indexers: OrderItems[0].Id
-            // We iterate properties of the item
-            
-            // Core ID (if exists, though create usually doesn't have valid ID for child yet, but FKs do)
-            if(item.id) {
-                $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].id" value="' + item.id + '" />');
+            if(item.productId) {
+                $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].ProductId" value="' + item.productId + '" />');
             }
-
-            // Iterate other props (Mocked for now, assumes 'item' is flat object matching DTO)
-            for (var prop in item) {
-                if(prop !== 'id' && typeof item[prop] !== 'function' && typeof item[prop] !== 'object') {
-                     $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].' + prop + '" value="' + item[prop] + '" />');
-                }
-            }
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Quant" value="' + item.quant + '" />');
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Price" value="' + item.price + '" />');
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Total" value="' + item.total + '" />');
         });
-        // Allow form to continue
         return true;
     });
 
@@ -550,11 +711,59 @@ export function getRazorEditPageJsTemplate(): string {
     {%- for rel in relationships.asParent %}
     {%- if rel.isChildGrid %}
     var _{{ rel.targetEntityName | camelCase }}List = [];
+    var _add{{ rel.targetEntityName }}Modal = new bootstrap.Modal(document.getElementById('add{{ rel.targetEntityName }}Modal'));
 
-    // Load initial data
+    // Load initial data from server
     if (typeof {{ rel.targetEntityName | camelCase }}InitialData !== 'undefined') {
-        _{{ rel.targetEntityName | camelCase }}List = {{ rel.targetEntityName | camelCase }}InitialData;
+        _{{ rel.targetEntityName | camelCase }}List = {{ rel.targetEntityName | camelCase }}InitialData.map(function(item) {
+            return {
+                id: item.id,
+                productId: item.productId,
+                productDisplayName: item.productDisplayName || 'Product',
+                quant: item.quant,
+                price: item.price,
+                total: item.total
+            };
+        });
     }
+
+    // Load products into select with Select2
+    function initProductSelect() {
+        $('#child_ProductId').select2({
+            dropdownParent: $('#add{{ rel.targetEntityName }}Modal'),
+            ajax: {
+                url: '/api/app/product',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        filter: params.term,
+                        maxResultCount: 20
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.items.map(function (item) {
+                            return { id: item.id, text: item.name };
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: l('SelectProduct'),
+            allowClear: true
+        });
+    }
+
+    // Calculate total
+    function calculateTotal() {
+        var quant = parseFloat($('#child_Quant').val()) || 0;
+        var price = parseFloat($('#child_Price').val()) || 0;
+        var total = quant * price;
+        $('#child_Total').val(total.toFixed(2));
+    }
+
+    $('#child_Quant, #child_Price').on('input', calculateTotal);
 
     function render{{ rel.targetPluralName }}Table() {
         var tbody = $('#{{ rel.targetPluralName }}Table tbody');
@@ -562,9 +771,9 @@ export function getRazorEditPageJsTemplate(): string {
 
         _{{ rel.targetEntityName | camelCase }}List.forEach(function (item, index) {
             var row = '<tr>';
-            row += '<td>' + (item.productDisplayName || item.name || 'Item ' + (index + 1)) + '</td>';
-            row += '<td>' + (item.quantity || 1) + '</td>';
-            row += '<td>' + (item.total || 0) + '</td>';
+            row += '<td>' + (item.productDisplayName || 'Item ' + (index + 1)) + '</td>';
+            row += '<td>' + (item.quant || 0) + '</td>';
+            row += '<td>' + (item.total || 0).toFixed(2) + '</td>';
             row += '<td><button type="button" class="btn btn-danger btn-sm delete-{{ rel.targetEntityName | camelCase }}-btn" data-index="' + index + '"><i class="fa fa-trash"></i></button></td>';
             row += '</tr>';
             tbody.append(row);
@@ -577,14 +786,52 @@ export function getRazorEditPageJsTemplate(): string {
         });
     }
 
+    // Open modal on Add button click
     $('#Add{{ rel.targetEntityName }}Btn').click(function () {
+        $('#child_ProductId').val(null).trigger('change');
+        $('#child_ProductDisplayName').val('');
+        $('#child_Quant').val(1);
+        $('#child_Price').val('0.00');
+        $('#child_Total').val('0.00');
+        
+        _add{{ rel.targetEntityName }}Modal.show();
+    });
+
+    // Confirm button adds item to list
+    $('#confirm{{ rel.targetEntityName }}Btn').click(function () {
+        var productId = $('#child_ProductId').val();
+        var productDisplayName = $('#child_ProductId option:selected').text();
+        var quant = parseInt($('#child_Quant').val()) || 0;
+        var price = parseFloat($('#child_Price').val()) || 0;
+        var total = quant * price;
+
+        if (!productId) {
+            abp.message.warn(l('SelectProduct'));
+            return;
+        }
+
+        if (quant <= 0) {
+            abp.message.warn(l('QuantityMustBePositive'));
+            return;
+        }
+
         var newItem = {
             id: abp.utils.createGuid(),
-            quantity: 1,
-            total: 100
+            productId: productId,
+            productDisplayName: productDisplayName,
+            quant: quant,
+            price: price,
+            total: total
         };
+
         _{{ rel.targetEntityName | camelCase }}List.push(newItem);
         render{{ rel.targetPluralName }}Table();
+        _add{{ rel.targetEntityName }}Modal.hide();
+    });
+
+    // Initialize Select2 after modal is shown
+    document.getElementById('add{{ rel.targetEntityName }}Modal').addEventListener('shown.bs.modal', function () {
+        initProductSelect();
     });
     
     render{{ rel.targetPluralName }}Table();
@@ -593,13 +840,14 @@ export function getRazorEditPageJsTemplate(): string {
         var $form = $(this);
         _{{ rel.targetEntityName | camelCase }}List.forEach(function (item, index) {
             if(item.id) {
-                $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].id" value="' + item.id + '" />');
+                $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Id" value="' + item.id + '" />');
             }
-            for (var prop in item) {
-                if(prop !== 'id' && typeof item[prop] !== 'function' && typeof item[prop] !== 'object') {
-                     $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].' + prop + '" value="' + item[prop] + '" />');
-                }
+            if(item.productId) {
+                $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].ProductId" value="' + item.productId + '" />');
             }
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Quant" value="' + item.quant + '" />');
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Price" value="' + item.price + '" />');
+            $form.append('<input type="hidden" name="{{ rel.navigationName }}[' + index + '].Total" value="' + item.total + '" />');
         });
         return true;
     });
