@@ -53,6 +53,20 @@ namespace LeptonXDemoApp.Permissions
             public const string Update = Default + ".Update";
             public const string Delete = Default + ".Delete";
         }
-      // <ZenCode-Permissions-Marker>
+      public static class Lead
+        {
+            public const string Default = GroupName + ".Lead";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class LeadContact
+        {
+            public const string Default = GroupName + ".LeadContact";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+            // <ZenCode-Permissions-Marker>
     }
 }

@@ -40,8 +40,13 @@ export function injectCode(projectPath, instructions) {
                 const marker = `// <${inst.marker}>`;
 
                 if (content.includes(marker)) {
-                    // Avoid duplicate injection
-                    if (content.includes(inst.content.trim())) {
+                    // Smart duplicate detection: 
+                    // 1. Try exact match (trimmed)
+                    // 2. Try matching the first line of the new content (e.g., class name or variable name)
+                    const lines = inst.content.trim().split('\n');
+                    const firstLine = lines[0].trim();
+
+                    if (content.includes(inst.content.trim()) || (firstLine.length > 10 && content.includes(firstLine))) {
                         results.push({ file: inst.file, success: true, message: 'Content already exists' });
                         continue;
                     }

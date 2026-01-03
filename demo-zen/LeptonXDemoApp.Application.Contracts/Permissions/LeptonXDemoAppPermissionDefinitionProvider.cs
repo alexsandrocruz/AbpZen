@@ -43,7 +43,16 @@ namespace LeptonXDemoApp.Permissions
             orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Create, L("Permission:Create"));
             orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Update, L("Permission:Update"));
             orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Delete, L("Permission:Delete"));
-      // <ZenCode-PermissionDefinition-Marker>
+
+                  var leadPermission = myGroup.AddPermission(LeptonXDemoAppPermissions.Lead.Default, L("Permission:Lead"));
+            leadPermission.AddChild(LeptonXDemoAppPermissions.Lead.Create, L("Permission:Create"));
+            leadPermission.AddChild(LeptonXDemoAppPermissions.Lead.Update, L("Permission:Update"));
+            leadPermission.AddChild(LeptonXDemoAppPermissions.Lead.Delete, L("Permission:Delete"));
+                  var leadContactPermission = myGroup.AddPermission(LeptonXDemoAppPermissions.LeadContact.Default, L("Permission:LeadContact"));
+            leadContactPermission.AddChild(LeptonXDemoAppPermissions.LeadContact.Create, L("Permission:Create"));
+            leadContactPermission.AddChild(LeptonXDemoAppPermissions.LeadContact.Update, L("Permission:Update"));
+            leadContactPermission.AddChild(LeptonXDemoAppPermissions.LeadContact.Delete, L("Permission:Delete"));
+            // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)

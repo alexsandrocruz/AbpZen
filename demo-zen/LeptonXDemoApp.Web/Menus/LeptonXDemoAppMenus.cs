@@ -21,5 +21,10 @@
         public const string Customer = Prefix + ".Customer";
         
         public const string OrderItem = Prefix + ".OrderItem";
+        
+        public const string Lead = Prefix + ".Lead";
+        
+        public const string LeadContact = Prefix + ".LeadContact";
+                // <ZenCode-Menus-Marker>
     }
 }
