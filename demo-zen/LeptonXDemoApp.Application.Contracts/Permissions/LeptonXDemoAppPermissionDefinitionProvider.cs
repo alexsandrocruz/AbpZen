@@ -38,7 +38,12 @@ namespace LeptonXDemoApp.Permissions
             customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Create, L("Permission:Customer.Create"));
             customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Update, L("Permission:Customer.Update"));
             customerGroup.AddChild(LeptonXDemoAppPermissions.Customer.Delete, L("Permission:Customer.Delete"));
-            // <ZenCode-PermissionDefinition-Marker>
+
+      var orderItemGroup = myGroup.AddPermission(LeptonXDemoAppPermissions.OrderItem.Default, L("Permission:OrderItem"));
+            orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Create, L("Permission:Create"));
+            orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Update, L("Permission:Update"));
+            orderItemGroup.AddChild(LeptonXDemoAppPermissions.OrderItem.Delete, L("Permission:Delete"));
+      // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)

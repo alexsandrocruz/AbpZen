@@ -19,6 +19,7 @@ public class Product : FullAuditedAggregateRoot<Guid>
     public virtual LeptonXDemoApp.Category.Category? Category { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
+    public virtual ICollection<LeptonXDemoApp.OrderItem.OrderItem> OrderItems { get; set; } = new List<LeptonXDemoApp.OrderItem.OrderItem>();
 
     protected Product()
     {

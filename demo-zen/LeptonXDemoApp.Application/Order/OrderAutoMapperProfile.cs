@@ -7,8 +7,7 @@ public class OrderAutoMapperProfile : Profile
 {
     public OrderAutoMapperProfile()
     {
-        CreateMap<Order, OrderDto>()
-            .ForMember(dest => dest.CustomerDisplayName, opt => opt.MapFrom(src => src.Customer.Name));
+        CreateMap<Order, OrderDto>();
         CreateMap<CreateUpdateOrderDto, Order>();
         CreateMap<CreateUpdateOrderDto, Order>();
     }

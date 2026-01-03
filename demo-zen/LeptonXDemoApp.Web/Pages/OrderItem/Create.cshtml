@@ -1,0 +1,49 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using LeptonXDemoApp.Localization
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@model LeptonXDemoApp.Web.Pages.OrderItem.CreateModel
+@{
+    Layout = "_Layout";
+}
+<form method="post" id="CreateOrderItemForm">
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-card-title>@L["NewOrderItem"].Value</abp-card-title>
+                </abp-column>
+                <abp-column size-md="_6" class="text-end">
+                </abp-column>
+            </abp-row>
+        </abp-card-header>
+        <abp-card-body><abp-form-content  />
+            <div class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                     <label class="form-label mb-0">@L["Orders"].Value</label>
+                     <button type="button" class="btn btn-sm btn-outline-primary" id="AddOrderBtn">
+                        <i class="fa fa-plus"></i> @L["AddOrder"].Value
+                     </button>
+                </div>
+                <table class="table table-striped table-hover table-bordered" id="OrdersTable">
+                    <thead>
+                        <tr>
+                            <!-- TODO: Iterate Child Fields here for headers -->
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th style="width: 50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows rendered by JS -->
+                    </tbody>
+                </table>
+            </div></abp-card-body>
+        <abp-card-footer>
+            <a asp-page="Index" class="btn btn-secondary">@L["Cancel"]</a>
+            <button type="submit" class="btn btn-primary">@L["Save"]</button>
+        </abp-card-footer>
+    </abp-card>
+</form>

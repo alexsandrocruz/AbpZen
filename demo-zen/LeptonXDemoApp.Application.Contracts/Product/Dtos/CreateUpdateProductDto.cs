@@ -11,4 +11,6 @@ public class CreateUpdateProductDto
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
     public Guid? CategoryId { get; set; }
+
+    // ========== Child Collections (1:N Master-Detail) ==========
 }

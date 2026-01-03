@@ -20,15 +20,12 @@ public class OrderAppService :
     IOrderAppService
 {
     private readonly IRepository<LeptonXDemoApp.Order.Order, Guid> _repository;
-    private readonly IRepository<LeptonXDemoApp.Customer.Customer, Guid> _customerRepository;
 
     public OrderAppService(
-        IRepository<LeptonXDemoApp.Order.Order, Guid> repository,
-        IRepository<LeptonXDemoApp.Customer.Customer, Guid> customerRepository
+        IRepository<LeptonXDemoApp.Order.Order, Guid> repository
     )
     {
         _repository = repository;
-        _customerRepository = customerRepository;
     }
 
     /// <summary>
@@ -38,11 +35,6 @@ public class OrderAppService :
     {
         var entity = await _repository.GetAsync(id);
         var dto = ObjectMapper.Map<LeptonXDemoApp.Order.Order, OrderDto>(entity);
-        if (entity.CustomerId != null)
-        {
-            var parent = await _customerRepository.FindAsync(entity.CustomerId.Value);
-            dto.CustomerDisplayName = parent?.Name;
-        }
 
         return dto;
     }
@@ -68,25 +60,6 @@ public class OrderAppService :
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
         var dtoList = ObjectMapper.Map<List<LeptonXDemoApp.Order.Order>, List<OrderDto>>(entities);
-        var customerIds = entities
-            .Where(x => x.CustomerId != null)
-            .Select(x => x.CustomerId.Value)
-            .Distinct()
-            .ToList();
-
-        if (customerIds.Any())
-        {
-            var parents = await _customerRepository.GetListAsync(x => customerIds.Contains(x.Id));
-            var parentMap = parents.ToDictionary(x => x.Id, x => x.Name);
-
-            foreach (var dto in dtoList.Where(x => x.CustomerId != null))
-            {
-                if (parentMap.TryGetValue(dto.CustomerId.Value, out var displayName))
-                {
-                    dto.CustomerDisplayName = displayName;
-                }
-            }
-        }
 
         return new PagedResultDto<OrderDto>(
             totalCount,
@@ -101,6 +74,15 @@ public class OrderAppService :
     public virtual async Task<OrderDto> CreateAsync(CreateUpdateOrderDto input)
     {
         var entity = ObjectMapper.Map<CreateUpdateOrderDto, LeptonXDemoApp.Order.Order>(input);
+        // Master-Detail: OrderItem
+        if (input.OrderItems != null && input.OrderItems.Any())
+        {
+            foreach (var itemDto in input.OrderItems)
+            {
+                var item = ObjectMapper.Map<CreateUpdateOrderItemDto, LeptonXDemoApp.OrderItem.OrderItem>(itemDto);
+                entity.OrderItems.Add(item);
+            }
+        }
 
         await _repository.InsertAsync(entity, autoSave: true);
 
@@ -113,9 +95,46 @@ public class OrderAppService :
     [Authorize(LeptonXDemoAppPermissions.Order.Update)]
     public virtual async Task<OrderDto> UpdateAsync(Guid id, CreateUpdateOrderDto input)
     {
-        var entity = await _repository.GetAsync(id);
+        // Fetch with details for Master-Detail update
+        var query = await _repository.WithDetailsAsync(x => x.OrderItems);
+        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        if (entity == null)
+        {
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.Order.Order), id);
+        }
 
         ObjectMapper.Map(input, entity);
+        // Master-Detail Reconciliation: OrderItem
+        if (input.OrderItems != null)
+        {
+            // 1. Remove deleted items
+            var inputIds = input.OrderItems.Select(x => x.Id).Where(x => x != Guid.Empty).ToList();
+            var itemsToRemove = entity.OrderItems.Where(x => !inputIds.Contains(x.Id)).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                entity.OrderItems.Remove(item);
+            }
+
+            // 2. Add or Update
+            foreach (var itemDto in input.OrderItems)
+            {
+                if (itemDto.Id == Guid.Empty)
+                {
+                    // Add new
+                    var newItem = ObjectMapper.Map<CreateUpdateOrderItemDto, LeptonXDemoApp.OrderItem.OrderItem>(itemDto);
+                    entity.OrderItems.Add(newItem);
+                }
+                else
+                {
+                    // Update existing
+                    var existingItem = entity.OrderItems.FirstOrDefault(x => x.Id == itemDto.Id);
+                    if (existingItem != null)
+                    {
+                        ObjectMapper.Map(itemDto, existingItem);
+                    }
+                }
+            }
+        }
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
@@ -150,9 +169,9 @@ public class OrderAppService :
         return queryable
             .WhereIf(!input.Number.IsNullOrWhiteSpace(), x => x.Number.Contains(input.Number))
             .WhereIf(input.Date != null, x => x.Date == input.Date)
+            .WhereIf(input.Status != null, x => x.Status == input.Status)
             .WhereIf(input.CustomerId != null, x => x.CustomerId == input.CustomerId)
             // ========== FK Filters ==========
-            .WhereIf(input.CustomerId != null, x => x.CustomerId == input.CustomerId)
             ;
     }
 }

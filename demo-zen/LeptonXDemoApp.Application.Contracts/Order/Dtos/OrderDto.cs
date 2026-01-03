@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
+using LeptonXDemoApp.OrderItem.Dtos;
 
 namespace LeptonXDemoApp.Order.Dtos;
 
@@ -7,9 +9,12 @@ namespace LeptonXDemoApp.Order.Dtos;
 public class OrderDto : FullAuditedEntityDto<Guid>
 {
     public string Number { get; set; }
-    public DateTime? Date { get; set; }
+    public DateTime Date { get; set; }
+    public OrderStatus Status { get; set; }
+    public string Obs { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
-    public Guid? CustomerId { get; set; }
-    public string? CustomerDisplayName { get; set; }
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    public List<OrderItemDto> OrderItems { get; set; }
 }

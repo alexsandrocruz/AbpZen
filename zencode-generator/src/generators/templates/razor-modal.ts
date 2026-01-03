@@ -195,6 +195,33 @@ export function getRazorCreateModalViewTemplate(): string {
                 {%- endif -%}
             {%- endfor -%}
             {%- endif -%}
+
+            {%- for rel in relationships.asParent -%}
+            {%- if rel.isChildGrid %}
+            <div class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                     <label class="form-label mb-0">@L["{{ rel.targetPluralName }}"].Value</label>
+                     <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
+                        <i class="fa fa-plus"></i> @L["Add{{ rel.targetEntityName }}"].Value
+                     </button>
+                </div>
+                <table class="table table-striped table-hover table-bordered" id="{{ rel.targetPluralName }}Table">
+                    <thead>
+                        <tr>
+                            <!-- TODO: Iterate Child Fields here for headers -->
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th style="width: 50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+            {%- endif -%}
+            {%- endfor -%}
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>
@@ -240,6 +267,33 @@ export function getRazorEditModalViewTemplate(): string {
                 {%- endif -%}
             {%- endfor -%}
             {%- endif -%}
+
+            {%- for rel in relationships.asParent -%}
+            {%- if rel.isChildGrid %}
+            <div class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                     <label class="form-label mb-0">@L["{{ rel.targetPluralName }}"].Value</label>
+                     <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
+                        <i class="fa fa-plus"></i> @L["Add{{ rel.targetEntityName }}"].Value
+                     </button>
+                </div>
+                <table class="table table-striped table-hover table-bordered" id="{{ rel.targetPluralName }}Table">
+                    <thead>
+                        <tr>
+                            <!-- TODO: Iterate Child Fields here for headers -->
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th style="width: 50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+            {%- endif -%}
+            {%- endfor -%}
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>

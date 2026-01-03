@@ -1,0 +1,21 @@
+{
+    "Permission:OrderItem": "Gerenciamento de OrderItem",
+    "Permission:OrderItem.Create": "Criar OrderItem",
+    "Permission:OrderItem.Update": "Editar OrderItem",
+    "Permission:OrderItem.Delete": "Excluir OrderItem",
+    "Menu:OrderItems": "OrderItems",
+    "OrderItem": "OrderItem",
+    "OrderItems": "OrderItems",
+    "NewOrderItem": "Novo(a) OrderItem",
+    "EditOrderItem": "Editar OrderItem",
+    "OrderItemDeletionConfirmationMessage": "Tem certeza que deseja excluir este(a) OrderItem?",
+    "SuccessfullyOrderItemCreated": "OrderItem criado(a) com sucesso.",
+    "SuccessfullyOrderItemUpdated": "OrderItem atualizado(a) com sucesso.",
+    "SuccessfullyOrderItemDeleted": "OrderItem excluído(a) com sucesso.",
+    "OrderItem:ProductId": "ProductId",
+    "OrderItem:OrderId": "OrderId",
+    "OrderItem:Quant": "Quant",
+    "OrderItem:Price": "Price",
+    "OrderItem:Total": "Total",
+    "OrderItem:OrderId": "Order"
+  }

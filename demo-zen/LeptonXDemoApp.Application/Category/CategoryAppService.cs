@@ -86,7 +86,13 @@ public class CategoryAppService :
     [Authorize(LeptonXDemoAppPermissions.Category.Update)]
     public virtual async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
     {
-        var entity = await _repository.GetAsync(id);
+        // Fetch with details for Master-Detail update
+        var query = await _repository.WithDetailsAsync();
+        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        if (entity == null)
+        {
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.Category.Category), id);
+        }
 
         ObjectMapper.Map(input, entity);
 

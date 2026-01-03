@@ -1,0 +1,104 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using LeptonXDemoApp
+@using LeptonXDemoApp.Localization
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@model LeptonXDemoApp.Web.Pages.Order.CreateModel
+
+@section scripts {
+    <abp-script src="/Pages/Order/Create.js" />
+}
+
+<form method="post" id="CreateOrderForm">
+    <abp-card>
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-card-title>@L["NewOrder"].Value</abp-card-title>
+                </abp-column>
+                <abp-column size-md="_6" class="text-end">
+                </abp-column>
+            </abp-row>
+        </abp-card-header>
+        <abp-card-body>
+            <abp-row>
+                <abp-column size-md="_12">
+                    <div class="mb-3">
+                        <label class="form-label" for="ViewModel_Number">
+                            @L["Order:Number"]<span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="ViewModel.Number" 
+                               class="form-control" 
+                               type="text"
+                               placeholder="" />
+                        <span asp-validation-for="ViewModel.Number" class="text-danger"></span>
+                    </div>
+                </abp-column>
+                <abp-column size-md="_12">
+                    <div class="mb-3">
+                        <label class="form-label" for="ViewModel_Date">
+                            @L["Order:Date"]<span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="ViewModel.Date" 
+                               class="form-control" 
+                               type="datetime-local" />
+                        <span asp-validation-for="ViewModel.Date" class="text-danger"></span>
+                    </div>
+                </abp-column>
+                <abp-column size-md="_12">
+                    <div class="mb-3">
+                        <label class="form-label" for="ViewModel_Status">
+                            @L["Order:Status"]<span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="ViewModel.Status" class="form-control">
+                            <option value="">@L["Select"]</option>
+                            @foreach (var val in Enum.GetValues<OrderStatus>())
+                            {
+                                <option value="@((int)val)">@L["Enum:OrderStatus:" + val.ToString()]</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ViewModel.Status" class="text-danger"></span>
+                    </div>
+                </abp-column>
+                <abp-column size-md="_12">
+                    <div class="mb-3">
+                        <label class="form-label" for="ViewModel_Obs">
+                            @L["Order:Obs"]
+                        </label>
+                        <textarea asp-for="ViewModel.Obs" 
+                                  class="form-control" 
+                                  rows="3"
+                                  placeholder=""></textarea>
+                        <span asp-validation-for="ViewModel.Obs" class="text-danger"></span>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <hr class="my-4" />
+            <div class="mt-2">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">@L["OrderItems"]</h5>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="AddOrderItemBtn">
+                        <i class="fa fa-plus"></i> @L["AddOrderItem"]
+                    </button>
+                </div>
+                <table class="table table-striped table-hover table-bordered" id="OrderItemsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th style="width: 60px">@L["Actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </abp-card-body>
+        <abp-card-footer>
+            <a asp-page="Index" class="btn btn-secondary">@L["Cancel"]</a>
+            <button type="submit" class="btn btn-primary">@L["Save"]</button>
+        </abp-card-footer>
+    </abp-card>
+</form>

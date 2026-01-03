@@ -27,8 +27,7 @@ $(function () {
     };
 
     var l = abp.localization.getResource('LeptonXDemoApp');
-    var createModal = new abp.ModalManager(abp.appPath + 'Order/CreateModal');
-    var editModal = new abp.ModalManager(abp.appPath + 'Order/EditModal');
+    // Master-Detail: Full Page CRUD
 
     var dataTable = $('#OrderTable').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -53,7 +52,7 @@ $(function () {
                             text: l('Edit'),
                             visible: abp.auth.isGranted('LeptonXDemoApp.Order.Update'),
                             action: function (data) {
-                                editModal.open({ id: data.record.id });
+                                window.location.href = '/Order/Edit/' + data.record.id;
                             }
                         },
                         {
@@ -86,22 +85,19 @@ $(function () {
                 dataFormat: 'datetime'
             },
             {
-                title: l('Customer'),
-                data: "customerDisplayName"
+                title: l('Order:Status'),
+                data: "status",
+                render: function (data) { return l('Enum:OrderStatus.' + data); }
+            },
+            {
+                title: l('Order:Obs'),
+                data: "obs",
             },
         ]
     }));
 
-    createModal.onResult(function () {
-        dataTable.ajax.reload();
-    });
-
-    editModal.onResult(function () {
-        dataTable.ajax.reload(null, false);
-    });
-
     $('#NewOrderButton').click(function (e) {
         e.preventDefault();
-        createModal.open();
+        window.location.href = '/Order/Create';
     });
 });

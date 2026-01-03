@@ -159,8 +159,14 @@ export function getRazorIndexJsTemplate(): string {
     };
 
     var l = abp.localization.getResource('{{ project.name }}');
+    
+    {%- if isMasterDetail %}
+    // Master-Detail: Full Page CRUD
+    {%- else %}
+    // Standard: Modal CRUD
     var createModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/EditModal');
+    {%- endif %}
 
     var dataTable = $('#{{ entity.name }}Table').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -185,7 +191,11 @@ export function getRazorIndexJsTemplate(): string {
                             text: l('Edit'),
                             visible: abp.auth.isGranted('{{ project.name }}.{{ entity.name }}.Update'),
                             action: function (data) {
+                                {%- if isMasterDetail %}
+                                window.location.href = '/{{ entity.name }}/Edit/' + data.record.id;
+                                {%- else %}
                                 editModal.open({ id: data.record.id });
+                                {%- endif %}
                             }
                         },
                         {
@@ -234,6 +244,7 @@ export function getRazorIndexJsTemplate(): string {
         ]
     }));
 
+    {%- unless isMasterDetail %}
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
@@ -241,10 +252,15 @@ export function getRazorIndexJsTemplate(): string {
     editModal.onResult(function () {
         dataTable.ajax.reload(null, false);
     });
+    {%- endunless %}
 
     $('#New{{ entity.name }}Button').click(function (e) {
         e.preventDefault();
+        {%- if isMasterDetail %}
+        window.location.href = '/{{ entity.name }}/Create';
+        {%- else %}
         createModal.open();
+        {%- endif %}
     });
 });
 `;

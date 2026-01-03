@@ -118,6 +118,20 @@ public class {{ entity.name }}AppService :
     {
         var entity = ObjectMapper.Map<{{ dto.createTypeName }}, {{ project.namespace }}.{{ entity.name }}.{{ entity.name }}>(input);
 
+        {%- for rel in relationships.asParent %}
+        {%- if rel.isChildGrid %}
+        // Master-Detail: {{ rel.targetEntityName }}
+        if (input.{{ rel.targetPluralName }} != null && input.{{ rel.targetPluralName }}.Any())
+        {
+            foreach (var itemDto in input.{{ rel.targetPluralName }})
+            {
+                var item = ObjectMapper.Map<CreateUpdate{{ rel.targetEntityName }}Dto, {{ project.namespace }}.{{ rel.targetEntityName }}.{{ rel.targetEntityName }}>(itemDto);
+                entity.{{ rel.targetPluralName }}.Add(item);
+            }
+        }
+        {%- endif %}
+        {%- endfor %}
+
         await _repository.InsertAsync(entity, autoSave: true);
 
         return ObjectMapper.Map<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ dto.readTypeName }}>(entity);
@@ -129,9 +143,51 @@ public class {{ entity.name }}AppService :
     [Authorize({{ project.name }}Permissions.{{ entity.name }}.Update)]
     public virtual async Task<{{ dto.readTypeName }}> UpdateAsync({{ entity.primaryKey }} id, {{ dto.updateTypeName }} input)
     {
-        var entity = await _repository.GetAsync(id);
+        // Fetch with details for Master-Detail update
+        var query = await _repository.WithDetailsAsync(x => x.{% for rel in relationships.asParent %}{% if rel.isChildGrid %}{{ rel.targetPluralName }}{% endif %}{% endfor %});
+        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        if (entity == null)
+        {
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof({{ project.namespace }}.{{ entity.name }}.{{ entity.name }}), id);
+        }
 
         ObjectMapper.Map(input, entity);
+
+        {%- for rel in relationships.asParent %}
+        {%- if rel.isChildGrid %}
+        // Master-Detail Reconciliation: {{ rel.targetEntityName }}
+        if (input.{{ rel.targetPluralName }} != null)
+        {
+            // 1. Remove deleted items
+            var inputIds = input.{{ rel.targetPluralName }}.Select(x => x.Id).Where(x => x != Guid.Empty).ToList();
+            var itemsToRemove = entity.{{ rel.targetPluralName }}.Where(x => !inputIds.Contains(x.Id)).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                entity.{{ rel.targetPluralName }}.Remove(item);
+            }
+
+            // 2. Add or Update
+            foreach (var itemDto in input.{{ rel.targetPluralName }})
+            {
+                if (itemDto.Id == Guid.Empty)
+                {
+                    // Add new
+                    var newItem = ObjectMapper.Map<CreateUpdate{{ rel.targetEntityName }}Dto, {{ project.namespace }}.{{ rel.targetEntityName }}.{{ rel.targetEntityName }}>(itemDto);
+                    entity.{{ rel.targetPluralName }}.Add(newItem);
+                }
+                else
+                {
+                    // Update existing
+                    var existingItem = entity.{{ rel.targetPluralName }}.FirstOrDefault(x => x.Id == itemDto.Id);
+                    if (existingItem != null)
+                    {
+                        ObjectMapper.Map(itemDto, existingItem);
+                    }
+                }
+            }
+        }
+        {%- endif %}
+        {%- endfor %}
 
         await _repository.UpdateAsync(entity, autoSave: true);
 

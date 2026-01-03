@@ -2,8 +2,14 @@
  * DTO template for ABP (Read DTO)
  */
 export function getDtoTemplate(): string {
-    return `using System;
+  return `using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ entity.namespace }}.Dtos;
 
@@ -17,7 +23,11 @@ public class {{ dto.readTypeName }} : FullAuditedEntityDto<{{ entity.primaryKey 
       {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
     {%- endfor %}
     {%- unless isFk %}
+    {%- if field.type == 'enum' and field.enumConfig %}
+    public {{ field.enumConfig.enumName }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
+    {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
+    {%- endif %}
     {%- endunless %}
     {%- endunless %}
     {%- endfor %}
@@ -27,6 +37,13 @@ public class {{ dto.readTypeName }} : FullAuditedEntityDto<{{ entity.primaryKey 
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
     public string? {{ rel.parentEntityName }}DisplayName { get; set; }
     {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<{{ rel.targetEntityName }}Dto> {{ rel.targetPluralName }} { get; set; }
+    {%- endif %}
+    {%- endfor %}
 }
 `;
 }
@@ -35,8 +52,14 @@ public class {{ dto.readTypeName }} : FullAuditedEntityDto<{{ entity.primaryKey 
  * CreateUpdate DTO template for ABP
  */
 export function getCreateUpdateDtoTemplate(): string {
-    return `using System;
+  return `using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ entity.namespace }}.Dtos;
 
@@ -56,7 +79,11 @@ public class {{ dto.createTypeName }}
     {%- if field.type == 'string' and field.maxLength %}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
+    {%- if field.type == 'enum' and field.enumConfig %}
+    public {{ field.enumConfig.enumName }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
+    {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
+    {%- endif %}
     {%- endunless %}
     {%- endunless %}
     {%- endfor %}
@@ -68,6 +95,13 @@ public class {{ dto.createTypeName }}
     {%- endif %}
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
     {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.targetPluralName }} { get; set; }
+    {%- endif %}
+    {%- endfor %}
 }
 `;
 }
@@ -76,7 +110,7 @@ public class {{ dto.createTypeName }}
  * GetListInput template for paged/filtered queries
  */
 export function getGetListInputTemplate(): string {
-    return `using System;
+  return `using System;
 using Volo.Abp.Application.Dtos;
 
 namespace {{ entity.namespace }}.Dtos;

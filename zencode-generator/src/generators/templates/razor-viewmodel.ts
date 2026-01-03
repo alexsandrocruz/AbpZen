@@ -7,6 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 
@@ -74,6 +79,13 @@ public class Create{{ entity.name }}ViewModel
     public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
     {%- endif %}
     {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.navigationName }} { get; set; } = new();
+    {%- endif %}
+    {%- endfor %}
 }
 `;
 }
@@ -87,6 +99,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 
@@ -155,6 +172,13 @@ public class Edit{{ entity.name }}ViewModel
     public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
 
     public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endif %}
+    {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.navigationName }} { get; set; } = new();
     {%- endif %}
     {%- endfor %}
 }

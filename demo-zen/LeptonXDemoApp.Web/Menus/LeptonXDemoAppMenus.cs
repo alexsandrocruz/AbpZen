@@ -19,5 +19,7 @@
         public const string Order = Prefix + ".Order";
         
         public const string Customer = Prefix + ".Customer";
+        
+        public const string OrderItem = Prefix + ".OrderItem";
     }
 }

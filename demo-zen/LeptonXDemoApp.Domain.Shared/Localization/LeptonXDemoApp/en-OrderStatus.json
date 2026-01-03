@@ -1,0 +1,7 @@
+{
+  "Enum:OrderStatus": "OrderStatus",
+  "Enum:OrderStatus.Draft": "Draft",
+  "Enum:OrderStatus.Confirmed": "Confirmed",
+  "Enum:OrderStatus.Shipped": "Shipped",
+  "Enum:OrderStatus.Cancelled": "Cancelled"
+}

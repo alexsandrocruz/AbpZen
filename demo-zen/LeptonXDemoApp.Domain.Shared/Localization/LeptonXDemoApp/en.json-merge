@@ -1,0 +1,21 @@
+{
+    "Permission:OrderItem": "OrderItem Management",
+    "Permission:OrderItem.Create": "Create OrderItem",
+    "Permission:OrderItem.Update": "Edit OrderItem",
+    "Permission:OrderItem.Delete": "Delete OrderItem",
+    "Menu:OrderItems": "OrderItems",
+    "OrderItem": "OrderItem",
+    "OrderItems": "OrderItems",
+    "NewOrderItem": "New OrderItem",
+    "EditOrderItem": "Edit OrderItem",
+    "OrderItemDeletionConfirmationMessage": "Are you sure you want to delete this OrderItem?",
+    "SuccessfullyOrderItemCreated": "OrderItem created successfully.",
+    "SuccessfullyOrderItemUpdated": "OrderItem updated successfully.",
+    "SuccessfullyOrderItemDeleted": "OrderItem deleted successfully.",
+    "OrderItem:ProductId": "ProductId",
+    "OrderItem:OrderId": "OrderId",
+    "OrderItem:Quant": "Quant",
+    "OrderItem:Price": "Price",
+    "OrderItem:Total": "Total",
+    "OrderItem:OrderId": "Order"
+  }

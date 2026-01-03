@@ -34,16 +34,3 @@
     justify-content: center;
     min-height: 200px;
 }
-
-/* Improve button appearance */
-.zen-lookup-container .zen-lookup-btn {
-    border-left: none;
-}
-
-.zen-lookup-container .zen-lookup-create-btn {
-    border-left: none;
-}
-
-.zen-lookup-container .zen-lookup-clear-btn {
-    border-left: none;
-}

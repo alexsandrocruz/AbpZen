@@ -18,7 +18,8 @@ namespace LeptonXDemoApp.MongoDB
         public IMongoCollection<LeptonXDemoApp.Category.Category> Categories => Collection<LeptonXDemoApp.Category.Category>();
         public IMongoCollection<LeptonXDemoApp.Order.Order> Orders => Collection<LeptonXDemoApp.Order.Order>();
         public IMongoCollection<LeptonXDemoApp.Customer.Customer> Customers => Collection<LeptonXDemoApp.Customer.Customer>();
-        // <ZenCode-MongoCollections-Marker>
+        public IMongoCollection<LeptonXDemoApp.OrderItem.OrderItem> OrderItems => Collection<LeptonXDemoApp.OrderItem.OrderItem>();
+      // <ZenCode-MongoCollections-Marker>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

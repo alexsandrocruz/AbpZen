@@ -11,13 +11,9 @@ public static class OrderDbContextModelCreatingExtensions
         {
             b.ToTable(LeptonXDemoAppConsts.DbTablePrefix + "Orders", LeptonXDemoAppConsts.DbSchema);
             b.ConfigureByConvention();
+            b.Property(x => x.Number).IsRequired();
 
             // ========== Relationship Configuration (1:N) ==========
-            b.HasOne<Customer>()
-                .WithMany(p => p.Orders)
-                .HasForeignKey(x => x.CustomerId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

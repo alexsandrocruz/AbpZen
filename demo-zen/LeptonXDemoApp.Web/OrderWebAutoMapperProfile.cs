@@ -8,8 +8,7 @@ public class OrderWebAutoMapperProfile : Profile
 {
     public OrderWebAutoMapperProfile()
     {
-        CreateMap<OrderDto, EditOrderViewModel>()
-            .ForMember(dest => dest.CustomerDisplayName, opt => opt.MapFrom(src => src.CustomerDisplayName));
+        CreateMap<OrderDto, EditOrderViewModel>();
         CreateMap<CreateOrderViewModel, CreateUpdateOrderDto>();
         CreateMap<EditOrderViewModel, CreateUpdateOrderDto>();
     }

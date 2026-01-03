@@ -86,7 +86,13 @@ public class CustomerAppService :
     [Authorize(LeptonXDemoAppPermissions.Customer.Update)]
     public virtual async Task<CustomerDto> UpdateAsync(Guid id, CreateUpdateCustomerDto input)
     {
-        var entity = await _repository.GetAsync(id);
+        // Fetch with details for Master-Detail update
+        var query = await _repository.WithDetailsAsync();
+        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        if (entity == null)
+        {
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(LeptonXDemoApp.Customer.Customer), id);
+        }
 
         ObjectMapper.Map(input, entity);
 

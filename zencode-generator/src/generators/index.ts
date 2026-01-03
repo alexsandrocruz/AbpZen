@@ -1,5 +1,24 @@
 import { Liquid } from 'liquidjs';
-import type { EntityData, EntityField, RelationshipData } from '../types';
+import { getRazorCreateModalJsTemplate, getRazorEditModalJsTemplate } from './templates/razor-modal-js.ts';
+
+// ... (existing imports)
+
+export interface ParentRelationshipContext {
+    childEntityName: string;
+    childPluralName: string;
+    navigationName: string;        // Collection property name (e.g., "Products")
+    childNavigationName: string;   // Child's FK navigation name (e.g., "Category")
+    childFkFieldName: string;      // Child's FK field (e.g., "CategoryId")
+    targetEntityName?: string;     // Aliases for template convenience
+    targetPluralName?: string;
+    isChildGrid?: boolean;
+    childGridConfig?: any;
+}
+
+// ... (existing interfaces)
+
+
+import type { EntityData, EntityField, RelationshipData } from '../types.ts';
 import {
     pluralize,
     camelCase,
@@ -8,32 +27,42 @@ import {
     snakeCase,
     toCSharpType,
     toTypeScriptType
-} from './filters';
+} from './filters.ts';
 
 // Templates as string constants
-import { getAppServiceTemplate, getAppServiceInterfaceTemplate } from './templates/service';
-import { getDtoTemplate, getCreateUpdateDtoTemplate, getGetListInputTemplate } from './templates/dto';
-import { getDbContextExtensionsTemplate } from './templates/efcore';
-import { getPermissionsTemplate } from './templates/permissions';
-import { getEntityTemplate, getEntityConstsTemplate } from './templates/entity';
-import { getRepositoryInterfaceTemplate, getRepositoryImplementationTemplate } from './templates/repository';
-import { getAutoMapperProfileTemplate } from './templates/automapper';
-import { getMenuContributorTemplate } from './templates/menu';
+import { getAppServiceTemplate, getAppServiceInterfaceTemplate } from './templates/service.ts';
+import { getDtoTemplate, getCreateUpdateDtoTemplate, getGetListInputTemplate } from './templates/dto.ts';
+import { getDbContextExtensionsTemplate } from './templates/efcore.ts';
+import { getPermissionsTemplate } from './templates/permissions.ts';
+import { getEntityTemplate, getEntityConstsTemplate } from './templates/entity.ts';
+import { getRepositoryInterfaceTemplate, getRepositoryImplementationTemplate } from './templates/repository.ts';
+import { getAutoMapperProfileTemplate } from './templates/automapper.ts';
+import { getMenuContributorTemplate } from './templates/menu.ts';
 import {
     getLocalizationEntriesEnTemplate,
     getLocalizationEntriesPtBrTemplate,
     getLocalizationJsonTemplate,
     getLocalizationJsonPtBrTemplate
-} from './templates/localization';
-import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum';
+} from './templates/localization.ts';
+import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum.ts';
 // Razor page templates
-import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index';
-import { getRazorCreateModalViewTemplate, getRazorCreateModalModelTemplate, getRazorEditModalViewTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal';
-import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel';
+import { getRazorIndexTemplate, getRazorIndexModelTemplate, getRazorIndexJsTemplate, getRazorIndexCssTemplate } from './templates/razor-index.ts';
+import { getRazorCreateModalViewTemplate, getRazorCreateModalModelTemplate, getRazorEditModalViewTemplate, getRazorEditModalModelTemplate } from './templates/razor-modal.ts';
+import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazorAutoMapperProfileTemplate } from './templates/razor-viewmodel.ts';
 // ZenLookup templates
-import { getZenLookupTagHelperTemplate } from './templates/zen-lookup-taghelper';
-import { getZenLookupModalTemplate, getZenLookupCssTemplate } from './templates/zen-lookup-modal';
-import { getZenLookupJsTemplate } from './templates/zen-lookup-js';
+// ZenLookup templates
+import { getZenLookupTagHelperTemplate } from './templates/zen-lookup-taghelper.ts';
+import { getZenLookupModalTemplate, getZenLookupCssTemplate } from './templates/zen-lookup-modal.ts';
+import { getZenLookupJsTemplate } from './templates/zen-lookup-js.ts';
+// Razor Page Full templates (for Master-Detail)
+import {
+    getRazorCreatePageModelTemplate,
+    getRazorCreatePageViewTemplate,
+    getRazorEditPageModelTemplate,
+    getRazorEditPageViewTemplate,
+    getRazorCreatePageJsTemplate,
+    getRazorEditPageJsTemplate
+} from './templates/razor-page-full.ts';
 
 export interface RelationshipInfo {
     id: string;
@@ -95,6 +124,7 @@ export interface GeneratorContext {
         asParent: ParentRelationshipContext[];  // This entity is the "One" side
         asChild: ChildRelationshipContext[];    // This entity is the "Many" side
     };
+    isMasterDetail: boolean;
 }
 
 /**
@@ -162,6 +192,7 @@ export class CodeGenerator {
                 asParent,
                 asChild,
             },
+            isMasterDetail: asParent.some(r => r.isChildGrid)
         };
     }
 
@@ -334,29 +365,57 @@ export class CodeGenerator {
             layer: 'Web',
         });
 
-        // Create Modal
-        files.push({
-            path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml`,
-            content: await this.engine.parseAndRender(getRazorCreateModalViewTemplate(), ctx),
-            layer: 'Web',
-        });
-        files.push({
-            path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml.cs`,
-            content: await this.engine.parseAndRender(getRazorCreateModalModelTemplate(), ctx),
-            layer: 'Web',
-        });
+        const hasChildGrid = asParent.some(r => r.isChildGrid);
 
-        // Edit Modal
-        files.push({
-            path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml`,
-            content: await this.engine.parseAndRender(getRazorEditModalViewTemplate(), ctx),
-            layer: 'Web',
-        });
-        files.push({
-            path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml.cs`,
-            content: await this.engine.parseAndRender(getRazorEditModalModelTemplate(), ctx),
-            layer: 'Web',
-        });
+        if (hasChildGrid) {
+            // Full Page CRUD
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Create.cshtml`,
+                content: await this.engine.parseAndRender(getRazorCreatePageViewTemplate(), ctx),
+                layer: 'Web',
+            });
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Create.cshtml.cs`,
+                content: await this.engine.parseAndRender(getRazorCreatePageModelTemplate(), ctx),
+                layer: 'Web',
+            });
+
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Edit.cshtml`,
+                content: await this.engine.parseAndRender(getRazorEditPageViewTemplate(), ctx),
+                layer: 'Web',
+            });
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Edit.cshtml.cs`,
+                content: await this.engine.parseAndRender(getRazorEditPageModelTemplate(), ctx),
+                layer: 'Web',
+            });
+        } else {
+            // Modal CRUD (Default)
+            // Create Modal
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml`,
+                content: await this.engine.parseAndRender(getRazorCreateModalViewTemplate(), ctx),
+                layer: 'Web',
+            });
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.cshtml.cs`,
+                content: await this.engine.parseAndRender(getRazorCreateModalModelTemplate(), ctx),
+                layer: 'Web',
+            });
+
+            // Edit Modal
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml`,
+                content: await this.engine.parseAndRender(getRazorEditModalViewTemplate(), ctx),
+                layer: 'Web',
+            });
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.cshtml.cs`,
+                content: await this.engine.parseAndRender(getRazorEditModalModelTemplate(), ctx),
+                layer: 'Web',
+            });
+        }
 
         // ViewModels
         files.push({
@@ -369,6 +428,22 @@ export class CodeGenerator {
             content: await this.engine.parseAndRender(getRazorEditViewModelTemplate(), ctx),
             layer: 'Web',
         });
+
+        // Master-Detail JS Logic (if applicable)
+        // const hasChildGrid = asParent.some(r => r.isChildGrid); // Already computed above
+        if (hasChildGrid) {
+            // For Full Page, use dedicated Full Page JS Templates
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Create.js`,
+                content: await this.engine.parseAndRender(getRazorCreatePageJsTemplate(), ctx),
+                layer: 'Web',
+            });
+            files.push({
+                path: `${projectNamespace}.Web/Pages/${entity.name}/Edit.js`,
+                content: await this.engine.parseAndRender(getRazorEditPageJsTemplate(), ctx),
+                layer: 'Web',
+            });
+        }
 
         // Web AutoMapper profile
         files.push({
@@ -410,6 +485,11 @@ export class CodeGenerator {
                                 navigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
                                 childNavigationName: rel.data.targetNavigationName || targetEntity.name,
                                 childFkFieldName: `${targetEntity.name}Id`,
+                                // New fields for Master-Detail (mapped to ParentRelationshipContext)
+                                targetEntityName: sourceEntity.name,
+                                targetPluralName: sourceEntity.pluralName,
+                                isChildGrid: rel.data.isChildGrid,
+                                childGridConfig: rel.data.childGridConfig
                             });
                         }
 
