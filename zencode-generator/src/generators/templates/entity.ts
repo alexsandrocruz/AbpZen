@@ -35,6 +35,8 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
     public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
     public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
+    {%- elsif field.type == 'enum' and field.enumConfig %}
+    public {{ field.enumConfig.enumName }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- else %}
     public {{ field.type }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- endif %}

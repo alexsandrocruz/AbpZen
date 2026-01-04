@@ -127,6 +127,8 @@ public class {{ entity.name }}GetListInput : PagedAndSortedResultRequestDto
     {%- unless isFk %}
     {%- if field.type == 'string' %}
     public string? {{ field.name }} { get; set; }
+    {%- elsif field.type == 'enum' and field.enumConfig %}
+    public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' or field.type == 'int' or field.type == 'long' or field.type == 'datetime' or field.type == 'bool' or field.type == 'decimal' %}
     public {{ field.type | csharpType: true }} {{ field.name }} { get; set; }
     {%- endif %}

@@ -335,7 +335,7 @@ export default function GenerateCodeModal({
                 {
                     file: 'LeptonXDemoApp.MongoDB/MongoDb/LeptonXDemoAppMongoDbContext.cs',
                     marker: 'ZenCode-MongoCollections-Marker',
-                    content: `        public IMongoCollection<${entity.name}> ${entity.pluralName} => Collection<${entity.name}>();`
+                    content: `        public IMongoCollection<LeptonXDemoApp.${entity.name}.${entity.name}> ${entity.pluralName} => Collection<LeptonXDemoApp.${entity.name}.${entity.name}>();`
                 },
                 {
                     file: 'LeptonXDemoApp.Application.Contracts/Permissions/LeptonXDemoAppPermissions.cs',

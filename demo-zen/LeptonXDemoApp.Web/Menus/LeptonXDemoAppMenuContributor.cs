@@ -106,7 +106,9 @@ namespace LeptonXDemoApp.Web.Menus
       context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.OrderItem, l["Menu:OrderItems"], "~/OrderItem", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.OrderItem.Default));
       context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Lead, l["Menu:Leads"], "~/Lead", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Lead.Default));
       context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.LeadContact, l["Menu:LeadContacts"], "~/LeadContact", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.LeadContact.Default));
-            // <ZenCode-Menu-Marker>
+                        context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.MessageTemplate, l["Menu:MessageTemplates"], "~/MessageTemplate", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.MessageTemplate.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.LeadMessage, l["Menu:LeadMessages"], "~/LeadMessage", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.LeadMessage.Default));
+      // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;
         }

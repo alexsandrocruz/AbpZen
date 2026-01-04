@@ -25,6 +25,8 @@
         public const string Lead = Prefix + ".Lead";
         
         public const string LeadContact = Prefix + ".LeadContact";
-                // <ZenCode-Menus-Marker>
+                        public const string MessageTemplate = Prefix + ".MessageTemplate";
+              public const string LeadMessage = Prefix + ".LeadMessage";
+      // <ZenCode-Menus-Marker>
     }
 }
