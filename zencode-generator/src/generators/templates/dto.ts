@@ -66,6 +66,11 @@ namespace {{ entity.namespace }}.Dtos;
 [Serializable]
 public class {{ dto.createTypeName }}
 {
+    /// <summary>
+    /// Id for Master-Detail reconciliation (empty = new item)
+    /// </summary>
+    public Guid Id { get; set; }
+
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
     {%- assign isFk = false %}
@@ -99,7 +104,7 @@ public class {{ dto.createTypeName }}
     // ========== Child Collections (1:N Master-Detail) ==========
     {%- for rel in relationships.asParent %}
     {%- if rel.isChildGrid %}
-    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.targetPluralName }} { get; set; }
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto>? {{ rel.targetPluralName }} { get; set; }
     {%- endif %}
     {%- endfor %}
 }

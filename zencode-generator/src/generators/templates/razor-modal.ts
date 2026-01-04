@@ -56,7 +56,7 @@ public class CreateModalModel : {{ project.name }}PageModel
         {%- if rel.lookupMode != 'modal' %}
         var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
         {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
-            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+            .Select(x => new SelectListItem(x.{{ rel.displayField }}, x.Id.ToString()))
             .ToList();
         ViewModel.{{ rel.parentEntityName }}List = {{ rel.parentEntityName }}List;
         {%- endif %}
@@ -141,7 +141,7 @@ public class EditModalModel : {{ project.name }}PageModel
         {%- else %}
         var {{ rel.parentEntityName | camelCase }}List = await _{{ rel.parentEntityName | camelCase }}AppService.GetListAsync(new {{ rel.parentEntityName }}GetListInput { MaxResultCount = 1000 });
         {{ rel.parentEntityName }}List = {{ rel.parentEntityName | camelCase }}List.Items
-            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+            .Select(x => new SelectListItem(x.{{ rel.displayField }}, x.Id.ToString()))
             .ToList();
         ViewModel.{{ rel.parentEntityName }}List = {{ rel.parentEntityName }}List;
         {%- endif %}

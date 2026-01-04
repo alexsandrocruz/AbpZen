@@ -217,7 +217,7 @@ export function getRazorCreatePageViewTemplate(): string {
     {%- if rel.isChildGrid %}
     <div class="mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"]</h5>
+            <h5 class="mb-0">@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"]</h5>
             <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
                 <i class="fa fa-plus"></i> @L["Add"]
             </button>
@@ -259,10 +259,10 @@ export function getRazorCreatePageViewTemplate(): string {
                 </abp-tab>
                 {%- for rel in relationships.asParent %}
                 {%- if rel.isChildGrid and rel.childGridConfig.renderMode == 'tab' %}
-                <abp-tab title="@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"].Value">
+                <abp-tab title="@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"].Value">
                     <div class="mt-2">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"]</h6>
+                            <h6 class="mb-0">@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"]</h6>
                             <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
                                 <i class="fa fa-plus"></i> @L["Add"]
                             </button>
@@ -368,7 +368,7 @@ export function getRazorEditPageViewTemplate(): string {
     {%- if rel.isChildGrid %}
     <div class="mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"]</h5>
+            <h5 class="mb-0">@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"]</h5>
             <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
                 <i class="fa fa-plus"></i> @L["Add"]
             </button>
@@ -410,10 +410,10 @@ export function getRazorEditPageViewTemplate(): string {
                 </abp-tab>
                 {%- for rel in relationships.asParent %}
                 {%- if rel.isChildGrid and rel.childGridConfig.renderMode == 'tab' %}
-                <abp-tab title="@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"].Value">
+                <abp-tab title="@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"].Value">
                     <div class="mt-2">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">@L["{{ rel.childGridConfig.title || rel.targetPluralName }}"]</h6>
+                            <h6 class="mb-0">@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"]</h6>
                             <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
                                 <i class="fa fa-plus"></i> @L["Add"]
                             </button>

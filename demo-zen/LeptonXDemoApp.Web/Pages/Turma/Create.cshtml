@@ -1,0 +1,67 @@
+@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using LeptonXDemoApp
+@using LeptonXDemoApp.Localization
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@model LeptonXDemoApp.Web.Pages.Turma.CreateModel
+
+@section scripts {
+    <abp-script src="/Pages/Turma/Create.js" />
+}
+
+
+
+
+
+<form method="post" id="CreateTurmaForm">
+    <abp-card>
+        <abp-card-header>
+            <abp-card-title>@L["NewTurma"].Value</abp-card-title>
+        </abp-card-header>
+        <abp-card-body>
+            <abp-tabs>
+                <abp-tab title="@L["General"].Value">
+                    
+    <abp-row>
+        <abp-column size-md="_12">
+            <abp-input asp-for="ViewModel.Nome" label="@L["Turma:Nome"].Value" />
+        </abp-column>
+        <abp-column size-md="_12">
+            <abp-input asp-for="ViewModel.Codigo" label="@L["Turma:Codigo"].Value" />
+        </abp-column>
+        <abp-column size-md="_12">
+            <abp-input asp-for="ViewModel.AnoLetivo" label="@L["Turma:AnoLetivo"].Value" />
+        </abp-column>
+        <abp-column size-md="_12">
+            <abp-input asp-for="ViewModel.Semestre" label="@L["Turma:Semestre"].Value" />
+        </abp-column>
+    </abp-row>
+
+                </abp-tab>
+                <abp-tab title="@L["Alunos"].Value">
+                    <div class="mt-2">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">@L["Alunos"]</h6>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="AddAlunoTurmaBtn">
+                                <i class="fa fa-plus"></i> @L["Add"]
+                            </button>
+                        </div>
+                        <table class="table table-striped table-hover table-bordered w-100" id="AlunoTurmasTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 80px">@L["Actions"]</th><th>@L["AlunoTurma:AlunoId"]</th><th>@L["AlunoTurma:TurmaId"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </abp-tab>
+            </abp-tabs>
+        </abp-card-body>
+        <abp-card-footer>
+            <a asp-page="Index" class="btn btn-secondary">@L["Cancel"]</a>
+            <abp-button button-type="Primary" type="submit" text="@L["Save"].Value" />
+        </abp-card-footer>
+    </abp-card>
+</form>

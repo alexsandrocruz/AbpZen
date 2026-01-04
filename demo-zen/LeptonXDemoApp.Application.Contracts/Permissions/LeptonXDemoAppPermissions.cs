@@ -81,6 +81,27 @@ namespace LeptonXDemoApp.Permissions
             public const string Update = Default + ".Update";
             public const string Delete = Default + ".Delete";
         }
+      public static class Aluno
+        {
+            public const string Default = GroupName + ".Aluno";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Turma
+        {
+            public const string Default = GroupName + ".Turma";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class AlunoTurma
+        {
+            public const string Default = GroupName + ".AlunoTurma";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
       // <ZenCode-Permissions-Marker>
     }
 }

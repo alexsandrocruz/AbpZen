@@ -27,6 +27,9 @@
         public const string LeadContact = Prefix + ".LeadContact";
                         public const string MessageTemplate = Prefix + ".MessageTemplate";
               public const string LeadMessage = Prefix + ".LeadMessage";
+        public const string Aluno = Prefix + ".Aluno";
+        public const string Turma = Prefix + ".Turma";
+        public const string AlunoTurma = Prefix + ".AlunoTurma";
       // <ZenCode-Menus-Marker>
     }
 }

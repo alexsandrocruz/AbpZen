@@ -592,6 +592,44 @@ export class CodeGenerator {
                                     targetFields: junctionEntity.fields
                                 });
                             }
+
+                            // If this entity IS the junction entity, add both source and target as asChild
+                            // so that the junction entity gets the FK properties (AlunoId, TurmaId, etc.)
+                            if (junctionEntity.name === entity.name) {
+                                // Add source entity as parent (e.g., Aluno)
+                                const sourceDisplayField = sourceEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                    || sourceEntity.fields.find(f => f.name === 'Nome')
+                                    || sourceEntity.fields.find(f => f.type === 'string')
+                                    || { name: 'Id' };
+
+                                asChild.push({
+                                    parentEntityName: sourceEntity.name,
+                                    parentPluralName: sourceEntity.pluralName,
+                                    fkFieldName: rel.data.junctionConfig.sourceForeignKey || `${sourceEntity.name}Id`,
+                                    navigationName: sourceEntity.name,
+                                    parentNavigationName: junctionEntity.pluralName,
+                                    isRequired: true,
+                                    lookupMode: 'dropdown',
+                                    displayField: sourceDisplayField.name
+                                });
+
+                                // Add target entity as parent (e.g., Turma)
+                                const targetDisplayField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                    || targetEntity.fields.find(f => f.name === 'Nome')
+                                    || targetEntity.fields.find(f => f.type === 'string')
+                                    || { name: 'Id' };
+
+                                asChild.push({
+                                    parentEntityName: targetEntity.name,
+                                    parentPluralName: targetEntity.pluralName,
+                                    fkFieldName: rel.data.junctionConfig.targetForeignKey || `${targetEntity.name}Id`,
+                                    navigationName: targetEntity.name,
+                                    parentNavigationName: junctionEntity.pluralName,
+                                    isRequired: true,
+                                    lookupMode: 'dropdown',
+                                    displayField: targetDisplayField.name
+                                });
+                            }
                         }
                     }
                 }

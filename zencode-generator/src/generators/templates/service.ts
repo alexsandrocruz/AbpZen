@@ -8,6 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using {{ project.namespace }}.Permissions;
 using {{ entity.namespace }}.Dtos;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -50,11 +55,16 @@ public class {{ entity.name }}AppService :
         var dto = ObjectMapper.Map<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ dto.readTypeName }}>(entity);
 
         {%- for rel in relationships.asChild %}
+        {%- if rel.isRequired %}
+        var {{ rel.parentEntityName | camelCase }} = await _{{ rel.parentEntityName | camelCase }}Repository.FindAsync(entity.{{ rel.fkFieldName }});
+        dto.{{ rel.parentEntityName }}DisplayName = {{ rel.parentEntityName | camelCase }}?.{{ rel.displayField }};
+        {%- else %}
         if (entity.{{ rel.fkFieldName }} != null)
         {
             var parent = await _{{ rel.parentEntityName | camelCase }}Repository.FindAsync(entity.{{ rel.fkFieldName }}.Value);
             dto.{{ rel.parentEntityName }}DisplayName = parent?.{{ rel.displayField }};
         }
+        {%- endif %}
         {%- endfor %}
 
         return dto;
@@ -83,6 +93,26 @@ public class {{ entity.name }}AppService :
         var dtoList = ObjectMapper.Map<List<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}>, List<{{ dto.readTypeName }}>>(entities);
 
         {%- for rel in relationships.asChild %}
+        {%- if rel.isRequired %}
+        var {{ rel.parentEntityName | camelCase }}Ids = entities
+            .Select(x => x.{{ rel.fkFieldName }})
+            .Distinct()
+            .ToList();
+
+        if ({{ rel.parentEntityName | camelCase }}Ids.Any())
+        {
+            var parents = await _{{ rel.parentEntityName | camelCase }}Repository.GetListAsync(x => {{ rel.parentEntityName | camelCase }}Ids.Contains(x.Id));
+            var parentMap = parents.ToDictionary(x => x.Id, x => x.{{ rel.displayField }});
+
+            foreach (var dto in dtoList)
+            {
+                if (parentMap.TryGetValue(dto.{{ rel.fkFieldName }}, out var displayName))
+                {
+                    dto.{{ rel.parentEntityName }}DisplayName = displayName;
+                }
+            }
+        }
+        {%- else %}
         var {{ rel.parentEntityName | camelCase }}Ids = entities
             .Where(x => x.{{ rel.fkFieldName }} != null)
             .Select(x => x.{{ rel.fkFieldName }}.Value)
@@ -102,6 +132,7 @@ public class {{ entity.name }}AppService :
                 }
             }
         }
+        {%- endif %}
         {%- endfor %}
 
         return new PagedResultDto<{{ dto.readTypeName }}>(

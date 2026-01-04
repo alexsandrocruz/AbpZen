@@ -95,6 +95,8 @@ export interface ChildGridConfig {
 export interface JunctionConfig {
     tableName: string;                   // Junction table name (e.g., "AlunoTurma")
     junctionEntityId?: string;           // ID of the generated junction entity node
+    sourceForeignKey?: string;           // FK field name to source entity (e.g., "AlunoId")
+    targetForeignKey?: string;           // FK field name to target entity (e.g., "TurmaId")
     additionalFields?: EntityField[];    // Extra fields (e.g., DataMatricula)
     showInSource?: boolean;              // Show grid in source entity form
     showInTarget?: boolean;              // Show grid in target entity form

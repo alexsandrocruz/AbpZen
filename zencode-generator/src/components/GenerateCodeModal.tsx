@@ -51,13 +51,6 @@ export default function GenerateCodeModal({
         // Build entity lookup by name
         const entityMap = new Map(entities.map(e => [e.name, e]));
 
-        // Build entity lookup by ID if we can find it (searching the relationships)
-        // Actually, we should pass have the IDs in EntityData or pass a mapping.
-        // Let's assume rel.source/rel.target might be names OR IDs.
-        // If they are IDs, we need to find which entity they belong to.
-        // Since we don't have the ID->Name mapping here easily, 
-        // let's look at how App.tsx passes them.
-
         for (const rel of relationships) {
             if (rel.data.type === 'one-to-many') {
                 const sourceEntity = entityMap.get(rel.source); // Child (has FK)
@@ -77,7 +70,6 @@ export default function GenerateCodeModal({
 
                     // If this entity is the SOURCE (child - the "Many" side, has FK)
                     if (rel.source === entityName) {
-                        // Find the field that is marked as lookup for this target entity
                         const fkField = sourceEntity.fields.find(f =>
                             f.isLookup && f.lookupConfig?.targetEntity === targetEntity.name
                         );
@@ -97,6 +89,75 @@ export default function GenerateCodeModal({
                             lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
                             displayField: displayFieldField.name
                         });
+                    }
+                }
+            } else if (rel.data.type === 'many-to-many') {
+                const sourceEntity = entityMap.get(rel.source);
+                const targetEntity = entityMap.get(rel.target);
+
+                if (sourceEntity && targetEntity && rel.data.junctionConfig) {
+                    const junctionName = rel.data.junctionConfig.junctionEntityId || rel.data.junctionConfig.tableName;
+                    const junctionEntity = entities.find(e => e.name === junctionName);
+
+                    if (junctionEntity) {
+                        // If this entity is the source and showInSource is true
+                        if (sourceEntity.name === entityName && rel.data.junctionConfig.showInSource) {
+                            asParent.push({
+                                childEntityName: junctionEntity.name,
+                                childPluralName: junctionEntity.pluralName,
+                                navigationName: rel.data.sourceNavigationName || junctionEntity.pluralName,
+                                childNavigationName: sourceEntity.name,
+                                childFkFieldName: `${sourceEntity.name}Id`,
+                            });
+                        }
+
+                        // If this entity is the target and showInTarget is true
+                        if (targetEntity.name === entityName && rel.data.junctionConfig.showInTarget) {
+                            asParent.push({
+                                childEntityName: junctionEntity.name,
+                                childPluralName: junctionEntity.pluralName,
+                                navigationName: rel.data.targetNavigationName || junctionEntity.pluralName,
+                                childNavigationName: targetEntity.name,
+                                childFkFieldName: `${targetEntity.name}Id`,
+                            });
+                        }
+
+                        // If this entity IS the junction entity - add both source and target as parents
+                        if (junctionEntity.name === entityName) {
+                            // Source entity as parent
+                            const sourceDisplayField = sourceEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                || sourceEntity.fields.find(f => f.name === 'Nome')
+                                || sourceEntity.fields.find(f => f.type === 'string')
+                                || { name: 'Id' };
+
+                            asChild.push({
+                                parentEntityName: sourceEntity.name,
+                                parentPluralName: sourceEntity.pluralName,
+                                fkFieldName: rel.data.junctionConfig.sourceForeignKey || `${sourceEntity.name}Id`,
+                                navigationName: sourceEntity.name,
+                                parentNavigationName: junctionEntity.pluralName,
+                                isRequired: true,
+                                lookupMode: 'dropdown',
+                                displayField: sourceDisplayField.name
+                            });
+
+                            // Target entity as parent
+                            const targetDisplayField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                || targetEntity.fields.find(f => f.name === 'Nome')
+                                || targetEntity.fields.find(f => f.type === 'string')
+                                || { name: 'Id' };
+
+                            asChild.push({
+                                parentEntityName: targetEntity.name,
+                                parentPluralName: targetEntity.pluralName,
+                                fkFieldName: rel.data.junctionConfig.targetForeignKey || `${targetEntity.name}Id`,
+                                navigationName: targetEntity.name,
+                                parentNavigationName: junctionEntity.pluralName,
+                                isRequired: true,
+                                lookupMode: 'dropdown',
+                                displayField: targetDisplayField.name
+                            });
+                        }
                     }
                 }
             }
@@ -306,7 +367,54 @@ export default function GenerateCodeModal({
                 }
             }
 
-            setApplyStatus({ success: true, message: `Successfully applied code and merged localizations!` });
+            // 3. Auto-inject permissions, menus, etc. (only for selected entities)
+            const selectedEntityList = entities.filter(e => selectedEntities.has(e.name));
+            if (selectedEntityList.length > 0) {
+                const injectInstructions = selectedEntityList.flatMap(entity => [
+                    {
+                        file: `${projectName}.Web/Menus/${projectName}Menus.cs`,
+                        marker: 'ZenCode-Menus-Marker',
+                        content: `        public const string ${entity.name} = Prefix + ".${entity.name}";`
+                    },
+                    {
+                        file: `${projectName}.Web/Menus/${projectName}MenuContributor.cs`,
+                        marker: 'ZenCode-Menu-Marker',
+                        content: `            context.Menu.AddItem(new ApplicationMenuItem(${projectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${projectName}Permissions.${entity.name}.Default));`
+                    },
+                    {
+                        file: `${projectName}.Application.Contracts/Permissions/${projectName}Permissions.cs`,
+                        marker: 'ZenCode-Permissions-Marker',
+                        content: `        public static class ${entity.name}\n        {\n            public const string Default = GroupName + ".${entity.name}";\n            public const string Create = Default + ".Create";\n            public const string Update = Default + ".Update";\n            public const string Delete = Default + ".Delete";\n        }`
+                    },
+                    {
+                        file: `${projectName}.Application.Contracts/Permissions/${projectName}PermissionDefinitionProvider.cs`,
+                        marker: 'ZenCode-PermissionDefinition-Marker',
+                        content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${projectName}Permissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Delete, L("Permission:Delete"));`
+                    }
+                ]);
+
+                const injectResponse = await fetch('http://localhost:3001/api/inject-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        projectPath,
+                        instructions: injectInstructions
+                    })
+                });
+
+                if (!injectResponse.ok) {
+                    const data = await injectResponse.json();
+                    throw new Error(data.error || 'Failed to inject permissions/menus');
+                }
+
+                const injectData = await injectResponse.json();
+                const injectFailed = injectData.results.filter((r: any) => !r.success);
+                if (injectFailed.length > 0) {
+                    console.warn('Some injections failed:', injectFailed);
+                }
+            }
+
+            setApplyStatus({ success: true, message: `Successfully applied ${files.length} files and injected permissions/menus!` });
         } catch (error: any) {
             console.error('Apply error:', error);
             setApplyStatus({ success: false, message: error.message || 'Failed to apply code' });
