@@ -77,6 +77,7 @@ export interface EntityData {
     baseClass: EntityBaseClass;
     isMaster: boolean;
     fields: EntityField[];
+    renderType?: 'modal' | 'full-page';
 }
 
 export type RelationshipType = 'one-to-many' | 'many-to-many' | 'one-to-one';
@@ -88,6 +89,7 @@ export interface ChildGridConfig {
     allowEdit?: boolean;                 // Allow editing child items inline
     displayFields?: string[];            // Fields to show in the child grid (if empty, show all)
     defaultExpanded?: boolean;           // Start expanded
+    renderMode?: 'inline' | 'tab';       // Rendering mode: inline or in a tab
 }
 
 export interface JunctionConfig {

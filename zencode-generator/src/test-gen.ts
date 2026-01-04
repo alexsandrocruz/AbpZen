@@ -1,7 +1,7 @@
 
 import { codeGenerator } from './generators/index.ts';
 import type { RelationshipInfo } from './generators/index.ts';
-import type { EntityData, RelationshipData } from './types.ts';
+import type { EntityData } from './types.ts';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -110,7 +110,7 @@ async function run() {
     const projectPath = path.resolve(__dirname, '../../demo-zen');
     const namespace = 'LeptonXDemoApp';
 
-    console.log(`Generating code for Order (Master-Detail)...`);
+    console.log(`Generating code for ${namespace} (Master-Detail test)...`);
 
     // Clean up old Modal files for Order to avoid confusion usage
     const webPagesPath = path.join(projectPath, 'LeptonXDemoApp.Web/Pages/Order');

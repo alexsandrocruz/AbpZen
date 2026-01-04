@@ -149,7 +149,12 @@ public class {{ entity.name }}AppService :
         {%- endfor -%}
         {%- if hasChildGrids %}
         // Fetch with details for Master-Detail update
-        var query = await _repository.WithDetailsAsync(x => x.{% for rel in relationships.asParent %}{% if rel.isChildGrid %}{{ rel.targetPluralName }}{% endif %}{% endfor %});
+        var query = await _repository.WithDetailsAsync(
+            {%- assign gridRels = relationships.asParent | where: "isChildGrid", true -%}
+            {%- for rel in gridRels -%}
+            x => x.{{ rel.targetPluralName }}{% unless forloop.last %}, {% endunless %}
+            {%- endfor -%}
+        );
         var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
         {%- else %}
         var entity = await _repository.GetAsync(id);

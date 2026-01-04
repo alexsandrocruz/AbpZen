@@ -1,8 +1,6 @@
 import { Liquid } from 'liquidjs';
 import { getRazorCreateModalJsTemplate, getRazorEditModalJsTemplate } from './templates/razor-modal-js.ts';
 
-// ... (existing imports)
-
 export interface ParentRelationshipContext {
     childEntityName: string;
     childPluralName: string;
@@ -12,13 +10,14 @@ export interface ParentRelationshipContext {
     targetEntityName?: string;     // Aliases for template convenience
     targetPluralName?: string;
     isChildGrid?: boolean;
-    childGridConfig?: any;
+    childGridConfig?: ChildGridConfig;
+    isManyToMany?: boolean;
+    junctionConfig?: JunctionConfig;
+    targetFields?: EntityField[];
 }
 
-// ... (existing interfaces)
 
-
-import type { EntityData, EntityField, RelationshipData } from '../types.ts';
+import type { EntityData, EntityField, RelationshipData, ChildGridConfig, JunctionConfig } from '../types.ts';
 import {
     pluralize,
     camelCase,
@@ -37,12 +36,9 @@ import { getPermissionsTemplate } from './templates/permissions.ts';
 import { getEntityTemplate, getEntityConstsTemplate } from './templates/entity.ts';
 import { getRepositoryInterfaceTemplate, getRepositoryImplementationTemplate } from './templates/repository.ts';
 import { getAutoMapperProfileTemplate } from './templates/automapper.ts';
-import { getMenuContributorTemplate } from './templates/menu.ts';
 import {
     getLocalizationEntriesEnTemplate,
     getLocalizationEntriesPtBrTemplate,
-    getLocalizationJsonTemplate,
-    getLocalizationJsonPtBrTemplate
 } from './templates/localization.ts';
 import { getEnumTemplate, getEnumLocalizationEnTemplate, getEnumLocalizationPtBrTemplate } from './templates/enum.ts';
 // Razor page templates
@@ -71,16 +67,7 @@ export interface RelationshipInfo {
     data: RelationshipData;
 }
 
-/**
- * Parent relationship context (this entity has a collection of children)
- */
-export interface ParentRelationshipContext {
-    childEntityName: string;
-    childPluralName: string;
-    navigationName: string;        // Collection property name (e.g., "Products")
-    childNavigationName: string;   // Child's FK navigation name (e.g., "Category")
-    childFkFieldName: string;      // Child's FK field (e.g., "CategoryId")
-}
+// Duplicate definition removed to keep consistency with the one above
 
 /**
  * Child relationship context (this entity has a FK to parent)
@@ -432,17 +419,29 @@ export class CodeGenerator {
         // Master-Detail JS Logic (if applicable)
         // const hasChildGrid = asParent.some(r => r.isChildGrid); // Already computed above
         if (hasChildGrid) {
-            // For Full Page, use dedicated Full Page JS Templates
-            files.push({
-                path: `${projectNamespace}.Web/Pages/${entity.name}/Create.js`,
-                content: await this.engine.parseAndRender(getRazorCreatePageJsTemplate(), ctx),
-                layer: 'Web',
-            });
-            files.push({
-                path: `${projectNamespace}.Web/Pages/${entity.name}/Edit.js`,
-                content: await this.engine.parseAndRender(getRazorEditPageJsTemplate(), ctx),
-                layer: 'Web',
-            });
+            if (entity.renderType === 'full-page') {
+                files.push({
+                    path: `${projectNamespace}.Web/Pages/${entity.name}/Create.js`,
+                    content: await this.engine.parseAndRender(getRazorCreatePageJsTemplate(), ctx),
+                    layer: 'Web',
+                });
+                files.push({
+                    path: `${projectNamespace}.Web/Pages/${entity.name}/Edit.js`,
+                    content: await this.engine.parseAndRender(getRazorEditPageJsTemplate(), ctx),
+                    layer: 'Web',
+                });
+            } else {
+                files.push({
+                    path: `${projectNamespace}.Web/Pages/${entity.name}/CreateModal.js`,
+                    content: await this.engine.parseAndRender(getRazorCreateModalJsTemplate(), ctx),
+                    layer: 'Web',
+                });
+                files.push({
+                    path: `${projectNamespace}.Web/Pages/${entity.name}/EditModal.js`,
+                    content: await this.engine.parseAndRender(getRazorEditModalJsTemplate(), ctx),
+                    layer: 'Web',
+                });
+            }
         }
 
         // Web AutoMapper profile
@@ -508,7 +507,8 @@ export class CodeGenerator {
                                 targetEntityName: sourceEntity.name,
                                 targetPluralName: sourceEntity.pluralName,
                                 isChildGrid: rel.data.isChildGrid,
-                                childGridConfig: rel.data.childGridConfig
+                                childGridConfig: rel.data.childGridConfig,
+                                targetFields: sourceEntity.fields
                             });
                         }
 
@@ -533,6 +533,65 @@ export class CodeGenerator {
                                 lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
                                 displayField: displayFieldField.name
                             });
+                        }
+                    }
+                } else if (rel.data.type === 'many-to-many') {
+                    const sourceName = resolveEntityName(rel.source);
+                    const targetName = resolveEntityName(rel.target);
+
+                    const sourceEntity = sourceName ? entityMapByName.get(sourceName) : undefined;
+                    const targetEntity = targetName ? entityMapByName.get(targetName) : undefined;
+
+                    if (sourceEntity && targetEntity && rel.data.junctionConfig) {
+                        const junctionId = rel.data.junctionConfig.junctionEntityId;
+                        const junctionName = junctionId ? resolveEntityName(junctionId) : rel.data.junctionConfig.tableName;
+                        const junctionEntity = entities.find(e => e.name === junctionName);
+
+                        if (junctionEntity) {
+                            if (sourceEntity.name === entity.name && rel.data.junctionConfig.showInSource) {
+                                asParent.push({
+                                    childEntityName: junctionEntity.name,
+                                    childPluralName: junctionEntity.pluralName,
+                                    navigationName: rel.data.sourceNavigationName || junctionEntity.pluralName,
+                                    childNavigationName: sourceEntity.name,
+                                    childFkFieldName: `${sourceEntity.name}Id`,
+                                    targetEntityName: junctionEntity.name,
+                                    targetPluralName: junctionEntity.pluralName,
+                                    isChildGrid: true,
+                                    isManyToMany: true,
+                                    junctionConfig: rel.data.junctionConfig,
+                                    childGridConfig: {
+                                        title: targetEntity.pluralName,
+                                        allowAdd: true,
+                                        allowRemove: true,
+                                        allowEdit: false,
+                                        renderMode: 'tab'
+                                    },
+                                    targetFields: junctionEntity.fields
+                                });
+                            }
+                            if (targetEntity.name === entity.name && rel.data.junctionConfig.showInTarget) {
+                                asParent.push({
+                                    childEntityName: junctionEntity.name,
+                                    childPluralName: junctionEntity.pluralName,
+                                    navigationName: rel.data.targetNavigationName || junctionEntity.pluralName,
+                                    childNavigationName: targetEntity.name,
+                                    childFkFieldName: `${targetEntity.name}Id`,
+                                    targetEntityName: junctionEntity.name,
+                                    targetPluralName: junctionEntity.pluralName,
+                                    isChildGrid: true,
+                                    isManyToMany: true,
+                                    junctionConfig: rel.data.junctionConfig,
+                                    childGridConfig: {
+                                        title: sourceEntity.pluralName,
+                                        allowAdd: true,
+                                        allowRemove: true,
+                                        allowEdit: false,
+                                        renderMode: 'tab'
+                                    },
+                                    targetFields: junctionEntity.fields
+                                });
+                            }
                         }
                     }
                 }

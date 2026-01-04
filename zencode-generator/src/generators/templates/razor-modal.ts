@@ -170,58 +170,81 @@ export function getRazorCreateModalViewTemplate(): string {
 @model {{ project.namespace }}.Web.Pages.{{ entity.name }}.CreateModalModel
 @{
     Layout = null;
+    {%- assign tabbedRelationships = relationships.asParent | where: "childGridConfig.renderMode", "tab" -%}
 }
+
+{%- capture form_content -%}
+    {%- assign hasModalLookup = false -%}
+    {%- for rel in relationships.asChild -%}
+        {%- if rel.lookupMode == 'modal' -%}
+            {%- assign hasModalLookup = true -%}
+        {%- endif -%}
+    {%- endfor -%}
+    <abp-form-content />
+    {%- if hasModalLookup -%}
+    {%- for rel in relationships.asChild -%}
+        {%- if rel.lookupMode == 'modal' -%}
+        <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
+                          label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
+                          lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
+                          display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
+        {%- endif -%}
+    {%- endfor -%}
+    {%- endif -%}
+
+    {%- for rel in relationships.asParent -%}
+    {%- if rel.isChildGrid and rel.childGridConfig.renderMode != 'tab' %}
+        {{ child_grid_html | replace: "REL_REPLACE", rel.targetEntityName | replace: "PLURAL_REPLACE", rel.targetPluralName | replace: "TITLE_REPLACE", rel.childGridConfig.title }}
+    {%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture child_grid_template -%}
+    <div class="mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+             <label class="form-label mb-0">@L["TITLE_REPLACE"].Value</label>
+             <button type="button" class="btn btn-sm btn-outline-primary AddChildItemBtn" 
+                     data-entity="REL_REPLACE" 
+                     data-plural="PLURAL_REPLACE"
+                     id="AddREL_REPLACEBtn">
+                <i class="fa fa-plus"></i> @L["Add"].Value
+             </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered child-grid-table" id="PLURAL_REPLACETable" data-entity="REL_REPLACE">
+                <thead>
+                    <tr>
+                        <th class="actions-column" style="width: 50px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+{%- endcapture -%}
+
 <abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="CreateModal">
-    <abp-modal>
+    <abp-modal id="{{ entity.name }}CreateModal" size="ExtraLarge">
         <abp-modal-header title="@L["New{{ entity.name }}"].Value"></abp-modal-header>
         <abp-modal-body>
-            {%- assign hasModalLookup = false -%}
-            {%- assign ignoredProps = "" -%}
-            {%- for rel in relationships.asChild -%}
-                {%- if rel.lookupMode == 'modal' -%}
-                    {%- assign hasModalLookup = true -%}
-                    {%- assign ignoredProps = ignoredProps | append: rel.fkFieldName | append: "," | append: rel.parentEntityName | append: "DisplayName," -%}
-                {%- endif -%}
-            {%- endfor -%}
-            <abp-form-content {% if hasModalLookup %}{% endif %} />
-            {%- if hasModalLookup -%}
-            {%- for rel in relationships.asChild -%}
-                {%- if rel.lookupMode == 'modal' -%}
-                <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
-                                  label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
-                                   
-                                  lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
-                                  display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
-                {%- endif -%}
-            {%- endfor -%}
+            {%- if tabbedRelationships.size > 0 -%}
+            <abp-tabs name="{{ entity.name }}CreateTabs">
+                <abp-tab title="@L["General"].Value" active="true">
+                    <div class="mt-3">
+                        {{ form_content }}
+                    </div>
+                </abp-tab>
+                {%- for rel in tabbedRelationships -%}
+                <abp-tab title="@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"].Value">
+                    <div class="mt-3">
+                        {{ child_grid_template | replace: "REL_REPLACE", rel.targetEntityName | replace: "PLURAL_REPLACE", rel.targetPluralName | replace: "TITLE_REPLACE", rel.childGridConfig.title | default: rel.targetPluralName }}
+                    </div>
+                </abp-tab>
+                {%- endfor -%}
+            </abp-tabs>
+            {%- else -%}
+                {{ form_content }}
             {%- endif -%}
-
-            {%- for rel in relationships.asParent -%}
-            {%- if rel.isChildGrid %}
-            <div class="mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                     <label class="form-label mb-0">@L["{{ rel.targetPluralName }}"].Value</label>
-                     <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
-                        <i class="fa fa-plus"></i> @L["Add{{ rel.targetEntityName }}"].Value
-                     </button>
-                </div>
-                <table class="table table-striped table-hover table-bordered" id="{{ rel.targetPluralName }}Table">
-                    <thead>
-                        <tr>
-                            <!-- TODO: Iterate Child Fields here for headers -->
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th style="width: 50px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows rendered by JS -->
-                    </tbody>
-                </table>
-            </div>
-            {%- endif -%}
-            {%- endfor -%}
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>
@@ -241,59 +264,82 @@ export function getRazorEditModalViewTemplate(): string {
 @model {{ project.namespace }}.Web.Pages.{{ entity.name }}.EditModalModel
 @{
     Layout = null;
+    {%- assign tabbedRelationships = relationships.asParent | where: "childGridConfig.renderMode", "tab" -%}
 }
+
+{%- capture form_content -%}
+    {%- assign hasModalLookup = false -%}
+    {%- for rel in relationships.asChild -%}
+        {%- if rel.lookupMode == 'modal' -%}
+            {%- assign hasModalLookup = true -%}
+        {%- endif -%}
+    {%- endfor -%}
+    <abp-form-content />
+    {%- if hasModalLookup -%}
+    {%- for rel in relationships.asChild -%}
+        {%- if rel.lookupMode == 'modal' -%}
+        <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
+                          label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
+                          lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
+                          display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
+        {%- endif -%}
+    {%- endfor -%}
+    {%- endif -%}
+
+    {%- for rel in relationships.asParent -%}
+    {%- if rel.isChildGrid and rel.childGridConfig.renderMode != 'tab' %}
+        {{ child_grid_html | replace: "REL_REPLACE", rel.targetEntityName | replace: "PLURAL_REPLACE", rel.targetPluralName | replace: "TITLE_REPLACE", rel.childGridConfig.title }}
+    {%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture child_grid_template -%}
+    <div class="mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+             <label class="form-label mb-0">@L["TITLE_REPLACE"].Value</label>
+             <button type="button" class="btn btn-sm btn-outline-primary AddChildItemBtn" 
+                     data-entity="REL_REPLACE" 
+                     data-plural="PLURAL_REPLACE"
+                     id="AddREL_REPLACEBtn">
+                <i class="fa fa-plus"></i> @L["Add"].Value
+             </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered child-grid-table" id="PLURAL_REPLACETable" data-entity="REL_REPLACE">
+                <thead>
+                    <tr>
+                        <th class="actions-column" style="width: 50px"></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+{%- endcapture -%}
+
 <abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditModal">
-    <abp-modal>
+    <abp-modal id="{{ entity.name }}EditModal" size="ExtraLarge">
         <abp-modal-header title="@L["Edit{{ entity.name }}"].Value"></abp-modal-header>
         <abp-modal-body>
             <input type="hidden" name="Id" value="@Model.Id" />
-            {%- assign hasModalLookup = false -%}
-            {%- assign ignoredProps = "" -%}
-            {%- for rel in relationships.asChild -%}
-                {%- if rel.lookupMode == 'modal' -%}
-                    {%- assign hasModalLookup = true -%}
-                    {%- assign ignoredProps = ignoredProps | append: rel.fkFieldName | append: "," | append: rel.parentEntityName | append: "DisplayName," -%}
-                {%- endif -%}
-            {%- endfor -%}
-            <abp-form-content {% if hasModalLookup %}{% endif %} />
-            {%- if hasModalLookup -%}
-            {%- for rel in relationships.asChild -%}
-                {%- if rel.lookupMode == 'modal' -%}
-                <zen-lookup-input for="ViewModel.{{ rel.fkFieldName }}" lookup-entity="{{ rel.parentEntityName }}" display-field="{{ rel.displayField }}" allow-create="true" 
-                                  label="@L["{{ entity.name }}:{{ rel.fkFieldName }}"].Value"
-                                   
-                                  lookup-modal-title="@L["{{ rel.parentEntityName }}"].Value"
-                                  display-value="@Model.ViewModel.{{ rel.parentEntityName }}DisplayName" />
-                {%- endif -%}
-            {%- endfor -%}
+            {%- if tabbedRelationships.size > 0 -%}
+            <abp-tabs name="{{ entity.name }}EditTabs">
+                <abp-tab title="@L["General"].Value" active="true">
+                    <div class="mt-3">
+                        {{ form_content }}
+                    </div>
+                </abp-tab>
+                {%- for rel in tabbedRelationships -%}
+                <abp-tab title="@L["{{ rel.childGridConfig.title | default: rel.targetPluralName }}"].Value">
+                    <div class="mt-3">
+                        {{ child_grid_template | replace: "REL_REPLACE", rel.targetEntityName | replace: "PLURAL_REPLACE", rel.targetPluralName | replace: "TITLE_REPLACE", rel.childGridConfig.title | default: rel.targetPluralName }}
+                    </div>
+                </abp-tab>
+                {%- endfor -%}
+            </abp-tabs>
+            {%- else -%}
+                {{ form_content }}
             {%- endif -%}
-
-            {%- for rel in relationships.asParent -%}
-            {%- if rel.isChildGrid %}
-            <div class="mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                     <label class="form-label mb-0">@L["{{ rel.targetPluralName }}"].Value</label>
-                     <button type="button" class="btn btn-sm btn-outline-primary" id="Add{{ rel.targetEntityName }}Btn">
-                        <i class="fa fa-plus"></i> @L["Add{{ rel.targetEntityName }}"].Value
-                     </button>
-                </div>
-                <table class="table table-striped table-hover table-bordered" id="{{ rel.targetPluralName }}Table">
-                    <thead>
-                        <tr>
-                            <!-- TODO: Iterate Child Fields here for headers -->
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th style="width: 50px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows rendered by JS -->
-                    </tbody>
-                </table>
-            </div>
-            {%- endif -%}
-            {%- endfor -%}
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
     </abp-modal>
