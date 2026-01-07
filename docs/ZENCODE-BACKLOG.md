@@ -117,12 +117,12 @@ Relacionamentos:
 
 | ID | Story | Prioridade | Complexidade |
 |----|-------|------------|--------------|
-| AI-01 | Como dev, quero colar texto descritivo e gerar entidades | Alta | Alta |
-| AI-02 | Como dev, quero revisar entidades geradas antes de aplicar | Alta | Média |
-| AI-03 | Como dev, quero que campos tenham tipos inferidos (string, int, etc) | Alta | Média |
-| AI-04 | Como dev, quero que relacionamentos sejam detectados automaticamente | Alta | Alta |
-| AI-05 | Como dev, quero configurar minha API key do Gemini | Alta | Baixa |
-| AI-06 | Como dev, quero usar prompts customizados para melhorar resultados | Baixa | Média |
+| AI-01 | ✅ Como dev, quero colar texto descritivo e gerar entidades | Alta | Alta |
+| AI-02 | ✅ Como dev, quero revisar entidades geradas antes de aplicar | Alta | Média |
+| AI-03 | ✅ Como dev, quero que campos tenham tipos inferidos (string, int, etc) | Alta | Média |
+| AI-04 | ⬜ Como dev, quero que relacionamentos sejam detectados automaticamente | Alta | Alta |
+| AI-05 | ✅ Como dev, quero configurar minha API key do Gemini | Alta | Baixa |
+| AI-06 | ⬜ Como dev, quero usar prompts customizados para melhorar resultados | Baixa | Média |
 
 #### Arquitetura
 

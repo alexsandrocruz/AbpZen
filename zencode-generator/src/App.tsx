@@ -22,8 +22,12 @@ import ImportSqlModal from './components/ImportSqlModal';
 import CrudPreview from './components/CrudPreview';
 import GenerateCodeModal from './components/GenerateCodeModal';
 import SettingsModal from './components/SettingsModal';
-import { Settings } from 'lucide-react';
+import AISettingsModal from './components/AISettingsModal';
+import ImportFromAIModal from './components/ImportFromAIModal';
+import { Settings, Sparkles } from 'lucide-react';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
+import type { AIExtractionResult } from './lib/gemini/types';
+import { parseAIExtractionToCanvas, calculateEntityPositions } from './lib/ai-import/parser';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
 import { createProjectFile, saveProjectToFile, loadProjectFromFile } from './utils/projectFile';
@@ -54,6 +58,8 @@ function App() {
   const [projectNamespace, setProjectNamespace] = useState(() => localStorage.getItem('zen_project_namespace') || '');
   const [projectPath, setProjectPath] = useState(() => localStorage.getItem('zen_project_path') || '');
   const [showSettings, setShowSettings] = useState(false);
+  const [showAISettings, setShowAISettings] = useState(false);
+  const [showAIImport, setShowAIImport] = useState(false);
 
   // Undo/Redo history
   const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialNodes, initialEdges);
@@ -492,6 +498,25 @@ function App() {
     setNodes((nds) => nds.concat(newNode));
   }, [nodes, setNodes]);
 
+  // Handle AI import
+  const handleAIImport = useCallback((result: AIExtractionResult) => {
+    const parsed = parseAIExtractionToCanvas(result);
+    const positions = calculateEntityPositions(parsed.entities.length);
+
+    // Create nodes from entities
+    const newNodes: Node<EntityData>[] = parsed.entities.map((entity, index) => ({
+      id: `entity_${Date.now()}_${index}`,
+      type: 'entity',
+      data: entity,
+      position: positions[index],
+    }));
+
+    setNodes((nds) => nds.concat(newNodes));
+
+    // TODO: Create edges from relationships after nodes are added
+    // This requires a second pass since we need node IDs
+  }, [setNodes]);
+
   return (
     <div className="app-container">
       <div className="controls-panel">
@@ -514,6 +539,14 @@ function App() {
         <button className="btn-secondary" onClick={() => setShowImportModal(true)}>
           <Upload size={18} />
           Import SQL
+        </button>
+        <button
+          className="btn-secondary"
+          onClick={() => setShowAIImport(true)}
+          style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%)', borderColor: '#8b5cf6' }}
+        >
+          <Sparkles size={18} style={{ color: '#a855f7' }} />
+          Import from AI
         </button>
         <button className="btn-secondary" onClick={handleSave}>
           <Save size={18} />
@@ -663,6 +696,20 @@ function App() {
             setShowSettings(false);
           }}
           onClose={() => setShowSettings(false)}
+        />
+      )}
+
+      {showAISettings && (
+        <AISettingsModal
+          onClose={() => setShowAISettings(false)}
+        />
+      )}
+
+      {showAIImport && (
+        <ImportFromAIModal
+          onClose={() => setShowAIImport(false)}
+          onImport={handleAIImport}
+          onOpenSettings={() => setShowAISettings(true)}
         />
       )}
 
