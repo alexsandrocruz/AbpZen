@@ -703,6 +703,7 @@ function App() {
           <ProjectRunner
             projectPath={projectPath || ''}
             projectName={projectName}
+            projectNamespace={projectNamespace}
             frontends={projectFrontends}
             onClose={() => setActiveTab('designer')}
           />

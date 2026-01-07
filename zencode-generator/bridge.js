@@ -445,11 +445,21 @@ app.post('/api/create-project', (req, res) => {
 const activeTerminals = new Map();
 
 app.post('/api/terminal/run', (req, res) => {
-    const { id, command, cwd } = req.body;
+    let { id, command, cwd } = req.body;
+
+    // Sanitize inputs
+    if (id) id = id.trim();
+    if (command) command = command.trim();
+    if (cwd) cwd = cwd.trim();
+
     console.log(`[Bridge] Starting terminal: ${id} -> ${command} in ${cwd}`);
+    console.log(`[Bridge] Current PATH: ${process.env.PATH}`);
 
     if (!id || !command || !cwd) {
-        return res.status(400).json({ error: 'Missing id, command or cwd' });
+        return res.status(400).json({
+            error: 'Missing parameters',
+            details: { id: !!id, command: !!command, cwd: !!cwd }
+        });
     }
 
     if (activeTerminals.has(id)) {
@@ -461,10 +471,25 @@ app.post('/api/terminal/run', (req, res) => {
         activeTerminals.delete(id);
     }
 
+    if (!fs.existsSync(cwd)) {
+        console.error(`[Bridge] Directory NOT FOUND: "${cwd}"`);
+        const parent = path.dirname(cwd);
+        let siblings = [];
+        if (fs.existsSync(parent)) {
+            siblings = fs.readdirSync(parent);
+        }
+        return res.status(400).json({
+            error: `Directory not found: "${cwd}"`,
+            parentExists: fs.existsSync(parent),
+            availableInParent: siblings
+        });
+    }
+
     try {
+        console.log(`[Bridge] Spawning: ${command} in ${cwd} (shell: /bin/zsh)`);
         const child = spawn(command, [], {
             cwd,
-            shell: true,
+            shell: '/bin/zsh', // Explicitly use zsh as it's the user's default
             env: { ...process.env, FORCE_COLOR: 'true' }
         });
 
@@ -493,9 +518,13 @@ app.post('/api/terminal/run', (req, res) => {
         });
 
         child.on('error', (err) => {
-            console.error(`[Bridge] Terminal ${id} error:`, err);
+            console.error(`[Bridge] Terminal ${id} spawn error:`, err);
             terminal.status = 'error';
-            terminal.logs.push({ type: 'stderr', content: `Error: ${err.message}`, timestamp: Date.now() });
+            terminal.logs.push({
+                type: 'stderr',
+                content: `Spawn Error: ${err.message}\nCommand: ${command}\nCWD: ${cwd}`,
+                timestamp: Date.now()
+            });
         });
 
         activeTerminals.set(id, terminal);

@@ -19,6 +19,7 @@ import type { FrontendTarget } from '../types';
 interface ProjectRunnerProps {
     projectPath: string;
     projectName: string;
+    projectNamespace?: string;
     frontends: FrontendTarget[];
     onClose: () => void;
 }
@@ -37,6 +38,7 @@ interface ProcessStatus {
 export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
     projectPath,
     projectName,
+    projectNamespace,
     frontends,
     onClose
 }) => {
@@ -46,14 +48,19 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
 
     // Initialize processes based on project config
     useEffect(() => {
-        const backendPath = `${projectPath}/backend/Sapienza.${projectName}.HttpApi.Host`;
+        // ABP standard paths: Host project is in the root or in /src
+        // Try namespace first, then projectName
+        const backendPath = projectNamespace
+            ? `${projectPath}/${projectNamespace}.HttpApi.Host`
+            : `${projectPath}/Sapienza.${projectName}.HttpApi.Host`;
+
         const initialProcesses: Record<string, ProcessStatus> = {
             infra: {
                 id: 'infra',
                 name: 'Infrastructure',
                 icon: <Database size={20} />,
                 command: 'docker compose up',
-                cwd: `${projectPath}/backend`,
+                cwd: projectPath, // Infra files are usually in the root
                 status: 'stopped',
                 logs: [],
                 offset: 0
@@ -102,10 +109,13 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
     // Polling for logs
     useEffect(() => {
         const interval = setInterval(async () => {
-            const runningIds = Object.keys(processes).filter(id => processes[id].status === 'running');
-            if (runningIds.length === 0) return;
+            // Keep polling if running OR in error state (to catch the spawn error message)
+            const activeIds = Object.keys(processes).filter(id =>
+                processes[id].status === 'running' || processes[id].status === 'error'
+            );
+            if (activeIds.length === 0) return;
 
-            for (const id of runningIds) {
+            for (const id of activeIds) {
                 try {
                     const result = await getTerminalLogs(id, processes[id].offset);
                     if (result && result.logs && result.logs.length > 0) {
@@ -118,7 +128,7 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                                 status: result.status as any
                             }
                         }));
-                    } else if (result && result.status !== 'running') {
+                    } else if (result && result.status !== processes[id].status) {
                         setProcesses(prev => ({
                             ...prev,
                             [id]: {
