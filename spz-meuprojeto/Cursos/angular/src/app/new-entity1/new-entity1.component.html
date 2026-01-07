@@ -1,0 +1,78 @@
+<abp-page [title]="'::NewEntity1s' | abpLocalization">
+  <abp-page-toolbar>
+    <button
+      *abpPermission="'Sapienza.Cursos.NewEntity1s.Create'"
+      class="btn btn-primary"
+      type="button"
+      (click)="createNewEntity1()"
+    >
+      <i class="fa fa-plus me-1"></i>
+      <span>{{ '::NewNewEntity1' | abpLocalization }}</span>
+    </button>
+  </abp-page-toolbar>
+
+  <div class="card">
+    <div class="card-body">
+      <ngx-datatable [rows]="newEntity1.items" [count]="newEntity1.totalCount" [list]="list" default>
+        <ngx-datatable-column
+          [name]="'::Actions' | abpLocalization"
+          [maxWidth]="150"
+          [sortable]="false"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button
+                class="btn btn-primary btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                ngbDropdownToggle
+              >
+                <i class="fa fa-cog me-1"></i>::Actions
+              </button>
+              <div ngbDropdownMenu>
+                <button
+                  *abpPermission="'Sapienza.Cursos.NewEntity1s.Edit'"
+                  ngbDropdownItem
+                  (click)="editNewEntity1(row.id)"
+                >
+                  ::Edit
+                </button>
+                <button
+                  *abpPermission="'Sapienza.Cursos.NewEntity1s.Delete'"
+                  ngbDropdownItem
+                  (click)="deleteNewEntity1(row.id)"
+                >
+                  ::Delete
+                </button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        
+      </ngx-datatable>
+    </div>
+  </div>
+</abp-page>
+
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>{{ (selectedNewEntity1.id ? '::Edit' : '::NewNewEntity1') | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>
+      ::Cancel
+    </button>
+    <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <i class="fa fa-check mr-1"></i>
+      ::Save
+    </button>
+  </ng-template>
+</abp-modal>

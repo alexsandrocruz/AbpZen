@@ -8,39 +8,39 @@
 // ============ UTILITY FUNCTIONS ============
 
 export const toCamelCase = (str: string): string =>
-    str.charAt(0).toLowerCase() + str.slice(1);
+  str.charAt(0).toLowerCase() + str.slice(1);
 
 export const toKebabCase = (str: string): string =>
-    str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 export const toPascalCase = (str: string): string =>
-    str.charAt(0).toUpperCase() + str.slice(1);
+  str.charAt(0).toUpperCase() + str.slice(1);
 
 // Map C# types to TypeScript types
 export const toTsType = (type: string, nullable?: boolean): string => {
-    const typeMap: Record<string, string> = {
-        'string': 'string',
-        'int': 'number',
-        'long': 'number',
-        'double': 'number',
-        'decimal': 'number',
-        'float': 'number',
-        'bool': 'boolean',
-        'guid': 'string',
-        'datetime': 'string',
-        'byte': 'number',
-        'short': 'number',
-        'char': 'string',
-        'enum': 'number',
-    };
-    const tsType = typeMap[type.toLowerCase()] || 'unknown';
-    return nullable ? `${tsType} | null` : tsType;
+  const typeMap: Record<string, string> = {
+    'string': 'string',
+    'int': 'number',
+    'long': 'number',
+    'double': 'number',
+    'decimal': 'number',
+    'float': 'number',
+    'bool': 'boolean',
+    'guid': 'string',
+    'datetime': 'string',
+    'byte': 'number',
+    'short': 'number',
+    'char': 'string',
+    'enum': 'number',
+  };
+  const tsType = typeMap[type.toLowerCase()] || 'unknown';
+  return nullable ? `${tsType} | null` : tsType;
 };
 
 // ============ MODULE TEMPLATE ============
 
 export function getAngularModuleTemplate(): string {
-    return `import { NgModule } from '@angular/core';
+  return `import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { PageModule } from '@abp/ng.components/page';
 import { {{ entity.name }}RoutingModule } from './{{ entity.name | kebabCase }}-routing.module';
@@ -61,7 +61,7 @@ export class {{ entity.name }}Module {}
 // ============ ROUTING MODULE TEMPLATE ============
 
 export function getAngularRoutingModuleTemplate(): string {
-    return `import { NgModule } from '@angular/core';
+  return `import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { {{ entity.name }}Component } from './{{ entity.name | kebabCase }}.component';
 import { authGuard, permissionGuard } from '@abp/ng.core';
@@ -85,7 +85,7 @@ export class {{ entity.name }}RoutingModule {}
 // ============ COMPONENT TS TEMPLATE ============
 
 export function getAngularComponentTsTemplate(): string {
-    return `import { ListService, PagedResultDto } from '@abp/ng.core';
+  return `import { ListService, PagedResultDto } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
@@ -174,7 +174,7 @@ export class {{ entity.name }}Component implements OnInit {
 // ============ COMPONENT HTML TEMPLATE ============
 
 export function getAngularComponentHtmlTemplate(): string {
-    return `<abp-page [title]="'::{{ entity.pluralName }}' | abpLocalization">
+  return `<abp-page [title]="'::{{ entity.pluralName }}' | abpLocalization">
   <abp-page-toolbar>
     <button
       *abpPermission="'{{ project.name }}.{{ entity.pluralName }}.Create'"
@@ -183,7 +183,7 @@ export function getAngularComponentHtmlTemplate(): string {
       (click)="create{{ entity.name }}()"
     >
       <i class="fa fa-plus me-1"></i>
-      <span>{{ '::New{{ entity.name }}' | abpLocalization }}</span>
+      <span>{{ '{{' }} '::New{{ entity.name }}' | abpLocalization {{ '}}' }}</span>
     </button>
   </abp-page-toolbar>
 
@@ -229,7 +229,7 @@ export function getAngularComponentHtmlTemplate(): string {
         <ngx-datatable-column [name]="'::{{ field.label | default: field.name }}' | abpLocalization" prop="{{ field.name | camelCase }}">
           {% if field.type == 'datetime' %}
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row.{{ field.name | camelCase }} | date }}
+            {{ '{{' }} row.{{ field.name | camelCase }} | date {{ '}}' }}
           </ng-template>
           {% endif %}
           {% if field.type == 'bool' %}
@@ -246,18 +246,18 @@ export function getAngularComponentHtmlTemplate(): string {
 
 <abp-modal [(visible)]="isModalOpen">
   <ng-template #abpHeader>
-    <h3>{{ (selected{{ entity.name }}.id ? '::Edit' : '::New{{ entity.name }}') | abpLocalization }}</h3>
+    <h3>{{ '{{' }} (selected{{ entity.name }}.id ? '::Edit' : '::New{{ entity.name }}') | abpLocalization {{ '}}' }}</h3>
   </ng-template>
 
   <ng-template #abpBody>
     <form [formGroup]="form" (ngSubmit)="save()">
       {% for field in entity.fields %}{% if field.showInForm != false %}
       <div class="form-group">
-        <label for="{{ field.name | kebabCase }}">{{ '::{{ field.label | default: field.name }}' | abpLocalization }}</label><span>{% if field.isRequired %} * {% endif %}</span>
+        <label for="{{ field.name | kebabCase }}">{{ '{{' }} '::{{ field.label | default: field.name }}' | abpLocalization {{ '}}' }}</label><span>{% if field.isRequired %} * {% endif %}</span>
         {% if field.type == 'bool' %}
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" id="{{ field.name | kebabCase }}" formControlName="{{ field.name | camelCase }}" />
-          <label class="custom-control-label" for="{{ field.name | kebabCase }}">{{ '::{{ field.label | default: field.name }}' | abpLocalization }}</label>
+          <label class="custom-control-label" for="{{ field.name | kebabCase }}">{{ '{{' }} '::{{ field.label | default: field.name }}' | abpLocalization {{ '}}' }}</label>
         </div>
         {% elsif field.isTextArea %}
         <textarea id="{{ field.name | kebabCase }}" class="form-control" formControlName="{{ field.name | camelCase }}"></textarea>
