@@ -80,6 +80,26 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
         };
 
         if (frontends.includes('angular')) {
+            initialProcesses.angular_install = {
+                id: 'angular_install',
+                name: 'Angular Install',
+                icon: <Download size={20} />,
+                command: 'npm install',
+                cwd: `${projectPath}/angular`,
+                status: 'stopped',
+                logs: [],
+                offset: 0
+            };
+            initialProcesses.angular_proxy = {
+                id: 'angular_proxy',
+                name: 'Angular Proxy',
+                icon: <Activity size={20} />,
+                command: 'abp generate-proxy -t ng --api-name default',
+                cwd: `${projectPath}/angular`,
+                status: 'stopped',
+                logs: [],
+                offset: 0
+            };
             initialProcesses.angular = {
                 id: 'angular',
                 name: 'Angular UI',
@@ -93,6 +113,16 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
         }
 
         if (frontends.includes('react')) {
+            initialProcesses.react_install = {
+                id: 'react_install',
+                name: 'React Install',
+                icon: <Download size={20} />,
+                command: 'npm install',
+                cwd: `${projectPath}/abp-react`,
+                status: 'stopped',
+                logs: [],
+                offset: 0
+            };
             initialProcesses.react = {
                 id: 'react',
                 name: 'React UI',
@@ -298,9 +328,19 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                 {/* Terminal Area */}
                 <div className="terminal-dashboard">
                     <div className="terminal-header">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                             <TerminalIcon size={16} className="text-emerald-400" />
-                            <span className="text-sm font-semibold text-slate-200 uppercase tracking-widest">{processes[activeTab]?.name} Output</span>
+                            <select
+                                className="process-selector-dropdown"
+                                value={activeTab}
+                                onChange={(e) => setActiveTab(e.target.value)}
+                            >
+                                {Object.values(processes).map(p => (
+                                    <option key={p.id} value={p.id}>
+                                        {p.name} Output {p.status === 'running' ? '●' : ''}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="flex items-center gap-2">
                             <button className="btn-clear-logs" onClick={() => handleCopyLogs(activeTab)} title="Copy to clipboard">
@@ -335,8 +375,8 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                             </div>
                         )}
                     </div>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 };

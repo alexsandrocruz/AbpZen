@@ -5,7 +5,9 @@
     "cache": {
       "enabled": false
     },
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -38,7 +40,10 @@
               "@uppy/dashboard",
               "@uppy/core"
             ],
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
               {
                 "input": "node_modules/@swimlane/ngx-datatable/index.css",
@@ -72,103 +77,102 @@
               },
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/dark.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/dark.css",
                 "inject": false,
                 "bundleName": "dark"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/light.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/light.css",
                 "inject": false,
                 "bundleName": "light"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/dim.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/dim.css",
                 "inject": false,
                 "bundleName": "dim"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-dim.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-dim.css",
                 "inject": false,
                 "bundleName": "bootstrap-dim"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-dark.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-dark.css",
                 "inject": false,
                 "bundleName": "bootstrap-dark"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-light.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-light.css",
                 "inject": false,
                 "bundleName": "bootstrap-light"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/font-bundle.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/font-bundle.css",
                 "inject": false,
                 "bundleName": "font-bundle"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/font-bundle.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/font-bundle.rtl.css",
                 "inject": false,
                 "bundleName": "font-bundle.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/ng-bundle.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/ng-bundle.css",
                 "inject": false,
                 "bundleName": "ng-bundle"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/side-menu/layout-bundle.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/side-menu/layout-bundle.css",
                 "inject": false,
                 "bundleName": "layout-bundle"
               },
               {
-                "input": "../../../../angular/libs/volo-lepton-x/assets/css/abp-bundle.css",
+                "input": "../../../angular/projects/volo-lepton-x/assets/css/abp-bundle.css",
                 "inject": false,
                 "bundleName": "abp-bundle"
               },
-
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/dark.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/dark.rtl.css",
                 "inject": false,
                 "bundleName": "dark.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/light.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/light.rtl.css",
                 "inject": false,
                 "bundleName": "light.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/dim.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/dim.rtl.css",
                 "inject": false,
                 "bundleName": "dim.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-dim.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-dim.rtl.css",
                 "inject": false,
                 "bundleName": "bootstrap-dim.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-dark.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-dark.rtl.css",
                 "inject": false,
                 "bundleName": "bootstrap-dark.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/bootstrap-light.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/bootstrap-light.rtl.css",
                 "inject": false,
                 "bundleName": "bootstrap-light.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/ng-bundle.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/ng-bundle.rtl.css",
                 "inject": false,
                 "bundleName": "ng-bundle.rtl"
               },
               {
-                "input": "../../../../angular/libs/lepton-x/assets/css/side-menu/layout-bundle.rtl.css",
+                "input": "../../../angular/projects/lepton-x/assets/css/side-menu/layout-bundle.rtl.css",
                 "inject": false,
                 "bundleName": "layout-bundle.rtl"
               },
               {
-                "input": "../../../../angular/libs/volo-lepton-x/assets/css/abp-bundle.rtl.css",
+                "input": "../../../angular/projects/volo-lepton-x/assets/css/abp-bundle.rtl.css",
                 "inject": false,
                 "bundleName": "abp-bundle.rtl"
               },
@@ -235,15 +239,23 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }

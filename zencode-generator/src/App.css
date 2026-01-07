@@ -1070,6 +1070,30 @@
   justify-content: space-between;
 }
 
+.process-selector-dropdown {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 200px;
+}
+
+.process-selector-dropdown:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.process-selector-dropdown:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
 .btn-clear-logs {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1078,6 +1102,25 @@
   border-radius: 6px;
   font-size: 0.75rem;
   cursor: pointer;
+}
+
+/* Compact Process Cards */
+.process-card {
+  padding: 12px 16px;
+  /* Reduced from 20px */
+}
+
+.process-card-header {
+  margin-bottom: 12px;
+  /* Reduced from 20px */
+  gap: 12px;
+}
+
+.process-icon-box {
+  width: 36px;
+  /* Reduced from 44px */
+  height: 36px;
+  border-radius: 10px;
 }
 
 .terminal-body {
