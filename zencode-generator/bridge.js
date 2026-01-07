@@ -179,6 +179,152 @@ app.post('/api/inject-code', (req, res) => {
     }
 });
 
+// Create a new project by copying boilerplates
+app.post('/api/create-project', (req, res) => {
+    const { projectName, destinationPath, frontends, templatePath } = req.body;
+    console.log(`[Bridge] Creating project: ${projectName} at ${destinationPath}`);
+
+    if (!projectName || !destinationPath) {
+        return res.status(400).json({ error: 'Missing projectName or destinationPath' });
+    }
+
+    try {
+        // Full path for the new project
+        const projectPath = path.join(destinationPath, projectName);
+
+        // Create project directory
+        if (fs.existsSync(projectPath)) {
+            return res.status(400).json({ error: 'Project directory already exists' });
+        }
+        fs.mkdirSync(projectPath, { recursive: true });
+
+        // Base template path
+        const baseTemplatePath = templatePath || path.join(process.cwd(), '..', 'zencode-template');
+        const copiedItems = [];
+
+        // Folders to skip during copy (build artifacts, dependencies, caches)
+        const SKIP_FOLDERS = new Set([
+            'node_modules',
+            '.git',
+            'bin',
+            'obj',
+            '.vs',
+            '.idea',
+            '.next',
+            'dist',
+            'build',
+            'packages',
+            '.nuget',
+            'TestResults'
+        ]);
+
+        // Helper to copy directory recursively, skipping build folders
+        const copyDir = (src, dest) => {
+            if (!fs.existsSync(src)) {
+                console.log(`[Bridge] Source not found: ${src}`);
+                return false;
+            }
+            fs.mkdirSync(dest, { recursive: true });
+            const entries = fs.readdirSync(src, { withFileTypes: true });
+            for (const entry of entries) {
+                // Skip excluded folders
+                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) {
+                    console.log(`[Bridge] Skipping: ${entry.name}`);
+                    continue;
+                }
+
+                const srcPath = path.join(src, entry.name);
+                const destPath = path.join(dest, entry.name);
+
+                if (entry.isDirectory()) {
+                    copyDir(srcPath, destPath);
+                } else if (entry.isSymbolicLink()) {
+                    // Skip symbolic links to avoid issues
+                    console.log(`[Bridge] Skipping symlink: ${entry.name}`);
+                    continue;
+                } else {
+                    try {
+                        fs.copyFileSync(srcPath, destPath);
+                    } catch (err) {
+                        console.log(`[Bridge] Warning: Could not copy ${entry.name}: ${err.message}`);
+                    }
+                }
+            }
+            return true;
+        };
+
+        // Copy backend template (Sapienza.Zen.* folders)
+        const backendSrc = path.join(baseTemplatePath);
+        const backendDest = path.join(projectPath, 'backend');
+
+        // Copy all Sapienza.Zen.* directories to backend
+        if (fs.existsSync(backendSrc)) {
+            const items = fs.readdirSync(backendSrc, { withFileTypes: true });
+            for (const item of items) {
+                if (item.isDirectory() && item.name.startsWith('Sapienza.Zen')) {
+                    const src = path.join(backendSrc, item.name);
+                    const dest = path.join(backendDest, item.name);
+                    if (copyDir(src, dest)) {
+                        copiedItems.push(`backend/${item.name}`);
+                    }
+                }
+            }
+        }
+
+        // Copy frontend templates based on selection
+        if (frontends && Array.isArray(frontends)) {
+            for (const frontend of frontends) {
+                let srcFolder = '';
+                let destFolder = '';
+
+                switch (frontend) {
+                    case 'react':
+                        srcFolder = path.join(baseTemplatePath, 'abp-react');
+                        destFolder = path.join(projectPath, 'abp-react');
+                        break;
+                    case 'angular':
+                        srcFolder = path.join(baseTemplatePath, 'angular');
+                        destFolder = path.join(projectPath, 'angular');
+                        break;
+                    case 'razor':
+                        // Razor is part of backend, already copied
+                        continue;
+                }
+
+                if (srcFolder && copyDir(srcFolder, destFolder)) {
+                    copiedItems.push(frontend);
+                }
+            }
+        }
+
+        // Create zencode.json manifest
+        const manifest = {
+            version: '1.0',
+            name: projectName,
+            namespace: `Sapienza.${projectName}`,
+            createdAt: new Date().toISOString(),
+            frontends: frontends || [],
+            entities: []
+        };
+        fs.writeFileSync(
+            path.join(projectPath, 'zencode.json'),
+            JSON.stringify(manifest, null, 2)
+        );
+        copiedItems.push('zencode.json');
+
+        console.log(`[Bridge] Project created successfully: ${copiedItems.length} items`);
+        res.json({
+            success: true,
+            projectPath,
+            copiedItems,
+            manifest
+        });
+    } catch (error) {
+        console.error(`[Bridge] Error creating project: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`ZenCode Bridge running at http://localhost:${port}`);
 });

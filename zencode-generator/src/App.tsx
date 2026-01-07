@@ -11,7 +11,7 @@ import ReactFlow, {
   type Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Plus, Download, FileJson, Upload, Undo2, Redo2, Save, FolderOpen, Folder } from 'lucide-react';
+import { Plus, Download, FileJson, Upload, Undo2, Redo2, Save, FolderOpen, Folder, FolderPlus } from 'lucide-react';
 import { useState } from 'react';
 
 import EntityNode from './components/EntityNode';
@@ -24,9 +24,12 @@ import GenerateCodeModal from './components/GenerateCodeModal';
 import SettingsModal from './components/SettingsModal';
 import AISettingsModal from './components/AISettingsModal';
 import ImportFromAIModal from './components/ImportFromAIModal';
+import NewProjectModal from './components/NewProjectModal';
 import { Settings, Sparkles } from 'lucide-react';
 import type { EntityData, RelationshipData, ZenMetadata } from './types';
 import type { AIExtractionResult } from './lib/gemini/types';
+import type { ProjectConfig, ProjectCreationMode } from './lib/project/types';
+import { addRecentProject } from './lib/project/storage';
 import { parseAIExtractionToCanvas, calculateEntityPositions } from './lib/ai-import/parser';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
 import { useHistory } from './hooks/useHistory';
@@ -60,6 +63,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showAISettings, setShowAISettings] = useState(false);
   const [showAIImport, setShowAIImport] = useState(false);
+  const [showNewProject, setShowNewProject] = useState(false);
 
   // Undo/Redo history
   const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialNodes, initialEdges);
@@ -564,6 +568,14 @@ function App() {
             <Settings size={18} />
           </button>
         </div>
+        <button
+          className="btn-primary"
+          onClick={() => setShowNewProject(true)}
+          style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
+        >
+          <FolderPlus size={18} />
+          New Project
+        </button>
         <button className="btn-primary" onClick={addEntity}>
           <Plus size={18} />
           Add Entity
@@ -742,6 +754,36 @@ function App() {
           onClose={() => setShowAIImport(false)}
           onImport={handleAIImport}
           onOpenSettings={() => setShowAISettings(true)}
+        />
+      )}
+
+      {showNewProject && (
+        <NewProjectModal
+          onClose={() => setShowNewProject(false)}
+          onCreate={(config, mode) => {
+            // Save project config
+            setProjectName(config.name);
+            setProjectNamespace(config.namespace);
+            localStorage.setItem('zen_project_name', config.name);
+            localStorage.setItem('zen_project_namespace', config.namespace);
+
+            // Clear canvas for new project
+            setNodes([]);
+            setEdges([]);
+
+            // Add to recent projects
+            addRecentProject({
+              name: config.name,
+              path: mode === 'local' ? `~/${config.name}` : 'download',
+              lastOpened: new Date().toISOString(),
+              frontends: config.frontends,
+            });
+
+            setShowNewProject(false);
+
+            // TODO: Implement actual project creation (local/download)
+            console.log('Creating project:', config, 'mode:', mode);
+          }}
         />
       )}
 

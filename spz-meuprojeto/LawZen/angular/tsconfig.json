@@ -1,0 +1,260 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@proxy": [
+        "src/app/proxy/index.ts"
+      ],
+      "@proxy/*": [
+        "src/app/proxy/*"
+      ],
+      "@volo/abp.ng.lepton-x.core": [
+        "../../../../angular/libs/lepton-x-abp-core/src/index.ts"
+      ],
+      "@volosoft/abp.ng.theme.lepton-x": [
+        "../../../../angular/libs/volo-lepton-x/src/index.ts"
+      ],
+      "@volosoft/abp.ng.theme.lepton-x/account": [
+        "../../../../angular/libs/volo-lepton-x/account/src/index.ts"
+      ],
+      "@volosoft/abp.ng.theme.lepton-x/styles": [
+        "../../../../angular/libs/volo-lepton-x/styles/src/index.ts"
+      ],
+      "@volosoft/abp.ng.theme.lepton-x/layouts": [
+        "../../../../angular/libs/volo-lepton-x/layouts/src/index.ts"
+      ],
+      "@volosoft/abp.ng.theme.lepton-x/layouts/styles": [
+        "../../../../angular/libs/volo-lepton-x/layouts/styles/src/index.ts"
+      ],
+      "@volo/ngx-lepton-x.core": [
+        "../../../../angular/libs/lepton-x-core/src/index.ts"
+      ],
+      "@volosoft/ngx-lepton-x": [
+        "../../../../angular/libs/lepton-x/src/index.ts"
+      ],
+      "@volosoft/ngx-lepton-x/styles": [
+        "../../../../angular/libs/lepton-x/styles/src/index.ts"
+      ],
+      "@volosoft/ngx-lepton-x/layouts": [
+        "../../../../angular/libs/lepton-x/layouts/src/index.ts"
+      ],
+      "@volosoft/ngx-lepton-x/layouts/styles": [
+        "../../../../angular/libs/lepton-x/layouts/styles/src/index.ts"
+      ],
+      "@abp/ng.core": [
+        "../../../../../abp/npm/ng-packs/packages/core/src/public-api.ts",
+        "node_modules/@abp/ng.core",
+      ],
+      "@abp/ng.core/locale": [
+        "node_modules/@abp/ng.core/locale"
+      ],
+      "@abp/ng.oauth": [
+        "../../../../../abp/npm/ng-packs/packages/oauth/src/public-api.ts",
+        "node_modules/@abp/ng.oauth",
+      ],
+      "@abp/ng.theme.shared": [
+        "node_modules/@abp/ng.theme.shared"
+      ],
+      "@abp/ng.components/tree": [
+        "node_modules/@abp/ng.components/tree"
+      ],
+      "@abp/ng.components/extensible": [
+        "node_modules/@abp/ng.components/extensible"
+      ],
+      "@abp/ng.components/page": [
+        "node_modules/@abp/ng.components/page"
+      ],
+      "@abp/ng.permission-management": [
+        "node_modules/@abp/ng.permission-management"
+      ],
+      "@abp/ng.feature-management": [
+        "node_modules/@abp/ng.feature-management"
+      ],
+      "@abp/ng.setting-management": [
+        "../../../../../abp/npm/ng-packs/packages/setting-management/src/public-api.ts",
+        "node_modules/@abp/ng.setting-management",
+
+      ],
+      "@abp/ng.setting-management/config": [
+        "../../../../../abp/npm/ng-packs/packages/setting-management/config/src/public-api.ts",
+        "node_modules/@abp/ng.setting-management/config",
+        
+      ],
+      "@abp/ng.setting-management/proxy": [
+        "../../../../../abp/npm/ng-packs/packages/setting-management/proxy/src/public-api.ts",
+        "node_modules/@abp/ng.setting-management/proxy",
+      ],
+      "@volo/abp.commercial.ng.ui": ["../../../../../volo/abp/npm/ng-packs/packages/commercial-ui/src/public-api.ts"],
+      "@volo/abp.commercial.ng.ui/config": ["../../../../../volo/abp/npm/ng-packs/packages/commercial-ui/config/src/public-api.ts"],
+      "@volo/abp.ng.account": ["../../../../../volo/abp/npm/ng-packs/packages/account/src/public-api.ts"],
+      "@volo/abp.ng.account.core": ["../../../../../volo/abp/npm/ng-packs/packages/account-core/src/public-api.ts"],
+      "@volo/abp.ng.account/admin": ["../../../../../volo/abp/npm/ng-packs/packages/account/admin/src/public-api.ts"],
+      "@volo/abp.ng.account/admin/config": ["../../../../../volo/abp/npm/ng-packs/packages/account/admin/config/src/public-api.ts"],
+      "@volo/abp.ng.account/public": ["../../../../../volo/abp/npm/ng-packs/packages/account/public/src/public-api.ts"],
+      "@volo/abp.ng.account/public/config": ["../../../../../volo/abp/npm/ng-packs/packages/account/public/config/src/public-api.ts"],
+      "@volo/abp.ng.account/public/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/account/public/proxy/src/public-api.ts"],
+      "@volo/abp.ng.audit-logging": ["../../../../../volo/abp/npm/ng-packs/packages/audit-logging/src/public-api.ts"],
+      "@volo/abp.ng.audit-logging/common": ["../../../../../volo/abp/npm/ng-packs/packages/audit-logging/common/src/public-api.ts"],
+      "@volo/abp.ng.audit-logging/config": ["../../../../../volo/abp/npm/ng-packs/packages/audit-logging/config/src/public-api.ts"],
+      "@volo/abp.ng.audit-logging/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/audit-logging/proxy/src/public-api.ts"],
+      "@volo/abp.ng.chat": ["../../../../../volo/abp/npm/ng-packs/packages/chat/src/public-api.ts"],
+      "@volo/abp.ng.chat/config": ["../../../../../volo/abp/npm/ng-packs/packages/chat/config/src/public-api.ts"],
+      "@volo/abp.ng.chat/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/chat/proxy/src/public-api.ts"],      
+      "@volo/abp.ng.file-management": ["../../../../../volo/abp/npm/ng-packs/packages/file-management/src/public-api.ts", "node_modules/@volo/abp.ng.file-management"],
+      "@volo/abp.ng.file-management/common": ["../../../../../volo/abp/npm/ng-packs/packages/file-management/common/src/public-api.ts",        "node_modules/@volo/abp.ng.file-management/common"
+    ],
+      "@volo/abp.ng.file-management/config": ["../../../../../volo/abp/npm/ng-packs/packages/file-management/config/src/public-api.ts",  "node_modules/@volo/abp.ng.file-management/config"],
+      "@volo/abp.ng.file-management/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/file-management/proxy/src/public-api.ts"],
+      "@volo/abp.ng.gdpr": ["../../../../../volo/abp/npm/ng-packs/packages/gdpr/src/public-api.ts"],
+      "@volo/abp.ng.gdpr/config": ["../../../../../volo/abp/npm/ng-packs/packages/gdpr/config/src/public-api.ts"],
+      "@volo/abp.ng.gdpr/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/gdpr/proxy/src/public-api.ts"],
+      "@volo/abp.ng.identity": ["../../../../../volo/abp/npm/ng-packs/packages/identity/src/public-api.ts"],
+      "@volo/abp.ng.identity-server": ["../../../../../volo/abp/npm/ng-packs/packages/identity-server/src/public-api.ts"],
+      "@volo/abp.ng.identity-server/config": ["../../../../../volo/abp/npm/ng-packs/packages/identity-server/config/src/public-api.ts"],
+      "@volo/abp.ng.identity-server/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/identity-server/proxy/src/public-api.ts"],
+      "@volo/abp.ng.identity/config": ["../../../../../volo/abp/npm/ng-packs/packages/identity/config/src/public-api.ts"],
+      "@volo/abp.ng.identity/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/identity/proxy/src/public-api.ts"],
+      "@volo/abp.ng.language-management": ["../../../../../volo/abp/npm/ng-packs/packages/language-management/src/public-api.ts"],
+      "@volo/abp.ng.language-management/common": [
+        "../../../../../volo/abp/npm/ng-packs/packages/language-management/common/src/public-api.ts"
+      ],
+      "@volo/abp.ng.language-management/config": [
+        "../../../../../volo/abp/npm/ng-packs/packages/language-management/config/src/public-api.ts"
+      ],
+      "@volo/abp.ng.language-management/locale": [
+        "../../../../../volo/abp/npm/ng-packs/packages/language-management/locale/src/public-api.ts"
+      ],
+      "@volo/abp.ng.language-management/proxy": [
+        "../../../../../volo/abp/npm/ng-packs/packages/language-management/proxy/src/public-api.ts"
+      ],
+      "@volo/abp.ng.openiddictpro": ["../../../../../volo/abp/npm/ng-packs/packages/openiddictpro/src/public-api.ts"],
+      "@volo/abp.ng.openiddictpro/config": ["../../../../../volo/abp/npm/ng-packs/packages/openiddictpro/config/src/public-api.ts"],
+      "@volo/abp.ng.openiddictpro/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/openiddictpro/proxy/src/public-api.ts"],
+      "@volo/abp.ng.payment": ["../../../../../volo/abp/npm/ng-packs/packages/payment/src/public-api.ts"],
+      "@volo/abp.ng.payment/admin": ["../../../../../volo/abp/npm/ng-packs/packages/payment/admin/src/public-api.ts"],
+      "@volo/abp.ng.payment/admin/config": ["../../../../../volo/abp/npm/ng-packs/packages/payment/admin/config/src/public-api.ts"],
+      "@volo/abp.ng.payment/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/payment/proxy/src/public-api.ts"],
+      "@volo/abp.ng.saas": ["../../../../../volo/abp/npm/ng-packs/packages/saas/src/public-api.ts"],
+      "@volo/abp.ng.saas/config": ["../../../../../volo/abp/npm/ng-packs/packages/saas/config/src/public-api.ts"],
+      "@volo/abp.ng.saas/proxy": ["../../../../../volo/abp/npm/ng-packs/packages/saas/proxy/src/public-api.ts"],
+      "@volo/abp.ng.text-template-management": [
+        "../../../../../volo/abp/npm/ng-packs/packages/text-template-management/src/public-api.ts"
+      ],
+      "@volo/abp.ng.text-template-management/common": [
+        "../../../../../volo/abp/npm/ng-packs/packages/text-template-management/common/src/public-api.ts"
+      ],
+      "@volo/abp.ng.text-template-management/config": [
+        "../../../../../volo/abp/npm/ng-packs/packages/text-template-management/config/src/public-api.ts"
+      ],
+      "@volo/abp.ng.text-template-management/proxy": [
+        "../../../../../volo/abp/npm/ng-packs/packages/text-template-management/proxy/src/public-api.ts"
+      ],
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
+      "@angular/common/locales": [
+        "node_modules/@angular/common/locales"
+      ],
+      "@abp/utils": [
+        "node_modules/@abp/utils"
+      ],
+      "@swimlane/*": [
+        "node_modules/@swimlane/*"
+      ],
+      "@fortawesome/*": [
+        "node_modules/@fortawesome/*"
+      ],
+      "@microsoft/*": [
+        "node_modules/@microsoft/*"
+      ],
+      "@ng-bootstrap/*": [
+        "node_modules/@ng-bootstrap/*"
+      ],
+      "@ngneat/*": [
+        "node_modules/@ngneat/*"
+      ],
+      "@ngx-validate/*": [
+        "node_modules/@ngx-validate/*"
+      ],
+      "@ngxs/*": [
+        "node_modules/@ngxs/*"
+      ],
+      "@types/*": [
+        "node_modules/@types/*"
+      ],
+      "@uppy/*": [
+        "node_modules/@uppy/*"
+      ],
+      "angular-oauth2-oidc": [
+        "node_modules/angular-oauth2-oidc"
+      ],
+      "bootstrap": [
+        "node_modules/bootstrap"
+      ],
+      "chart.js": [
+        "node_modules/chart.js"
+      ],
+      "font-awesome": [
+        "node_modules/font-awesome"
+      ],
+      "just-clone": [
+        "node_modules/just-clone"
+      ],
+      "just-compare": [
+        "node_modules/just-compare"
+      ],
+      "ng-zorro-antd": [
+        "node_modules/ng-zorro-antd"
+      ],
+      "ng-zorro-antd/*": [
+        "node_modules/ng-zorro-antd/*"
+      ],
+      "rxjs": [
+        "node_modules/rxjs"
+      ],
+      "rxjs/*": [
+        "node_modules/rxjs/*"
+      ],
+      "snq": [
+        "node_modules/snq"
+      ],
+      "typescript": [
+        "node_modules/typescript"
+      ],
+      "ts-toolbelt": [
+        "node_modules/ts-toolbelt"
+      ],
+      "tslib": [
+        "node_modules/tslib"
+      ],
+      "cropperjs": [
+        "node_modules/cropperjs"
+      ],
+      "zone.js": [
+        "node_modules/zone.js"
+      ],
+      "perfect-scrollbar": [
+        "node_modules/perfect-scrollbar"
+      ]
+    },
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false
+  }
+}

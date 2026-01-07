@@ -82,7 +82,7 @@ flowchart TD
 ---
 
 ### 🎯 Épico 3: AI Integration (Entity Import)
-**Status**: ⬜ Planejamento
+**Status**: ✅ Concluído
 
 #### Objetivo
 Permitir importar entidades e relacionamentos a partir de texto livre (output de conversas com LLMs como ChatGPT) usando Google Gemini para parsing e estruturação.

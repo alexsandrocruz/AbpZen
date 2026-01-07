@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "name": "LawZen",
+  "namespace": "Sapienza.LawZen",
+  "createdAt": "2026-01-07T14:53:23.422Z",
+  "frontends": [
+    "razor",
+    "react",
+    "angular"
+  ],
+  "entities": []
+}
