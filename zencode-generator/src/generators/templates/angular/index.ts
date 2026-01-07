@@ -183,7 +183,7 @@ export function getAngularComponentHtmlTemplate(): string {
       (click)="create{{ entity.name }}()"
     >
       <i class="fa fa-plus me-1"></i>
-      <span>{{ '{{' }} '::New' }}{{ entity.name }}{{ "' | abpLocalization }}" }}</span>
+      <span>{{ "{{" }} '::New{{ entity.name }}' | abpLocalization {{ "}}" }}</span>
     </button>
   </abp-page-toolbar>
 
@@ -229,7 +229,7 @@ export function getAngularComponentHtmlTemplate(): string {
         <ngx-datatable-column [name]="'::{{ field.label | default: field.name }}' | abpLocalization" prop="{{ field.name | camelCase }}">
           {% if field.type == 'datetime' %}
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ '{{' }} row.{{ field.name | camelCase }}{{ ' | date }}' }}
+            {{ "{{" }} row.{{ field.name | camelCase }} | date {{ "}}" }}
           </ng-template>
           {% endif %}
           {% if field.type == 'bool' %}
@@ -246,18 +246,18 @@ export function getAngularComponentHtmlTemplate(): string {
 
 <abp-modal [(visible)]="isModalOpen">
   <ng-template #abpHeader>
-    <h3>{{ '{{' }} (selected{{ entity.name }}{{ '.id ? \'::Edit\' : \'::New' }}{{ entity.name }}{{ "') | abpLocalization }}" }}</h3>
+    <h3>{{ "{{" }} (selected{{ entity.name }}.id ? '::Edit' : '::New{{ entity.name }}') | abpLocalization {{ "}}" }}</h3>
   </ng-template>
 
   <ng-template #abpBody>
     <form [formGroup]="form" (ngSubmit)="save()">
       {% for field in entity.fields %}{% if field.showInForm != false %}
       <div class="form-group">
-        <label for="{{ field.name | kebabCase }}">{{ '{{' }} '::' }}{{ field.label | default: field.name }}{{ "' | abpLocalization }}" }}</label><span>{% if field.isRequired %} * {% endif %}</span>
+        <label for="{{ field.name | kebabCase }}">{{ "{{" }} '::{{ field.label | default: field.name }}' | abpLocalization {{ "}}" }}</label><span>{% if field.isRequired %} * {% endif %}</span>
         {% if field.type == 'bool' %}
         <div class="custom-control custom-checkbox">
           <input type="checkbox" class="custom-control-input" id="{{ field.name | kebabCase }}" formControlName="{{ field.name | camelCase }}" />
-          <label class="custom-control-label" for="{{ field.name | kebabCase }}">{{ '{{' }} '::' }}{{ field.label | default: field.name }}{{ "' | abpLocalization }}" }}</label>
+          <label class="custom-control-label" for="{{ field.name | kebabCase }}">{{ "{{" }} '::{{ field.label | default: field.name }}' | abpLocalization {{ "}}" }}</label>
         </div>
         {% elsif field.isTextArea %}
         <textarea id="{{ field.name | kebabCase }}" class="form-control" formControlName="{{ field.name | camelCase }}"></textarea>

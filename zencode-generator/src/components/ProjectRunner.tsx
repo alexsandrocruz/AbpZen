@@ -104,7 +104,7 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                 id: 'angular',
                 name: 'Angular UI',
                 icon: <Globe size={20} />,
-                command: 'ng serve',
+                command: 'npm start',
                 cwd: `${projectPath}/angular`,
                 status: 'stopped',
                 logs: [],

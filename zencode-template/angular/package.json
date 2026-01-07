@@ -19,6 +19,7 @@
     "@abp/ng.theme.shared": "~9.0.0",
     "@volo/abp.commercial.ng.ui": "~9.0.0",
     "@volo/abp.ng.account": "~9.0.0",
+    "@volo/abp.ng.account.core": "~9.0.0",
     "@volo/abp.ng.audit-logging": "~9.0.0",
     "@volo/abp.ng.file-management": "~9.0.0",
     "@volo/abp.ng.gdpr": "~9.0.0",
@@ -40,7 +41,9 @@
     "perfect-scrollbar": "^1.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.14.0"
+    "zone.js": "~0.14.0",
+    "@floating-ui/dom": "^1.0.0",
+    "ng-zorro-antd": "^18.1.0"
   },
   "devDependencies": {
     "@abp/ng.schematics": "~9.0.0",
