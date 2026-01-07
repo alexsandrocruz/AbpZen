@@ -16,7 +16,11 @@ namespace Sapienza.Cursos.Permissions
 
             //Define your own permissions here. Example:
             //myGroup.AddPermission(CursosPermissions.MyPermission1, L("Permission:MyPermission1"));
-            // <ZenCode-PermissionDefinition-Marker>
+                        var turmaPermission = myGroup.AddPermission(CursosPermissions.Turma.Default, L("Permission:Turma"));
+            turmaPermission.AddChild(CursosPermissions.Turma.Create, L("Permission:Create"));
+            turmaPermission.AddChild(CursosPermissions.Turma.Update, L("Permission:Update"));
+            turmaPermission.AddChild(CursosPermissions.Turma.Delete, L("Permission:Delete"));
+      // <ZenCode-PermissionDefinition-Marker>
         }
 
         private static LocalizableString L(string name)

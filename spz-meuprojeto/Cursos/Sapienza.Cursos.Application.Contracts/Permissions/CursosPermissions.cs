@@ -13,6 +13,13 @@ namespace Sapienza.Cursos.Permissions
 
         //Add your own permission names. Example:
         //public const string MyPermission1 = GroupName + ".MyPermission1";
-        // <ZenCode-Permissions-Marker>
+                public static class Turma
+        {
+            public const string Default = GroupName + ".Turma";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      // <ZenCode-Permissions-Marker>
     }
 }

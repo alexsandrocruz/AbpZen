@@ -1,0 +1,20 @@
+{
+  "culture": "pt-BR",
+  "texts": {
+    "Permission:Turma": "Gerenciamento de Turma",
+    "Permission:Turma.Create": "Criar Turma",
+    "Permission:Turma.Update": "Editar Turma",
+    "Permission:Turma.Delete": "Excluir Turma",
+    "Menu:Turmas": "Turmas",
+    "Turma": "Turma",
+    "Turmas": "Turmas",
+    "NewTurma": "Novo(a) Turma",
+    "EditTurma": "Editar Turma",
+    "TurmaDeletionConfirmationMessage": "Tem certeza que deseja excluir este(a) Turma?",
+    "SuccessfullyTurmaCreated": "Turma criado(a) com sucesso.",
+    "SuccessfullyTurmaUpdated": "Turma atualizado(a) com sucesso.",
+    "SuccessfullyTurmaDeleted": "Turma excluído(a) com sucesso.",
+    "Turma:Nome": "Nome"
+  },
+  "Texts": {}
+}

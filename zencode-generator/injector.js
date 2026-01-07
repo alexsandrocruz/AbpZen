@@ -10,6 +10,21 @@ export function injectCode(projectPath, instructions) {
 
     for (const inst of instructions) {
         const fullPath = path.resolve(projectPath, inst.file);
+        console.log(`[Injector] Checking: ${inst.file}`);
+        console.log(`[Injector]   -> Full path: ${fullPath}`);
+
+        // For json-merge, create the file if it doesn't exist
+        if (inst.type === 'json-merge' && !fs.existsSync(fullPath)) {
+            console.log(`[Injector] Creating new localization file: ${fullPath}`);
+            const dir = path.dirname(fullPath);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            // Create with proper ABP localization structure
+            const initialContent = { culture: path.basename(inst.file, '.json'), texts: {} };
+            fs.writeFileSync(fullPath, JSON.stringify(initialContent, null, 2));
+        }
+
         if (!fs.existsSync(fullPath)) {
             console.error(`[Injector] File not found: ${fullPath}`);
             results.push({ file: inst.file, success: false, error: 'File not found' });

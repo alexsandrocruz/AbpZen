@@ -46,6 +46,24 @@ export default function GenerateCodeModal({
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
 
+    // Extract short project name from namespace for ABP class naming
+    // ABP uses the last segment of the namespace (e.g., 'Cursos' from 'Sapienza.Cursos')
+    // The folder structure uses full namespace (Sapienza.Cursos.Web), but class names use short name (CursosMenus)
+    const getShortProjectName = (name: string, namespace: string): string => {
+        // If projectName already looks like a namespace (contains dots), extract last part
+        if (name.includes('.')) {
+            return name.split('.').pop() || name;
+        }
+        // If projectName is simple, use it directly
+        if (name && name !== namespace) {
+            return name;
+        }
+        // Fallback: extract from namespace
+        return namespace.split('.').pop() || namespace;
+    };
+
+    const shortProjectName = getShortProjectName(projectName, projectNamespace);
+
     // Helper: compute relationship context for an entity
     // CONVENTION: In 1:N relationship edge:
     //   - Source = child entity (the "Many" side, has the FK)
@@ -456,29 +474,24 @@ export default function GenerateCodeModal({
             // Define instructions for each entity
             const instructions = entities.flatMap(entity => [
                 {
-                    file: 'LeptonXDemoApp.Web/Menus/LeptonXDemoAppMenus.cs',
+                    file: `${projectNamespace}.Web/Menus/${shortProjectName}Menus.cs`,
                     marker: 'ZenCode-Menus-Marker',
                     content: `        public const string ${entity.name} = Prefix + ".${entity.name}";`
                 },
                 {
-                    file: 'LeptonXDemoApp.Web/Menus/LeptonXDemoAppMenuContributor.cs',
+                    file: `${projectNamespace}.Web/Menus/${shortProjectName}MenuContributor.cs`,
                     marker: 'ZenCode-Menu-Marker',
-                    content: `            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.${entity.name}.Default));`
+                    content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${shortProjectName}Permissions.${entity.name}.Default));`
                 },
                 {
-                    file: 'LeptonXDemoApp.MongoDB/MongoDb/LeptonXDemoAppMongoDbContext.cs',
-                    marker: 'ZenCode-MongoCollections-Marker',
-                    content: `        public IMongoCollection<LeptonXDemoApp.${entity.name}.${entity.name}> ${entity.pluralName} => Collection<LeptonXDemoApp.${entity.name}.${entity.name}>();`
-                },
-                {
-                    file: 'LeptonXDemoApp.Application.Contracts/Permissions/LeptonXDemoAppPermissions.cs',
+                    file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}Permissions.cs`,
                     marker: 'ZenCode-Permissions-Marker',
                     content: `        public static class ${entity.name}\n        {\n            public const string Default = GroupName + ".${entity.name}";\n            public const string Create = Default + ".Create";\n            public const string Update = Default + ".Update";\n            public const string Delete = Default + ".Delete";\n        }`
                 },
                 {
-                    file: 'LeptonXDemoApp.Application.Contracts/Permissions/LeptonXDemoAppPermissionDefinitionProvider.cs',
+                    file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
                     marker: 'ZenCode-PermissionDefinition-Marker',
-                    content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(LeptonXDemoAppPermissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(LeptonXDemoAppPermissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(LeptonXDemoAppPermissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(LeptonXDemoAppPermissions.${entity.name}.Delete, L("Permission:Delete"));`
+                    content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${shortProjectName}Permissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Delete, L("Permission:Delete"));`
                 }
             ]);
 
