@@ -152,7 +152,8 @@ namespace Sapienza.Cursos
                     options.FileSets.ReplaceEmbeddedByPhysical<CursosDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Cursos.Domain"));
                     options.FileSets.ReplaceEmbeddedByPhysical<CursosApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Cursos.Application.Contracts"));
                     options.FileSets.ReplaceEmbeddedByPhysical<CursosApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Cursos.Application"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
+                    // LeptonX theme from local source (AbpZen/src/Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX)
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
                 });
             }
         }

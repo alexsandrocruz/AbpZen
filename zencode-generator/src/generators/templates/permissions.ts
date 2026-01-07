@@ -21,10 +21,10 @@ public static class {{ entity.name }}Permissions
  */
 export function getPermissionDefinitionsTemplate(): string {
     return `
-        var {{ entity.name | camelCase }}Permission = {{ entity.name | camelCase }}Group.AddPermission({{ project.name }}Permissions.{{ entity.name }}.Default, L("Permission:{{ entity.name }}"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Create, L("Permission:{{ entity.name }}.Create"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Update, L("Permission:{{ entity.name }}.Update"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Delete, L("Permission:{{ entity.name }}.Delete"));
+        var {{ entity.name | camelCase }}Permission = myGroup.AddPermission({{ entity.name }}Permissions.Default, L("Permission:{{ entity.name }}"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Create, L("Permission:Create"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Update, L("Permission:Update"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Delete, L("Permission:Delete"));
 `;
 }
 

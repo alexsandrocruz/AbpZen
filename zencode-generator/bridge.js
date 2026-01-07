@@ -490,7 +490,9 @@ app.post('/api/terminal/run', (req, res) => {
         const child = spawn(command, [], {
             cwd,
             shell: '/bin/zsh', // Explicitly use zsh as it's the user's default
-            env: { ...process.env, FORCE_COLOR: 'true' }
+            env: { ...process.env, FORCE_COLOR: 'true' },
+            stdio: ['ignore', 'pipe', 'pipe'], // Ensure stdout/stderr are piped
+            detached: false // Keep attached to parent
         });
 
         const terminal = {

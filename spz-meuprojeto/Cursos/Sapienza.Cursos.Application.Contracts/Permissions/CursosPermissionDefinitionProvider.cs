@@ -20,6 +20,10 @@ namespace Sapienza.Cursos.Permissions
             turmaPermission.AddChild(CursosPermissions.Turma.Create, L("Permission:Create"));
             turmaPermission.AddChild(CursosPermissions.Turma.Update, L("Permission:Update"));
             turmaPermission.AddChild(CursosPermissions.Turma.Delete, L("Permission:Delete"));
+                  var cursoPermission = myGroup.AddPermission(CursoPermissions.Default, L("Permission:Curso"));
+            cursoPermission.AddChild(CursoPermissions.Create, L("Permission:Create"));
+            cursoPermission.AddChild(CursoPermissions.Update, L("Permission:Update"));
+            cursoPermission.AddChild(CursoPermissions.Delete, L("Permission:Delete"));
       // <ZenCode-PermissionDefinition-Marker>
         }
 

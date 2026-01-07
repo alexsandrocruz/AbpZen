@@ -14,7 +14,21 @@
     "SuccessfullyTurmaCreated": "Turma criado(a) com sucesso.",
     "SuccessfullyTurmaUpdated": "Turma atualizado(a) com sucesso.",
     "SuccessfullyTurmaDeleted": "Turma excluído(a) com sucesso.",
-    "Turma:Nome": "Nome"
+    "Turma:Nome": "Nome",
+    "Permission:Curso": "Gerenciamento de Curso",
+    "Permission:Curso.Create": "Criar Curso",
+    "Permission:Curso.Update": "Editar Curso",
+    "Permission:Curso.Delete": "Excluir Curso",
+    "Menu:Cursos": "Cursos",
+    "Curso": "Curso",
+    "Cursos": "Cursos",
+    "NewCurso": "Novo(a) Curso",
+    "EditCurso": "Editar Curso",
+    "CursoDeletionConfirmationMessage": "Tem certeza que deseja excluir este(a) Curso?",
+    "SuccessfullyCursoCreated": "Curso criado(a) com sucesso.",
+    "SuccessfullyCursoUpdated": "Curso atualizado(a) com sucesso.",
+    "SuccessfullyCursoDeleted": "Curso excluído(a) com sucesso.",
+    "Curso:Name": "Name"
   },
   "Texts": {}
 }

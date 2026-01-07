@@ -159,12 +159,34 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
         const proc = processes[id];
         setProcesses(prev => ({ ...prev, [id]: { ...prev[id], status: 'running', logs: [], offset: 0 } }));
         try {
-            const success = await runTerminalCommand(id, proc.command, proc.cwd);
-            if (!success) {
-                setProcesses(prev => ({ ...prev, [id]: { ...prev[id], status: 'error' } }));
+            const result = await runTerminalCommand(id, proc.command, proc.cwd);
+            if (!result.success) {
+                setProcesses(prev => ({
+                    ...prev,
+                    [id]: {
+                        ...prev[id],
+                        status: 'error',
+                        logs: [{
+                            type: 'stderr',
+                            content: `❌ Failed to start: ${result.error || 'Unknown error'}\n\nCommand: ${proc.command}\nDirectory: ${proc.cwd}`,
+                            timestamp: Date.now()
+                        }]
+                    }
+                }));
             }
         } catch (e) {
-            setProcesses(prev => ({ ...prev, [id]: { ...prev[id], status: 'error' } }));
+            setProcesses(prev => ({
+                ...prev,
+                [id]: {
+                    ...prev[id],
+                    status: 'error',
+                    logs: [{
+                        type: 'stderr',
+                        content: `❌ Exception: ${e instanceof Error ? e.message : 'Unknown error'}`,
+                        timestamp: Date.now()
+                    }]
+                }
+            }));
         }
     };
 

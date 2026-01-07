@@ -164,17 +164,21 @@ async function downloadZipBlob(zip: unknown, filename: string): Promise<void> {
 /**
  * Run a command in a terminal on the bridge
  */
-export async function runTerminalCommand(id: string, command: string, cwd: string): Promise<boolean> {
+export async function runTerminalCommand(id: string, command: string, cwd: string): Promise<{ success: boolean; error?: string }> {
     try {
         const response = await fetch(`${BRIDGE_URL}/api/terminal/run`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, command, cwd })
         });
-        return response.ok;
+        if (!response.ok) {
+            const data = await response.json();
+            return { success: false, error: data.error || `HTTP ${response.status}` };
+        }
+        return { success: true };
     } catch (e) {
         console.error('Failed to run terminal command:', e);
-        return false;
+        return { success: false, error: e instanceof Error ? e.message : 'Connection failed' };
     }
 }
 

@@ -11,6 +11,7 @@
         public const string TenantDashboard = Prefix + ".TenantDashboard";
 
                 public const string Turma = Prefix + ".Turma";
+              public const string Curso = Prefix + ".Curso";
       // <ZenCode-Menus-Marker>
     }
 }

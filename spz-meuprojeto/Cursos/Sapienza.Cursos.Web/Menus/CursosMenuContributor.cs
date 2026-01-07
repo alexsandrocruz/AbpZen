@@ -101,6 +101,7 @@ namespace Sapienza.Cursos.Web.Menus
             administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 6);
 
                         context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Turma, l["Menu:Turmas"], "~/Turma", icon: "fa fa-folder-open").RequirePermissions(CursosPermissions.Turma.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Curso, l["Menu:Cursos"], "~/Curso", icon: "fa fa-folder-open").RequirePermissions(CursosPermissions.Curso.Default));
       // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;
