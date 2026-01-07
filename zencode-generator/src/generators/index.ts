@@ -110,6 +110,7 @@ export interface ChildRelationshipContext {
 export interface GeneratorContext {
     project: {
         name: string;
+        shortName: string;
         fullName: string;
         namespace: string;
     };
@@ -176,9 +177,15 @@ export class CodeGenerator {
         asParent: ParentRelationshipContext[] = [],
         asChild: ChildRelationshipContext[] = []
     ): GeneratorContext {
+        // Extract short name from projectName or namespace (last segment)
+        const shortName = projectName.includes('.')
+            ? projectName.split('.').pop() || projectName
+            : (projectName !== projectNamespace ? projectName : projectNamespace.split('.').pop() || projectName);
+
         return {
             project: {
                 name: projectName,
+                shortName: shortName,
                 fullName: projectNamespace,
                 namespace: projectNamespace,
             },
@@ -283,7 +290,7 @@ export class CodeGenerator {
 
         // Permissions
         files.push({
-            path: `${projectNamespace}.Application.Contracts/Permissions/${projectName}Permissions.${entity.name}.cs`,
+            path: `${projectNamespace}.Application.Contracts/Permissions/${entity.name}Permissions.cs`,
             content: await this.engine.parseAndRender(getPermissionsTemplate(), ctx),
             layer: 'Application.Contracts',
         });

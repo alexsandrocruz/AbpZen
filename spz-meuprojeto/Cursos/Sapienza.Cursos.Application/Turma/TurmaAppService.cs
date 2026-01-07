@@ -14,9 +14,9 @@ namespace Sapienza.Cursos.Turma;
 /// <summary>
 /// Application service for Turma entity
 /// </summary>
-[Authorize(Sapienza.CursosPermissions.Turma.Default)]
+[Authorize(TurmaPermissions.Default)]
 public class TurmaAppService :
-    Sapienza.CursosAppService,
+    CursosAppService,
     ITurmaAppService
 {
     private readonly IRepository<Sapienza.Cursos.Turma.Turma, Guid> _repository;
@@ -70,7 +70,7 @@ public class TurmaAppService :
     /// <summary>
     /// Creates a new Turma
     /// </summary>
-    [Authorize(Sapienza.CursosPermissions.Turma.Create)]
+    [Authorize(TurmaPermissions.Create)]
     public virtual async Task<TurmaDto> CreateAsync(CreateUpdateTurmaDto input)
     {
         var entity = ObjectMapper.Map<CreateUpdateTurmaDto, Sapienza.Cursos.Turma.Turma>(input);
@@ -83,7 +83,7 @@ public class TurmaAppService :
     /// <summary>
     /// Updates an existing Turma
     /// </summary>
-    [Authorize(Sapienza.CursosPermissions.Turma.Update)]
+    [Authorize(TurmaPermissions.Update)]
     public virtual async Task<TurmaDto> UpdateAsync(Guid id, CreateUpdateTurmaDto input)
     {
         var entity = await _repository.GetAsync(id);
@@ -102,7 +102,7 @@ public class TurmaAppService :
     /// <summary>
     /// Deletes a Turma
     /// </summary>
-    [Authorize(Sapienza.CursosPermissions.Turma.Delete)]
+    [Authorize(TurmaPermissions.Delete)]
     public virtual async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);

@@ -23,9 +23,9 @@ namespace {{ entity.namespace }};
 /// <summary>
 /// Application service for {{ entity.name }} entity
 /// </summary>
-[Authorize({{ project.name }}Permissions.{{ entity.name }}.Default)]
+[Authorize({{ entity.name }}Permissions.Default)]
 public class {{ entity.name }}AppService :
-    {{ project.name }}AppService,
+    {{ project.shortName }}AppService,
     I{{ entity.name }}AppService
 {
     private readonly IRepository<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}, {{ entity.primaryKey }}> _repository;
@@ -144,7 +144,7 @@ public class {{ entity.name }}AppService :
     /// <summary>
     /// Creates a new {{ entity.name }}
     /// </summary>
-    [Authorize({{ project.name }}Permissions.{{ entity.name }}.Create)]
+    [Authorize({{ entity.name }}Permissions.Create)]
     public virtual async Task<{{ dto.readTypeName }}> CreateAsync({{ dto.createTypeName }} input)
     {
         var entity = ObjectMapper.Map<{{ dto.createTypeName }}, {{ project.namespace }}.{{ entity.name }}.{{ entity.name }}>(input);
@@ -171,7 +171,7 @@ public class {{ entity.name }}AppService :
     /// <summary>
     /// Updates an existing {{ entity.name }}
     /// </summary>
-    [Authorize({{ project.name }}Permissions.{{ entity.name }}.Update)]
+    [Authorize({{ entity.name }}Permissions.Update)]
     public virtual async Task<{{ dto.readTypeName }}> UpdateAsync({{ entity.primaryKey }} id, {{ dto.updateTypeName }} input)
     {
         {%- assign hasChildGrids = false -%}
@@ -241,7 +241,7 @@ public class {{ entity.name }}AppService :
     /// <summary>
     /// Deletes a {{ entity.name }}
     /// </summary>
-    [Authorize({{ project.name }}Permissions.{{ entity.name }}.Delete)]
+    [Authorize({{ entity.name }}Permissions.Delete)]
     public virtual async Task DeleteAsync({{ entity.primaryKey }} id)
     {
         await _repository.DeleteAsync(id);

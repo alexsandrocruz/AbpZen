@@ -7,7 +7,9 @@ import {
     Database,
     Server,
     Globe,
-    X
+    X,
+    Copy,
+    Download
 } from 'lucide-react';
 import {
     runTerminalCommand,
@@ -59,7 +61,7 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                 id: 'infra',
                 name: 'Infrastructure',
                 icon: <Database size={20} />,
-                command: 'docker compose up',
+                command: 'docker compose -f docker-compose.infra.yml up',
                 cwd: projectPath, // Infra files are usually in the root
                 status: 'stopped',
                 logs: [],
@@ -82,7 +84,7 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                 id: 'angular',
                 name: 'Angular UI',
                 icon: <Globe size={20} />,
-                command: 'npm start',
+                command: 'ng serve',
                 cwd: `${projectPath}/angular`,
                 status: 'stopped',
                 logs: [],
@@ -174,6 +176,28 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
         setProcesses(prev => ({ ...prev, [id]: { ...prev[id], logs: [] } }));
     };
 
+    const handleCopyLogs = (id: string) => {
+        const logs = processes[id]?.logs || [];
+        const text = logs.map(log =>
+            `[${new Date(log.timestamp).toLocaleTimeString([], { hour12: false })}] ${log.content}`
+        ).join('');
+        navigator.clipboard.writeText(text);
+    };
+
+    const handleDownloadLogs = (id: string) => {
+        const logs = processes[id]?.logs || [];
+        const text = logs.map(log =>
+            `[${new Date(log.timestamp).toLocaleTimeString([], { hour12: false })}] ${log.content}`
+        ).join('');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${id}-logs-${new Date().toISOString().slice(0, 10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
@@ -256,9 +280,17 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                             <TerminalIcon size={16} className="text-emerald-400" />
                             <span className="text-sm font-semibold text-slate-200 uppercase tracking-widest">{processes[activeTab]?.name} Output</span>
                         </div>
-                        <button className="btn-clear-logs" onClick={() => handleClearLogs(activeTab)}>
-                            Clear
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button className="btn-clear-logs" onClick={() => handleCopyLogs(activeTab)} title="Copy to clipboard">
+                                <Copy size={14} />
+                            </button>
+                            <button className="btn-clear-logs" onClick={() => handleDownloadLogs(activeTab)} title="Download logs">
+                                <Download size={14} />
+                            </button>
+                            <button className="btn-clear-logs" onClick={() => handleClearLogs(activeTab)}>
+                                Clear
+                            </button>
+                        </div>
                     </div>
                     <div className="terminal-body">
                         {processes[activeTab]?.logs.length === 0 ? (

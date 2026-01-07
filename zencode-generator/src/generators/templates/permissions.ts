@@ -4,9 +4,9 @@
 export function getPermissionsTemplate(): string {
     return `namespace {{ project.namespace }}.Permissions;
 
-public static class {{ project.name }}{{ entity.name }}Permissions
+public static class {{ entity.name }}Permissions
 {
-    public const string GroupName = "{{ project.name }}";
+    public const string GroupName = "{{ project.shortName }}";
     
     public const string Default = GroupName + ".{{ entity.name }}";
     public const string Create = Default + ".Create";

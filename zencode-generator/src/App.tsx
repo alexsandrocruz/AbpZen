@@ -46,12 +46,26 @@ const edgeTypes = {
   relation: RelationEdge,
 };
 
-const initialNodes: Node<EntityData>[] = [];
-const initialEdges: Edge[] = [];
+// Load initial state from localStorage
+const loadCanvasState = (): { nodes: Node<EntityData>[]; edges: Edge[] } => {
+  try {
+    const savedNodes = localStorage.getItem('zen_canvas_nodes');
+    const savedEdges = localStorage.getItem('zen_canvas_edges');
+    return {
+      nodes: savedNodes ? JSON.parse(savedNodes) : [],
+      edges: savedEdges ? JSON.parse(savedEdges) : [],
+    };
+  } catch (e) {
+    console.error('Error loading canvas state:', e);
+    return { nodes: [], edges: [] };
+  }
+};
+
+const initialState = loadCanvasState();
 
 function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState<EntityData>(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<EntityData>(initialState.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialState.edges);
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showCrudPreview, setShowCrudPreview] = useState(false);
@@ -72,8 +86,17 @@ function App() {
   const [activeTab, setActiveTab] = useState<'designer' | 'dashboard'>('designer');
 
   // Undo/Redo history
-  const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialNodes, initialEdges);
+  const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialState.nodes, initialState.edges);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Save canvas state to localStorage on changes (debounced)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      localStorage.setItem('zen_canvas_nodes', JSON.stringify(nodes));
+      localStorage.setItem('zen_canvas_edges', JSON.stringify(edges));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [nodes, edges]);
 
   // Track changes for undo
   useEffect(() => {
