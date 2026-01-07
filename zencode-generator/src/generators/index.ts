@@ -71,6 +71,14 @@ import {
     getReactHookTemplate,
 } from './templates/react/index.ts';
 
+// Angular templates
+import {
+    getAngularModuleTemplate,
+    getAngularRoutingModuleTemplate,
+    getAngularComponentTsTemplate,
+    getAngularComponentHtmlTemplate,
+} from './templates/angular/index.ts';
+
 import type { FrontendTarget } from '../types.ts';
 
 export interface RelationshipInfo {
@@ -534,6 +542,51 @@ export class CodeGenerator {
     }
 
     /**
+     * Generate Angular files for an entity (ABP style)
+     */
+    async generateAngularFiles(
+        entity: EntityData,
+        projectName: string,
+        projectNamespace: string,
+        asParent: ParentRelationshipContext[] = [],
+        asChild: ChildRelationshipContext[] = []
+    ): Promise<GeneratedFile[]> {
+        const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
+        const files: GeneratedFile[] = [];
+        const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+        // Module
+        files.push({
+            path: `angular/src/app/${kebabName}/${kebabName}.module.ts`,
+            content: await this.engine.parseAndRender(getAngularModuleTemplate(), ctx),
+            layer: 'Angular',
+        });
+
+        // Routing
+        files.push({
+            path: `angular/src/app/${kebabName}/${kebabName}-routing.module.ts`,
+            content: await this.engine.parseAndRender(getAngularRoutingModuleTemplate(), ctx),
+            layer: 'Angular',
+        });
+
+        // Component TS
+        files.push({
+            path: `angular/src/app/${kebabName}/${kebabName}.component.ts`,
+            content: await this.engine.parseAndRender(getAngularComponentTsTemplate(), ctx),
+            layer: 'Angular',
+        });
+
+        // Component HTML
+        files.push({
+            path: `angular/src/app/${kebabName}/${kebabName}.component.html`,
+            content: await this.engine.parseAndRender(getAngularComponentHtmlTemplate(), ctx),
+            layer: 'Angular',
+        });
+
+        return files;
+    }
+
+    /**
      * Generate entity files with frontend selection
      */
     async generateEntityWithFrontends(
@@ -552,7 +605,7 @@ export class CodeGenerator {
         // Filter based on frontend selection
         const hasRazor = frontends.includes('razor');
         const hasReact = frontends.includes('react');
-        // const hasAngular = frontends.includes('angular'); // TODO: implement
+        const hasAngular = frontends.includes('angular');
 
         // Backend files (always included)
         const backendLayers = ['Domain', 'Application', 'Application.Contracts', 'EntityFrameworkCore'];
@@ -569,6 +622,12 @@ export class CodeGenerator {
             files.push(...reactFiles);
         }
 
+        // Angular files (if selected)
+        if (hasAngular) {
+            const angularFiles = await this.generateAngularFiles(entity, projectName, projectNamespace, asParent, asChild);
+            files.push(...angularFiles);
+        }
+
         return files;
     }
 
@@ -580,6 +639,7 @@ export class CodeGenerator {
         relationships: RelationshipInfo[],
         projectName: string,
         projectNamespace: string,
+        frontends: FrontendTarget[] = ['razor'],
         entityIdMap?: Map<string, string> // Optional: maps entity ID to entity name
     ): Promise<GeneratedFile[]> {
         const allFiles: GeneratedFile[] = [];
@@ -753,12 +813,13 @@ export class CodeGenerator {
                 }
             }
 
-            const entityFiles = await this.generateEntity(
+            const entityFiles = await this.generateEntityWithFrontends(
                 entity,
                 projectName,
                 projectNamespace,
                 asParent,
-                asChild
+                asChild,
+                frontends
             );
             allFiles.push(...entityFiles);
         }
