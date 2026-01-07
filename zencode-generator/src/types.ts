@@ -117,9 +117,60 @@ export interface RelationshipData {
     junctionConfig?: JunctionConfig;     // Configuration for junction table
 }
 
+// ============ MULTI-FRONTEND SUPPORT ============
+
+/**
+ * Frontend targets for code generation
+ */
+export type FrontendTarget = 'razor' | 'angular' | 'react';
+
+/**
+ * React (Next.js) specific configuration
+ */
+export interface ReactConfig {
+    /** Base URL for API calls (e.g., "http://localhost:44322") */
+    baseApiUrl: string;
+    /** Use OpenAPI generated client (recommended) */
+    useOpenApiClient: boolean;
+    /** UI component library */
+    uiLibrary: 'radix' | 'shadcn';
+    /** Generate Storybook stories */
+    generateStories?: boolean;
+}
+
+/**
+ * Angular specific configuration
+ */
+export interface AngularConfig {
+    /** Proxy module path (e.g., "@proxy") */
+    proxyModule: string;
+    /** UI framework for components */
+    uiFramework: 'primeng' | 'material' | 'bootstrap';
+    /** Use ngx-datatable for grids */
+    useNgxDatatable: boolean;
+    /** Generate lazy-loaded modules */
+    lazyLoad: boolean;
+}
+
+/**
+ * Frontend generation configuration
+ */
+export interface FrontendConfig {
+    /** Which frontends to generate code for */
+    targets: FrontendTarget[];
+    /** React-specific configuration */
+    react?: ReactConfig;
+    /** Angular-specific configuration */
+    angular?: AngularConfig;
+}
+
 export interface ZenMetadata {
     projectName: string;
     namespace: string;
+
+    /** Frontend generation configuration */
+    frontend?: FrontendConfig;
+
     entities: {
         id: string;
         data: EntityData;
@@ -131,3 +182,4 @@ export interface ZenMetadata {
         data: RelationshipData;
     }[];
 }
+

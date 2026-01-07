@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
-import type { EntityData } from '../types';
+import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2, Monitor, Globe, Atom } from 'lucide-react';
+import type { EntityData, FrontendTarget } from '../types';
 import { codeGenerator, type GeneratedFile, type ParentRelationshipContext, type ChildRelationshipContext, type RelationshipInfo } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
 
@@ -35,6 +35,11 @@ export default function GenerateCodeModal({
     // Entity selection state - all selected by default
     const [selectedEntities, setSelectedEntities] = useState<Set<string>>(
         () => new Set(entities.map(e => e.name))
+    );
+
+    // Frontend selection state - Razor selected by default
+    const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(
+        () => new Set(['razor'] as FrontendTarget[])
     );
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
@@ -210,6 +215,22 @@ export default function GenerateCodeModal({
         }
     };
 
+    // Toggle frontend selection
+    const toggleFrontend = (frontend: FrontendTarget) => {
+        setSelectedFrontends(prev => {
+            const next = new Set(prev);
+            if (next.has(frontend)) {
+                // Don't allow deselecting all frontends
+                if (next.size > 1) {
+                    next.delete(frontend);
+                }
+            } else {
+                next.add(frontend);
+            }
+            return next;
+        });
+    };
+
     const handleGenerate = async () => {
         setGenerating(true);
         setGenerationError(null);
@@ -237,12 +258,13 @@ export default function GenerateCodeModal({
 
                 try {
                     const { asParent, asChild } = getRelationshipContext(entity.name);
-                    const entityFiles = await codeGenerator.generateEntity(
+                    const entityFiles = await codeGenerator.generateEntityWithFrontends(
                         entity,
                         projectName,
                         projectNamespace,
                         asParent,
-                        asChild
+                        asChild,
+                        Array.from(selectedFrontends)
                     );
                     allFiles.push(...entityFiles);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
@@ -271,12 +293,13 @@ export default function GenerateCodeModal({
 
         try {
             const { asParent, asChild } = getRelationshipContext(entity.name);
-            const entityFiles = await codeGenerator.generateEntity(
+            const entityFiles = await codeGenerator.generateEntityWithFrontends(
                 entity,
                 projectName,
                 projectNamespace,
                 asParent,
-                asChild
+                asChild,
+                Array.from(selectedFrontends)
             );
 
             // Remove old files for this entity and add new ones
@@ -544,6 +567,71 @@ export default function GenerateCodeModal({
                                 <div className="form-group" style={{ marginTop: '12px' }}>
                                     <label>Namespace</label>
                                     <input type="text" value={projectNamespace} disabled className="ui-input" />
+                                </div>
+                            </div>
+
+                            {/* Frontend Selection */}
+                            <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
+                                <label style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '12px', display: 'block' }}>
+                                    Frontend Targets
+                                </label>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                                    {/* Razor Card */}
+                                    <div
+                                        onClick={() => toggleFrontend('razor')}
+                                        style={{
+                                            padding: '16px',
+                                            background: selectedFrontends.has('razor') ? 'rgba(99, 102, 241, 0.15)' : '#0f172a',
+                                            border: selectedFrontends.has('razor') ? '2px solid #6366f1' : '1px solid #334155',
+                                            borderRadius: '8px',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        <Monitor size={24} style={{ color: selectedFrontends.has('razor') ? '#6366f1' : '#64748b', marginBottom: '8px' }} />
+                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Razor</div>
+                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>ASP.NET MVC</div>
+                                    </div>
+
+                                    {/* Angular Card */}
+                                    <div
+                                        onClick={() => toggleFrontend('angular')}
+                                        style={{
+                                            padding: '16px',
+                                            background: selectedFrontends.has('angular') ? 'rgba(220, 38, 38, 0.15)' : '#0f172a',
+                                            border: selectedFrontends.has('angular') ? '2px solid #dc2626' : '1px solid #334155',
+                                            borderRadius: '8px',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        <Globe size={24} style={{ color: selectedFrontends.has('angular') ? '#dc2626' : '#64748b', marginBottom: '8px' }} />
+                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Angular</div>
+                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Angular 17+</div>
+                                    </div>
+
+                                    {/* React Card */}
+                                    <div
+                                        onClick={() => toggleFrontend('react')}
+                                        style={{
+                                            padding: '16px',
+                                            background: selectedFrontends.has('react') ? 'rgba(6, 182, 212, 0.15)' : '#0f172a',
+                                            border: selectedFrontends.has('react') ? '2px solid #06b6d4' : '1px solid #334155',
+                                            borderRadius: '8px',
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                            transition: 'all 0.2s'
+                                        }}
+                                    >
+                                        <Atom size={24} style={{ color: selectedFrontends.has('react') ? '#06b6d4' : '#64748b', marginBottom: '8px' }} />
+                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>React</div>
+                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Next.js 15</div>
+                                    </div>
+                                </div>
+                                <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
+                                    {selectedFrontends.size} frontend(s) selected • Backend always included
                                 </div>
                             </div>
 

@@ -54,7 +54,7 @@ zencode-generator/src/generators/
 │   │   ├── service.ts
 │   │   └── injections.ts
 │   │
-│   └── react/                      # 🔧 A implementar
+│   └── react/                      # ✅ Implementado
 │       ├── page.ts
 │       ├── list-component.ts
 │       ├── add-component.ts
@@ -63,6 +63,17 @@ zencode-generator/src/generators/
 │       ├── form-component.ts
 │       ├── hook.ts
 │       └── columns.ts
+```
+
+---
+
+### Boilerplates (zencode-template/)
+
+```
+zencode-template/
+├── Sapienza.Zen.*/             # Backend .NET (base)
+├── angular/                    # ✅ Boilerplate Angular (limpo)
+└── abp-react/                  # ✅ Boilerplate React (copiado de abp-react-main)
 ```
 
 ---

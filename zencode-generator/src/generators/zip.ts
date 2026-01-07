@@ -41,6 +41,8 @@ export function getLayerColor(layer: GeneratedFile['layer']): string {
         'Application.Contracts': '#8b5cf6',
         'EntityFrameworkCore': '#f59e0b',
         'Web': '#ec4899',
+        'React': '#06b6d4',
+        'Angular': '#dc2626',
     };
     return colors[layer] || '#64748b';
 }
