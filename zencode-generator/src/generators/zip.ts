@@ -13,8 +13,11 @@ export async function downloadAsZip(files: GeneratedFile[], projectName: string)
         zip.file(file.path, file.content);
     }
 
-    // Generate the ZIP
-    const content = await zip.generateAsync({ type: 'blob' });
+    // Generate the ZIP with proper MIME type
+    const content = await zip.generateAsync({
+        type: 'blob',
+        mimeType: 'application/zip'
+    });
 
     // Trigger download
     saveAs(content, `${projectName}-generated.zip`);

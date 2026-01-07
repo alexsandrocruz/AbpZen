@@ -26,9 +26,8 @@ import AISettingsModal from './components/AISettingsModal';
 import ImportFromAIModal from './components/ImportFromAIModal';
 import NewProjectModal from './components/NewProjectModal';
 import { Settings, Sparkles } from 'lucide-react';
-import type { EntityData, RelationshipData, ZenMetadata } from './types';
+import type { EntityData, RelationshipData, ZenMetadata, FrontendTarget } from './types';
 import type { AIExtractionResult } from './lib/gemini/types';
-import type { ProjectConfig, ProjectCreationMode } from './lib/project/types';
 import { addRecentProject } from './lib/project/storage';
 import { parseAIExtractionToCanvas, calculateEntityPositions } from './lib/ai-import/parser';
 import { transformToMetadata, downloadJson } from './utils/exportUtils';
@@ -60,6 +59,10 @@ function App() {
   const [projectName, setProjectName] = useState(() => localStorage.getItem('zen_project_name') || 'Untitled');
   const [projectNamespace, setProjectNamespace] = useState(() => localStorage.getItem('zen_project_namespace') || '');
   const [projectPath, setProjectPath] = useState(() => localStorage.getItem('zen_project_path') || '');
+  const [projectFrontends, setProjectFrontends] = useState<FrontendTarget[]>(() => {
+    const stored = localStorage.getItem('zen_project_frontends');
+    return stored ? JSON.parse(stored) : ['razor'];
+  });
   const [showSettings, setShowSettings] = useState(false);
   const [showAISettings, setShowAISettings] = useState(false);
   const [showAIImport, setShowAIImport] = useState(false);
@@ -720,6 +723,7 @@ function App() {
           projectName={projectName || generatedMetadata?.projectName || 'ZenGenerated'}
           projectNamespace={projectNamespace || generatedMetadata?.namespace || 'ZenApp'}
           projectPath={projectPath}
+          defaultFrontends={projectFrontends}
           onClose={() => setShowGenerateCode(false)}
         />
       )}
@@ -760,12 +764,20 @@ function App() {
       {showNewProject && (
         <NewProjectModal
           onClose={() => setShowNewProject(false)}
-          onCreate={(config, mode) => {
+          onCreate={(config, mode, createdPath) => {
             // Save project config
             setProjectName(config.name);
             setProjectNamespace(config.namespace);
+            setProjectFrontends(config.frontends);
             localStorage.setItem('zen_project_name', config.name);
             localStorage.setItem('zen_project_namespace', config.namespace);
+            localStorage.setItem('zen_project_frontends', JSON.stringify(config.frontends));
+
+            // Set project path if local
+            if (mode === 'local' && createdPath) {
+              setProjectPath(createdPath);
+              localStorage.setItem('zen_project_path', createdPath);
+            }
 
             // Clear canvas for new project
             setNodes([]);
@@ -774,23 +786,20 @@ function App() {
             // Add to recent projects
             addRecentProject({
               name: config.name,
-              path: mode === 'local' ? `~/${config.name}` : 'download',
+              path: createdPath || 'download',
               lastOpened: new Date().toISOString(),
               frontends: config.frontends,
             });
 
             setShowNewProject(false);
-
-            // TODO: Implement actual project creation (local/download)
-            console.log('Creating project:', config, 'mode:', mode);
           }}
         />
       )}
 
-      {projectPath && (
+      {projectName && (
         <div className="project-indicator">
           <Folder size={14} />
-          <span>Modeling: {projectPath.split('/').pop()}</span>
+          <span>Modeling: {projectName}</span>
         </div>
       )}
     </div>

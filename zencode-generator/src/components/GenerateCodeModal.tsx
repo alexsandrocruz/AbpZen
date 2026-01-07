@@ -10,6 +10,7 @@ interface GenerateCodeModalProps {
     projectName: string;
     projectNamespace: string;
     projectPath: string;
+    defaultFrontends?: FrontendTarget[];
     onClose: () => void;
 }
 
@@ -19,6 +20,7 @@ export default function GenerateCodeModal({
     projectName,
     projectNamespace,
     projectPath,
+    defaultFrontends,
     onClose
 }: GenerateCodeModalProps) {
     const [files, setFiles] = useState<GeneratedFile[]>([]);
@@ -37,9 +39,9 @@ export default function GenerateCodeModal({
         () => new Set(entities.map(e => e.name))
     );
 
-    // Frontend selection state - Razor selected by default
+    // Frontend selection state - use defaultFrontends if provided, else Razor
     const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(
-        () => new Set(['razor'] as FrontendTarget[])
+        () => new Set((defaultFrontends && defaultFrontends.length > 0) ? defaultFrontends : ['razor'] as FrontendTarget[])
     );
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);

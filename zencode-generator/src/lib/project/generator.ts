@@ -79,14 +79,116 @@ export async function createProjectLocal(
 
 /**
  * Create project as ZIP download
- * (Uses JSZip - will be implemented in Phase 4)
+ * Fetches boilerplate files from Bridge API and packages them with JSZip
  */
 export async function createProjectZip(
     config: ProjectConfig
 ): Promise<{ success: boolean; error?: string }> {
-    // TODO: Implement ZIP generation with JSZip
-    console.log('ZIP download not yet implemented:', config);
-    return { success: false, error: 'ZIP download coming soon' };
+    try {
+        // Dynamically import JSZip
+        const JSZip = (await import('jszip')).default;
+        const zip = new JSZip();
+
+        // Fetch boilerplate content from Bridge
+        const response = await fetch(`${BRIDGE_URL}/api/get-boilerplate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                projectName: config.name,
+                frontends: config.frontends,
+            }),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            return { success: false, error: error.error || 'Failed to get boilerplate' };
+        }
+
+        const data = await response.json();
+
+        // Add all files to ZIP
+        for (const file of data.files) {
+            zip.file(file.path, file.content);
+        }
+
+        // Add zencode.json manifest
+        const manifest: ProjectManifest = {
+            version: '1.0',
+            name: config.name,
+            namespace: config.namespace,
+            createdAt: new Date().toISOString(),
+            frontends: config.frontends,
+            entities: [],
+        };
+        zip.file('zencode.json', JSON.stringify(manifest, null, 2));
+
+        // Generate and download ZIP with correct filename
+        await downloadZipBlob(zip, `${config.name}.zip`);
+
+        return { success: true };
+    } catch (error) {
+        console.error('ZIP generation failed:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'ZIP generation failed'
+        };
+    }
+}
+
+/**
+ * Helper: Download a JSZip instance as a file
+ */
+async function downloadZipBlob(zip: unknown, filename: string): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const blob = await (zip as any).generateAsync({
+        type: 'blob',
+        mimeType: 'application/zip'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+
+    // Force click with proper event
+    a.click();
+
+    // Cleanup after delay to ensure download starts
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+}
+
+/**
+ * Download generated code files as ZIP (for use after modeling entities)
+ */
+export async function downloadGeneratedCodeAsZip(
+    files: { path: string; content: string }[],
+    projectName: string
+): Promise<{ success: boolean; error?: string }> {
+    try {
+        const JSZip = (await import('jszip')).default;
+        const zip = new JSZip();
+
+        // Add all generated files to ZIP
+        for (const file of files) {
+            zip.file(file.path, file.content);
+        }
+
+        // Download
+        await downloadZipBlob(zip, `${projectName}-generated.zip`);
+
+        return { success: true };
+    } catch (error) {
+        console.error('ZIP download failed:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'ZIP download failed'
+        };
+    }
 }
 
 /**

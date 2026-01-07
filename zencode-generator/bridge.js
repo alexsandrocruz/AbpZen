@@ -179,6 +179,107 @@ app.post('/api/inject-code', (req, res) => {
     }
 });
 
+// Get boilerplate files for ZIP download
+app.post('/api/get-boilerplate', (req, res) => {
+    const { projectName, frontends, templatePath } = req.body;
+    console.log(`[Bridge] Getting boilerplate files for: ${projectName}`);
+
+    if (!projectName) {
+        return res.status(400).json({ error: 'Missing projectName' });
+    }
+
+    try {
+        const baseTemplatePath = templatePath || path.join(process.cwd(), '..', 'zencode-template');
+        const files = [];
+
+        // Folders to skip
+        const SKIP_FOLDERS = new Set([
+            'node_modules', '.git', 'bin', 'obj', '.vs', '.idea',
+            '.next', 'dist', 'build', 'packages', '.nuget', 'TestResults'
+        ]);
+
+        // Binary file extensions to skip
+        const BINARY_EXTENSIONS = new Set([
+            '.exe', '.dll', '.pdb', '.cache', '.nupkg', '.zip',
+            '.png', '.jpg', '.jpeg', '.gif', '.ico', '.woff', '.woff2', '.ttf', '.eot'
+        ]);
+
+        // Recursive function to collect files
+        const collectFiles = (dir, baseDir, prefix = '') => {
+            if (!fs.existsSync(dir)) return;
+
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) continue;
+                if (entry.isSymbolicLink()) continue;
+
+                const fullPath = path.join(dir, entry.name);
+                const relativePath = path.join(prefix, entry.name);
+
+                if (entry.isDirectory()) {
+                    collectFiles(fullPath, baseDir, relativePath);
+                } else {
+                    const ext = path.extname(entry.name).toLowerCase();
+                    if (BINARY_EXTENSIONS.has(ext)) continue;
+
+                    try {
+                        const content = fs.readFileSync(fullPath, 'utf-8');
+                        files.push({ path: relativePath, content });
+                    } catch (err) {
+                        // Skip files that can't be read as text
+                        console.log(`[Bridge] Skipping binary file: ${relativePath}`);
+                    }
+                }
+            }
+        };
+
+        // Collect backend files
+        if (fs.existsSync(baseTemplatePath)) {
+            const items = fs.readdirSync(baseTemplatePath, { withFileTypes: true });
+            for (const item of items) {
+                if (item.isDirectory() && item.name.startsWith('Sapienza.Zen')) {
+                    collectFiles(
+                        path.join(baseTemplatePath, item.name),
+                        baseTemplatePath,
+                        `backend/${item.name}`
+                    );
+                }
+            }
+        }
+
+        // Collect frontend files based on selection
+        if (frontends && Array.isArray(frontends)) {
+            for (const frontend of frontends) {
+                let srcFolder = '';
+                let destPrefix = '';
+
+                switch (frontend) {
+                    case 'react':
+                        srcFolder = path.join(baseTemplatePath, 'abp-react');
+                        destPrefix = 'abp-react';
+                        break;
+                    case 'angular':
+                        srcFolder = path.join(baseTemplatePath, 'angular');
+                        destPrefix = 'angular';
+                        break;
+                    case 'razor':
+                        continue; // Part of backend
+                }
+
+                if (srcFolder && fs.existsSync(srcFolder)) {
+                    collectFiles(srcFolder, srcFolder, destPrefix);
+                }
+            }
+        }
+
+        console.log(`[Bridge] Collected ${files.length} files for ZIP`);
+        res.json({ success: true, files, count: files.length });
+    } catch (error) {
+        console.error(`[Bridge] Error getting boilerplate: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Create a new project by copying boilerplates
 app.post('/api/create-project', (req, res) => {
     const { projectName, destinationPath, frontends, templatePath } = req.body;

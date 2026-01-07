@@ -23,7 +23,7 @@ O ZenCode Generator é uma ferramenta visual para definir entidades e gerar cód
 ---
 
 ### 🎯 Épico 2: Project Management
-**Status**: ⬜ Planejamento
+**Status**: ✅ Concluído
 
 #### Objetivo
 Permitir criar e gerenciar múltiplos projetos ABP diretamente no ZenCode Generator.

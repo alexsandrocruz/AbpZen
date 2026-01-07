@@ -9,7 +9,7 @@ import { pickDirectory, createProjectLocal, isBridgeAvailable } from '../lib/pro
 
 interface NewProjectModalProps {
     onClose: () => void;
-    onCreate: (config: ProjectConfig, mode: ProjectCreationMode) => void;
+    onCreate: (config: ProjectConfig, mode: ProjectCreationMode, createdPath?: string) => void;
 }
 
 type WizardStep = 'name' | 'frontends' | 'destination';
@@ -91,17 +91,26 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
 
             const result = await createProjectLocal(config, destinationPath);
 
-            if (result.success) {
-                onCreate(config, creationMode);
+            if (result.success && result.projectPath) {
+                setIsLoading(false);
+                onCreate(config, creationMode, result.projectPath);
             } else {
                 setError(result.error || 'Failed to create project');
+                setIsLoading(false);
             }
         } else {
-            // Download mode - just call onCreate for now (ZIP will be implemented later)
-            onCreate(config, creationMode);
-        }
+            // Download mode - call createProjectZip from generator
+            const { createProjectZip } = await import('../lib/project/generator');
+            const result = await createProjectZip(config);
 
-        setIsLoading(false);
+            if (result.success) {
+                setIsLoading(false);
+                onCreate(config, creationMode);
+            } else {
+                setError(result.error || 'Failed to create ZIP');
+                setIsLoading(false);
+            }
+        }
     };
 
     const handlePickDirectory = async () => {
