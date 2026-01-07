@@ -9,5 +9,7 @@
         public const string HostDashboard = Prefix + ".HostDashboard";
 
         public const string TenantDashboard = Prefix + ".TenantDashboard";
+
+        // <ZenCode-Menus-Marker>
     }
 }

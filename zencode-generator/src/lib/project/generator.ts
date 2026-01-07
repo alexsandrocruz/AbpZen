@@ -144,7 +144,6 @@ async function downloadZipBlob(zip: unknown, filename: string): Promise<void> {
         type: 'blob',
         mimeType: 'application/zip'
     });
-
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -160,6 +159,71 @@ async function downloadZipBlob(zip: unknown, filename: string): Promise<void> {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }, 100);
+}
+
+/**
+ * Run a command in a terminal on the bridge
+ */
+export async function runTerminalCommand(id: string, command: string, cwd: string): Promise<boolean> {
+    try {
+        const response = await fetch(`${BRIDGE_URL}/api/terminal/run`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, command, cwd })
+        });
+        return response.ok;
+    } catch (e) {
+        console.error('Failed to run terminal command:', e);
+        return false;
+    }
+}
+
+/**
+ * Get logs from a terminal
+ */
+export async function getTerminalLogs(id: string, offset: number = 0): Promise<{
+    status: 'running' | 'stopped' | 'error';
+    exitCode: number | null;
+    logs: Array<{ type: 'stdout' | 'stderr', content: string, timestamp: number }>;
+    nextOffset: number;
+} | null> {
+    try {
+        const response = await fetch(`${BRIDGE_URL}/api/terminal/logs/${id}?offset=${offset}`);
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        console.error('Failed to get terminal logs:', e);
+        return null;
+    }
+}
+
+/**
+ * Stop a terminal process
+ */
+export async function stopTerminalCommand(id: string): Promise<boolean> {
+    try {
+        const response = await fetch(`${BRIDGE_URL}/api/terminal/stop/${id}`, {
+            method: 'POST'
+        });
+        return response.ok;
+    } catch (e) {
+        console.error('Failed to stop terminal command:', e);
+        return false;
+    }
+}
+
+/**
+ * Get status of all terminals
+ */
+export async function getTerminalsStatus(): Promise<Record<string, { status: string, exitCode: number | null }> | null> {
+    try {
+        const response = await fetch(`${BRIDGE_URL}/api/terminal/status`);
+        if (!response.ok) return null;
+        return await response.json();
+    } catch (e) {
+        console.error('Failed to get terminal status:', e);
+        return null;
+    }
 }
 
 /**

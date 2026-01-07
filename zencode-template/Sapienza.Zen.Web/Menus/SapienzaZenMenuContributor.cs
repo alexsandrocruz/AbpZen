@@ -100,6 +100,8 @@ namespace Sapienza.Zen.Web.Menus
             //Administration->Settings
             administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 6);
 
+            // <ZenCode-Menu-Marker>
+
             return Task.CompletedTask;
         }
 

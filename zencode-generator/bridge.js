@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 
 import { injectCode } from './injector.js';
 
@@ -13,6 +13,17 @@ const port = 3001;
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
+
+// Global Constants
+const SKIP_FOLDERS = new Set([
+    'node_modules', '.git', 'bin', 'obj', '.vs', '.idea',
+    '.next', 'dist', 'build', 'packages', '.nuget', 'TestResults'
+]);
+
+const BINARY_EXTENSIONS = new Set([
+    '.exe', '.dll', '.pdb', '.cache', '.nupkg', '.zip',
+    '.png', '.jpg', '.jpeg', '.gif', '.ico', '.woff', '.woff2', '.ttf', '.eot'
+]);
 
 app.post('/api/pick-directory', (req, res) => {
     // macOS only for now using osascript
@@ -192,18 +203,6 @@ app.post('/api/get-boilerplate', (req, res) => {
         const baseTemplatePath = templatePath || path.join(process.cwd(), '..', 'zencode-template');
         const files = [];
 
-        // Folders to skip
-        const SKIP_FOLDERS = new Set([
-            'node_modules', '.git', 'bin', 'obj', '.vs', '.idea',
-            '.next', 'dist', 'build', 'packages', '.nuget', 'TestResults'
-        ]);
-
-        // Binary file extensions to skip
-        const BINARY_EXTENSIONS = new Set([
-            '.exe', '.dll', '.pdb', '.cache', '.nupkg', '.zip',
-            '.png', '.jpg', '.jpeg', '.gif', '.ico', '.woff', '.woff2', '.ttf', '.eot'
-        ]);
-
         // Recursive function to collect files
         const collectFiles = (dir, baseDir, prefix = '') => {
             if (!fs.existsSync(dir)) return;
@@ -299,75 +298,102 @@ app.post('/api/create-project', (req, res) => {
         }
         fs.mkdirSync(projectPath, { recursive: true });
 
-        // Base template path
         const baseTemplatePath = templatePath || path.join(process.cwd(), '..', 'zencode-template');
         const copiedItems = [];
 
-        // Folders to skip during copy (build artifacts, dependencies, caches)
-        const SKIP_FOLDERS = new Set([
-            'node_modules',
-            '.git',
-            'bin',
-            'obj',
-            '.vs',
-            '.idea',
-            '.next',
-            'dist',
-            'build',
-            'packages',
-            '.nuget',
-            'TestResults'
-        ]);
+        // Create zencode.json manifest
+        const manifest = {
+            version: '1.0',
+            name: projectName,
+            namespace: `Sapienza.${projectName}`,
+            createdAt: new Date().toISOString(),
+            frontends: frontends || [],
+            entities: []
+        };
 
-        // Helper to copy directory recursively, skipping build folders
-        const copyDir = (src, dest) => {
-            if (!fs.existsSync(src)) {
-                console.log(`[Bridge] Source not found: ${src}`);
-                return false;
-            }
-            fs.mkdirSync(dest, { recursive: true });
+        // Helper to copy directory recursively, renaming items and replacing content
+        const copyAndTransform = (src, dest, replacements) => {
+            if (!fs.existsSync(src)) return false;
+
             const entries = fs.readdirSync(src, { withFileTypes: true });
+            if (!fs.existsSync(dest)) {
+                fs.mkdirSync(dest, { recursive: true });
+            }
+
             for (const entry of entries) {
                 // Skip excluded folders
-                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) {
-                    console.log(`[Bridge] Skipping: ${entry.name}`);
-                    continue;
+                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) continue;
+                if (entry.isSymbolicLink()) continue;
+
+                // Rename the entry name
+                let targetName = entry.name;
+                for (const r of replacements) {
+                    targetName = targetName.split(r.search).join(r.replace);
                 }
 
                 const srcPath = path.join(src, entry.name);
-                const destPath = path.join(dest, entry.name);
+                const destPath = path.join(dest, targetName);
 
                 if (entry.isDirectory()) {
-                    copyDir(srcPath, destPath);
-                } else if (entry.isSymbolicLink()) {
-                    // Skip symbolic links to avoid issues
-                    console.log(`[Bridge] Skipping symlink: ${entry.name}`);
-                    continue;
+                    copyAndTransform(srcPath, destPath, replacements);
                 } else {
-                    try {
+                    const ext = path.extname(entry.name).toLowerCase();
+                    if (BINARY_EXTENSIONS.has(ext)) {
                         fs.copyFileSync(srcPath, destPath);
-                    } catch (err) {
-                        console.log(`[Bridge] Warning: Could not copy ${entry.name}: ${err.message}`);
+                    } else {
+                        try {
+                            let content = fs.readFileSync(srcPath, 'utf8');
+                            for (const r of replacements) {
+                                content = content.split(r.search).join(r.replace);
+                            }
+                            fs.writeFileSync(destPath, content);
+                        } catch (err) {
+                            console.log(`[Bridge] Warning: Could not transform ${entry.name}: ${err.message}`);
+                            fs.copyFileSync(srcPath, destPath);
+                        }
                     }
                 }
             }
             return true;
         };
 
-        // Copy backend template (Sapienza.Zen.* folders)
-        const backendSrc = path.join(baseTemplatePath);
-        const backendDest = path.join(projectPath, 'backend');
+        const replacements = [
+            { search: 'Sapienza.Zen', replace: manifest.namespace },
+            { search: 'SapienzaZen', replace: projectName }
+        ];
 
-        // Copy all Sapienza.Zen.* directories to backend
-        if (fs.existsSync(backendSrc)) {
-            const items = fs.readdirSync(backendSrc, { withFileTypes: true });
+        // Copy everything from template root to project root, transforming filenames and content
+        if (fs.existsSync(baseTemplatePath)) {
+            const items = fs.readdirSync(baseTemplatePath, { withFileTypes: true });
             for (const item of items) {
-                if (item.isDirectory() && item.name.startsWith('Sapienza.Zen')) {
-                    const src = path.join(backendSrc, item.name);
-                    const dest = path.join(backendDest, item.name);
-                    if (copyDir(src, dest)) {
-                        copiedItems.push(`backend/${item.name}`);
+                if (SKIP_FOLDERS.has(item.name)) continue;
+                if (item.name === 'abp-react' || item.name === 'angular') continue; // Handled below
+
+                const src = path.join(baseTemplatePath, item.name);
+
+                // For files/folders starting with Sapienza.Zen, they go to root
+                let targetName = item.name;
+                for (const r of replacements) {
+                    targetName = targetName.split(r.search).join(r.replace);
+                }
+                const dest = path.join(projectPath, targetName);
+
+                if (item.isDirectory()) {
+                    copyAndTransform(src, dest, replacements);
+                    copiedItems.push(targetName);
+                } else {
+                    // Files at root
+                    const ext = path.extname(item.name).toLowerCase();
+                    if (BINARY_EXTENSIONS.has(ext)) {
+                        fs.copyFileSync(src, dest);
+                    } else {
+                        let content = fs.readFileSync(src, 'utf8');
+                        for (const r of replacements) {
+                            content = content.split(r.search).join(r.replace);
+                        }
+                        fs.writeFileSync(dest, content);
                     }
+                    copiedItems.push(targetName);
                 }
             }
         }
@@ -387,26 +413,14 @@ app.post('/api/create-project', (req, res) => {
                         srcFolder = path.join(baseTemplatePath, 'angular');
                         destFolder = path.join(projectPath, 'angular');
                         break;
-                    case 'razor':
-                        // Razor is part of backend, already copied
-                        continue;
                 }
 
-                if (srcFolder && copyDir(srcFolder, destFolder)) {
+                if (srcFolder && copyAndTransform(srcFolder, destFolder, replacements)) {
                     copiedItems.push(frontend);
                 }
             }
         }
 
-        // Create zencode.json manifest
-        const manifest = {
-            version: '1.0',
-            name: projectName,
-            namespace: `Sapienza.${projectName}`,
-            createdAt: new Date().toISOString(),
-            frontends: frontends || [],
-            entities: []
-        };
         fs.writeFileSync(
             path.join(projectPath, 'zencode.json'),
             JSON.stringify(manifest, null, 2)
@@ -424,6 +438,125 @@ app.post('/api/create-project', (req, res) => {
         console.error(`[Bridge] Error creating project: ${error.message}`);
         res.status(500).json({ error: error.message });
     }
+});
+
+// --- Terminal & Process Management ---
+
+const activeTerminals = new Map();
+
+app.post('/api/terminal/run', (req, res) => {
+    const { id, command, cwd } = req.body;
+    console.log(`[Bridge] Starting terminal: ${id} -> ${command} in ${cwd}`);
+
+    if (!id || !command || !cwd) {
+        return res.status(400).json({ error: 'Missing id, command or cwd' });
+    }
+
+    if (activeTerminals.has(id)) {
+        console.log(`[Bridge] Terminal ${id} already exists. Stopping and removing it...`);
+        const existing = activeTerminals.get(id);
+        if (existing.process) {
+            existing.process.kill('SIGKILL');
+        }
+        activeTerminals.delete(id);
+    }
+
+    try {
+        const child = spawn(command, [], {
+            cwd,
+            shell: true,
+            env: { ...process.env, FORCE_COLOR: 'true' }
+        });
+
+        const terminal = {
+            id,
+            process: child,
+            logs: [],
+            status: 'running',
+            exitCode: null
+        };
+
+        child.stdout.on('data', (data) => {
+            terminal.logs.push({ type: 'stdout', content: data.toString(), timestamp: Date.now() });
+            if (terminal.logs.length > 2000) terminal.logs.shift(); // Keep last 2000 lines
+        });
+
+        child.stderr.on('data', (data) => {
+            terminal.logs.push({ type: 'stderr', content: data.toString(), timestamp: Date.now() });
+            if (terminal.logs.length > 2000) terminal.logs.shift();
+        });
+
+        child.on('close', (code) => {
+            console.log(`[Bridge] Terminal ${id} exited with code ${code}`);
+            terminal.status = 'stopped';
+            terminal.exitCode = code;
+        });
+
+        child.on('error', (err) => {
+            console.error(`[Bridge] Terminal ${id} error:`, err);
+            terminal.status = 'error';
+            terminal.logs.push({ type: 'stderr', content: `Error: ${err.message}`, timestamp: Date.now() });
+        });
+
+        activeTerminals.set(id, terminal);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/terminal/logs/:id', (req, res) => {
+    const { id } = req.params;
+    const offset = parseInt(req.query.offset) || 0;
+    const terminal = activeTerminals.get(id);
+
+    if (!terminal) {
+        return res.status(404).json({ error: 'Terminal not found' });
+    }
+
+    const newLogs = terminal.logs.slice(offset);
+    res.json({
+        status: terminal.status,
+        exitCode: terminal.exitCode,
+        logs: newLogs,
+        nextOffset: terminal.logs.length
+    });
+});
+
+app.post('/api/terminal/stop/:id', (req, res) => {
+    const { id } = req.params;
+    const terminal = activeTerminals.get(id);
+
+    if (!terminal) {
+        return res.status(404).json({ error: 'Terminal not found' });
+    }
+
+    if (terminal.process) {
+        try {
+            // In Windows/macOS, just SIGINT might not work for all shells
+            terminal.process.kill('SIGINT');
+            setTimeout(() => {
+                if (terminal.status === 'running') {
+                    terminal.process.kill('SIGKILL');
+                }
+            }, 2000);
+        } catch (e) {
+            console.error(`Error killing process ${id}:`, e);
+        }
+    }
+
+    res.json({ success: true });
+});
+
+app.get('/api/terminal/status', (req, res) => {
+    const status = {};
+    for (const [id, term] of activeTerminals.entries()) {
+        status[id] = {
+            status: term.status,
+            exitCode: term.exitCode
+        };
+    }
+    res.json(status);
 });
 
 app.listen(port, () => {

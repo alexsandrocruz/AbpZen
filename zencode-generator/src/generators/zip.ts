@@ -1,5 +1,4 @@
 import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
 import type { GeneratedFile } from './index';
 
 /**
@@ -13,14 +12,27 @@ export async function downloadAsZip(files: GeneratedFile[], projectName: string)
         zip.file(file.path, file.content);
     }
 
-    // Generate the ZIP with proper MIME type
+    // Generate the ZIP
     const content = await zip.generateAsync({
         type: 'blob',
-        mimeType: 'application/zip'
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 }
     });
 
-    // Trigger download
-    saveAs(content, `${projectName}-generated.zip`);
+    // Trigger download manually as saveAs sometimes fails with filenames in some environments
+    const filename = `${projectName.toLowerCase()}-generated.zip`;
+    const url = window.URL.createObjectURL(content);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    setTimeout(() => {
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }, 100);
 }
 
 /**

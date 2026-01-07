@@ -13,5 +13,6 @@ namespace Sapienza.Zen.Permissions
 
         //Add your own permission names. Example:
         //public const string MyPermission1 = GroupName + ".MyPermission1";
+        // <ZenCode-Permissions-Marker>
     }
 }
