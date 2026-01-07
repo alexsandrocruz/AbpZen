@@ -502,20 +502,52 @@ function App() {
   const handleAIImport = useCallback((result: AIExtractionResult) => {
     const parsed = parseAIExtractionToCanvas(result);
     const positions = calculateEntityPositions(parsed.entities.length);
+    const timestamp = Date.now();
 
     // Create nodes from entities
     const newNodes: Node<EntityData>[] = parsed.entities.map((entity, index) => ({
-      id: `entity_${Date.now()}_${index}`,
+      id: `entity_${timestamp}_${index}`,
       type: 'entity',
       data: entity,
       position: positions[index],
     }));
 
-    setNodes((nds) => nds.concat(newNodes));
+    // Create a map of entity name -> node id for edge creation
+    const entityNameToNodeId = new Map<string, string>();
+    newNodes.forEach(node => {
+      entityNameToNodeId.set(node.data.name.toLowerCase(), node.id);
+    });
 
-    // TODO: Create edges from relationships after nodes are added
-    // This requires a second pass since we need node IDs
-  }, [setNodes]);
+    // Create edges from detected relationships
+    const newEdges: Edge[] = [];
+    parsed.relationships.forEach((rel, index) => {
+      const sourceNodeId = entityNameToNodeId.get(rel.sourceEntityName.toLowerCase());
+      const targetNodeId = entityNameToNodeId.get(rel.targetEntityName.toLowerCase());
+
+      if (sourceNodeId && targetNodeId) {
+        const edgeData: RelationshipData = {
+          type: rel.type,
+          sourceNavigationName: pluralize(rel.sourceEntityName),
+          targetNavigationName: rel.targetEntityName,
+          isRequired: false,
+        };
+
+        newEdges.push({
+          id: `edge_ai_${timestamp}_${index}`,
+          source: sourceNodeId,
+          target: targetNodeId,
+          type: 'relation',
+          data: edgeData,
+        });
+      }
+    });
+
+    // Add nodes and edges to canvas
+    setNodes((nds) => nds.concat(newNodes));
+    setEdges((eds) => eds.concat(newEdges));
+
+    console.log(`AI Import: ${newNodes.length} entities, ${newEdges.length} relationships`);
+  }, [setNodes, setEdges]);
 
   return (
     <div className="app-container">
