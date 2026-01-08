@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
+import { resolveTenantFromHostname } from "./tenant";
 
 // ABP API configuration
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
@@ -21,9 +22,12 @@ apiClient.interceptors.request.use(
         }
 
         // Multi-tenancy support
-        const tenantId = localStorage.getItem("abp_tenant_id");
-        if (tenantId && config.headers) {
+        const tenantFromUrl = resolveTenantFromHostname();
+        const tenantId = tenantFromUrl || localStorage.getItem("abp_tenant_id");
+
+        if (tenantId && typeof tenantId === "string" && tenantId.trim() !== "" && config.headers) {
             config.headers["__tenant"] = tenantId;
+            // console.log(`[API Client] Multi-tenancy header set: __tenant=${tenantId}`);
         }
 
         // Accept language
@@ -76,7 +80,12 @@ apiClient.interceptors.response.use(
         // Handle ABP error format
         if (error.response?.data?.error) {
             const abpError = error.response.data.error;
+            console.error("[API Client] ABP Error:", abpError);
             return Promise.reject(new Error(abpError.message || "An error occurred"));
+        }
+
+        if (error.response?.status === 500) {
+            console.error("[API Client] Internal Server Error (500). Check backend logs.");
         }
 
         return Promise.reject(error);

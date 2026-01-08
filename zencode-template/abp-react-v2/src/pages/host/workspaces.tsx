@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/shell";
+import { AppShell } from "@/components/layout/shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,7 +65,7 @@ const statusColors: Record<string, "default" | "secondary" | "success" | "destru
 
 export default function HostWorkspacesPage() {
     return (
-        <Shell>
+        <AppShell>
             <div className="space-y-6">
                 {/* Page Header */}
                 <div className="flex items-center gap-3">
@@ -162,6 +162,6 @@ export default function HostWorkspacesPage() {
                     </CardContent>
                 </Card>
             </div>
-        </Shell>
+        </AppShell>
     );
 }

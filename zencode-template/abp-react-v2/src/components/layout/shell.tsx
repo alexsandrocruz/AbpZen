@@ -10,7 +10,7 @@ interface ShellProps {
     appName?: string;
 }
 
-export function Shell({ children, appName = "AbpReact" }: ShellProps) {
+export function AppShell({ children, appName = "AbpReact" }: ShellProps) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
@@ -51,8 +51,10 @@ export function Shell({ children, appName = "AbpReact" }: ShellProps) {
                                 <Bell className="size-5" />
                             </Button>
 
-                            <Button variant="ghost" size="icon" className="rounded-full">
-                                <User className="size-5" />
+                            <Button variant="ghost" size="icon" className="rounded-full" asChild>
+                                <a href="/profile">
+                                    <User className="size-5" />
+                                </a>
                             </Button>
                         </div>
                     </div>

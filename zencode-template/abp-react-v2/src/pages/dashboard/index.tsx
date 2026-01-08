@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/shell";
+import { AppShell } from "@/components/layout/shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Building2, Shield, Activity } from "lucide-react";
 
@@ -39,7 +39,7 @@ const stats = [
 
 export default function DashboardPage() {
     return (
-        <Shell>
+        <AppShell>
             <div className="space-y-6">
                 {/* Page Header */}
                 <div>
@@ -102,6 +102,6 @@ export default function DashboardPage() {
                     </Card>
                 </div>
             </div>
-        </Shell>
+        </AppShell>
     );
 }

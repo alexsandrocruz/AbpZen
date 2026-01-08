@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/shell";
+import { AppShell } from "@/components/layout/shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { Settings, Globe, Mail, Shield, Save, Bell } from "lucide-react";
 
 export default function HostSettingsPage() {
     return (
-        <Shell>
+        <AppShell>
             <div className="space-y-6">
                 {/* Page Header */}
                 <div className="flex items-center gap-3">
@@ -336,6 +336,6 @@ export default function HostSettingsPage() {
                     </TabsContent>
                 </Tabs>
             </div>
-        </Shell>
+        </AppShell>
     );
 }

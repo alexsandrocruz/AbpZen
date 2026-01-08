@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/shell";
+import { AppShell } from "@/components/layout/shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ const mockUsers = [
 
 export default function HostUsersPage() {
     return (
-        <Shell>
+        <AppShell>
             <div className="space-y-6">
                 {/* Page Header */}
                 <div className="flex items-center gap-3">
@@ -160,6 +160,6 @@ export default function HostUsersPage() {
                     </CardContent>
                 </Card>
             </div>
-        </Shell>
+        </AppShell>
     );
 }
