@@ -6,6 +6,8 @@ import DashboardPage from "@/pages/dashboard";
 import HostWorkspacesPage from "@/pages/host/workspaces";
 import HostUsersPage from "@/pages/host/users";
 import HostRolesPage from "@/pages/host/roles";
+import HostSettingsPage from "@/pages/host/settings";
+import HostEditionsPage from "@/pages/host/editions";
 import LoginPage from "@/pages/auth/login";
 import "./index.css";
 
@@ -34,6 +36,8 @@ function App() {
             <Route path="/host/workspaces" component={HostWorkspacesPage} />
             <Route path="/host/users" component={HostUsersPage} />
             <Route path="/host/roles" component={HostRolesPage} />
+            <Route path="/host/settings" component={HostSettingsPage} />
+            <Route path="/host/editions" component={HostEditionsPage} />
 
             {/* Default redirect */}
             <Route path="/">

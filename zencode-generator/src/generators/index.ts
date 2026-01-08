@@ -48,6 +48,12 @@ import { getRazorCreateViewModelTemplate, getRazorEditViewModelTemplate, getRazo
 // ZenLookup templates
 // ZenLookup templates
 import { getZenLookupTagHelperTemplate } from './templates/zen-lookup-taghelper.ts';
+import {
+    getReactV2PageTemplate,
+    getReactV2ListComponentTemplate,
+    getReactV2FormComponentTemplate,
+    getReactV2HookTemplate
+} from './templates/react-v2/index.ts';
 import { getZenLookupModalTemplate, getZenLookupCssTemplate } from './templates/zen-lookup-modal.ts';
 import { getZenLookupJsTemplate } from './templates/zen-lookup-js.ts';
 // Razor Page Full templates (for Master-Detail)
@@ -550,6 +556,51 @@ export class CodeGenerator {
     }
 
     /**
+     * Generate React V2 (Vite + Tailwind 4) files for an entity
+     */
+    async generateReactV2Files(
+        entity: EntityData,
+        projectName: string,
+        projectNamespace: string,
+        asParent: ParentRelationshipContext[] = [],
+        asChild: ChildRelationshipContext[] = []
+    ): Promise<GeneratedFile[]> {
+        const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
+        const files: GeneratedFile[] = [];
+        const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+        // Page component
+        files.push({
+            path: `abp-react-v2/src/pages/admin/${kebabName}/index.tsx`,
+            content: await this.engine.parseAndRender(getReactV2PageTemplate(), ctx),
+            layer: 'React',
+        });
+
+        // List component
+        files.push({
+            path: `abp-react-v2/src/components/${kebabName}/${entity.name}List.tsx`,
+            content: await this.engine.parseAndRender(getReactV2ListComponentTemplate(), ctx),
+            layer: 'React',
+        });
+
+        // Form component (includes Create and Edit logic)
+        files.push({
+            path: `abp-react-v2/src/components/${kebabName}/${entity.name}Form.tsx`,
+            content: await this.engine.parseAndRender(getReactV2FormComponentTemplate(), ctx),
+            layer: 'React',
+        });
+
+        // Hook
+        files.push({
+            path: `abp-react-v2/src/lib/abp/hooks/use${entity.pluralName}.ts`,
+            content: await this.engine.parseAndRender(getReactV2HookTemplate(), ctx),
+            layer: 'React',
+        });
+
+        return files;
+    }
+
+    /**
      * Generate Angular files for an entity (ABP style)
      */
     async generateAngularFiles(
@@ -637,6 +688,7 @@ export class CodeGenerator {
         // Filter based on frontend selection
         const hasRazor = frontends.includes('razor');
         const hasReact = frontends.includes('react');
+        const hasReactV2 = frontends.includes('react-v2');
         const hasAngular = frontends.includes('angular');
 
         // Backend files (always included)
@@ -652,6 +704,12 @@ export class CodeGenerator {
         if (hasReact) {
             const reactFiles = await this.generateReactFiles(entity, projectName, projectNamespace, asParent, asChild);
             files.push(...reactFiles);
+        }
+
+        // React V2 files (if selected)
+        if (hasReactV2) {
+            const reactV2Files = await this.generateReactV2Files(entity, projectName, projectNamespace, asParent, asChild);
+            files.push(...reactV2Files);
         }
 
         // Angular files (if selected)

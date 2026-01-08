@@ -122,7 +122,7 @@ export interface RelationshipData {
 /**
  * Frontend targets for code generation
  */
-export type FrontendTarget = 'razor' | 'angular' | 'react';
+export type FrontendTarget = 'razor' | 'angular' | 'react' | 'react-v2';
 
 /**
  * React (Next.js) specific configuration
