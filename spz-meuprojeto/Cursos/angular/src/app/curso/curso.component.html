@@ -1,7 +1,7 @@
 <abp-page [title]="'::Cursos' | abpLocalization">
   <abp-page-toolbar>
     <button
-      *abpPermission="'Sapienza.Cursos.Cursos.Create'"
+      *abpPermission="'Sapienza.Cursos.Curso.Create'"
       class="btn btn-primary"
       type="button"
       (click)="createCurso()"
@@ -31,14 +31,14 @@
               </button>
               <div ngbDropdownMenu>
                 <button
-                  *abpPermission="'Sapienza.Cursos.Cursos.Edit'"
+                  *abpPermission="'Sapienza.Cursos.Curso.Edit'"
                   ngbDropdownItem
                   (click)="editCurso(row.id)"
                 >
                   ::Edit
                 </button>
                 <button
-                  *abpPermission="'Sapienza.Cursos.Cursos.Delete'"
+                  *abpPermission="'Sapienza.Cursos.Curso.Delete'"
                   ngbDropdownItem
                   (click)="deleteCurso(row.id)"
                 >

@@ -8,6 +8,9 @@ const routes: Routes = [
     path: '', 
     component: CursoComponent,
     canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'Sapienza.Cursos.Curso',
+    },
   }
 ];
 

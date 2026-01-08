@@ -102,6 +102,8 @@ namespace Sapienza.Cursos.Web.Menus
 
                         context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Turma, l["Menu:Turmas"], "~/Turma", icon: "fa fa-folder-open").RequirePermissions(CursosPermissions.Turma.Default));
                   context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Curso, l["Menu:Cursos"], "~/Curso", icon: "fa fa-folder-open").RequirePermissions(CursosPermissions.Curso.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Turma, l["Menu:Turmas"], "~/Turma", icon: "fa fa-folder-open").RequirePermissions(TurmaPermissions.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(CursosMenus.Curso, l["Menu:Cursos"], "~/Curso", icon: "fa fa-folder-open").RequirePermissions(CursoPermissions.Default));
       // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;

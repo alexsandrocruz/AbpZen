@@ -1,7 +1,7 @@
 <abp-page [title]="'::Turmas' | abpLocalization">
   <abp-page-toolbar>
     <button
-      *abpPermission="'Sapienza.Cursos.Turmas.Create'"
+      *abpPermission="'Sapienza.Cursos.Turma.Create'"
       class="btn btn-primary"
       type="button"
       (click)="createTurma()"
@@ -31,14 +31,14 @@
               </button>
               <div ngbDropdownMenu>
                 <button
-                  *abpPermission="'Sapienza.Cursos.Turmas.Edit'"
+                  *abpPermission="'Sapienza.Cursos.Turma.Edit'"
                   ngbDropdownItem
                   (click)="editTurma(row.id)"
                 >
                   ::Edit
                 </button>
                 <button
-                  *abpPermission="'Sapienza.Cursos.Turmas.Delete'"
+                  *abpPermission="'Sapienza.Cursos.Turma.Delete'"
                   ngbDropdownItem
                   (click)="deleteTurma(row.id)"
                 >

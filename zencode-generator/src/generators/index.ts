@@ -77,6 +77,7 @@ import {
     getAngularRoutingModuleTemplate,
     getAngularComponentTsTemplate,
     getAngularComponentHtmlTemplate,
+    getAngularRouteProviderTemplate,
 } from './templates/angular/index.ts';
 
 import type { FrontendTarget } from '../types.ts';
@@ -594,6 +595,30 @@ export class CodeGenerator {
     }
 
     /**
+     * Generate global Angular files (e.g., routing, menu)
+     */
+    async generateAngularGlobalFiles(
+        entities: EntityData[],
+        projectName: string,
+        projectNamespace: string
+    ): Promise<GeneratedFile[]> {
+        const files: GeneratedFile[] = [];
+        const ctx = {
+            project: { name: projectName, namespace: projectNamespace },
+            entities: entities
+        };
+
+        files.push({
+            path: `angular/src/app/route.provider.ts`,
+            content: await this.engine.parseAndRender(getAngularRouteProviderTemplate(), ctx),
+            layer: 'Angular',
+        });
+
+        return files;
+    }
+
+
+    /**
      * Generate entity files with frontend selection
      */
     async generateEntityWithFrontends(
@@ -650,6 +675,13 @@ export class CodeGenerator {
         entityIdMap?: Map<string, string> // Optional: maps entity ID to entity name
     ): Promise<GeneratedFile[]> {
         const allFiles: GeneratedFile[] = [];
+
+        // Generate global Angular files if selected
+        if (frontends.includes('angular')) {
+            const globalAngularFiles = await this.generateAngularGlobalFiles(entities, projectName, projectNamespace);
+            allFiles.push(...globalAngularFiles);
+        }
+
         const entityMapByName = new Map<string, EntityData>(entities.map(e => [e.name, e]));
 
         // If entityIdMap is provided, use it; otherwise try to extract from relationship source/target

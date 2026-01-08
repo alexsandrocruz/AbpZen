@@ -71,6 +71,9 @@ const routes: Routes = [
     path: '', 
     component: {{ entity.name }}Component,
     canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: '{{ project.name }}.{{ entity.name }}',
+    },
   }
 ];
 
@@ -177,7 +180,7 @@ export function getAngularComponentHtmlTemplate(): string {
   return `<abp-page [title]="'::{{ entity.pluralName }}' | abpLocalization">
   <abp-page-toolbar>
     <button
-      *abpPermission="'{{ project.name }}.{{ entity.pluralName }}.Create'"
+      *abpPermission="'{{ project.name }}.{{ entity.name }}.Create'"
       class="btn btn-primary"
       type="button"
       (click)="create{{ entity.name }}()"
@@ -207,14 +210,14 @@ export function getAngularComponentHtmlTemplate(): string {
               </button>
               <div ngbDropdownMenu>
                 <button
-                  *abpPermission="'{{ project.name }}.{{ entity.pluralName }}.Edit'"
+                  *abpPermission="'{{ project.name }}.{{ entity.name }}.Edit'"
                   ngbDropdownItem
                   (click)="edit{{ entity.name }}(row.id)"
                 >
                   {{ '::Edit' | abpLocalization }}
                 </button>
                 <button
-                  *abpPermission="'{{ project.name }}.{{ entity.pluralName }}.Delete'"
+                  *abpPermission="'{{ project.name }}.{{ entity.name }}.Delete'"
                   ngbDropdownItem
                   (click)="delete{{ entity.name }}(row.id)"
                 >
@@ -285,3 +288,48 @@ export function getAngularComponentHtmlTemplate(): string {
 </abp-modal>
 `;
 }
+
+// ============ ROUTE PROVIDER TEMPLATE ============
+
+export function getAngularRouteProviderTemplate(): string {
+  return `import { eLayoutType, RoutesService } from '@abp/ng.core';
+import { APP_INITIALIZER } from '@angular/core';
+
+export const APP_ROUTE_PROVIDER = [
+  { provide: APP_INITIALIZER, useFactory: configureRoutes, deps: [RoutesService], multi: true },
+];
+
+function configureRoutes(routes: RoutesService) {
+  return () => {
+    routes.add([
+      {
+        path: '/',
+        name: '::Menu:Home',
+        iconClass: 'fas fa-home',
+        order: 1,
+        layout: eLayoutType.application,
+      },
+      {
+        path: '/dashboard',
+        name: '::Menu:Dashboard',
+        iconClass: 'fas fa-chart-line',
+        order: 2,
+        layout: eLayoutType.application,
+        requiredPolicy: '{{ project.name }}.Dashboard.Host || LeptonX.Dashboard.Tenant',
+      },
+      {% for ent in entities %}
+      {
+        path: '/{{ ent.name | kebabCase }}s',
+        name: '::Menu:{{ ent.pluralName }}',
+        iconClass: 'fas fa-list',
+        order: {{ forloop.index | plus: 2 }},
+        layout: eLayoutType.application,
+        requiredPolicy: '{{ project.name }}.{{ ent.name }}',
+      },
+      {% endfor %}
+    ]);
+  };
+}
+`;
+}
+

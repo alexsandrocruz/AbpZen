@@ -23,6 +23,30 @@ function configureRoutes(routes: RoutesService) {
         layout: eLayoutType.application,
         requiredPolicy: 'Sapienza.Cursos.Dashboard.Host || LeptonX.Dashboard.Tenant',
       },
+      {
+        path: '/alunos',
+        name: '::Menu:Alunos',
+        iconClass: 'fas fa-users',
+        order: 3,
+        layout: eLayoutType.application,
+        requiredPolicy: 'Sapienza.Cursos.Aluno',
+      },
+      {
+        path: '/cursos',
+        name: '::Menu:Cursos',
+        iconClass: 'fas fa-book',
+        order: 4,
+        layout: eLayoutType.application,
+        requiredPolicy: 'Sapienza.Cursos.Curso',
+      },
+      {
+        path: '/turmas',
+        name: '::Menu:Turmas',
+        iconClass: 'fas fa-graduation-cap',
+        order: 5,
+        layout: eLayoutType.application,
+        requiredPolicy: 'Sapienza.Cursos.Turma',
+      },
     ]);
   };
 }

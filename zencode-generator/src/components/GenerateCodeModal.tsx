@@ -415,24 +415,19 @@ export default function GenerateCodeModal({
             if (selectedEntityList.length > 0) {
                 const injectInstructions = selectedEntityList.flatMap(entity => [
                     {
-                        file: `${projectName}.Web/Menus/${projectName}Menus.cs`,
+                        file: `${projectNamespace}.Web/Menus/${shortProjectName}Menus.cs`,
                         marker: 'ZenCode-Menus-Marker',
                         content: `        public const string ${entity.name} = Prefix + ".${entity.name}";`
                     },
                     {
-                        file: `${projectName}.Web/Menus/${projectName}MenuContributor.cs`,
+                        file: `${projectNamespace}.Web/Menus/${shortProjectName}MenuContributor.cs`,
                         marker: 'ZenCode-Menu-Marker',
-                        content: `            context.Menu.AddItem(new ApplicationMenuItem(${projectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${projectName}Permissions.${entity.name}.Default));`
+                        content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${entity.name}Permissions.Default));`
                     },
                     {
-                        file: `${projectName}.Application.Contracts/Permissions/${projectName}Permissions.cs`,
-                        marker: 'ZenCode-Permissions-Marker',
-                        content: `        public static class ${entity.name}\n        {\n            public const string Default = GroupName + ".${entity.name}";\n            public const string Create = Default + ".Create";\n            public const string Update = Default + ".Update";\n            public const string Delete = Default + ".Delete";\n        }`
-                    },
-                    {
-                        file: `${projectName}.Application.Contracts/Permissions/${projectName}PermissionDefinitionProvider.cs`,
+                        file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
                         marker: 'ZenCode-PermissionDefinition-Marker',
-                        content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${projectName}Permissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${projectName}Permissions.${entity.name}.Delete, L("Permission:Delete"));`
+                        content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
                     }
                 ]);
 
@@ -481,17 +476,12 @@ export default function GenerateCodeModal({
                 {
                     file: `${projectNamespace}.Web/Menus/${shortProjectName}MenuContributor.cs`,
                     marker: 'ZenCode-Menu-Marker',
-                    content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${shortProjectName}Permissions.${entity.name}.Default));`
-                },
-                {
-                    file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}Permissions.cs`,
-                    marker: 'ZenCode-Permissions-Marker',
-                    content: `        public static class ${entity.name}\n        {\n            public const string Default = GroupName + ".${entity.name}";\n            public const string Create = Default + ".Create";\n            public const string Update = Default + ".Update";\n            public const string Delete = Default + ".Delete";\n        }`
+                    content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${entity.name}Permissions.Default));`
                 },
                 {
                     file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
                     marker: 'ZenCode-PermissionDefinition-Marker',
-                    content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${shortProjectName}Permissions.${entity.name}.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${shortProjectName}Permissions.${entity.name}.Delete, L("Permission:Delete"));`
+                    content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
                 }
             ]);
 

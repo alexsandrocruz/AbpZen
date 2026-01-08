@@ -8,6 +8,9 @@ const routes: Routes = [
     path: '', 
     component: TurmaComponent,
     canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'Sapienza.Cursos.Turma',
+    },
   }
 ];
 
