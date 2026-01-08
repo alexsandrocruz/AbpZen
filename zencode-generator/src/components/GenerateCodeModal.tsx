@@ -465,6 +465,28 @@ export default function GenerateCodeModal({
                     injectInstructions.push(...angularMenuInstructions);
                 }
 
+                // Add React V2 route and menu injection if React V2 frontend is selected
+                if (selectedFrontends.has('react-v2')) {
+                    const reactV2Instructions = selectedEntityList.flatMap(entity => [
+                        {
+                            file: 'abp-react-v2/src/config/navigation.tsx',
+                            marker: 'GEN-IMPORTS',
+                            content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
+                        },
+                        {
+                            file: 'abp-react-v2/src/config/navigation.tsx',
+                            marker: 'GEN-ROUTES',
+                            content: `  { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
+                        },
+                        {
+                            file: 'abp-react-v2/src/config/navigation.tsx',
+                            marker: 'GEN-MENU',
+                            content: `  { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
+                        }
+                    ]);
+                    injectInstructions.push(...reactV2Instructions);
+                }
+
                 const injectResponse = await fetch('http://localhost:3001/api/inject-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -518,6 +540,28 @@ export default function GenerateCodeModal({
                     content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
                 }
             ]);
+
+            // Add React V2 route and menu injection
+            if (selectedFrontends.has('react-v2')) {
+                const reactV2Instructions = entities.flatMap(entity => [
+                    {
+                        file: 'abp-react-v2/src/config/navigation.tsx',
+                        marker: 'GEN-IMPORTS',
+                        content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
+                    },
+                    {
+                        file: 'abp-react-v2/src/config/navigation.tsx',
+                        marker: 'GEN-ROUTES',
+                        content: `  { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
+                    },
+                    {
+                        file: 'abp-react-v2/src/config/navigation.tsx',
+                        marker: 'GEN-MENU',
+                        content: `  { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
+                    }
+                ]);
+                instructions.push(...reactV2Instructions);
+            }
 
             const response = await fetch('http://localhost:3001/api/inject-code', {
                 method: 'POST',
