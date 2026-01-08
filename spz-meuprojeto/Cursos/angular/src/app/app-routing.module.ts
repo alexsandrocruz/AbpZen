@@ -64,13 +64,19 @@ const routes: Routes = [
   },
   {
     path: 'cursos',
-    loadChildren: () => import('./curso/curso.module').then(m => m.CursoModule),
+    loadComponent: () => import('./curso/curso.component').then(m => m.CursoComponent),
     canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'Sapienza.Cursos.Curso',
+    },
   },
   {
     path: 'turmas',
-    loadChildren: () => import('./turma/turma.module').then(m => m.TurmaModule),
+    loadComponent: () => import('./turma/turma.component').then(m => m.TurmaComponent),
     canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: 'Sapienza.Cursos.Turma',
+    },
   },
 ];
 

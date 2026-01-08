@@ -1,28 +1,37 @@
-import { ListService, PagedResultDto } from '@abp/ng.core';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
+import { ListService, PagedResultDto, CoreModule } from '@abp/ng.core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
+import { PageModule } from '@abp/ng.components/page';
 import { CursoService } from '@proxy/curso';
 import { CursoDto } from '@proxy/curso/dtos';
 
 @Component({
+  standalone: true,
   selector: 'app-curso',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PageModule,
+    CoreModule,
+    ThemeSharedModule,
+  ],
   templateUrl: './curso.component.html',
   providers: [ListService],
 })
 export class CursoComponent implements OnInit {
+  readonly list = inject(ListService);
+  private cursoService = inject(CursoService);
+  private fb = inject(FormBuilder);
+  private confirmation = inject(ConfirmationService);
+
   curso = { items: [], totalCount: 0 } as PagedResultDto<CursoDto>;
 
   isModalOpen = false;
   form: FormGroup;
   selectedCurso = {} as CursoDto;
-
-  constructor(
-    public readonly list: ListService,
-    private cursoService: CursoService,
-    private fb: FormBuilder,
-    private confirmation: ConfirmationService
-  ) { }
 
   ngOnInit() {
     const streamCreator = (query) => this.cursoService.getList(query);
@@ -56,12 +65,7 @@ export class CursoComponent implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-
-      name: [
-        this.selectedCurso.name || '',
-        []
-      ],
-
+      name: [this.selectedCurso.name || '', []],
     });
   }
 

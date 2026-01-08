@@ -1,28 +1,37 @@
-import { ListService, PagedResultDto } from '@abp/ng.core';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
+import { ListService, PagedResultDto, CoreModule } from '@abp/ng.core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
+import { PageModule } from '@abp/ng.components/page';
 import { TurmaService } from '@proxy/turma';
 import { TurmaDto } from '@proxy/turma/dtos';
 
 @Component({
+  standalone: true,
   selector: 'app-turma',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PageModule,
+    CoreModule,
+    ThemeSharedModule,
+  ],
   templateUrl: './turma.component.html',
   providers: [ListService],
 })
 export class TurmaComponent implements OnInit {
+  readonly list = inject(ListService);
+  private turmaService = inject(TurmaService);
+  private fb = inject(FormBuilder);
+  private confirmation = inject(ConfirmationService);
+
   turma = { items: [], totalCount: 0 } as PagedResultDto<TurmaDto>;
 
   isModalOpen = false;
   form: FormGroup;
   selectedTurma = {} as TurmaDto;
-
-  constructor(
-    public readonly list: ListService,
-    private turmaService: TurmaService,
-    private fb: FormBuilder,
-    private confirmation: ConfirmationService
-  ) { }
 
   ngOnInit() {
     const streamCreator = (query) => this.turmaService.getList(query);
@@ -56,12 +65,7 @@ export class TurmaComponent implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-
-      nome: [
-        this.selectedTurma.nome || '',
-        []
-      ],
-
+      nome: [this.selectedTurma.nome || '', []],
     });
   }
 

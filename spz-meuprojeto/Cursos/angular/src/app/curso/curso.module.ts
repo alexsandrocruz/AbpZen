@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { PageModule } from '@abp/ng.components/page';
+import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { CursoRoutingModule } from './curso-routing.module';
 import { CursoComponent } from './curso.component';
 
@@ -10,6 +11,7 @@ import { CursoComponent } from './curso.component';
     SharedModule,
     CursoRoutingModule,
     PageModule,
+    ThemeSharedModule,
   ],
 })
-export class CursoModule {}
+export class CursoModule { }

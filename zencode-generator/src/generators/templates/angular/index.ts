@@ -43,6 +43,7 @@ export function getAngularModuleTemplate(): string {
   return `import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { PageModule } from '@abp/ng.components/page';
+import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { {{ entity.name }}RoutingModule } from './{{ entity.name | kebabCase }}-routing.module';
 import { {{ entity.name }}Component } from './{{ entity.name | kebabCase }}.component';
 
@@ -52,6 +53,7 @@ import { {{ entity.name }}Component } from './{{ entity.name | kebabCase }}.comp
     SharedModule,
     {{ entity.name }}RoutingModule,
     PageModule,
+    ThemeSharedModule,
   ],
 })
 export class {{ entity.name }}Module {}
