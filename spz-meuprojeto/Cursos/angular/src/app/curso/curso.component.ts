@@ -2,8 +2,8 @@ import { ListService, PagedResultDto, CoreModule } from '@abp/ng.core';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
-import { PageModule } from '@abp/ng.components/page';
 import { CursoService } from '@proxy/curso';
 import { CursoDto } from '@proxy/curso/dtos';
 
@@ -14,7 +14,7 @@ import { CursoDto } from '@proxy/curso/dtos';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PageModule,
+    NgbDropdownModule,
     CoreModule,
     ThemeSharedModule,
   ],

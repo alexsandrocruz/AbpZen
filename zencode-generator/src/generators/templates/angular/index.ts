@@ -94,6 +94,7 @@ export function getAngularComponentTsTemplate(): string {
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
 import { {{ entity.name }}Service } from '@proxy/{{ entity.name | kebabCase }}';
 import { {{ entity.name }}Dto } from '@proxy/{{ entity.name | kebabCase }}/dtos';
@@ -105,6 +106,7 @@ import { {{ entity.name }}Dto } from '@proxy/{{ entity.name | kebabCase }}/dtos'
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbDropdownModule,
     CoreModule,
     ThemeSharedModule,
   ],

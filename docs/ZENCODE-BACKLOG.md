@@ -212,17 +212,104 @@ Responda APENAS em JSON válido no formato:
 
 ---
 
+### 🎯 Épico 6: Database Selection
+**Status**: ⬜ Backlog
+
+#### Objetivo
+Permitir selecionar o tipo de banco de dados no wizard de criação do projeto, com configuração automática de Docker Compose e connection strings.
+
+#### User Stories
+
+| ID | Story | Prioridade | Complexidade |
+|----|-------|------------|--------------|
+| DB-01 | Como dev, quero selecionar o banco de dados (SQL Server, PostgreSQL, SQLite, MongoDB) | Alta | Média |
+| DB-02 | Como dev, quero que o Docker Compose seja gerado com o container do banco selecionado | Alta | Média |
+| DB-03 | Como dev, quero que a connection string seja configurada automaticamente | Alta | Baixa |
+| DB-04 | Como dev, quero que os templates EF/MongoDB sejam gerados de acordo com a seleção | Alta | Alta |
+| DB-05 | Como dev, quero opção de não usar Docker (banco local/externo) | Média | Baixa |
+
+#### Opções de Banco de Dados
+
+| Banco | Provider ABP | Docker Image | Porta Default |
+|-------|--------------|--------------|---------------|
+| SQL Server | `Volo.Abp.EntityFrameworkCore.SqlServer` | `mcr.microsoft.com/mssql/server:2022-latest` | 1433 |
+| PostgreSQL | `Volo.Abp.EntityFrameworkCore.PostgreSql` | `postgres:16-alpine` | 5432 |
+| SQLite | `Volo.Abp.EntityFrameworkCore.Sqlite` | N/A (arquivo local) | N/A |
+| MongoDB | `Volo.Abp.MongoDB` | `mongo:7` | 27017 |
+
+#### Docker Compose Template
+
+```yaml
+# docker-compose.infrastructure.yml
+services:
+  db:
+    image: {{ database.dockerImage }}
+    container_name: {{ project.name }}-db
+    ports:
+      - "{{ database.port }}:{{ database.defaultPort }}"
+    environment:
+      {{ database.envVars }}
+    volumes:
+      - {{ project.name }}-db-data:/var/lib/{{ database.dataPath }}
+
+volumes:
+  {{ project.name }}-db-data:
+```
+
+#### Connection String Templates
+
+```json
+// SQL Server
+"ConnectionStrings": {
+  "Default": "Server=localhost,1433;Database={{project.name}};User Id=sa;Password=YourStrong@Password;TrustServerCertificate=True"
+}
+
+// PostgreSQL
+"ConnectionStrings": {
+  "Default": "Host=localhost;Port=5432;Database={{project.name}};Username=postgres;Password=postgres"
+}
+
+// SQLite
+"ConnectionStrings": {
+  "Default": "Data Source={{project.name}}.db"
+}
+
+// MongoDB
+"ConnectionStrings": {
+  "Default": "mongodb://localhost:27017/{{project.name}}"
+}
+```
+
+#### Componentes a Modificar
+
+| Componente | Mudança |
+|------------|---------|
+| `NewProjectModal.tsx` | Adicionar step de seleção de banco |
+| `zencode-template/` | Criar variantes por banco de dados |
+| `GenerateCodeModal.tsx` | Detectar tipo de banco e gerar templates corretos |
+| `bridge.js` | Endpoint para gerar Docker Compose |
+
+#### Detecção Automática (Projetos Existentes)
+
+Para projetos importados, detectar o tipo de banco analisando:
+1. Referências no `.csproj` (pacotes EF/MongoDB)
+2. `DbContext` vs `MongoDbContext`
+3. Connection string format no `appsettings.json`
+
+---
+
 ## Priorização (MoSCoW)
 
 ### Must Have (MVP)
 - ✅ Multi-frontend selection
 - ✅ React templates
-- ⬜ AI Entity Import (texto → entidades)
-- ⬜ Project creation workflow
+- ✅ AI Entity Import (texto → entidades)
+- ✅ Project creation workflow
 - ⬜ ZIP download (web mode)
 
 ### Should Have
-- ⬜ Angular templates
+- ✅ Angular templates (standalone components)
+- ⬜ Database Selection (SQL Server, PostgreSQL, SQLite, MongoDB)
 - ⬜ Project listing
 - ⬜ Recent projects
 - ⬜ AI relationship detection
@@ -253,16 +340,19 @@ Responda APENAS em JSON válido no formato:
 ```
 Q1 2026
 ├── Jan: Multi-Frontend (React) ✅
-├── Jan: AI Entity Import 🚀
+├── Jan: AI Entity Import ✅
+├── Jan: Angular Templates ✅
 ├── Fev: Project Management
-└── Mar: Angular Templates
+├── Fev: Database Selection 🚀
+└── Mar: Polish & Bug Fixes
 
 Q2 2026
 ├── Abr: Code Injection v2
 ├── Mai: Import features
-└── Jun: Polish & Documentation
+└── Jun: Documentation & Examples
 ```
 
 ---
 
-*Última atualização: 2026-01-07*
+*Última atualização: 2026-01-08*
+
