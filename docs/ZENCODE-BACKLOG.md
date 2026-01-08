@@ -9,7 +9,7 @@ O ZenCode Generator é uma ferramenta visual para definir entidades e gerar cód
 ## Épicos
 
 ### 🎯 Épico 1: Multi-Frontend Support
-**Status**: 🟡 Em Progresso
+**Status**: ✅ Concluído
 
 | ID | Feature | Status | Descrição |
 |----|---------|--------|-----------|
@@ -17,8 +17,62 @@ O ZenCode Generator é uma ferramenta visual para definir entidades e gerar cód
 | MF-02 | UI de Seleção | ✅ Done | Cards de seleção Razor/Angular/React |
 | MF-03 | Templates React | ✅ Done | Page, List, Add, Edit, Delete, Form, Hook |
 | MF-04 | Boilerplate React | ✅ Done | `zencode-template/abp-react/` |
-| MF-05 | Templates Angular | ⬜ Todo | Module, Component, Service, Routing |
-| MF-06 | Verificar Angular | ✅ Done | Template limpo confirmado |
+| MF-05 | Templates Angular | ✅ Done | Standalone components com NgbDropdown |
+| MF-06 | Verificar Angular | ✅ Done | Template limpo, localização corrigida |
+
+---
+
+### 🎯 Épico 1.5: ABP React Integration
+**Status**: 🟡 Em Progresso
+
+#### Objetivo
+Integrar o boilerplate React com o backend ABP (auth, APIs, localização), adicionar design system moderno (Radix/shadcn) e validar geração de código.
+
+#### Fases
+
+| Fase | Descrição | Prioridade |
+|------|-----------|------------|
+| **Fase 1** | Integração Backend (Auth, API, Localização) | 🔴 Alta |
+| **Fase 2** | Geração de Código (List, Form, Routes) | 🔴 Alta |
+| **Fase 3** | Design System (Radix/shadcn, Theme) | 🟡 Média |
+
+#### User Stories - Fase 1 (Backend)
+
+| ID | Story | Status | Complexidade |
+|----|-------|--------|--------------|
+| R-01 | Auth Integration (OpenID Connect) | ⬜ Todo | Alta |
+| R-02 | API Client com tokens | ⬜ Todo | Média |
+| R-03 | Localization (carregar do backend) | ⬜ Todo | Média |
+| R-04 | Permission System hook | ⬜ Todo | Média |
+| R-05 | Multi-tenancy header | ⬜ Todo | Média |
+
+#### User Stories - Fase 2 (Geração)
+
+| ID | Story | Status | Complexidade |
+|----|-------|--------|--------------|
+| R-06 | List Component template | ⬜ Todo | Média |
+| R-07 | Form Component template | ⬜ Todo | Média |
+| R-08 | Delete Confirmation modal | ⬜ Todo | Baixa |
+| R-09 | Route auto-injection | ⬜ Todo | Média |
+| R-10 | API Hook generation | ⬜ Todo | Média |
+
+#### User Stories - Fase 3 (Design)
+
+| ID | Story | Status | Complexidade |
+|----|-------|--------|--------------|
+| R-11 | Shadcn/ui setup | ⬜ Todo | Média |
+| R-12 | Theme System (dark/light) | ⬜ Todo | Média |
+| R-13 | Layout Components | ⬜ Todo | Alta |
+| R-14 | Data Display (cards, tables) | ⬜ Todo | Média |
+| R-15 | Form Components | ⬜ Todo | Média |
+
+#### Design Reference
+O design será inspirado na aplicação **Dominus** (React + Radix/shadcn):
+- Sidebar limpa com fundo escuro
+- Cards com sombras suaves
+- Formulários com seções e sidebar de resumo
+- Kanban com drag-n-drop
+
 
 ---
 
@@ -342,8 +396,9 @@ Q1 2026
 ├── Jan: Multi-Frontend (React) ✅
 ├── Jan: AI Entity Import ✅
 ├── Jan: Angular Templates ✅
+├── Jan: ABP React Integration 🚀 (em progresso)
 ├── Fev: Project Management
-├── Fev: Database Selection 🚀
+├── Fev: Database Selection
 └── Mar: Polish & Bug Fixes
 
 Q2 2026
