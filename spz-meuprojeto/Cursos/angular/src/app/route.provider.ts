@@ -47,6 +47,7 @@ function configureRoutes(routes: RoutesService) {
         layout: eLayoutType.application,
         requiredPolicy: 'Sapienza.Cursos.Turma',
       },
+      // <ZenCode-Menu-Marker>
     ]);
   };
 }

@@ -78,6 +78,7 @@ const routes: Routes = [
       requiredPolicy: 'Sapienza.Cursos.Turma',
     },
   },
+  // <ZenCode-Routes-Marker>
 ];
 
 @NgModule({

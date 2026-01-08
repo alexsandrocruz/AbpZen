@@ -90,31 +90,38 @@ export class {{ entity.name }}RoutingModule {}
 // ============ COMPONENT TS TEMPLATE ============
 
 export function getAngularComponentTsTemplate(): string {
-  return `import { ListService, PagedResultDto } from '@abp/ng.core';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
+  return `import { ListService, PagedResultDto, CoreModule } from '@abp/ng.core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
 import { {{ entity.name }}Service } from '@proxy/{{ entity.name | kebabCase }}';
 import { {{ entity.name }}Dto } from '@proxy/{{ entity.name | kebabCase }}/dtos';
 
 @Component({
+  standalone: true,
   selector: 'app-{{ entity.name | kebabCase }}',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CoreModule,
+    ThemeSharedModule,
+  ],
   templateUrl: './{{ entity.name | kebabCase }}.component.html',
   providers: [ListService],
 })
 export class {{ entity.name }}Component implements OnInit {
+  readonly list = inject(ListService);
+  private {{ entity.name | camelCase }}Service = inject({{ entity.name }}Service);
+  private fb = inject(FormBuilder);
+  private confirmation = inject(ConfirmationService);
+
   {{ entity.name | camelCase }} = { items: [], totalCount: 0 } as PagedResultDto<{{ entity.name }}Dto>;
 
   isModalOpen = false;
   form: FormGroup;
   selected{{ entity.name }} = {} as {{ entity.name }}Dto;
-
-  constructor(
-    public readonly list: ListService,
-    private {{ entity.name | camelCase }}Service: {{ entity.name }}Service,
-    private fb: FormBuilder,
-    private confirmation: ConfirmationService
-  ) {}
 
   ngOnInit() {
     const streamCreator = (query) => this.{{ entity.name | camelCase }}Service.getList(query);
@@ -179,20 +186,25 @@ export class {{ entity.name }}Component implements OnInit {
 // ============ COMPONENT HTML TEMPLATE ============
 
 export function getAngularComponentHtmlTemplate(): string {
-  return `<abp-page [title]="'::{{ entity.pluralName }}' | abpLocalization">
-  <abp-page-toolbar>
-    <button
-      *abpPermission="'{{ project.name }}.{{ entity.name }}.Create'"
-      class="btn btn-primary"
-      type="button"
-      (click)="create{{ entity.name }}()"
-    >
-      <i class="fa fa-plus me-1"></i>
-      <span>{{ "{{" }} '::New{{ entity.name }}' | abpLocalization {{ "}}" }}</span>
-    </button>
-  </abp-page-toolbar>
-
-  <div class="card">
+  return `<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col col-md-6">
+        <h5 class="card-title">
+          {{ "{{" }} '::Menu:{{ entity.pluralName }}' | abpLocalization {{ "}}" }}
+        </h5>
+      </div>
+      <div class="text-end col col-md-6">
+        <div class="text-lg-end pt-2">
+          <button *abpPermission="'{{ project.name }}.{{ entity.name }}.Create'" id="create" class="btn btn-primary" type="button"
+            (click)="create{{ entity.name }}()">
+            <i class="fa fa-plus me-1"></i>
+            <span>{{ "{{" }} '::New{{ entity.name }}' | abpLocalization {{ "}}" }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
     <div class="card-body">
       <ngx-datatable [rows]="{{ entity.name | camelCase }}.items" [count]="{{ entity.name | camelCase }}.totalCount" [list]="list" default>
         <ngx-datatable-column
@@ -247,7 +259,7 @@ export function getAngularComponentHtmlTemplate(): string {
       </ngx-datatable>
     </div>
   </div>
-</abp-page>
+</div>
 
 <abp-modal [(visible)]="isModalOpen">
   <ng-template #abpHeader>
@@ -280,11 +292,11 @@ export function getAngularComponentHtmlTemplate(): string {
 
   <ng-template #abpFooter>
     <button type="button" class="btn btn-secondary" abpClose>
-      {{ '::Cancel' | abpLocalization }}
+      {{ "{{" }} '::Close' | abpLocalization {{ "}}" }}
     </button>
     <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
       <i class="fa fa-check mr-1"></i>
-      {{ '::Save' | abpLocalization }}
+      {{ "{{" }} '::Save' | abpLocalization {{ "}}" }}
     </button>
   </ng-template>
 </abp-modal>

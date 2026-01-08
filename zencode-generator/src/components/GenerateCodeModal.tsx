@@ -45,6 +45,7 @@ export default function GenerateCodeModal({
     );
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
+    const kebabCase = (str: string) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
     // Extract short project name from namespace for ABP class naming
     // ABP uses the last segment of the namespace (e.g., 'Cursos' from 'Sapienza.Cursos')
@@ -430,6 +431,39 @@ export default function GenerateCodeModal({
                         content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
                     }
                 ]);
+
+                // Add Angular route injection if Angular frontend is selected
+                if (selectedFrontends.has('angular')) {
+                    const angularRouteInstructions = selectedEntityList.map(entity => ({
+                        file: 'angular/src/app/app-routing.module.ts',
+                        marker: 'ZenCode-Routes-Marker',
+                        content: `  {
+    path: '${kebabCase(entity.pluralName)}',
+    loadComponent: () => import('./${kebabCase(entity.name)}/${kebabCase(entity.name)}.component').then(m => m.${entity.name}Component),
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: '${projectNamespace}.${entity.name}',
+    },
+  },`
+                    }));
+
+                    // Also inject menu items into route.provider.ts
+                    const angularMenuInstructions = selectedEntityList.map((entity, index) => ({
+                        file: 'angular/src/app/route.provider.ts',
+                        marker: 'ZenCode-Menu-Marker',
+                        content: `      {
+        path: '/${kebabCase(entity.pluralName)}',
+        name: '::Menu:${entity.pluralName}',
+        iconClass: 'fas fa-list',
+        order: ${100 + index},
+        layout: eLayoutType.application,
+        requiredPolicy: '${projectNamespace}.${entity.name}',
+      },`
+                    }));
+
+                    injectInstructions.push(...angularRouteInstructions);
+                    injectInstructions.push(...angularMenuInstructions);
+                }
 
                 const injectResponse = await fetch('http://localhost:3001/api/inject-code', {
                     method: 'POST',
