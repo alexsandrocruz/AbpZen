@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, UserPlus, CheckCircle2, Building2, Globe } from "lucide-react";
+import { Loader2, UserPlus, CheckCircle2, Building2, Globe, FileText } from "lucide-react";
 import { apiClient } from "@/lib/abp/api-client";
 import { resolveTenantFromHostname, isRootDomain } from "@/lib/abp/tenant";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ export default function RegisterPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [, setLocation] = useLocation();
 
     const tenant = resolveTenantFromHostname();
@@ -189,9 +191,34 @@ export default function RegisterPage() {
                                 className="bg-background/50"
                             />
                         </div>
+
+                        {/* GDPR/LGPD Consent */}
+                        <div className="flex items-start space-x-3 pt-2">
+                            <Checkbox
+                                id="terms"
+                                checked={acceptedTerms}
+                                onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                                disabled={isLoading}
+                                className="mt-0.5"
+                            />
+                            <div className="grid gap-1.5 leading-none">
+                                <label
+                                    htmlFor="terms"
+                                    className="text-sm font-medium leading-tight cursor-pointer"
+                                >
+                                    Aceito os Termos de Uso e Política de Privacidade
+                                </label>
+                                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <FileText className="size-3" />
+                                    <Link href="/legal/terms" className="text-primary hover:underline">Termos de Uso</Link>
+                                    {" • "}
+                                    <Link href="/legal/privacy" className="text-primary hover:underline">Política de Privacidade</Link>
+                                </p>
+                            </div>
+                        </div>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
-                        <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-primary/20" disabled={isLoading}>
+                        <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-primary/20" disabled={isLoading || !acceptedTerms}>
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

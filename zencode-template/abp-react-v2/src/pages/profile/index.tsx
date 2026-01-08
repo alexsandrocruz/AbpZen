@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "@/lib/abp/auth";
 import { useAbpConfig } from "@/lib/abp/config";
 import { AppShell } from "@/components/layout/shell";
@@ -24,15 +24,19 @@ import {
     Fingerprint,
     Info,
     Shield,
+    Trash2,
 } from "lucide-react";
 import { apiClient } from "@/lib/abp/api-client";
 import { toast } from "sonner";
+import { useProfilePicture } from "@/lib/abp/hooks/use-profile-picture";
 
 export default function ProfilePage() {
     const { user } = useAuth();
     const { config } = useAbpConfig();
     const [activeTab, setActiveTab] = useState("info");
     const [isUpdating, setIsUpdating] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const { pictureUrl, isUploading, uploadPicture, deletePicture } = useProfilePicture();
 
     // Form states
     const [name, setName] = useState(user?.name || "");
@@ -82,14 +86,38 @@ export default function ProfilePage() {
                         <CardHeader className="text-center pb-2">
                             <div className="relative group mx-auto mb-4">
                                 <Avatar className="size-28 border-4 border-background shadow-2xl mx-auto ring-4 ring-primary/10">
-                                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.userName}`} />
+                                    <AvatarImage src={pictureUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.userName}`} />
                                     <AvatarFallback className="text-3xl bg-primary/20 text-primary font-bold">
                                         {user?.name?.[0]}{user?.userName?.[0]}
                                     </AvatarFallback>
                                 </Avatar>
-                                <button className="absolute bottom-1 right-1/2 translate-x-12 p-2 bg-primary text-primary-foreground rounded-full shadow-lg hover:scale-110 transition-transform">
-                                    <Camera size={16} />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) uploadPicture(file);
+                                    }}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isUploading}
+                                    className="absolute bottom-1 right-1/2 translate-x-12 p-2 bg-primary text-primary-foreground rounded-full shadow-lg hover:scale-110 transition-transform disabled:opacity-50"
+                                >
+                                    {isUploading ? <Clock size={16} className="animate-spin" /> : <Camera size={16} />}
                                 </button>
+                                {pictureUrl && (
+                                    <button
+                                        type="button"
+                                        onClick={deletePicture}
+                                        className="absolute bottom-1 right-1/2 -translate-x-5 p-2 bg-destructive text-destructive-foreground rounded-full shadow-lg hover:scale-110 transition-transform"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                )}
                             </div>
                             <CardTitle className="text-xl font-bold">{user?.name || user?.userName}</CardTitle>
                             <CardDescription className="font-mono text-xs">@{user?.userName}</CardDescription>

@@ -33,6 +33,8 @@ import ForgotPasswordPage from "@/pages/auth/forgot-password";
 import ProfilePage from "@/pages/profile";
 import UserSessionsPage from "@/pages/sessions";
 import LgpdPage from "@/pages/profile/lgpd";
+import TermsPage from "@/pages/legal/terms";
+import PrivacyPage from "@/pages/legal/privacy";
 // <GEN-IMPORTS>
 
 export interface NavItem {
@@ -70,6 +72,8 @@ export const routes: RouteConfig[] = [
     { path: "/host/permission-groups", component: PermissionGroupsPage },
     { path: "/sessions", component: UserSessionsPage },
     { path: "/profile/lgpd", component: LgpdPage },
+    { path: "/legal/terms", component: TermsPage },
+    { path: "/legal/privacy", component: PrivacyPage },
     // <GEN-ROUTES>
 ];
 

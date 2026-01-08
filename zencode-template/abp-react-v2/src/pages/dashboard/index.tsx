@@ -1,38 +1,40 @@
 import { AppShell } from "@/components/layout/shell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Building2, Shield, Activity, Download, Calendar } from "lucide-react";
+import { Users, Building2, Shield, Activity, Download, Calendar, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { OverviewChart, RequestsChart } from "@/components/dashboard/charts";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
+import { useDashboardStats } from "@/lib/abp/hooks/use-dashboard-stats";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const stats = [
+const statConfig = [
     {
+        key: "totalUsers",
         title: "Total Users",
-        value: "2,847",
-        description: "+12% from last month",
+        description: "Registered in platform",
         icon: Users,
         color: "text-blue-500",
         bgColor: "bg-blue-500/10",
     },
     {
+        key: "totalWorkspaces",
         title: "Workspaces",
-        value: "48",
-        description: "+3 this week",
+        description: "Active tenants",
         icon: Building2,
         color: "text-emerald-500",
         bgColor: "bg-emerald-500/10",
     },
     {
+        key: "totalRoles",
         title: "Active Roles",
-        value: "12",
         description: "System-wide",
         icon: Shield,
         color: "text-purple-500",
         bgColor: "bg-purple-500/10",
     },
     {
+        key: "apiRequests",
         title: "API Requests",
-        value: "1.2M",
         description: "This month",
         icon: Activity,
         color: "text-amber-500",
@@ -41,6 +43,8 @@ const stats = [
 ];
 
 export default function DashboardPage() {
+    const { stats, isLoading } = useDashboardStats();
+
     return (
         <AppShell>
             <div className="space-y-6">
@@ -66,8 +70,8 @@ export default function DashboardPage() {
 
                 {/* Stats Grid */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {stats.map((stat) => (
-                        <Card key={stat.title} className="hover:shadow-lg transition-shadow duration-300">
+                    {statConfig.map((stat) => (
+                        <Card key={stat.key} className="hover:shadow-lg transition-shadow duration-300">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">
                                     {stat.title}
@@ -77,10 +81,21 @@ export default function DashboardPage() {
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">{stat.value}</div>
-                                <p className="text-xs text-muted-foreground">
-                                    {stat.description}
-                                </p>
+                                {isLoading ? (
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-8 w-20" />
+                                        <Skeleton className="h-3 w-28" />
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="text-2xl font-bold">
+                                            {stats?.[stat.key as keyof typeof stats]?.toLocaleString() ?? "-"}
+                                        </div>
+                                        <p className="text-xs text-muted-foreground">
+                                            {stat.description}
+                                        </p>
+                                    </>
+                                )}
                             </CardContent>
                         </Card>
                     ))}
