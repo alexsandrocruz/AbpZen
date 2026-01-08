@@ -6,11 +6,11 @@
 // ============ PAGE TEMPLATE ============
 
 export function getReactV2PageTemplate(): string {
-    return `import { Shell } from "@/components/layout/shell";
+  return `import { Shell } from "@/components/layout/shell";
 import { {{ entity.name }}List } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name }}List";
 import { {{ entity.name }}Form } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name }}Form";
 import { Button } from "@/components/ui/button";
-import { Plus, {{ entity.name | pascalCase }} } from "lucide-react";
+import { Plus, Box } from "lucide-react";
 import { useState } from "react";
 
 export default function {{ entity.pluralName }}Page() {
@@ -33,7 +33,7 @@ export default function {{ entity.pluralName }}Page() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-lg">
-              <Plus className="h-6 w-6 text-primary" />
+              <Box className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">{{ entity.pluralName }}</h1>
@@ -63,7 +63,7 @@ export default function {{ entity.pluralName }}Page() {
 // ============ LIST COMPONENT TEMPLATE ============
 
 export function getReactV2ListComponentTemplate(): string {
-    return `import { useMemo, useState } from "react";
+  return `import { useMemo, useState } from "react";
 import { use{{ entity.pluralName }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
 import {
   Table,
@@ -122,28 +122,28 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              {% for field in entity.fields %}{% if field.showInGrid != false %}
-              <TableHead>{{ field.label | default: field.name }}</TableHead>
-              {% endif %}{% endfor %}
+              {% for field in entity.fields %}
+              <TableHead>{{ field.name }}</TableHead>
+              {% endfor %}
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.items.map((item: any) => (
+            {data?.items?.map((item: any) => (
               <TableRow key={item.id}>
-                {% for field in entity.fields %}{% if field.showInGrid != false %}
+                {% for field in entity.fields %}
                 <TableCell>
-                  {% if field.type == 'bool' %}
-                  <Badge variant={item.{{ field.name | camelCase }} ? "success" : "secondary"}>
+                  {% if field.type == "bool" %}
+                  <Badge variant={item.{{ field.name | camelCase }} ? "default" : "secondary"}>
                     {item.{{ field.name | camelCase }} ? "Yes" : "No"}
                   </Badge>
-                  {% elsif field.type == 'datetime' %}
-                  {new Date(item.{{ field.name | camelCase }}).toLocaleDateString()}
+                  {% elsif field.type == "datetime" %}
+                  {item.{{ field.name | camelCase }} ? new Date(item.{{ field.name | camelCase }}).toLocaleDateString() : "-"}
                   {% else %}
                   {item.{{ field.name | camelCase }}}
                   {% endif %}
                 </TableCell>
-                {% endif %}{% endfor %}
+                {% endfor %}
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -167,9 +167,9 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
                 </TableCell>
               </TableRow>
             ))}
-            {data?.items.length === 0 && (
+            {(!data?.items || data.items.length === 0) && (
               <TableRow>
-                <TableCell colSpan={ {{ entity.fields.size | plus: 1 }} } className="h-24 text-center">
+                <TableCell colSpan={99} className="h-24 text-center">
                   No results found.
                 </TableCell>
               </TableRow>
@@ -186,7 +186,7 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
 // ============ FORM COMPONENT TEMPLATE ============
 
 export function getReactV2FormComponentTemplate(): string {
-    return `import { useForm } from "react-hook-form";
+  return `import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -205,9 +205,9 @@ import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  {% for field in entity.fields %}{% if field.showInForm != false %}
-  {{ field.name | camelCase }}: {% if field.type == 'string' %}z.string(){% if field.isRequired %}.min(1, "{{ field.label | default: field.name }} is required"){% else %}.optional(){% endif %}{% if field.maxLength %}.max({{ field.maxLength }}){% endif %}{% elsif field.type == 'int' or field.type == 'long' or field.type == 'double' or field.type == 'decimal' %}z.number(){% if field.isRequired %}{% else %}.optional(){% endif %}{% elsif field.type == 'bool' %}z.boolean(){% elsif field.type == 'datetime' %}z.string(){% if field.isRequired %}.min(1){% else %}.optional(){% endif %}{% elsif field.type == 'guid' %}z.string(){% if field.isRequired %}.uuid(){% else %}.optional(){% endif %}{% else %}z.any(){% endif %},
-  {% endif %}{% endfor %}
+  {% for field in entity.fields %}
+  {{ field.name | camelCase }}: z.any(),
+  {% endfor %}
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -234,22 +234,14 @@ export function {{ entity.name }}Form({
     watch,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialValues || {
-      {% for field in entity.fields %}{% if field.showInForm != false %}
-      {{ field.name | camelCase }}: {% if field.type == 'bool' %}false{% elsif field.type == 'string' %}""{% elsif field.type == 'int' or field.type == 'long' or field.type == 'double' or field.type == 'decimal' %}0{% else %}undefined{% endif %},
-      {% endif %}{% endfor %}
-    },
+    defaultValues: initialValues || {},
   });
 
   useEffect(() => {
     if (initialValues) {
       reset(initialValues);
     } else {
-      reset({
-        {% for field in entity.fields %}{% if field.showInForm != false %}
-        {{ field.name | camelCase }}: {% if field.type == 'bool' %}false{% elsif field.type == 'string' %}""{% elsif field.type == 'int' or field.type == 'long' or field.type == 'double' or field.type == 'decimal' %}0{% else %}undefined{% endif %},
-        {% endif %}{% endfor %}
-      });
+      reset({});
     }
   }, [initialValues, reset]);
 
@@ -269,10 +261,10 @@ export function {{ entity.name }}Form({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          {% for field in entity.fields %}{% if field.showInForm != false %}
+          {% for field in entity.fields %}
           <div className="space-y-2">
-            <Label htmlFor="{{ field.name | camelCase }}">{{ field.label | default: field.name }}{% if field.isRequired %} *{% endif %}</Label>
-            {% if field.type == 'bool' %}
+            <Label htmlFor="{{ field.name | camelCase }}">{{ field.name }}{% if field.isRequired %} *{% endif %}</Label>
+            {% if field.type == "bool" %}
             <div className="flex items-center space-x-2 pt-1">
               <Checkbox
                 id="{{ field.name | camelCase }}"
@@ -283,16 +275,15 @@ export function {{ entity.name }}Form({
                 {watch("{{ field.name | camelCase }}") ? "Enabled" : "Disabled"}
               </label>
             </div>
-            {% elsif field.type == 'datetime' %}
+            {% elsif field.type == "datetime" %}
             <Input id="{{ field.name | camelCase }}" type="date" {...register("{{ field.name | camelCase }}")} />
-            {% elsif field.type == 'int' or field.type == 'long' or field.type == 'double' or field.type == 'decimal' %}
-            <Input id="{{ field.name | camelCase }}" type="number" {...register("{{ field.name | camelCase }}", { valueAsNumber: true })} />
+            {% elsif field.type == "int" or field.type == "long" or field.type == "double" or field.type == "decimal" %}
+            <Input id="{{ field.name | camelCase }}" type="number" step="any" {...register("{{ field.name | camelCase }}")} />
             {% else %}
-            <Input id="{{ field.name | camelCase }}" {...register("{{ field.name | camelCase }}")} placeholder="{{ field.placeholder | default: '' }}" />
+            <Input id="{{ field.name | camelCase }}" {...register("{{ field.name | camelCase }}")} />
             {% endif %}
-            {errors.{{ field.name | camelCase }} && <p className="text-xs text-destructive">{errors.{{ field.name | camelCase }}.message}</p>}
           </div>
-          {% endif %}{% endfor %}
+          {% endfor %}
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
@@ -314,7 +305,7 @@ export function {{ entity.name }}Form({
 // ============ HOOK TEMPLATE ============
 
 export function getReactV2HookTemplate(): string {
-    return `import { useQuery } from "@tanstack/react-query";
+  return `import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface Get{{ entity.pluralName }}Input {

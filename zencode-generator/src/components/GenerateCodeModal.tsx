@@ -39,10 +39,13 @@ export default function GenerateCodeModal({
         () => new Set(entities.map(e => e.name))
     );
 
-    // Frontend selection state - use defaultFrontends if provided, else Razor
+    // Frontend selection state - use defaultFrontends if provided, else React V2
     const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(
-        () => new Set((defaultFrontends && defaultFrontends.length > 0) ? defaultFrontends : ['razor'] as FrontendTarget[])
+        () => new Set((defaultFrontends && defaultFrontends.length > 0) ? defaultFrontends : ['react-v2'] as FrontendTarget[])
     );
+
+    // Lock frontend selection if project has pre-defined frontend
+    const frontendLocked = defaultFrontends && defaultFrontends.length > 0;
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
     const kebabCase = (str: string) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -360,7 +363,7 @@ export default function GenerateCodeModal({
                 const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
                 try {
-                    const response = await fetch('http://localhost:3001/api/generate-code', {
+                    const response = await fetch('http://localhost:3005/api/generate-code', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -390,7 +393,7 @@ export default function GenerateCodeModal({
                     type: 'json-merge' as const
                 }));
 
-                const response = await fetch('http://localhost:3001/api/inject-code', {
+                const response = await fetch('http://localhost:3005/api/inject-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -487,7 +490,7 @@ export default function GenerateCodeModal({
                     injectInstructions.push(...reactV2Instructions);
                 }
 
-                const injectResponse = await fetch('http://localhost:3001/api/inject-code', {
+                const injectResponse = await fetch('http://localhost:3005/api/inject-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -547,23 +550,23 @@ export default function GenerateCodeModal({
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-IMPORTS',
-                        content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
+                        content: `import ${entity.pluralName}Page from "@/pages/${kebabCase(entity.pluralName)}";`
                     },
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-ROUTES',
-                        content: `  { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
+                        content: `    { path: "/${kebabCase(entity.pluralName)}", component: ${entity.pluralName}Page },`
                     },
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-MENU',
-                        content: `  { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
+                        content: `    { label: "${entity.pluralName}", href: "/${kebabCase(entity.pluralName)}", icon: Box, section: "entities" },`
                     }
                 ]);
                 instructions.push(...reactV2Instructions);
             }
 
-            const response = await fetch('http://localhost:3001/api/inject-code', {
+            const response = await fetch('http://localhost:3005/api/inject-code', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -656,18 +659,18 @@ export default function GenerateCodeModal({
                             {/* Frontend Selection */}
                             <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
                                 <label style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '12px', display: 'block' }}>
-                                    Frontend Targets
+                                    Frontend Target {frontendLocked && <span style={{ color: '#64748b', fontStyle: 'italic' }}>(locked)</span>}
                                 </label>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', opacity: frontendLocked ? 0.7 : 1 }}>
                                     {/* Razor Card */}
                                     <div
-                                        onClick={() => toggleFrontend('razor')}
+                                        onClick={() => !frontendLocked && toggleFrontend('razor')}
                                         style={{
                                             padding: '16px',
                                             background: selectedFrontends.has('razor') ? 'rgba(99, 102, 241, 0.15)' : '#0f172a',
                                             border: selectedFrontends.has('razor') ? '2px solid #6366f1' : '1px solid #334155',
                                             borderRadius: '8px',
-                                            cursor: 'pointer',
+                                            cursor: frontendLocked ? 'default' : 'pointer',
                                             textAlign: 'center',
                                             transition: 'all 0.2s'
                                         }}
@@ -679,13 +682,13 @@ export default function GenerateCodeModal({
 
                                     {/* Angular Card */}
                                     <div
-                                        onClick={() => toggleFrontend('angular')}
+                                        onClick={() => !frontendLocked && toggleFrontend('angular')}
                                         style={{
                                             padding: '16px',
                                             background: selectedFrontends.has('angular') ? 'rgba(220, 38, 38, 0.15)' : '#0f172a',
                                             border: selectedFrontends.has('angular') ? '2px solid #dc2626' : '1px solid #334155',
                                             borderRadius: '8px',
-                                            cursor: 'pointer',
+                                            cursor: frontendLocked ? 'default' : 'pointer',
                                             textAlign: 'center',
                                             transition: 'all 0.2s'
                                         }}
@@ -697,24 +700,24 @@ export default function GenerateCodeModal({
 
                                     {/* React Card */}
                                     <div
-                                        onClick={() => toggleFrontend('react')}
+                                        onClick={() => !frontendLocked && toggleFrontend('react-v2')}
                                         style={{
                                             padding: '16px',
-                                            background: selectedFrontends.has('react') ? 'rgba(6, 182, 212, 0.15)' : '#0f172a',
-                                            border: selectedFrontends.has('react') ? '2px solid #06b6d4' : '1px solid #334155',
+                                            background: selectedFrontends.has('react-v2') ? 'rgba(6, 182, 212, 0.15)' : '#0f172a',
+                                            border: selectedFrontends.has('react-v2') ? '2px solid #06b6d4' : '1px solid #334155',
                                             borderRadius: '8px',
-                                            cursor: 'pointer',
+                                            cursor: frontendLocked ? 'default' : 'pointer',
                                             textAlign: 'center',
                                             transition: 'all 0.2s'
                                         }}
                                     >
-                                        <Atom size={24} style={{ color: selectedFrontends.has('react') ? '#06b6d4' : '#64748b', marginBottom: '8px' }} />
+                                        <Atom size={24} style={{ color: selectedFrontends.has('react-v2') ? '#06b6d4' : '#64748b', marginBottom: '8px' }} />
                                         <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>React</div>
-                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Next.js 15</div>
+                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Vite + Tailwind 4</div>
                                     </div>
                                 </div>
                                 <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
-                                    {selectedFrontends.size} frontend(s) selected • Backend always included
+                                    {frontendLocked ? 'Frontend defined by project' : `${selectedFrontends.size} frontend(s) selected`} • Backend always included
                                 </div>
                             </div>
 

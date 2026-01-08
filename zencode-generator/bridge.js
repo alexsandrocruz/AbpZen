@@ -9,7 +9,7 @@ import { exec, spawn } from 'child_process';
 import { injectCode } from './injector.js';
 
 const app = express();
-const port = 3001;
+const port = 3005;
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -253,9 +253,9 @@ app.post('/api/get-boilerplate', (req, res) => {
                 let destPrefix = '';
 
                 switch (frontend) {
-                    case 'react':
-                        srcFolder = path.join(baseTemplatePath, 'abp-react');
-                        destPrefix = 'abp-react';
+                    case 'react-v2':
+                        srcFolder = path.join(baseTemplatePath, 'abp-react-v2');
+                        destPrefix = 'abp-react-v2';
                         break;
                     case 'angular':
                         srcFolder = path.join(baseTemplatePath, 'angular');
@@ -307,7 +307,7 @@ app.post('/api/create-project', (req, res) => {
             name: projectName,
             namespace: `Sapienza.${projectName}`,
             createdAt: new Date().toISOString(),
-            frontends: frontends || [],
+            frontend: (frontends && frontends.length > 0) ? frontends[0] : 'react-v2',
             entities: []
         };
 
@@ -367,7 +367,7 @@ app.post('/api/create-project', (req, res) => {
             const items = fs.readdirSync(baseTemplatePath, { withFileTypes: true });
             for (const item of items) {
                 if (SKIP_FOLDERS.has(item.name)) continue;
-                if (item.name === 'abp-react' || item.name === 'angular') continue; // Handled below
+                if (item.name === 'abp-react-v2' || item.name === 'angular') continue; // Handled below
 
                 const src = path.join(baseTemplatePath, item.name);
 
@@ -405,9 +405,9 @@ app.post('/api/create-project', (req, res) => {
                 let destFolder = '';
 
                 switch (frontend) {
-                    case 'react':
-                        srcFolder = path.join(baseTemplatePath, 'abp-react');
-                        destFolder = path.join(projectPath, 'abp-react');
+                    case 'react-v2':
+                        srcFolder = path.join(baseTemplatePath, 'abp-react-v2');
+                        destFolder = path.join(projectPath, 'abp-react-v2');
                         break;
                     case 'angular':
                         srcFolder = path.join(baseTemplatePath, 'angular');

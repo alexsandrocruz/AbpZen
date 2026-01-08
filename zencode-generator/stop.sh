@@ -13,8 +13,8 @@ pkill -f "node bridge.js" 2>/dev/null && echo "   ✅ Bridge stopped" || echo " 
 echo "💻 Stopping Frontend Designer..."
 pkill -f "vite" 2>/dev/null && echo "   ✅ Vite stopped" || echo "   ⚠️  Vite was not running"
 
-# Also kill any process on ports 3001 and 5173
-lsof -ti:3001 | xargs kill -9 2>/dev/null
+# Kill process listening on port 3005 (Bridge)
+lsof -ti:3005 | xargs kill -9 2>/dev/null
 lsof -ti:5173 | xargs kill -9 2>/dev/null
 
 echo ""

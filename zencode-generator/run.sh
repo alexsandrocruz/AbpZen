@@ -9,7 +9,7 @@ echo "🚀 Starting ZenCode Generator Environment..."
 trap "kill 0" EXIT
 
 # Start the Bridge Server in the background
-echo "🌉 Starting Backend Bridge (localhost:3001)..."
+echo "🌉 Starting Backend Bridge (localhost:3005)..."
 node bridge.js &
 
 # Wait a moment for bridge to start

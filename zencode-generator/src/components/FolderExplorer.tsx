@@ -16,7 +16,7 @@ export default function FolderExplorer({ onSelect, initialPath }: FolderExplorer
         setLoading(true);
         setError('');
         try {
-            const response = await fetch('http://localhost:3001/api/list-dirs', {
+            const response = await fetch('http://localhost:3005/api/list-dirs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ directory: path })

@@ -66,16 +66,7 @@ import {
     getRazorEditPageJsTemplate
 } from './templates/razor-page-full.ts';
 
-// React (Next.js) templates
-import {
-    getReactPageTemplate,
-    getReactListComponentTemplate,
-    getReactAddComponentTemplate,
-    getReactEditComponentTemplate,
-    getReactDeleteComponentTemplate,
-    getReactFormComponentTemplate,
-    getReactHookTemplate,
-} from './templates/react/index.ts';
+
 
 // Angular templates
 import {
@@ -492,68 +483,7 @@ export class CodeGenerator {
     /**
      * Generate React (Next.js) files for an entity
      */
-    async generateReactFiles(
-        entity: EntityData,
-        projectName: string,
-        projectNamespace: string,
-        asParent: ParentRelationshipContext[] = [],
-        asChild: ChildRelationshipContext[] = []
-    ): Promise<GeneratedFile[]> {
-        const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
-        const files: GeneratedFile[] = [];
-        const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-        // Page component
-        files.push({
-            path: `abp-react/src/app/admin/${kebabName}/page.tsx`,
-            content: await this.engine.parseAndRender(getReactPageTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // List component
-        files.push({
-            path: `abp-react/src/components/${kebabName}/${entity.name}List.tsx`,
-            content: await this.engine.parseAndRender(getReactListComponentTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // Add component
-        files.push({
-            path: `abp-react/src/components/${kebabName}/Add${entity.name}.tsx`,
-            content: await this.engine.parseAndRender(getReactAddComponentTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // Edit component
-        files.push({
-            path: `abp-react/src/components/${kebabName}/${entity.name}Edit.tsx`,
-            content: await this.engine.parseAndRender(getReactEditComponentTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // Delete component
-        files.push({
-            path: `abp-react/src/components/${kebabName}/Delete${entity.name}.tsx`,
-            content: await this.engine.parseAndRender(getReactDeleteComponentTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // Form component
-        files.push({
-            path: `abp-react/src/components/${kebabName}/${entity.name}Form.tsx`,
-            content: await this.engine.parseAndRender(getReactFormComponentTemplate(), ctx),
-            layer: 'React',
-        });
-
-        // Hook
-        files.push({
-            path: `abp-react/src/lib/hooks/use${entity.pluralName}.ts`,
-            content: await this.engine.parseAndRender(getReactHookTemplate(), ctx),
-            layer: 'React',
-        });
-
-        return files;
-    }
 
     /**
      * Generate React V2 (Vite + Tailwind 4) files for an entity
@@ -687,7 +617,6 @@ export class CodeGenerator {
 
         // Filter based on frontend selection
         const hasRazor = frontends.includes('razor');
-        const hasReact = frontends.includes('react');
         const hasReactV2 = frontends.includes('react-v2');
         const hasAngular = frontends.includes('angular');
 
@@ -700,11 +629,7 @@ export class CodeGenerator {
             files.push(...backendFiles.filter(f => f.layer === 'Web'));
         }
 
-        // React files (if selected)
-        if (hasReact) {
-            const reactFiles = await this.generateReactFiles(entity, projectName, projectNamespace, asParent, asChild);
-            files.push(...reactFiles);
-        }
+
 
         // React V2 files (if selected)
         if (hasReactV2) {

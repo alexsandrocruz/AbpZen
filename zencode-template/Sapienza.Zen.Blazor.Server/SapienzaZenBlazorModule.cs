@@ -196,8 +196,8 @@ namespace Sapienza.Zen.Blazor
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Zen.Domain.Shared"));
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Zen.Application.Contracts"));
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenBlazorModule>(hostingEnvironment.ContentRootPath);
-                    options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
-                    options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreComponentsWebLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Components.Server.LeptonXTheme", Path.DirectorySeparatorChar)));
+                    // options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
+                    // options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreComponentsWebLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Components.Server.LeptonXTheme", Path.DirectorySeparatorChar)));
                 });
             }
         }

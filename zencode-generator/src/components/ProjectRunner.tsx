@@ -112,13 +112,14 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
             };
         }
 
-        if (frontends.includes('react')) {
+        if (frontends.includes('react-v2')) {
+            const reactFolder = 'abp-react-v2';
             initialProcesses.react_install = {
                 id: 'react_install',
                 name: 'React Install',
                 icon: <Download size={20} />,
                 command: 'npm install',
-                cwd: `${projectPath}/abp-react`,
+                cwd: `${projectPath}/${reactFolder}`,
                 status: 'stopped',
                 logs: [],
                 offset: 0
@@ -128,7 +129,7 @@ export const ProjectRunner: React.FC<ProjectRunnerProps> = ({
                 name: 'React UI',
                 icon: <Globe size={20} />,
                 command: 'npm run dev',
-                cwd: `${projectPath}/abp-react`,
+                cwd: `${projectPath}/${reactFolder}`,
                 status: 'stopped',
                 logs: [],
                 offset: 0

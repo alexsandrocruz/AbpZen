@@ -17,7 +17,7 @@ export function getLocalizationEntriesEnTemplate(): string {
     "Successfully{{ entity.name }}Created": "{{ entity.name }} created successfully.",
     "Successfully{{ entity.name }}Updated": "{{ entity.name }} updated successfully.",
     "Successfully{{ entity.name }}Deleted": "{{ entity.name }} deleted successfully."{% for field in entity.fields %},
-    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% endfor %}{% for rel in relationships.asChild %},
+    "{{ entity.name }}:{{ field.name }}": "{{ field.name }}"{% endfor %}{% for rel in relationships.asChild %},
     "{{ entity.name }}:{{ rel.fkFieldName }}": "{{ rel.parentEntityName }}"{% endfor %}
   }`;
 }
@@ -41,7 +41,7 @@ export function getLocalizationEntriesPtBrTemplate(): string {
     "Successfully{{ entity.name }}Created": "{{ entity.name }} criado(a) com sucesso.",
     "Successfully{{ entity.name }}Updated": "{{ entity.name }} atualizado(a) com sucesso.",
     "Successfully{{ entity.name }}Deleted": "{{ entity.name }} excluído(a) com sucesso."{% for field in entity.fields %},
-    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% endfor %}{% for rel in relationships.asChild %},
+    "{{ entity.name }}:{{ field.name }}": "{{ field.name }}"{% endfor %}{% for rel in relationships.asChild %},
     "{{ entity.name }}:{{ rel.fkFieldName }}": "{{ rel.parentEntityName }}"{% endfor %}
   }`;
 }

@@ -5,7 +5,7 @@
 
 import type { ProjectConfig, ProjectCreationMode, ProjectManifest } from './types';
 
-const BRIDGE_URL = 'http://localhost:3001';
+const BRIDGE_URL = 'http://localhost:3005';
 
 /**
  * Check if Bridge API is available
@@ -171,10 +171,17 @@ export async function runTerminalCommand(id: string, command: string, cwd: strin
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, command, cwd })
         });
+
         if (!response.ok) {
-            const data = await response.json();
-            return { success: false, error: data.error || `HTTP ${response.status}` };
+            const text = await response.text();
+            try {
+                const data = JSON.parse(text);
+                return { success: false, error: data.error || `HTTP ${response.status}` };
+            } catch (e) {
+                return { success: false, error: text || `HTTP ${response.status}` };
+            }
         }
+
         return { success: true };
     } catch (e) {
         console.error('Failed to run terminal command:', e);
@@ -193,8 +200,18 @@ export async function getTerminalLogs(id: string, offset: number = 0): Promise<{
 } | null> {
     try {
         const response = await fetch(`${BRIDGE_URL}/api/terminal/logs/${id}?offset=${offset}`);
-        if (!response.ok) return null;
-        return await response.json();
+        if (!response.ok) {
+            console.error(`Terminal logs failed: HTTP ${response.status}`);
+            return null;
+        }
+
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error('Failed to parse terminal logs JSON:', text);
+            return null;
+        }
     } catch (e) {
         console.error('Failed to get terminal logs:', e);
         return null;

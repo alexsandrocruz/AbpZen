@@ -12,6 +12,7 @@ import {
     Users2,
     Network,
     ShieldCheck,
+    Box,
 } from "lucide-react";
 import React from "react";
 
@@ -101,4 +102,5 @@ export const menuItems: NavItem[] = [
     { label: "Settings", href: "/host/settings", icon: Settings, section: "host" },
     { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "host" },
     { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "host" },
+    // <GEN-MENU>
 ];

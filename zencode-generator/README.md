@@ -18,7 +18,7 @@ npm start
 
 ### URLs Locais
 - **Designer (UI)**: `http://localhost:5173`
-- **Bridge (Backend)**: `http://localhost:3001`
+- **Bridge (Backend)**: `http://localhost:3005`
 
 ## Funcionalidades
 - Modelagem Visual de Entidades (React Flow)

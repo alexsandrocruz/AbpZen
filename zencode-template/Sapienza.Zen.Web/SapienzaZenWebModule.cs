@@ -231,7 +231,7 @@ namespace Sapienza.Zen.Web
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Sapienza.Zen.Domain.Shared", Path.DirectorySeparatorChar)));
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}Sapienza.Zen.Application.Contracts", Path.DirectorySeparatorChar)));
                     options.FileSets.ReplaceEmbeddedByPhysical<SapienzaZenWebModule>(hostingEnvironment.ContentRootPath);
-                    options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
+                    // options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
                 }
             });
         }

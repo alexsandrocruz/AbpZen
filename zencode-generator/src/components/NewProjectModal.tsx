@@ -15,16 +15,16 @@ interface NewProjectModalProps {
 type WizardStep = 'name' | 'frontends' | 'destination';
 
 const FRONTEND_OPTIONS: { id: FrontendTarget; name: string; icon: React.ReactNode; description: string }[] = [
-    { id: 'razor', name: 'Razor Pages', icon: <Layout size={24} />, description: 'ASP.NET Core Razor Pages UI' },
-    { id: 'react', name: 'React (Next.js)', icon: <Layers size={24} />, description: 'Modern React with Next.js 15' },
+    { id: 'react-v2', name: 'React (Vite)', icon: <Layers size={24} />, description: 'Modern React with Vite + Tailwind 4' },
     { id: 'angular', name: 'Angular', icon: <Layers size={24} />, description: 'Angular 17+ with ABP UI' },
+    { id: 'razor', name: 'Razor Pages', icon: <Layout size={24} />, description: 'ASP.NET Core Razor Pages UI' },
 ];
 
 export default function NewProjectModal({ onClose, onCreate }: NewProjectModalProps) {
     const [step, setStep] = useState<WizardStep>('name');
     const [name, setName] = useState('');
     const [namespace, setNamespace] = useState('');
-    const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(new Set(['razor']));
+    const [selectedFrontend, setSelectedFrontend] = useState<FrontendTarget>('react-v2');
     const [creationMode, setCreationMode] = useState<ProjectCreationMode>('local');
     const [destinationPath, setDestinationPath] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -51,14 +51,8 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
         }
     };
 
-    const toggleFrontend = (frontend: FrontendTarget) => {
-        const newSet = new Set(selectedFrontends);
-        if (newSet.has(frontend)) {
-            newSet.delete(frontend);
-        } else {
-            newSet.add(frontend);
-        }
-        setSelectedFrontends(newSet);
+    const selectFrontend = (frontend: FrontendTarget) => {
+        setSelectedFrontend(frontend);
     };
 
     const handleNext = () => {
@@ -78,7 +72,7 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
         const config: ProjectConfig = {
             name,
             namespace,
-            frontends: Array.from(selectedFrontends),
+            frontends: [selectedFrontend],
             includeBackend: true,
         };
 
@@ -246,11 +240,11 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                             {/* Frontend Options */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 {FRONTEND_OPTIONS.map((frontend) => {
-                                    const isSelected = selectedFrontends.has(frontend.id);
+                                    const isSelected = selectedFrontend === frontend.id;
                                     return (
                                         <div
                                             key={frontend.id}
-                                            onClick={() => toggleFrontend(frontend.id)}
+                                            onClick={() => selectFrontend(frontend.id)}
                                             style={{
                                                 padding: '16px',
                                                 background: isSelected ? 'rgba(99, 102, 241, 0.1)' : '#0f172a',
@@ -275,14 +269,14 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                                             <div style={{
                                                 width: '24px',
                                                 height: '24px',
-                                                borderRadius: '6px',
+                                                borderRadius: '50%',
                                                 border: `2px solid ${isSelected ? '#6366f1' : '#334155'}`,
                                                 background: isSelected ? '#6366f1' : 'transparent',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                             }}>
-                                                {isSelected && <Check size={16} style={{ color: '#fff' }} />}
+                                                {isSelected && <Check size={12} style={{ color: '#fff' }} />}
                                             </div>
                                         </div>
                                     );
@@ -447,11 +441,9 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                                     <span style={{ color: '#f8fafc' }}>{name}</span>
                                     <span style={{ color: '#64748b' }}>Namespace:</span>
                                     <span style={{ color: '#f8fafc' }}>{namespace}</span>
-                                    <span style={{ color: '#64748b' }}>Frontends:</span>
+                                    <span style={{ color: '#64748b' }}>Frontend:</span>
                                     <span style={{ color: '#f8fafc' }}>
-                                        {selectedFrontends.size > 0
-                                            ? Array.from(selectedFrontends).join(', ')
-                                            : 'None (backend only)'}
+                                        {FRONTEND_OPTIONS.find(f => f.id === selectedFrontend)?.name || selectedFrontend}
                                     </span>
                                 </div>
                             </div>

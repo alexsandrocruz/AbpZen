@@ -32,7 +32,7 @@ export default function SettingsModal({
 
     const handlePickDirectory = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/pick-directory', {
+            const response = await fetch('http://localhost:3005/api/pick-directory', {
                 method: 'POST'
             });
             const data = await response.json();
@@ -52,7 +52,7 @@ export default function SettingsModal({
         if (!projectPath) return;
         setIsDetecting(true);
         try {
-            const response = await fetch('http://localhost:3001/api/detect-project-info', {
+            const response = await fetch('http://localhost:3005/api/detect-project-info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ projectPath })
@@ -73,7 +73,7 @@ export default function SettingsModal({
         setStatus('idle');
 
         try {
-            const response = await fetch('http://localhost:3001/api/save-metadata', {
+            const response = await fetch('http://localhost:3005/api/save-metadata', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ projectPath: path, metadata: { test: true } })

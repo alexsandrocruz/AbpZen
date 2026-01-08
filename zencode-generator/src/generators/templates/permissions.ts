@@ -39,7 +39,7 @@ export function getLocalizationTemplate(): string {
     "Permission:{{ entity.name }}.Delete": "Delete {{ entity.name }}",
     "Menu:{{ entity.name }}": "{{ entity.pluralName }}",
     {%- for field in entity.fields %}
-    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{% unless forloop.last %},{% endunless %}
+    "{{ entity.name }}:{{ field.name }}": "{{ field.name }}"{% unless forloop.last %},{% endunless %}
     {%- endfor %}
 }`;
 }

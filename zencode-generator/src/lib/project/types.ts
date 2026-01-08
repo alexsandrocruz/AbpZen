@@ -81,10 +81,10 @@ export const AVAILABLE_BOILERPLATES: BoilerplateInfo[] = [
         required: false,
     },
     {
-        id: 'react',
-        name: 'React (Next.js 15)',
-        description: 'Modern React frontend with Next.js',
-        sourcePath: 'zencode-template/abp-react',
+        id: 'react-v2',
+        name: 'React (Vite)',
+        description: 'Modern React with Vite + Tailwind 4',
+        sourcePath: 'zencode-template/abp-react-v2',
         required: false,
     },
     {
