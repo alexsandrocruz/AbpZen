@@ -78,9 +78,26 @@ export default function RegisterPage() {
                                 : "An administrator will evaluate your access request soon. You will receive an email once approved."}
                         </p>
                     </CardContent>
-                    <CardFooter>
-                        <Button onClick={() => setLocation("/auth/login")} className="w-full h-11">
-                            Back to Login
+                    <CardFooter className="flex flex-col gap-3">
+                        {isRoot ? (
+                            <Button
+                                onClick={() => {
+                                    const format = import.meta.env.VITE_TENANT_DOMAIN_FORMAT || "{0}.zensuite.com.br";
+                                    const subdomain = workspaceName.toLowerCase().replace(/\s+/g, '-');
+                                    const newDomain = format.replace("{0}", subdomain);
+                                    window.location.href = `${window.location.protocol}//${newDomain}/auth/login`;
+                                }}
+                                className="w-full h-11 bg-green-600 hover:bg-green-700 shadow-lg shadow-green-500/20"
+                            >
+                                Go to Workspace
+                            </Button>
+                        ) : (
+                            <Button onClick={() => setLocation("/auth/login")} className="w-full h-11">
+                                Back to Login
+                            </Button>
+                        )}
+                        <Button variant="ghost" onClick={() => setLocation("/auth/login")} className="w-full">
+                            Cancel
                         </Button>
                     </CardFooter>
                 </Card>

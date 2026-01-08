@@ -6,7 +6,12 @@ import {
     Settings,
     Crown,
     User,
-    UserPlus
+    UserPlus,
+    FileText,
+    ShieldAlert,
+    Users2,
+    Network,
+    ShieldCheck,
 } from "lucide-react";
 import React from "react";
 
@@ -18,6 +23,10 @@ import HostRolesPage from "@/pages/host/roles";
 import HostSettingsPage from "@/pages/host/settings";
 import HostEditionsPage from "@/pages/host/editions";
 import InvitationsPage from "@/pages/host/invitations";
+import AuditLogsPage from "@/pages/host/audit-logs";
+import SecurityLogsPage from "@/pages/host/security-logs";
+import OrgUnitsPage from "@/pages/host/org-units";
+import PermissionGroupsPage from "@/pages/host/permission-groups";
 import LoginPage from "@/pages/auth/login";
 import RegisterPage from "@/pages/auth/register";
 import ForgotPasswordPage from "@/pages/auth/forgot-password";
@@ -26,10 +35,11 @@ import ProfilePage from "@/pages/profile";
 
 export interface NavItem {
     label: string;
-    href: string;
+    href?: string;
     icon: any; // LucideIcon
     section?: "main" | "host" | "admin" | "entities";
     permission?: string;
+    items?: NavItem[];
 }
 
 export interface RouteConfig {
@@ -52,6 +62,10 @@ export const routes: RouteConfig[] = [
     { path: "/host/settings", component: HostSettingsPage },
     { path: "/host/editions", component: HostEditionsPage },
     { path: "/host/invitations", component: InvitationsPage },
+    { path: "/host/audit-logs", component: AuditLogsPage },
+    { path: "/host/security-logs", component: SecurityLogsPage },
+    { path: "/host/org-units", component: OrgUnitsPage },
+    { path: "/host/permission-groups", component: PermissionGroupsPage },
     // <GEN-ROUTES>
 ];
 
@@ -59,14 +73,24 @@ export const menuItems: NavItem[] = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, section: "main" },
     { label: "My Profile", href: "/profile", icon: User, section: "main" },
 
-    // Identity Management (Admin)
-    { label: "Users", href: "/host/users", icon: Users, section: "admin" },
-    { label: "Roles", href: "/host/roles", icon: Shield, section: "admin" },
+    // Administration (Grouped as ABP does)
+    {
+        label: "Identity Management",
+        icon: Users2,
+        section: "admin",
+        items: [
+            { label: "Organization Units", href: "/host/org-units", icon: Network },
+            { label: "Permission Groups", href: "/host/permission-groups", icon: ShieldCheck },
+            { label: "Roles", href: "/host/roles", icon: Shield },
+            { label: "Users", href: "/host/users", icon: Users },
+            { label: "Security Logs", href: "/host/security-logs", icon: ShieldAlert },
+        ]
+    },
 
     // Host Administration
     { label: "Workspaces", href: "/host/workspaces", icon: Building2, section: "host" },
     { label: "Editions", href: "/host/editions", icon: Crown, section: "host" },
     { label: "Settings", href: "/host/settings", icon: Settings, section: "host" },
-    { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "admin" },
-    // <GEN-MENU>
+    { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "host" },
+    { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "host" },
 ];

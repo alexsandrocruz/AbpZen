@@ -1,14 +1,17 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 import {
     LayoutDashboard,
     LogOut,
     Settings,
     X,
     Menu,
+    ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { menuItems } from "@/config/navigation";
+import { menuItems, type NavItem } from "@/config/navigation";
+import * as Collapsible from "@radix-ui/react-collapsible";
 
 interface SidebarProps {
     isOpen?: boolean;
@@ -25,10 +28,15 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
     const hostItems = menuItems.filter(item => item.section === "host");
     const entityItems = menuItems.filter(item => item.section === "entities");
 
-    const renderNavItem = (item: any) => {
-        const isActive = location === item.href || location.startsWith(`${item.href}/`);
+    const renderNavItem = (item: NavItem) => {
+        if (item.items && item.items.length > 0) {
+            return <CollapsibleNavItem key={item.label} item={item} currentLocation={location} />;
+        }
+
+        const isActive = location === item.href || (item.href !== "/" && location.startsWith(`${item.href}/`));
+
         return (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} href={item.href!}>
                 <div
                     className={cn(
                         "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative cursor-pointer",
@@ -83,12 +91,12 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
                 </div>
 
                 {/* Navigation */}
-                <div className="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
+                <div className="flex-1 py-6 px-3 space-y-1 overflow-y-auto custom-scrollbar">
                     {mainItems.map(renderNavItem)}
 
                     {adminItems.length > 0 && (
                         <div className="pt-4 mt-4 border-t border-sidebar-border">
-                            <span className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
                                 Administration
                             </span>
                             <div className="mt-2 space-y-1">
@@ -99,7 +107,7 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
 
                     {hostItems.length > 0 && (
                         <div className="pt-4 mt-4 border-t border-sidebar-border">
-                            <span className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
                                 Host Admin
                             </span>
                             <div className="mt-2 space-y-1">
@@ -110,7 +118,7 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
 
                     {entityItems.length > 0 && (
                         <div className="pt-4 mt-4 border-t border-sidebar-border">
-                            <span className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
                                 Entities
                             </span>
                             <div className="mt-2 space-y-1">
@@ -122,7 +130,7 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
 
                 {/* Footer */}
                 <div className="p-3 border-t border-sidebar-border space-y-1">
-                    <Link href="/settings">
+                    <Link href="/host/settings">
                         <div
                             className={cn(
                                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer",
@@ -145,6 +153,60 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
                 </div>
             </div>
         </>
+    );
+}
+
+function CollapsibleNavItem({ item, currentLocation }: { item: NavItem, currentLocation: string }) {
+    const isChildActive = item.items?.some(child =>
+        currentLocation === child.href || (child.href !== "/" && currentLocation.startsWith(`${child.href}/`))
+    );
+
+    const [isOpen, setIsOpen] = useState(isChildActive);
+
+    // Auto-expand if a child is active
+    useEffect(() => {
+        if (isChildActive) setIsOpen(true);
+    }, [isChildActive]);
+
+    return (
+        <Collapsible.Root open={isOpen} onOpenChange={setIsOpen} className="w-full">
+            <Collapsible.Trigger asChild>
+                <div
+                    className={cn(
+                        "flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group cursor-pointer",
+                        isOpen
+                            ? "text-sidebar-foreground bg-sidebar-accent/30"
+                            : "text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    )}
+                >
+                    <div className="flex items-center gap-3">
+                        <item.icon className={cn("size-5", isOpen ? "text-primary" : "text-muted-foreground group-hover:text-primary")} />
+                        {item.label}
+                    </div>
+                    <ChevronRight className={cn("size-4 transition-transform duration-200", isOpen && "rotate-90")} />
+                </div>
+            </Collapsible.Trigger>
+
+            <Collapsible.Content className="pl-9 pr-2 space-y-1 mt-1 overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2">
+                {item.items?.map(child => {
+                    const isActive = currentLocation === child.href || (child.href !== "/" && currentLocation.startsWith(`${child.href}/`));
+                    return (
+                        <Link key={child.href} href={child.href!}>
+                            <div
+                                className={cn(
+                                    "px-3 py-2 rounded-md text-xs font-medium transition-all duration-200 cursor-pointer",
+                                    isActive
+                                        ? "bg-primary/10 text-primary"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/30"
+                                )}
+                            >
+                                {child.label}
+                            </div>
+                        </Link>
+                    );
+                })}
+            </Collapsible.Content>
+        </Collapsible.Root>
     );
 }
 
