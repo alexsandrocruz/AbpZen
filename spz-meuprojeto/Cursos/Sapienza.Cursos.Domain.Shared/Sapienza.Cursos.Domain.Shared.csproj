@@ -36,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Localization\Cursos\*.json" />
+    <Content Remove="Localization\Cursos\*.json" />
     <EmbeddedResource Include="Localization\Sapienza.Cursos\*.json" />
     <Content Remove="Localization\Sapienza.Cursos\*.json" />
   </ItemGroup>

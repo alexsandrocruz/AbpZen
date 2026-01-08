@@ -65,6 +65,7 @@ namespace Sapienza.Cursos
                 options.Resources
                     .Add<CursosResource>("en")
                     .AddBaseTypes(typeof(AbpValidationResource))
+                    .AddVirtualJson("/Localization/Cursos")
                     .AddVirtualJson("/Localization/Sapienza.Cursos");
 
                 options.DefaultResourceType = typeof(CursosResource);
