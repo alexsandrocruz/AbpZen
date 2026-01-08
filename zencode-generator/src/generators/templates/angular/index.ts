@@ -92,8 +92,8 @@ export function getAngularComponentTsTemplate(): string {
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
-import { {{ entity.name }}Service } from '@proxy/{{ entity.namespace | kebabCase }}';
-import { {{ entity.name }}Dto } from '@proxy/{{ entity.namespace | kebabCase }}/dtos';
+import { {{ entity.name }}Service } from '@proxy/{{ entity.name | kebabCase }}';
+import { {{ entity.name }}Dto } from '@proxy/{{ entity.name | kebabCase }}/dtos';
 
 @Component({
   selector: 'app-{{ entity.name | kebabCase }}',

@@ -2,8 +2,8 @@ import { ListService, PagedResultDto } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
-import { TurmaService } from '@proxy/sapienza.cursos.turma';
-import { TurmaDto } from '@proxy/sapienza.cursos.turma/dtos';
+import { TurmaService } from '@proxy/turma';
+import { TurmaDto } from '@proxy/turma/dtos';
 
 @Component({
   selector: 'app-turma',
@@ -22,7 +22,7 @@ export class TurmaComponent implements OnInit {
     private turmaService: TurmaService,
     private fb: FormBuilder,
     private confirmation: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const streamCreator = (query) => this.turmaService.getList(query);
@@ -56,12 +56,12 @@ export class TurmaComponent implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-      
+
       nome: [
-        this.selectedTurma.nome || '', 
+        this.selectedTurma.nome || '',
         []
       ],
-      
+
     });
   }
 

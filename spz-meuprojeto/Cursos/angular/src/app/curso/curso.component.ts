@@ -2,8 +2,8 @@ import { ListService, PagedResultDto } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Confirmation, ConfirmationService } from '@abp/ng.theme.shared';
-import { CursoService } from '@proxy/sapienza.cursos.curso';
-import { CursoDto } from '@proxy/sapienza.cursos.curso/dtos';
+import { CursoService } from '@proxy/curso';
+import { CursoDto } from '@proxy/curso/dtos';
 
 @Component({
   selector: 'app-curso',
@@ -22,7 +22,7 @@ export class CursoComponent implements OnInit {
     private cursoService: CursoService,
     private fb: FormBuilder,
     private confirmation: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const streamCreator = (query) => this.cursoService.getList(query);
@@ -56,12 +56,12 @@ export class CursoComponent implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-      
+
       name: [
-        this.selectedCurso.name || '', 
+        this.selectedCurso.name || '',
         []
       ],
-      
+
     });
   }
 

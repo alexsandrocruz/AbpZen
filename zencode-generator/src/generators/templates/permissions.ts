@@ -6,7 +6,7 @@ export function getPermissionsTemplate(): string {
 
 public static class {{ entity.name }}Permissions
 {
-    public const string GroupName = "{{ project.shortName }}";
+    public const string GroupName = "{{ project.name }}";
     
     public const string Default = GroupName + ".{{ entity.name }}";
     public const string Create = Default + ".Create";

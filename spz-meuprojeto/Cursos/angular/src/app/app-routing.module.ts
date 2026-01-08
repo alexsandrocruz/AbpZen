@@ -62,10 +62,20 @@ const routes: Routes = [
     path: 'gdpr',
     loadChildren: () => import('@volo/abp.ng.gdpr').then(m => m.GdprModule.forLazy()),
   },
+  {
+    path: 'cursos',
+    loadChildren: () => import('./curso/curso.module').then(m => m.CursoModule),
+    canActivate: [authGuard, permissionGuard],
+  },
+  {
+    path: 'turmas',
+    loadChildren: () => import('./turma/turma.module').then(m => m.TurmaModule),
+    canActivate: [authGuard, permissionGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {})],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
