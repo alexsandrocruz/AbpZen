@@ -3,6 +3,7 @@ import { Sidebar, SidebarTrigger } from "./sidebar";
 import { Bell, Search, Plus, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 interface ShellProps {
     children: React.ReactNode;
@@ -43,6 +44,8 @@ export function Shell({ children, appName = "AbpReact" }: ShellProps) {
                                 <Plus className="size-4" />
                                 <span className="hidden sm:inline">New</span>
                             </Button>
+
+                            <ThemeToggle />
 
                             <Button variant="ghost" size="icon">
                                 <Bell className="size-5" />
