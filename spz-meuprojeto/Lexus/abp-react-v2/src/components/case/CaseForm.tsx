@@ -15,13 +15,15 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useCreateCase, useUpdateCase } from "@/lib/abp/hooks/useCases";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  
+
   caseNumber: z.any(),
-  
+
   title: z.any(),
-  
+
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -38,7 +40,7 @@ export function CaseForm({
   initialValues,
 }: CaseFormProps) {
   const isEditing = !!initialValues;
-  
+
   const {
     register,
     handleSubmit,
@@ -59,10 +61,24 @@ export function CaseForm({
     }
   }, [initialValues, reset]);
 
+  const createMutation = useCreateCase();
+  const updateMutation = useUpdateCase();
+
   const onSubmit = async (data: FormValues) => {
-    console.log("Submitting Case:", data);
-    // TODO: Implement API call
-    onClose();
+    try {
+      console.log("Submitting Case:", data);
+      if (isEditing) {
+        await updateMutation.mutateAsync({ id: initialValues.id, data });
+        toast.success("Case updated successfully");
+      } else {
+        await createMutation.mutateAsync(data);
+        toast.success("Case created successfully");
+      }
+      onClose();
+    } catch (error: any) {
+      console.error("Failed to save case:", error);
+      toast.error(error.message || "Failed to save case");
+    }
   };
 
   return (
@@ -75,21 +91,21 @@ export function CaseForm({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          
+
           <div className="space-y-2">
             <Label htmlFor="caseNumber">CaseNumber</Label>
-            
+
             <Input id="caseNumber" {...register("caseNumber")} />
-            
+
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="title">Title</Label>
-            
+
             <Input id="title" {...register("title")} />
-            
+
           </div>
-          
+
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>

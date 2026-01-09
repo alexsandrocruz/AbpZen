@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetLawyersInput {
@@ -33,5 +33,43 @@ export function useLawyer(id: string) {
       return response.data;
     },
     enabled: !!id,
+  });
+}
+export function useCreateLawyer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiClient.post("/api/app/lawyer", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lawyers"] });
+    },
+  });
+}
+
+export function useUpdateLawyer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const response = await apiClient.put(`/api/app/lawyer/${id}`, data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["lawyers"] });
+      queryClient.invalidateQueries({ queryKey: ["lawyer", data.id] });
+    },
+  });
+}
+
+export function useDeleteLawyer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient.delete(`/api/app/lawyer/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lawyers"] });
+    },
   });
 }

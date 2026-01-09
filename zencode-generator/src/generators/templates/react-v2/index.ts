@@ -64,7 +64,7 @@ export default function {{ entity.pluralName }}Page() {
 
 export function getReactV2ListComponentTemplate(): string {
   return `import { useMemo, useState } from "react";
-import { use{{ entity.pluralName }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+import { use{{ entity.pluralName }}, useDelete{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
 import {
   Table,
   TableBody,
@@ -78,6 +78,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,6 +97,18 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
   const { data, isLoading, isError } = use{{ entity.pluralName }}({
     filter: searchTerm,
   });
+  const deleteMutation = useDelete{{ entity.name }}();
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Are you sure you want to delete this {{ entity.name | downcase }}?")) {
+      try {
+        await deleteMutation.mutateAsync(id);
+        toast.success("{{ entity.name }} deleted successfully");
+      } catch (error: any) {
+        toast.error(error.message || "Failed to delete {{ entity.name | downcase }}");
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -158,7 +171,10 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
                         <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">
+                      <DropdownMenuItem 
+                        className="text-destructive"
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete
                       </DropdownMenuItem>
@@ -180,7 +196,8 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
     </Card>
   );
 }
-`;
+`
+    ;
 }
 
 // ============ FORM COMPONENT TEMPLATE ============
@@ -203,6 +220,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useCreate{{ entity.name }}, useUpdate{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   {% for field in entity.fields %}
@@ -245,10 +264,23 @@ export function {{ entity.name }}Form({
     }
   }, [initialValues, reset]);
 
+  const createMutation = useCreate{{ entity.name }}();
+  const updateMutation = useUpdate{{ entity.name }}();
+
   const onSubmit = async (data: FormValues) => {
-    console.log("Submitting {{ entity.name }}:", data);
-    // TODO: Implement API call
-    onClose();
+    try {
+      if (isEditing) {
+        await updateMutation.mutateAsync({ id: initialValues.id, data });
+        toast.success("{{ entity.name }} updated successfully");
+      } else {
+        await createMutation.mutateAsync(data);
+        toast.success("{{ entity.name }} created successfully");
+      }
+      onClose();
+    } catch (error: any) {
+      console.error("Failed to save {{ entity.name | downcase }}:", error);
+      toast.error(error.message || "Failed to save {{ entity.name | downcase }}");
+    }
   };
 
   return (
@@ -305,7 +337,7 @@ export function {{ entity.name }}Form({
 // ============ HOOK TEMPLATE ============
 
 export function getReactV2HookTemplate(): string {
-  return `import { useQuery } from "@tanstack/react-query";
+  return `import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface Get{{ entity.pluralName }}Input {
@@ -342,5 +374,44 @@ export function use{{ entity.name }}(id: string) {
     enabled: !!id,
   });
 }
-`;
+
+export function useCreate{{ entity.name }}() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiClient.post("/api/app/{{ entity.name | kebabCase }}", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.pluralName | camelCase }}"] });
+    },
+  });
+}
+
+export function useUpdate{{ entity.name }}() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      const response = await apiClient.put(\`/api/app/{{ entity.name | kebabCase }}/\${id}\`, data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.pluralName | camelCase }}"] });
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.name | camelCase }}", data.id] });
+    },
+  });
+}
+
+export function useDelete{{ entity.name }}() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient.delete(\`/api/app/{{ entity.name | kebabCase }}/\${id}\`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.pluralName | camelCase }}"] });
+    },
+  });
+}
+`
 }

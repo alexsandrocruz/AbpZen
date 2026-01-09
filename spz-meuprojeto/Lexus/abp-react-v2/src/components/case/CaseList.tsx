@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { useCases } from "@/lib/abp/hooks/useCases";
+import { useCases, useDeleteCase } from "@/lib/abp/hooks/useCases";
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -31,6 +32,18 @@ export function CaseList({ onEdit }: CaseListProps) {
   const { data, isLoading, isError } = useCases({
     filter: searchTerm,
   });
+  const deleteMutation = useDeleteCase();
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Are you sure you want to delete this case?")) {
+      try {
+        await deleteMutation.mutateAsync(id);
+        toast.success("Case deleted successfully");
+      } catch (error: any) {
+        toast.error(error.message || "Failed to delete case");
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -57,30 +70,30 @@ export function CaseList({ onEdit }: CaseListProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              
+
               <TableHead>CaseNumber</TableHead>
-              
+
               <TableHead>Title</TableHead>
-              
+
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data?.items?.map((item: any) => (
               <TableRow key={item.id}>
-                
+
                 <TableCell>
-                  
+
                   {item.caseNumber}
-                  
+
                 </TableCell>
-                
+
                 <TableCell>
-                  
+
                   {item.title}
-                  
+
                 </TableCell>
-                
+
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -95,7 +108,10 @@ export function CaseList({ onEdit }: CaseListProps) {
                         <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete
                       </DropdownMenuItem>

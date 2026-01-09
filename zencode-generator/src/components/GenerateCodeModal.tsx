@@ -432,6 +432,11 @@ export default function GenerateCodeModal({
                         file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
                         marker: 'ZenCode-PermissionDefinition-Marker',
                         content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
+                    },
+                    {
+                        file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
+                        marker: '<GEN-MAPPINGS>',
+                        content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
                     }
                 ]);
 
@@ -541,6 +546,11 @@ export default function GenerateCodeModal({
                     file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
                     marker: 'ZenCode-PermissionDefinition-Marker',
                     content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
+                },
+                {
+                    file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
+                    marker: '<GEN-MAPPINGS>',
+                    content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
                 }
             ]);
 

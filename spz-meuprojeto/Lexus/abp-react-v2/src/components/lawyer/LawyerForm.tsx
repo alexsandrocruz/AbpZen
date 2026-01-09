@@ -15,13 +15,15 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useCreateLawyer, useUpdateLawyer } from "@/lib/abp/hooks/useLawyers";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  
+
   fullName: z.any(),
-  
+
   preferredName: z.any(),
-  
+
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -38,7 +40,7 @@ export function LawyerForm({
   initialValues,
 }: LawyerFormProps) {
   const isEditing = !!initialValues;
-  
+
   const {
     register,
     handleSubmit,
@@ -59,10 +61,24 @@ export function LawyerForm({
     }
   }, [initialValues, reset]);
 
+  const createMutation = useCreateLawyer();
+  const updateMutation = useUpdateLawyer();
+
   const onSubmit = async (data: FormValues) => {
-    console.log("Submitting Lawyer:", data);
-    // TODO: Implement API call
-    onClose();
+    try {
+      console.log("Submitting Lawyer:", data);
+      if (isEditing) {
+        await updateMutation.mutateAsync({ id: initialValues.id, data });
+        toast.success("Lawyer updated successfully");
+      } else {
+        await createMutation.mutateAsync(data);
+        toast.success("Lawyer created successfully");
+      }
+      onClose();
+    } catch (error: any) {
+      console.error("Failed to save lawyer:", error);
+      toast.error(error.message || "Failed to save lawyer");
+    }
   };
 
   return (
@@ -75,21 +91,21 @@ export function LawyerForm({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          
+
           <div className="space-y-2">
             <Label htmlFor="fullName">FullName</Label>
-            
+
             <Input id="fullName" {...register("fullName")} />
-            
+
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="preferredName">PreferredName</Label>
-            
+
             <Input id="preferredName" {...register("preferredName")} />
-            
+
           </div>
-          
+
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
