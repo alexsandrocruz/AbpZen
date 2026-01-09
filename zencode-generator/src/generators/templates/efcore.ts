@@ -51,3 +51,11 @@ export function getDbContextPropertyTemplate(): string {
     return `    public DbSet<{{ entity.name }}> {{ entity.pluralName }} { get; set; }
 `;
 }
+
+/**
+ * MongoDb context property template
+ */
+export function getMongoDbContextPropertyTemplate(): string {
+    return `    public IMongoCollection<{{ entity.namespace }}.{{ entity.name }}> {{ entity.pluralName }} => Collection<{{ entity.namespace }}.{{ entity.name }}>();
+`;
+}

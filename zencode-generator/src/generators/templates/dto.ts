@@ -123,6 +123,7 @@ namespace {{ entity.namespace }}.Dtos;
 [Serializable]
 public class {{ entity.name }}GetListInput : PagedAndSortedResultRequestDto
 {
+    public string? Filter { get; set; }
     {%- for field in entity.fields %}
     {%- if field.isFilterable %}
     {%- assign isFk = false %}
