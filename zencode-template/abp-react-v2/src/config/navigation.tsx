@@ -18,6 +18,7 @@ import React from "react";
 
 // Page Imports
 import DashboardPage from "@/pages/dashboard";
+import TenantDashboardPage from "@/pages/dashboard/tenant-dashboard";
 import HostWorkspacesPage from "@/pages/host/workspaces";
 import HostUsersPage from "@/pages/host/users";
 import HostRolesPage from "@/pages/host/roles";
@@ -55,6 +56,7 @@ export interface RouteConfig {
 
 export const routes: RouteConfig[] = [
     { path: "/dashboard", component: DashboardPage },
+    { path: "/tenant-dashboard", component: TenantDashboardPage },
     { path: "/auth/login", component: LoginPage },
     { path: "/auth/register", component: RegisterPage },
     { path: "/auth/forgot-password", component: ForgotPasswordPage },
@@ -82,7 +84,11 @@ export const menuItems: NavItem[] = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, section: "main" },
     { label: "My Profile", href: "/profile", icon: User, section: "main" },
 
-    // Administration (Grouped as ABP does)
+    // Host Administration
+    { label: "Workspaces", href: "/host/workspaces", icon: Building2, section: "host" },
+    { label: "Editions", href: "/host/editions", icon: Crown, section: "host" },
+
+    // Administration (Tenant / Shared)
     {
         label: "Identity Management",
         icon: Users2,
@@ -95,12 +101,8 @@ export const menuItems: NavItem[] = [
             { label: "Security Logs", href: "/host/security-logs", icon: ShieldAlert },
         ]
     },
-
-    // Host Administration
-    { label: "Workspaces", href: "/host/workspaces", icon: Building2, section: "host" },
-    { label: "Editions", href: "/host/editions", icon: Crown, section: "host" },
-    { label: "Settings", href: "/host/settings", icon: Settings, section: "host" },
-    { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "host" },
-    { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "host" },
+    { label: "Settings", href: "/host/settings", icon: Settings, section: "admin" },
+    { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "admin" },
+    { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "admin" },
     // <GEN-MENU>
 ];

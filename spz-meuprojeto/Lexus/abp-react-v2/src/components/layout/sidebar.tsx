@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { menuItems, type NavItem } from "@/config/navigation";
 import * as Collapsible from "@radix-ui/react-collapsible";
+import { useAbpPermissions } from "@/lib/abp/config";
 
 interface SidebarProps {
     isOpen?: boolean;
@@ -21,11 +22,19 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: SidebarProps) {
     const [location] = useLocation();
+    const { currentTenant } = useAbpPermissions();
+    const isHost = !currentTenant?.id || currentTenant?.id === null;
 
     // Group items by section
-    const mainItems = menuItems.filter(item => item.section === "main");
+    const mainItems = menuItems.filter(item => item.section === "main").map(item => {
+        // If tenant, point Dashboard to tenant-dashboard
+        if (item.label === "Dashboard" && !isHost) {
+            return { ...item, href: "/tenant-dashboard" };
+        }
+        return item;
+    });
     const adminItems = menuItems.filter(item => item.section === "admin");
-    const hostItems = menuItems.filter(item => item.section === "host");
+    const hostItems = isHost ? menuItems.filter(item => item.section === "host") : [];
     const entityItems = menuItems.filter(item => item.section === "entities");
 
     const renderNavItem = (item: NavItem) => {
@@ -94,17 +103,6 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
                 <div className="flex-1 py-6 px-3 space-y-1 overflow-y-auto custom-scrollbar">
                     {mainItems.map(renderNavItem)}
 
-                    {adminItems.length > 0 && (
-                        <div className="pt-4 mt-4 border-t border-sidebar-border">
-                            <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
-                                Administration
-                            </span>
-                            <div className="mt-2 space-y-1">
-                                {adminItems.map(renderNavItem)}
-                            </div>
-                        </div>
-                    )}
-
                     {hostItems.length > 0 && (
                         <div className="pt-4 mt-4 border-t border-sidebar-border">
                             <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
@@ -123,6 +121,17 @@ export function Sidebar({ isOpen = true, onClose, appName = "AbpReact" }: Sideba
                             </span>
                             <div className="mt-2 space-y-1">
                                 {entityItems.map(renderNavItem)}
+                            </div>
+                        </div>
+                    )}
+
+                    {adminItems.length > 0 && (
+                        <div className="pt-4 mt-4 border-t border-sidebar-border">
+                            <span className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-50">
+                                Administration
+                            </span>
+                            <div className="mt-2 space-y-1">
+                                {adminItems.map(renderNavItem)}
                             </div>
                         </div>
                     )}
