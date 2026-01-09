@@ -58,7 +58,7 @@ apiClient.interceptors.response.use(
                     const response = await axios.post(`${API_BASE_URL}/connect/token`, {
                         grant_type: "refresh_token",
                         refresh_token: refreshToken,
-                        client_id: import.meta.env.VITE_OIDC_CLIENT_ID || "MyProject_App",
+                        client_id: import.meta.env.VITE_OIDC_CLIENT_ID || "Sapienza.Lexus_App",
                     });
 
                     const { access_token, refresh_token } = response.data;

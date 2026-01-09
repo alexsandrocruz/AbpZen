@@ -18,7 +18,22 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://localhost:44300',
+        target: 'https://localhost:44322',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/connect': {
+        target: 'https://localhost:44322',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/Account': {
+        target: 'https://localhost:44322',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/.well-known': {
+        target: 'https://localhost:44322',
         changeOrigin: true,
         secure: false,
       },

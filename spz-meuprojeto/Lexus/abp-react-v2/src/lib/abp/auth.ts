@@ -51,8 +51,8 @@ export const useAuth = create<AuthState>()(
                 set({ isLoading: true, error: null });
 
                 try {
-                    const clientId = import.meta.env.VITE_OIDC_CLIENT_ID || "MyProject_App";
-                    const scope = import.meta.env.VITE_OIDC_SCOPE || "openid profile email offline_access";
+                    const clientId = import.meta.env.VITE_OIDC_CLIENT_ID || "Sapienza.Lexus_App";
+                    const scope = import.meta.env.VITE_OIDC_SCOPE || "openid profile email offline_access Sapienza.Lexus";
 
                     // Request token from OpenIddict
                     const params = new URLSearchParams();
@@ -124,7 +124,7 @@ export const useAuth = create<AuthState>()(
                 }
 
                 try {
-                    const clientId = import.meta.env.VITE_OIDC_CLIENT_ID || "MyProject_App";
+                    const clientId = import.meta.env.VITE_OIDC_CLIENT_ID || "Sapienza.Lexus_App";
 
                     const params = new URLSearchParams();
                     params.append("grant_type", "refresh_token");
