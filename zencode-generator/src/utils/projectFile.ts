@@ -1,10 +1,11 @@
 import type { Node, Edge } from 'reactflow';
-import type { EntityData } from '../types';
+import type { EntityData, FrontendTarget } from '../types';
 
 export interface ProjectConfig {
     projectName: string;  // Detected/configured project name for code generation
     namespace: string;    // Detected/configured namespace for code generation
     projectPath: string;  // Path to the ABP project folder
+    frontends?: FrontendTarget[]; // Optional frontend targets (e.g., ['react-v2', 'angular'])
 }
 
 export interface ProjectFile {

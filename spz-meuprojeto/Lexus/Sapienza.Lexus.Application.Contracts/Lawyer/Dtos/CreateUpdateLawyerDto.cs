@@ -11,7 +11,10 @@ public class CreateUpdateLawyerDto
     /// Id for Master-Detail reconciliation (empty = new item)
     /// </summary>
     public Guid Id { get; set; }
+    [Required]
+    [StringLength(128)]
     public string FullName { get; set; }
+    [StringLength(64)]
     public string PreferredName { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========

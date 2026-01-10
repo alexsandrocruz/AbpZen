@@ -125,6 +125,7 @@ public class CaseAppService :
     protected virtual IQueryable<Sapienza.Lexus.Case.Case> ApplyFilters(IQueryable<Sapienza.Lexus.Case.Case> queryable, CaseGetListInput input)
     {
         return queryable
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.CaseNumber.Contains(input.Filter) || x.Title.Contains(input.Filter))
             .WhereIf(!input.CaseNumber.IsNullOrWhiteSpace(), x => x.CaseNumber.Contains(input.CaseNumber))
             .WhereIf(!input.Title.IsNullOrWhiteSpace(), x => x.Title.Contains(input.Title))
             // ========== FK Filters ==========

@@ -284,12 +284,14 @@ public class {{ entity.name }}AppService :
     protected virtual IQueryable<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}> ApplyFilters(IQueryable<{{ project.namespace }}.{{ entity.name }}.{{ entity.name }}> queryable, {{ entity.name }}GetListInput input)
     {
         return queryable
+            {%- assign stringFields = entity.fields | where: "isFilterable", true | where: "type", "string" -%}
+            {%- if stringFields.size > 0 %}
             .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x => 
-                {%- assign stringFields = entity.fields | where: "isFilterable", true | where: "type", "string" -%}
                 {%- for field in stringFields -%}
                 x.{{ field.name }}.Contains(input.Filter){% unless forloop.last %} || {% endunless %}
                 {%- endfor -%}
             )
+            {%- endif %}
             {%- for field in entity.fields %}
             {%- if field.isFilterable %}
             {%- if field.type == 'string' %}

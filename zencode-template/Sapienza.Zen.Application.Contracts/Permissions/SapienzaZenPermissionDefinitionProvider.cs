@@ -16,7 +16,7 @@ namespace Sapienza.Zen.Permissions
 
             //Define your own permissions here. Example:
             //myGroup.AddPermission(SapienzaZenPermissions.MyPermission1, L("Permission:MyPermission1"));
-            // <ZenCode-PermissionDefinition-Marker>
+            // <<ZenCode-PermissionDefinition-Marker>>
         }
 
         private static LocalizableString L(string name)

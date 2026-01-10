@@ -11,6 +11,9 @@ public static class LawyerDbContextModelCreatingExtensions
         {
             b.ToTable(LexusConsts.DbTablePrefix + "Lawyers", LexusConsts.DbSchema);
             b.ConfigureByConvention();
+            b.Property(x => x.FullName).HasMaxLength(128);
+            b.Property(x => x.FullName).IsRequired();
+            b.Property(x => x.PreferredName).HasMaxLength(64);
 
             // ========== Relationship Configuration (1:N) ==========
         });

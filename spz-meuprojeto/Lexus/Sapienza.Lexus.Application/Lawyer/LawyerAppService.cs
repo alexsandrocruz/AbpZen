@@ -125,9 +125,7 @@ public class LawyerAppService :
     protected virtual IQueryable<Sapienza.Lexus.Lawyer.Lawyer> ApplyFilters(IQueryable<Sapienza.Lexus.Lawyer.Lawyer> queryable, LawyerGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x => 
-                x.FullName.Contains(input.Filter) || 
-                x.PreferredName.Contains(input.Filter))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.FullName.Contains(input.Filter) || x.PreferredName.Contains(input.Filter))
             .WhereIf(!input.FullName.IsNullOrWhiteSpace(), x => x.FullName.Contains(input.FullName))
             .WhereIf(!input.PreferredName.IsNullOrWhiteSpace(), x => x.PreferredName.Contains(input.PreferredName))
             // ========== FK Filters ==========

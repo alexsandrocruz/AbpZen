@@ -6,6 +6,7 @@ namespace Sapienza.Lexus.Case.Dtos;
 [Serializable]
 public class CaseGetListInput : PagedAndSortedResultRequestDto
 {
+    public string? Filter { get; set; }
     public string? CaseNumber { get; set; }
     public string? Title { get; set; }
 

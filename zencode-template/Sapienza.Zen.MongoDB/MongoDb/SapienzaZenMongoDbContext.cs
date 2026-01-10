@@ -12,6 +12,7 @@ namespace Sapienza.Zen.MongoDB
         /* Add mongo collections here. Example:
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
+        // <<GEN-MONGODB-COLLECTIONS>>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

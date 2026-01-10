@@ -491,6 +491,12 @@ function App() {
         setProjectName(project.config.projectName || project.name);
         setProjectNamespace(project.config.namespace || '');
         setProjectPath(project.config.projectPath || '');
+
+        // Load frontends from config if available
+        if (project.config.frontends && Array.isArray(project.config.frontends)) {
+          setProjectFrontends(project.config.frontends);
+          localStorage.setItem('zen_project_frontends', JSON.stringify(project.config.frontends));
+        }
       } else {
         setProjectName(project.name);
       }

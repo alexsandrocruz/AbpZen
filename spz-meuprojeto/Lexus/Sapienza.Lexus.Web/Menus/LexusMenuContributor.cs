@@ -102,6 +102,10 @@ namespace Sapienza.Lexus.Web.Menus
 
                         context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.Lawyer, l["Menu:Lawyers"], "~/Lawyer", icon: "fa fa-folder-open").RequirePermissions(LawyerPermissions.Default));
                   context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.Case, l["Menu:Cases"], "~/Case", icon: "fa fa-folder-open").RequirePermissions(CasePermissions.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.Client, l["Menu:Clients"], "~/Client", icon: "fa fa-folder-open").RequirePermissions(ClientPermissions.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.Specialization, l["Menu:Specializations"], "~/Specialization", icon: "fa fa-folder-open").RequirePermissions(SpecializationPermissions.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.LegalProcess, l["Menu:LegalProcesses"], "~/LegalProcess", icon: "fa fa-folder-open").RequirePermissions(LegalProcessPermissions.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LexusMenus.LawyerSpecialization, l["Menu:LawyerSpecializations"], "~/LawyerSpecialization", icon: "fa fa-folder-open").RequirePermissions(LawyerSpecializationPermissions.Default));
       // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;

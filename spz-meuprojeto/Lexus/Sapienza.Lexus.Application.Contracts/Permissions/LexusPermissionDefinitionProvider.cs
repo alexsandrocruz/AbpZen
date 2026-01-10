@@ -24,6 +24,22 @@ namespace Sapienza.Lexus.Permissions
             casePermission.AddChild(CasePermissions.Create, L("Permission:Create"));
             casePermission.AddChild(CasePermissions.Update, L("Permission:Update"));
             casePermission.AddChild(CasePermissions.Delete, L("Permission:Delete"));
+                  var clientPermission = myGroup.AddPermission(ClientPermissions.Default, L("Permission:Client"));
+            clientPermission.AddChild(ClientPermissions.Create, L("Permission:Create"));
+            clientPermission.AddChild(ClientPermissions.Update, L("Permission:Update"));
+            clientPermission.AddChild(ClientPermissions.Delete, L("Permission:Delete"));
+                  var specializationPermission = myGroup.AddPermission(SpecializationPermissions.Default, L("Permission:Specialization"));
+            specializationPermission.AddChild(SpecializationPermissions.Create, L("Permission:Create"));
+            specializationPermission.AddChild(SpecializationPermissions.Update, L("Permission:Update"));
+            specializationPermission.AddChild(SpecializationPermissions.Delete, L("Permission:Delete"));
+                  var legalProcessPermission = myGroup.AddPermission(LegalProcessPermissions.Default, L("Permission:LegalProcess"));
+            legalProcessPermission.AddChild(LegalProcessPermissions.Create, L("Permission:Create"));
+            legalProcessPermission.AddChild(LegalProcessPermissions.Update, L("Permission:Update"));
+            legalProcessPermission.AddChild(LegalProcessPermissions.Delete, L("Permission:Delete"));
+                  var lawyerSpecializationPermission = myGroup.AddPermission(LawyerSpecializationPermissions.Default, L("Permission:LawyerSpecialization"));
+            lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Create, L("Permission:Create"));
+            lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Update, L("Permission:Update"));
+            lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Delete, L("Permission:Delete"));
       // <ZenCode-PermissionDefinition-Marker>
         }
 

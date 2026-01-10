@@ -39,6 +39,10 @@ import TermsPage from "@/pages/legal/terms";
 import PrivacyPage from "@/pages/legal/privacy";
 import LawyerPage from "@/pages/admin/lawyer";
 import CasePage from "@/pages/admin/case";
+import ClientPage from "@/pages/admin/client";
+import SpecializationPage from "@/pages/admin/specialization";
+import LegalProcessPage from "@/pages/admin/legal-process";
+import LawyerSpecializationPage from "@/pages/admin/lawyer-specialization";
 // <GEN-IMPORTS>
 
 export interface NavItem {
@@ -81,6 +85,10 @@ export const routes: RouteConfig[] = [
     { path: "/legal/privacy", component: PrivacyPage },
     { path: "/admin/lawyer", component: LawyerPage },
     { path: "/admin/case", component: CasePage },
+    { path: "/admin/client", component: ClientPage },
+    { path: "/admin/specialization", component: SpecializationPage },
+    { path: "/admin/legal-process", component: LegalProcessPage },
+    { path: "/admin/lawyer-specialization", component: LawyerSpecializationPage },
     // <GEN-ROUTES>
 ];
 
@@ -112,5 +120,9 @@ export const menuItems: NavItem[] = [
     { label: "Settings", href: "/host/settings", icon: Settings, section: "admin" },
     { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "admin" },
     { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "admin" },
+    { label: "Clients", href: "/admin/client", icon: LayoutDashboard, section: "entities" },
+    { label: "Specializations", href: "/admin/specialization", icon: LayoutDashboard, section: "entities" },
+    { label: "LegalProcesses", href: "/admin/legal-process", icon: LayoutDashboard, section: "entities" },
+    { label: "LawyerSpecializations", href: "/admin/lawyer-specialization", icon: LayoutDashboard, section: "entities" },
     // <GEN-MENU>
 ];

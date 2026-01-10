@@ -10,7 +10,7 @@ namespace Sapienza.Zen
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
 
-            // <GEN-MAPPINGS>
+            // <<GEN-MAPPINGS>>
         }
     }
 }

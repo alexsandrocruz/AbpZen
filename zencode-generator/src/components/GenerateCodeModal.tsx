@@ -551,6 +551,11 @@ export default function GenerateCodeModal({
                     file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
                     marker: '<GEN-MAPPINGS>',
                     content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
+                },
+                {
+                    file: `${projectNamespace}.MongoDB/MongoDb/${shortProjectName}MongoDbContext.cs`,
+                    marker: 'GEN-MONGODB-COLLECTIONS',
+                    content: `        public IMongoCollection<${projectNamespace}.${entity.name}.${entity.name}> ${entity.pluralName} => Collection<${projectNamespace}.${entity.name}.${entity.name}>();`
                 }
             ]);
 

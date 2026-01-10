@@ -35,6 +35,7 @@ export function useLawyer(id: string) {
     enabled: !!id,
   });
 }
+
 export function useCreateLawyer() {
   const queryClient = useQueryClient();
   return useMutation({

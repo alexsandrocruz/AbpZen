@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useLawyers, useDeleteLawyer } from "@/lib/abp/hooks/useLawyers";
-import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,30 +70,30 @@ export function LawyerList({ onEdit }: LawyerListProps) {
         <Table>
           <TableHeader>
             <TableRow>
-
+              
               <TableHead>FullName</TableHead>
-
+              
               <TableHead>PreferredName</TableHead>
-
+              
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data?.items?.map((item: any) => (
               <TableRow key={item.id}>
-
+                
                 <TableCell>
-
+                  
                   {item.fullName}
-
+                  
                 </TableCell>
-
+                
                 <TableCell>
-
+                  
                   {item.preferredName}
-
+                  
                 </TableCell>
-
+                
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -108,7 +108,7 @@ export function LawyerList({ onEdit }: LawyerListProps) {
                         <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem
+                      <DropdownMenuItem 
                         className="text-destructive"
                         onClick={() => handleDelete(item.id)}
                       >

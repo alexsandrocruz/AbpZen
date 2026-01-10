@@ -15,6 +15,11 @@ namespace Sapienza.Lexus.MongoDB
          * public IMongoCollection<Question> Questions => Collection<Question>();
          */
         public IMongoCollection<Sapienza.Lexus.Lawyer.Lawyer> Lawyers => Collection<Sapienza.Lexus.Lawyer.Lawyer>();
+        public IMongoCollection<Sapienza.Lexus.Client.Client> Clients => Collection<Sapienza.Lexus.Client.Client>();
+        public IMongoCollection<Sapienza.Lexus.Specialization.Specialization> Specializations => Collection<Sapienza.Lexus.Specialization.Specialization>();
+        public IMongoCollection<Sapienza.Lexus.LegalProcess.LegalProcess> LegalProcesses => Collection<Sapienza.Lexus.LegalProcess.LegalProcess>();
+        public IMongoCollection<Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization> LawyerSpecializations => Collection<Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization>();
+        // <<GEN-MONGODB-COLLECTIONS>>
 
         protected override void CreateModel(IMongoModelBuilder modelBuilder)
         {

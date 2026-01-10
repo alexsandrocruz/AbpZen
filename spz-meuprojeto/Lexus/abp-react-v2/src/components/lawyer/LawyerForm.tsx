@@ -19,11 +19,11 @@ import { useCreateLawyer, useUpdateLawyer } from "@/lib/abp/hooks/useLawyers";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-
+  
   fullName: z.any(),
-
+  
   preferredName: z.any(),
-
+  
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -40,7 +40,7 @@ export function LawyerForm({
   initialValues,
 }: LawyerFormProps) {
   const isEditing = !!initialValues;
-
+  
   const {
     register,
     handleSubmit,
@@ -66,7 +66,6 @@ export function LawyerForm({
 
   const onSubmit = async (data: FormValues) => {
     try {
-      console.log("Submitting Lawyer:", data);
       if (isEditing) {
         await updateMutation.mutateAsync({ id: initialValues.id, data });
         toast.success("Lawyer updated successfully");
@@ -91,21 +90,21 @@ export function LawyerForm({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-
+          
           <div className="space-y-2">
-            <Label htmlFor="fullName">FullName</Label>
-
+            <Label htmlFor="fullName">FullName *</Label>
+            
             <Input id="fullName" {...register("fullName")} />
-
+            
           </div>
-
+          
           <div className="space-y-2">
             <Label htmlFor="preferredName">PreferredName</Label>
-
+            
             <Input id="preferredName" {...register("preferredName")} />
-
+            
           </div>
-
+          
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>

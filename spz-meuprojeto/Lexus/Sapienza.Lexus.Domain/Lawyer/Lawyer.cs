@@ -9,7 +9,7 @@ namespace Sapienza.Lexus.Lawyer;
 /// </summary>
 public class Lawyer : FullAuditedAggregateRoot<Guid>
 {
-    public string? FullName { get; set; }
+    public string FullName { get; set; } = string.Empty;
     public string? PreferredName { get; set; }
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
@@ -17,6 +17,8 @@ public class Lawyer : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
+    public virtual ICollection<Sapienza.Lexus.LegalProcess.LegalProcess> Processes { get; set; } = new List<Sapienza.Lexus.LegalProcess.LegalProcess>();
+    public virtual ICollection<Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization> LawyerSpecializations { get; set; } = new List<Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization>();
 
     protected Lawyer()
     {

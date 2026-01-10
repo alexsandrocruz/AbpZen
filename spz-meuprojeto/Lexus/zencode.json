@@ -4,5 +4,300 @@
   "namespace": "Sapienza.Lexus",
   "createdAt": "2026-01-08T23:05:33.729Z",
   "frontend": "react-v2",
-  "entities": []
+  "entities": [
+    {
+      "id": "lawyer",
+      "data": {
+        "name": "Lawyer",
+        "pluralName": "Lawyers",
+        "tableName": "Lawyers",
+        "namespace": "Sapienza.Lexus.Lawyer",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "fields": [
+          {
+            "id": "fullName",
+            "name": "FullName",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 128
+          },
+          {
+            "id": "preferredName",
+            "name": "PreferredName",
+            "type": "string",
+            "isRequired": false,
+            "isNullable": true,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 64
+          }
+        ],
+        "renderType": "modal"
+      }
+    },
+    {
+      "id": "client",
+      "data": {
+        "name": "Client",
+        "pluralName": "Clients",
+        "tableName": "Clients",
+        "namespace": "Sapienza.Lexus.Client",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 128
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 128,
+            "emailValidation": true
+          },
+          {
+            "id": "phone",
+            "name": "Phone",
+            "type": "string",
+            "isRequired": false,
+            "isNullable": true,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 20
+          },
+          {
+            "id": "cpfCnpj",
+            "name": "CpfCnpj",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 20
+          }
+        ],
+        "renderType": "modal"
+      }
+    },
+    {
+      "id": "specialization",
+      "data": {
+        "name": "Specialization",
+        "pluralName": "Specializations",
+        "tableName": "Specializations",
+        "namespace": "Sapienza.Lexus.Specialization",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 64
+          },
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isRequired": false,
+            "isNullable": true,
+            "isFilterable": false,
+            "isTextArea": true,
+            "maxLength": 512
+          }
+        ],
+        "renderType": "modal"
+      }
+    },
+    {
+      "id": "legalprocess",
+      "data": {
+        "name": "LegalProcess",
+        "pluralName": "LegalProcesses",
+        "tableName": "LegalProcesses",
+        "namespace": "Sapienza.Lexus.LegalProcess",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "fields": [
+          {
+            "id": "processNumber",
+            "name": "ProcessNumber",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 32
+          },
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "maxLength": 128
+          },
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isRequired": false,
+            "isNullable": true,
+            "isFilterable": false,
+            "isTextArea": true,
+            "maxLength": 2048
+          },
+          {
+            "id": "dateOpened",
+            "name": "DateOpened",
+            "type": "datetime",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false
+          },
+          {
+            "id": "lawyerId",
+            "name": "LawyerId",
+            "type": "guid",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "isLookup": true,
+            "lookupConfig": {
+              "mode": "dropdown",
+              "targetEntity": "Lawyer",
+              "displayField": "FullName"
+            }
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "isLookup": true,
+            "lookupConfig": {
+              "mode": "dropdown",
+              "targetEntity": "Client",
+              "displayField": "Name"
+            }
+          }
+        ],
+        "renderType": "modal"
+      }
+    },
+    {
+      "id": "lawyerspecialization",
+      "data": {
+        "name": "LawyerSpecialization",
+        "pluralName": "LawyerSpecializations",
+        "tableName": "LawyerSpecializations",
+        "namespace": "Sapienza.Lexus.LawyerSpecialization",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": false,
+        "fields": [
+          {
+            "id": "lawyerId",
+            "name": "LawyerId",
+            "type": "guid",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "isLookup": true,
+            "lookupConfig": {
+              "mode": "dropdown",
+              "targetEntity": "Lawyer",
+              "displayField": "FullName"
+            }
+          },
+          {
+            "id": "specializationId",
+            "name": "SpecializationId",
+            "type": "guid",
+            "isRequired": true,
+            "isNullable": false,
+            "isFilterable": true,
+            "isTextArea": false,
+            "isLookup": true,
+            "lookupConfig": {
+              "mode": "dropdown",
+              "targetEntity": "Specialization",
+              "displayField": "Name"
+            }
+          }
+        ],
+        "renderType": "modal"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "process-lawyer",
+      "source": "legalprocess",
+      "target": "lawyer",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Processes",
+        "targetNavigationName": "Lawyer",
+        "isRequired": true,
+        "description": "Each process has one primary lawyer"
+      }
+    },
+    {
+      "id": "process-client",
+      "source": "legalprocess",
+      "target": "client",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Processes",
+        "targetNavigationName": "Client",
+        "isRequired": true,
+        "description": "Each process belongs to one client"
+      }
+    },
+    {
+      "id": "lawyer-specialization",
+      "source": "lawyer",
+      "target": "specialization",
+      "data": {
+        "type": "many-to-many",
+        "sourceNavigationName": "Specializations",
+        "targetNavigationName": "Lawyers",
+        "isRequired": false,
+        "description": "Any lawyer can have multiple specializations",
+        "junctionConfig": {
+          "tableName": "LawyerSpecializations",
+          "junctionEntityId": "lawyerspecialization",
+          "showInSource": true,
+          "showInTarget": true
+        }
+      }
+    }
+  ]
 }
