@@ -139,5 +139,6 @@ export const menuItems: NavItem[] = [
     { label: "LawyerSpecializations", href: "/admin/lawyer-specialization", icon: LayoutDashboard, section: "entities" },
     { label: "Proposals", href: "/admin/proposal", icon: LayoutDashboard, section: "entities" },
     { label: "PropostalItems", href: "/admin/propostal-item", icon: LayoutDashboard, section: "entities" },
+
     // <GEN-MENU>
 ];

@@ -49,18 +49,18 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
         const importMarker = '// <GEN-IMPORTS>';
         const fileText = sourceFile.getFullText();
 
-        if (fileText.includes(`import ${entityName}Page`)) {
+        if (fileText.includes(`path: "/admin/${kebabName}"`)) {
             return { success: false, message: `Route for ${entityName} already exists.` };
         }
 
-        const newImport = `import ${entityName}Page from "@/pages/admin/${kebabName}";\n`;
+        const newImport = `import ${entityName}Page from "@/pages/admin/${kebabName}";\nimport ${entityName}FormPage from "@/pages/admin/${kebabName}/form";\n`;
         const updatedImports = fileText.replace(importMarker, `${newImport}${importMarker}`);
         sourceFile.replaceWithText(updatedImports);
 
         // 2. Add route to routes array before // <GEN-ROUTES> marker
         const routeMarker = '// <GEN-ROUTES>';
         const currentText = sourceFile.getFullText();
-        const newRoute = `    { path: "/admin/${kebabName}", component: ${entityName}Page },\n    `;
+        const newRoute = `    { path: "/admin/${kebabName}", component: ${entityName}Page },\n    { path: "/admin/${kebabName}/create", component: ${entityName}FormPage },\n    { path: "/admin/${kebabName}/edit/:id", component: ${entityName}FormPage },\n    `;
         const updatedRoutes = currentText.replace(routeMarker, `${newRoute}${routeMarker}`);
         sourceFile.replaceWithText(updatedRoutes);
 

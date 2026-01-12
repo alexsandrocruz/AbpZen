@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ public class CreateUpdateLawyerDto
     [StringLength(128)]
     public string FullName { get; set; }
     [StringLength(64)]
-    public string PreferredName { get; set; }
+    public string? PreferredName { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 

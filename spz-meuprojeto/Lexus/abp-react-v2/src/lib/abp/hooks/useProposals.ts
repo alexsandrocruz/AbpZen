@@ -3,19 +3,21 @@ import { apiClient } from "../api-client";
 
 interface GetProposalsInput {
   filter?: string;
+  clientId?: string;
   skipCount?: number;
   maxResultCount?: number;
 }
 
 export function useProposals(input: GetProposalsInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, clientId, skipCount = 0, maxResultCount = 10 } = input;
 
   return useQuery({
-    queryKey: ["proposals", filter, skipCount, maxResultCount],
+    queryKey: ["proposals", filter, clientId, skipCount, maxResultCount],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/proposal", {
         params: {
           filter,
+          clientId,
           skipCount,
           maxResultCount,
         },
@@ -74,3 +76,19 @@ export function useDeleteProposal() {
     },
   });
 }
+
+export function useAllProposals() {
+  return useQuery({
+    queryKey: ["proposals", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/proposal", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+

@@ -532,6 +532,16 @@ export class CodeGenerator {
                                 f.showInGrid !== false
                             ).slice(0, 5), // Limit to 5 display fields
                             requiredFields: (r.targetFields || []).filter(f => f.isRequired),
+                        })),
+                    manyToManyEntities: asParent
+                        .filter(r => r.isManyToMany)
+                        .map(r => ({
+                            entityName: r.childEntityName,
+                            pluralName: r.childPluralName,
+                            title: r.navigationName || r.childPluralName,
+                            relatedEntity: r.childEntityName,
+                            // Infers the display field, favoring Name/Title
+                            displayField: 'name'
                         }))
                 }
             };

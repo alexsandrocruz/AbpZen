@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ public class CreateUpdateSpecializationDto
     [StringLength(64)]
     public string Name { get; set; }
     [StringLength(512)]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 

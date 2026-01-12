@@ -20,9 +20,9 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   
-  name: z.any(),
+  name: z.string(),
   
-  description: z.any(),
+  description: z.string().optional(),
   
 });
 

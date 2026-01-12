@@ -8,24 +8,12 @@
 export function getReactV2PageTemplate(): string {
   return `import { Shell } from "@/components/layout/shell";
 import { {{ entity.name }}List } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name }}List";
-import { {{ entity.name }}Form } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name }}Form";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useState } from "react";
+import { useLocation } from "wouter";
 
 export default function {{ entity.pluralName }}Page() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-
-  const handleEdit = (item: any) => {
-    setEditingItem(item);
-    setIsFormOpen(true);
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingItem(null);
-  };
+  const [, setLocation] = useLocation();
 
   return (
     <Shell>
@@ -40,19 +28,13 @@ export default function {{ entity.pluralName }}Page() {
               <p className="text-muted-foreground">Manage your {{ entity.pluralName | downcase }}</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/{{ entity.name | kebabCase }}/create")}>
             <Plus className="size-4" />
             New {{ entity.name }}
           </Button>
         </div>
 
-        <{{ entity.name }}List onEdit={handleEdit} />
-
-        <{{ entity.name }}Form 
-          isOpen={isFormOpen} 
-          onClose={handleCloseForm} 
-          initialValues={editingItem} 
-        />
+        <{{ entity.name }}List onEdit={(item) => setLocation(\`/admin/{{ entity.name | kebabCase }}/edit/\${item.id}\`)} />
       </div>
     </Shell>
   );
@@ -516,8 +498,7 @@ export default function {{ entity.pluralName }}Page() {
                     <TableRow 
                       key={item.id} 
                       className="cursor-pointer hover:bg-muted/50"
-                      onClick={() => setLocation(`/ admin / {{ entity.name | kebabCase }
-} /${item.id}/edit`)}
+                      onClick={() => setLocation(\`/admin/{{ entity.name | kebabCase }}/\${item.id}/edit\`)}
                     >
                       {% for field in entity.fields %}
                       <TableCell>
@@ -542,7 +523,7 @@ export default function {{ entity.pluralName }}Page() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setLocation(`/ admin / {{ entity.name | kebabCase }}/${item.id}/edit`)}>
+                            <DropdownMenuItem onClick={() => setLocation(\`/admin/{{ entity.name | kebabCase }}/\${item.id}/edit\`)}>
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
@@ -592,6 +573,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { 
@@ -599,6 +587,12 @@ import {
   useCreate{{ entity.name }}, 
   useUpdate{{ entity.name }} 
 } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+{% for rel in entity.manyToManyEntities %}
+import { use{{ rel.relatedEntity | pluralize }} } from "@/lib/abp/hooks/use{{ rel.relatedEntity | pluralize }}";
+{% endfor %}
+{% for rel in relationships.asChild %}
+import { use{{ rel.parentPluralName }} } from "@/lib/abp/hooks/use{{ rel.parentPluralName }}";
+{% endfor %}
 
 const formSchema = z.object({
   {% for field in entity.fields %}
@@ -625,6 +619,13 @@ export default function {{ entity.name }}FormPage() {
   const { data: existing, isLoading: loadingExisting } = use{{ entity.name }}(id || "");
   const createMutation = useCreate{{ entity.name }}();
   const updateMutation = useUpdate{{ entity.name }}();
+
+  {% for rel in entity.manyToManyEntities %}
+  const { data: {{ rel.relatedEntity | camelCase | pluralize }} } = use{{ rel.relatedEntity | pluralize }}({ maxResultCount: 1000 });
+  {% endfor %}
+  {% for rel in relationships.asChild %}
+  const { data: {{ rel.parentPluralName | camelCase }} } = use{{ rel.parentPluralName }}({ maxResultCount: 1000 });
+  {% endfor %}
 
   {% for child in entity.childEntities %}
   const [{{ child.entityName | camelCase }}Items, set{{ child.entityName }}Items] = useState<{{ child.entityName }}Item[]>([]);
@@ -748,11 +749,28 @@ export default function {{ entity.name }}FormPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {% for field in entity.fields %}
+                    {% assign fkRel = relationships.asChild | where: "fkFieldName", field.name | first %}
                     <div className="space-y-2{% if field.formWidth == 'full' %} md:col-span-2{% endif %}">
                       <Label htmlFor="{{ field.name | camelCase }}">
                         {{ field.label | default: field.name }}{% if field.isRequired %} *{% endif %}
                       </Label>
-                      {% if field.type == "bool" %}
+                      {% if fkRel %}
+                      <Select
+                        value={watch("{{ field.name | camelCase }}")?.toString()}
+                        onValueChange={(val) => setValue("{{ field.name | camelCase }}", val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select {{ fkRel.displayField }}" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          { {%raw%}{{%endraw%}{{ fkRel.parentPluralName | camelCase }}?.items?.map((item: any) => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.{{ fkRel.displayField }}}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {% elsif field.type == "bool" %}
                       <div className="flex items-center space-x-2 pt-1">
                         <Checkbox
                           id="{{ field.name | camelCase }}"
@@ -838,6 +856,40 @@ export default function {{ entity.name }}FormPage() {
                     {%raw%}{{%endraw%}{{ child.entityName | camelCase }}Items.length === 0 && (
                       <div className="text-center py-8 text-muted-foreground">
                         No items yet. Click "Add Item" to start.
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+              {% endfor %}
+
+              {% for rel in entity.manyToManyEntities %}
+              <Card>
+                <CardHeader>
+                  <CardTitle>{{ rel.title }}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {%raw%}{{%endraw%}{{ rel.relatedEntity | camelCase | pluralize }}?.items?.map((item: any) => (
+                      <div key={item.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={\`rel-\${item.id}\`}
+                          checked={watch("{{ rel.relatedEntity | camelCase }}Ids")?.includes(item.id)}
+                          onCheckedChange={(checked) => {
+                            const current = watch("{{ rel.relatedEntity | camelCase }}Ids") || [];
+                            if (checked) {
+                              setValue("{{ rel.relatedEntity | camelCase }}Ids", [...current, item.id]);
+                            } else {
+                              setValue("{{ rel.relatedEntity | camelCase }}Ids", current.filter((id: string) => id !== item.id));
+                            }
+                          }}
+                        />
+                        <Label htmlFor={\`rel-\${item.id}\`}>{item.{{ rel.displayField }}}</Label>
+                      </div>
+                    ))}
+                    {%raw%}{!{%endraw%}{{ rel.relatedEntity | camelCase | pluralize }}?.items?.length && (
+                      <div className="text-sm text-muted-foreground col-span-full">
+                        No {{ rel.pluralName | downcase }} found.
                       </div>
                     )}
                   </div>

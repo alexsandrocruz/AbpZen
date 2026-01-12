@@ -12,18 +12,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useCreateLawyer, useUpdateLawyer } from "@/lib/abp/hooks/useLawyers";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SpecializationsTab } from "@/pages/admin/lawyer-form/tabs/SpecializationsTab";
 
 const formSchema = z.object({
-  
-  fullName: z.any(),
-  
-  preferredName: z.any(),
-  
+  fullName: z.string().min(1, "Full Name is required"),
+  preferredName: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -40,14 +38,12 @@ export function LawyerForm({
   initialValues,
 }: LawyerFormProps) {
   const isEditing = !!initialValues;
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setValue,
-    watch,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues || {},
@@ -82,40 +78,60 @@ export function LawyerForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>{isEditing ? "Edit Lawyer" : "Create Lawyer"}</DialogTitle>
           <DialogDescription>
             {isEditing ? "Update the details of the lawyer." : "Fill in the details to create a new lawyer."}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          
-          <div className="space-y-2">
-            <Label htmlFor="fullName">FullName *</Label>
-            
-            <Input id="fullName" {...register("fullName")} />
-            
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="preferredName">PreferredName</Label>
-            
-            <Input id="preferredName" {...register("preferredName")} />
-            
-          </div>
-          
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEditing ? "Save Changes" : "Create"}
-            </Button>
-          </DialogFooter>
-        </form>
+        <Tabs defaultValue="general" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="general">General</TabsTrigger>
+            <TabsTrigger value="specializations" disabled={!isEditing}>
+              Specializations
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="general">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="fullName">FullName *</Label>
+                <Input id="fullName" {...register("fullName")} />
+                {errors.fullName && (
+                  <p className="text-sm text-destructive">{errors.fullName.message as string}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="preferredName">PreferredName</Label>
+                <Input id="preferredName" {...register("preferredName")} />
+              </div>
+
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isEditing ? "Save Changes" : "Create"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </TabsContent>
+
+          <TabsContent value="specializations" className="py-4">
+            {isEditing && initialValues?.id && (
+              <SpecializationsTab lawyerId={initialValues.id} />
+            )}
+            {!isEditing && (
+              <div className="text-center py-4 text-muted-foreground">
+                Please save the lawyer first to manage specializations.
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

@@ -76,3 +76,19 @@ export function useDeletePropostalItem() {
     },
   });
 }
+
+export function useAllPropostalItems() {
+  return useQuery({
+    queryKey: ["propostalItems", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/propostal-item", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+

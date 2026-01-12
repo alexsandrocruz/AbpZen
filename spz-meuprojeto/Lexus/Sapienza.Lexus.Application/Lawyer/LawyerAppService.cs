@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,9 +126,9 @@ public class LawyerAppService :
     protected virtual IQueryable<Sapienza.Lexus.Lawyer.Lawyer> ApplyFilters(IQueryable<Sapienza.Lexus.Lawyer.Lawyer> queryable, LawyerGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.FullName.Contains(input.Filter) || x.PreferredName.Contains(input.Filter))
-            .WhereIf(!input.FullName.IsNullOrWhiteSpace(), x => x.FullName.Contains(input.FullName))
-            .WhereIf(!input.PreferredName.IsNullOrWhiteSpace(), x => x.PreferredName.Contains(input.PreferredName))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.FullName != null && x.FullName.Contains(input.Filter)) || (x.PreferredName != null && x.PreferredName.Contains(input.Filter)))
+            .WhereIf(!input.FullName.IsNullOrWhiteSpace(), x => x.FullName != null && x.FullName.Contains(input.FullName))
+            .WhereIf(!input.PreferredName.IsNullOrWhiteSpace(), x => x.PreferredName != null && x.PreferredName.Contains(input.PreferredName))
             // ========== FK Filters ==========
             ;
     }

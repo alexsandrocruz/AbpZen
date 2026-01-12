@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 import { ChevronRight, Home } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -23,10 +23,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LawyerFormPage() {
     const [, navigate] = useLocation();
-
-    // Get ID from URL path
-    const pathParts = window.location.pathname.split('/');
-    const id = pathParts[pathParts.length - 1] !== 'create' ? pathParts[pathParts.length - 1] : undefined;
+    const [match, params] = useRoute("/admin/lawyer/edit/:id");
+    const id = match ? params?.id : undefined;
     const isEditMode = !!id;
 
     // State

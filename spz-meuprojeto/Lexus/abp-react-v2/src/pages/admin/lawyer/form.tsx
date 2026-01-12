@@ -13,22 +13,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { 
-  usePropostalItem, 
-  useCreatePropostalItem, 
-  useUpdatePropostalItem 
-} from "@/lib/abp/hooks/usePropostalItems";
+  useLawyer, 
+  useCreateLawyer, 
+  useUpdateLawyer 
+} from "@/lib/abp/hooks/useLawyers";
 
 const formSchema = z.object({
   
-  desc: z.string().optional(),
+  fullName: z.string(),
   
-  quant: z.coerce.number().optional(),
-  
-  unitPrice: z.coerce.number().optional(),
-  
-  total: z.coerce.number().optional(),
-  
-  proposalId: z.string().optional(),
+  preferredName: z.string().optional(),
   
 });
 
@@ -36,14 +30,14 @@ type FormValues = z.infer<typeof formSchema>;
 
 
 
-export default function PropostalItemFormPage() {
+export default function LawyerFormPage() {
   const [, setLocation] = useLocation();
   const { id } = useParams<{ id: string }>();
   const isEditing = !!id;
 
-  const { data: existing, isLoading: loadingExisting } = usePropostalItem(id || "");
-  const createMutation = useCreatePropostalItem();
-  const updateMutation = useUpdatePropostalItem();
+  const { data: existing, isLoading: loadingExisting } = useLawyer(id || "");
+  const createMutation = useCreateLawyer();
+  const updateMutation = useUpdateLawyer();
 
   
 
@@ -77,14 +71,14 @@ export default function PropostalItemFormPage() {
 
       if (isEditing) {
         await updateMutation.mutateAsync({ id: id!, data: payload });
-        toast.success("PropostalItem updated successfully");
+        toast.success("Lawyer updated successfully");
       } else {
         await createMutation.mutateAsync(payload);
-        toast.success("PropostalItem created successfully");
+        toast.success("Lawyer created successfully");
       }
-      setLocation("/admin/propostal-item");
+      setLocation("/admin/lawyer");
     } catch (error: any) {
-      toast.error(error.message || "Failed to save propostalitem");
+      toast.error(error.message || "Failed to save lawyer");
     }
   };
 
@@ -109,16 +103,16 @@ export default function PropostalItemFormPage() {
             <Button 
               variant="ghost" 
               size="icon"
-              onClick={() => setLocation("/admin/propostal-item")}
+              onClick={() => setLocation("/admin/lawyer")}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">
-                {isEditing ? "Edit PropostalItem" : "New PropostalItem"}
+                {isEditing ? "Edit Lawyer" : "New Lawyer"}
               </h1>
               <p className="text-muted-foreground">
-                {isEditing ? "Update the details" : "Create a new propostalitem"}
+                {isEditing ? "Update the details" : "Create a new lawyer"}
               </p>
             </div>
           </div>
@@ -137,54 +131,27 @@ export default function PropostalItemFormPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     
                     <div className="space-y-2">
-                      <Label htmlFor="desc">
-                        Desc
+                      <Label htmlFor="fullName">
+                        FullName *
                       </Label>
                       
                       <Input 
-                        id="desc" 
+                        id="fullName" 
                         placeholder=""
-                        {...register("desc")} 
+                        {...register("fullName")} 
                       />
                       
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="quant">
-                        Quant
-                      </Label>
-                      
-                      <Input id="quant" type="number" step="any" {...register("quant")} />
-                      
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="unitPrice">
-                        UnitPrice
-                      </Label>
-                      
-                      <Input id="unitPrice" type="number" step="any" {...register("unitPrice")} />
-                      
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="total">
-                        Total
-                      </Label>
-                      
-                      <Input id="total" type="number" step="any" {...register("total")} />
-                      
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="proposalId">
-                        Proposal
+                      <Label htmlFor="preferredName">
+                        PreferredName
                       </Label>
                       
                       <Input 
-                        id="proposalId" 
+                        id="preferredName" 
                         placeholder=""
-                        {...register("proposalId")} 
+                        {...register("preferredName")} 
                       />
                       
                     </div>
@@ -206,13 +173,13 @@ export default function PropostalItemFormPage() {
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     <Save className="mr-2 h-4 w-4" />
-                    {isEditing ? "Save Changes" : "Create PropostalItem"}
+                    {isEditing ? "Save Changes" : "Create Lawyer"}
                   </Button>
                   <Button 
                     type="button" 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => setLocation("/admin/propostal-item")}
+                    onClick={() => setLocation("/admin/lawyer")}
                   >
                     Cancel
                   </Button>

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
@@ -8,7 +9,7 @@ namespace Sapienza.Lexus.Specialization.Dtos;
 public class SpecializationDto : FullAuditedEntityDto<Guid>
 {
     public string Name { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 

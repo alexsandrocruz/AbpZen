@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ public class CreateUpdateClientDto
     [StringLength(128)]
     public string Email { get; set; }
     [StringLength(20)]
-    public string Phone { get; set; }
+    public string? Phone { get; set; }
     [Required]
     [StringLength(20)]
     public string CpfCnpj { get; set; }

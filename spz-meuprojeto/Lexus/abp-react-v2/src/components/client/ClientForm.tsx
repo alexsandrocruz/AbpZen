@@ -20,13 +20,13 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   
-  name: z.any(),
+  name: z.string(),
   
-  email: z.any(),
+  email: z.string(),
   
-  phone: z.any(),
+  phone: z.string().optional(),
   
-  cpfCnpj: z.any(),
+  cpfCnpj: z.string(),
   
 });
 

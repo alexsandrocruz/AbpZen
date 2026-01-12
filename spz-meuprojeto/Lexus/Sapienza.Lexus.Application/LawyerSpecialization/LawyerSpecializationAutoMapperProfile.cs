@@ -1,3 +1,4 @@
+#nullable enable
 using AutoMapper;
 using Sapienza.Lexus.LawyerSpecialization.Dtos;
 
