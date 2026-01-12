@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ProductManagement.EntityFrameworkCore.Tests\ProductManagement.EntityFrameworkCore.Tests.csproj" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    </ItemGroup>
+
+</Project>

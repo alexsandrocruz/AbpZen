@@ -9,5 +9,27 @@
         public const string HostDashboard = Prefix + ".HostDashboard";
 
         public const string TenantDashboard = Prefix + ".TenantDashboard";
+
+        public const string Edital = Prefix + ".Edital";
+        
+        public const string Product = Prefix + ".Product";
+        
+        public const string Category = Prefix + ".Category";
+        
+        public const string Order = Prefix + ".Order";
+        
+        public const string Customer = Prefix + ".Customer";
+        
+        public const string OrderItem = Prefix + ".OrderItem";
+        
+        public const string Lead = Prefix + ".Lead";
+        
+        public const string LeadContact = Prefix + ".LeadContact";
+                        public const string MessageTemplate = Prefix + ".MessageTemplate";
+              public const string LeadMessage = Prefix + ".LeadMessage";
+        public const string Aluno = Prefix + ".Aluno";
+        public const string Turma = Prefix + ".Turma";
+        public const string AlunoTurma = Prefix + ".AlunoTurma";
+      // <ZenCode-Menus-Marker>
     }
 }

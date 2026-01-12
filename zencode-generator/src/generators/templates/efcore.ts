@@ -24,6 +24,20 @@ public static class {{ entity.name }}DbContextModelCreatingExtensions
             b.Property(x => x.{{ field.name }}).IsRequired();
             {%- endif %}
             {%- endfor %}
+
+            // ========== Relationship Configuration (1:N) ==========
+            {%- for rel in relationships.asChild %}
+            b.HasOne<{{ rel.parentEntityName }}>()
+                .WithMany(p => p.{{ rel.parentNavigationName }})
+                .HasForeignKey(x => x.{{ rel.fkFieldName }})
+                {%- if rel.isRequired %}
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+                {%- else %}
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+                {%- endif %}
+            {%- endfor %}
         });
     }
 }
@@ -35,5 +49,13 @@ public static class {{ entity.name }}DbContextModelCreatingExtensions
  */
 export function getDbContextPropertyTemplate(): string {
     return `    public DbSet<{{ entity.name }}> {{ entity.pluralName }} { get; set; }
+`;
+}
+
+/**
+ * MongoDb context property template
+ */
+export function getMongoDbContextPropertyTemplate(): string {
+    return `    public IMongoCollection<{{ entity.namespace }}.{{ entity.name }}> {{ entity.pluralName }} => Collection<{{ entity.namespace }}.{{ entity.name }}>();
 `;
 }

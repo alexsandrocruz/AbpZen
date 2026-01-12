@@ -134,6 +134,14 @@ namespace LeptonXDemoApp.Web
                     bundle =>
                     {
                         bundle.AddFiles("/global-styles.css");
+                        bundle.AddFiles("/libs/zen/lookup.css");
+                    }
+                );
+                options.ScriptBundles.Configure(
+                    LeptonXThemeBundles.Scripts.Global,
+                    bundle =>
+                    {
+                        bundle.AddFiles("/libs/zen/lookup.js");
                     }
                 );
             });

@@ -1,5 +1,4 @@
 import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
 import type { GeneratedFile } from './index';
 
 /**
@@ -14,10 +13,26 @@ export async function downloadAsZip(files: GeneratedFile[], projectName: string)
     }
 
     // Generate the ZIP
-    const content = await zip.generateAsync({ type: 'blob' });
+    const content = await zip.generateAsync({
+        type: 'blob',
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 }
+    });
 
-    // Trigger download
-    saveAs(content, `${projectName}-generated.zip`);
+    // Trigger download manually as saveAs sometimes fails with filenames in some environments
+    const filename = `${projectName.toLowerCase()}-generated.zip`;
+    const url = window.URL.createObjectURL(content);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+
+    // Cleanup
+    setTimeout(() => {
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }, 100);
 }
 
 /**
@@ -41,6 +56,8 @@ export function getLayerColor(layer: GeneratedFile['layer']): string {
         'Application.Contracts': '#8b5cf6',
         'EntityFrameworkCore': '#f59e0b',
         'Web': '#ec4899',
+        'React': '#06b6d4',
+        'Angular': '#dc2626',
     };
     return colors[layer] || '#64748b';
 }

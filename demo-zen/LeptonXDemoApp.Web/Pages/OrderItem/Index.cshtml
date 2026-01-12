@@ -1,0 +1,51 @@
+@page
+@using LeptonXDemoApp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using LeptonXDemoApp.Web.Pages.OrderItem
+@using LeptonXDemoApp.Localization
+@using LeptonXDemoApp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["OrderItems"].Value;
+    PageLayout.Content.MenuItemName = LeptonXDemoAppMenus.OrderItem;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/OrderItem/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/OrderItem/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(LeptonXDemoAppPermissions.OrderItem.Create))
+    {
+        <abp-button id="NewOrderItemButton"
+            text="@L["NewOrderItem"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="OrderItemCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="OrderItemFilter" id="OrderItemFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="OrderItemCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="OrderItemTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

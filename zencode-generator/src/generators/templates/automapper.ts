@@ -11,9 +11,16 @@ public class {{ entity.name }}AutoMapperProfile : Profile
 {
     public {{ entity.name }}AutoMapperProfile()
     {
-        CreateMap<{{ entity.name }}, {{ dto.readTypeName }}>();
-        CreateMap<{{ dto.createTypeName }}, {{ entity.name }}>();
-        CreateMap<{{ dto.updateTypeName }}, {{ entity.name }}>();
+        CreateMap<{{ entity.name }}, {{ dto.readTypeName }}>()
+            {%- for rel in relationships.asChild %}
+            .ForMember(dest => dest.{{ rel.parentEntityName }}DisplayName, opt => opt.MapFrom(src => src.{{ rel.navigationName }}.{{ rel.displayField }}))
+            {%- endfor %};
+        CreateMap<{{ dto.createTypeName }}, {{ entity.name }}>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore());
+        CreateMap<{{ dto.updateTypeName }}, {{ entity.name }}>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore());
     }
 }
 `;
@@ -24,6 +31,8 @@ public class {{ entity.name }}AutoMapperProfile : Profile
  */
 export function getAutoMapperProfileSnippet(): string {
     return `        CreateMap<{{ entity.name }}, {{ dto.readTypeName }}>();
-        CreateMap<{{ dto.createTypeName }}, {{ entity.name }}>();
+        CreateMap<{{ dto.createTypeName }}, {{ entity.name }}>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore());
 `;
 }

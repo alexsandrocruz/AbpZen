@@ -1,0 +1,51 @@
+@page
+@using LeptonXDemoApp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using LeptonXDemoApp.Web.Pages.LeadContact
+@using LeptonXDemoApp.Localization
+@using LeptonXDemoApp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["LeadContacts"].Value;
+    PageLayout.Content.MenuItemName = LeptonXDemoAppMenus.LeadContact;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/LeadContact/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/LeadContact/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(LeptonXDemoAppPermissions.LeadContact.Create))
+    {
+        <abp-button id="NewLeadContactButton"
+            text="@L["NewLeadContact"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="LeadContactCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="LeadContactFilter" id="LeadContactFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="LeadContactCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="LeadContactTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

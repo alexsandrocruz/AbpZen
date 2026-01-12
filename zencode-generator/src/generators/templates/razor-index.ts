@@ -63,7 +63,10 @@ export function getRazorIndexModelTemplate(): string {
     return `using System;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+using {{ project.namespace }}.{{ entity.name }};
+using {{ project.namespace }}.{{ entity.name }}.Dtos;
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }};
 
@@ -71,9 +74,28 @@ public class IndexModel : {{ project.name }}PageModel
 {
     public {{ entity.name }}FilterInput {{ entity.name }}Filter { get; set; }
     
+    private readonly I{{ entity.name }}AppService _{{ entity.name | camelCase }}AppService;
+
+    public IndexModel(I{{ entity.name }}AppService {{ entity.name | camelCase }}AppService)
+    {
+        _{{ entity.name | camelCase }}AppService = {{ entity.name | camelCase }}AppService;
+    }
+
     public virtual async Task OnGetAsync()
     {
         await Task.CompletedTask;
+    }
+
+    public virtual async Task<JsonResult> OnGetListAsync({{ entity.name }}GetListInput input)
+    {
+        var result = await _{{ entity.name | camelCase }}AppService.GetListAsync(input);
+        return new JsonResult(result);
+    }
+
+    public virtual async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        await _{{ entity.name | camelCase }}AppService.DeleteAsync(id);
+        return new NoContentResult();
     }
 }
 
@@ -82,7 +104,7 @@ public class {{ entity.name }}FilterInput
     {%- for field in entity.fields %}
     {%- if field.isFilterable %}
     [FormControlSize(AbpFormControlSize.Small)]
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.type == 'string' %}
     public string? {{ field.name }} { get; set; }
     {%- elsif field.type == 'int' %}
@@ -137,9 +159,14 @@ export function getRazorIndexJsTemplate(): string {
     };
 
     var l = abp.localization.getResource('{{ project.name }}');
-    var service = {{ project.namespace | camelCase }}.{{ entity.name | camelCase }};
+    
+    {%- if isMasterDetail %}
+    // Master-Detail: Full Page CRUD
+    {%- else %}
+    // Standard: Modal CRUD
     var createModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/CreateModal');
     var editModal = new abp.ModalManager(abp.appPath + '{{ entity.name }}/EditModal');
+    {%- endif %}
 
     var dataTable = $('#{{ entity.name }}Table').DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -149,7 +176,13 @@ export function getRazorIndexJsTemplate(): string {
         autoWidth: false,
         scrollCollapse: true,
         order: [[0, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList, getFilter),
+        ajax: abp.libs.datatables.createAjax(function (input) {
+            return abp.ajax({
+                url: '?handler=List',
+                type: 'GET',
+                data: input
+            });
+        }, getFilter),
         columnDefs: [
             {
                 rowAction: {
@@ -158,7 +191,11 @@ export function getRazorIndexJsTemplate(): string {
                             text: l('Edit'),
                             visible: abp.auth.isGranted('{{ project.name }}.{{ entity.name }}.Update'),
                             action: function (data) {
+                                {%- if isMasterDetail %}
+                                window.location.href = '/{{ entity.name }}/Edit/' + data.record.id;
+                                {%- else %}
                                 editModal.open({ id: data.record.id });
+                                {%- endif %}
                             }
                         },
                         {
@@ -168,11 +205,14 @@ export function getRazorIndexJsTemplate(): string {
                                 return l('{{ entity.name }}DeletionConfirmationMessage', data.record.id);
                             },
                             action: function (data) {
-                                service.delete(data.record.id)
-                                    .then(function () {
-                                        abp.notify.info(l('SuccessfullyDeleted'));
-                                        dataTable.ajax.reload(null, false);
-                                    });
+                                abp.ajax({
+                                    url: '?handler=Delete&id=' + data.record.id,
+                                    type: 'POST'
+                                })
+                                .then(function () {
+                                    abp.notify.info(l('SuccessfullyDeleted'));
+                                    dataTable.ajax.reload(null, false);
+                                });
                             }
                         }
                     ]
@@ -181,23 +221,30 @@ export function getRazorIndexJsTemplate(): string {
             {%- for field in entity.fields %}
             {%- unless field.isLookup %}
             {
-                title: l('{{ entity.name }}{{ field.name }}'),
-                data: "{{ field.name | camelCase }}"
+                title: l('{{ entity.name }}:{{ field.name }}'),
+                data: "{{ field.name | camelCase }}",
                 {%- if field.type == 'datetime' %}
-                ,dataFormat: 'datetime'
+                dataFormat: 'datetime'
                 {%- endif %}
                 {%- if field.type == 'bool' %}
-                ,render: function (data) { return data ? l('Yes') : l('No'); }
+                render: function (data) { return data ? l('Yes') : l('No'); }
                 {%- endif %}
                 {%- if field.type == 'enum' and field.enumConfig %}
-                ,render: function (data) { return l('Enum:{{ field.enumConfig.enumName }}.' + data); }
+                render: function (data) { return l('Enum:{{ field.enumConfig.enumName }}.' + data); }
                 {%- endif %}
             },
             {%- endunless %}
             {%- endfor %}
+            {%- for rel in relationships.asChild %}
+            {
+                title: l('{{ rel.parentEntityName }}'),
+                data: "{{ rel.parentEntityName | camelCase }}DisplayName"
+            },
+            {%- endfor %}
         ]
     }));
 
+    {%- unless isMasterDetail %}
     createModal.onResult(function () {
         dataTable.ajax.reload();
     });
@@ -205,10 +252,15 @@ export function getRazorIndexJsTemplate(): string {
     editModal.onResult(function () {
         dataTable.ajax.reload(null, false);
     });
+    {%- endunless %}
 
     $('#New{{ entity.name }}Button').click(function (e) {
         e.preventDefault();
+        {%- if isMasterDetail %}
+        window.location.href = '/{{ entity.name }}/Create';
+        {%- else %}
         createModal.open();
+        {%- endif %}
     });
 });
 `;

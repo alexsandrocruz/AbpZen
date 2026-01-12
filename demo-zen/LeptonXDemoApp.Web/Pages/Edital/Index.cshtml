@@ -1,0 +1,51 @@
+@page
+@using LeptonXDemoApp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using LeptonXDemoApp.Web.Pages.Edital
+@using LeptonXDemoApp.Localization
+@using LeptonXDemoApp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["Editais"].Value;
+    PageLayout.Content.MenuItemName = LeptonXDemoAppMenus.Edital;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Edital/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Edital/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(LeptonXDemoAppPermissions.Edital.Create))
+    {
+        <abp-button id="NewEditalButton"
+            text="@L["NewEdital"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="EditalCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="EditalFilter" id="EditalFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="EditalCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="EditalTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

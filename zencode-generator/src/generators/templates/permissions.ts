@@ -4,15 +4,14 @@
 export function getPermissionsTemplate(): string {
     return `namespace {{ project.namespace }}.Permissions;
 
-public static partial class {{ project.name }}Permissions
+public static class {{ entity.name }}Permissions
 {
-    public static class {{ entity.name }}
-    {
-        public const string Default = GroupName + ".{{ entity.name }}";
-        public const string Create = Default + ".Create";
-        public const string Update = Default + ".Update";
-        public const string Delete = Default + ".Delete";
-    }
+    public const string GroupName = "{{ project.name }}";
+    
+    public const string Default = GroupName + ".{{ entity.name }}";
+    public const string Create = Default + ".Create";
+    public const string Update = Default + ".Update";
+    public const string Delete = Default + ".Delete";
 }
 `;
 }
@@ -22,10 +21,10 @@ public static partial class {{ project.name }}Permissions
  */
 export function getPermissionDefinitionsTemplate(): string {
     return `
-        var {{ entity.name | camelCase }}Permission = {{ entity.name | camelCase }}Group.AddPermission({{ project.name }}Permissions.{{ entity.name }}.Default, L("Permission:{{ entity.name }}"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Create, L("Permission:{{ entity.name }}.Create"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Update, L("Permission:{{ entity.name }}.Update"));
-        {{ entity.name | camelCase }}Permission.AddChild({{ project.name }}Permissions.{{ entity.name }}.Delete, L("Permission:{{ entity.name }}.Delete"));
+        var {{ entity.name | camelCase }}Permission = myGroup.AddPermission({{ entity.name }}Permissions.Default, L("Permission:{{ entity.name }}"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Create, L("Permission:Create"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Update, L("Permission:Update"));
+        {{ entity.name | camelCase }}Permission.AddChild({{ entity.name }}Permissions.Delete, L("Permission:Delete"));
 `;
 }
 
@@ -40,7 +39,7 @@ export function getLocalizationTemplate(): string {
     "Permission:{{ entity.name }}.Delete": "Delete {{ entity.name }}",
     "Menu:{{ entity.name }}": "{{ entity.pluralName }}",
     {%- for field in entity.fields %}
-    "{{ entity.name }}:{{ field.name }}": "{{ field.label | default: field.name }}"{{ unless forloop.last }},{% endunless %}
+    "{{ entity.name }}:{{ field.name }}": "{{ field.name }}"{% unless forloop.last %},{% endunless %}
     {%- endfor %}
 }`;
 }

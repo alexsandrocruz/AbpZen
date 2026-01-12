@@ -1,0 +1,279 @@
+Vou dividir esta resposta em duas frentes:
+
+Ajustes estratégicos no site principal (copy, estrutura e foco)
+
+Revisão crítica do pricing (estrutura, âncoras e riscos)
+
+Tudo abaixo já é acionável.
+
+1. Ajustes estratégicos no SITE PRINCIPAL (Dominus)
+1.1 Problema central do site hoje (diagnóstico honesto)
+
+O site atual não está errado, mas ele sofre de um problema clássico de SaaS all-in-one:
+
+Ele explica bem o que o produto tem,
+mas ainda não deixa óbvio por que trocar agora.
+
+Hoje o site comunica:
+
+“Plataforma completa”
+
+“Tudo em um só lugar”
+
+“Muitos recursos”
+
+O benchmark mostrou que todos os concorrentes dizem isso.
+
+1.2 Ajuste nº 1 — HERO (o ponto mais importante)
+Hero atual (resumo)
+
+“Gerencie seu negócio com inteligência.
+A plataforma completa para freelancers e agências.”
+
+👉 Genérico demais para um mercado competitivo.
+
+HERO recomendado (baseado no JTBD vencedor)
+Headline (nível 1)
+
+Do primeiro contato ao dinheiro no caixa — tudo conectado.
+
+Subheadline (nível 2)
+
+CRM, propostas, contratos, projetos, faturamento e automações em uma única plataforma feita para negócios de serviços.
+
+Supporting bullets (3 provas rápidas)
+
+Substitua planilhas, WhatsApp, PDFs e várias ferramentas
+
+Automatize rotinas com workflows visuais e IA
+
+Tenha previsibilidade financeira sem ERP pesado
+
+CTA
+
+Começar grátis por 14 dias
+(sem cartão • cancele quando quiser)
+
+📌 Por que isso funciona
+
+Ataca a dor real (fragmentação)
+
+Mostra jornada completa (diferencial)
+
+Reduz risco percebido
+
+1.3 Ajuste nº 2 — Reorganizar “Recursos” por VALOR (não por feature)
+
+Hoje a lista é correta, mas longa e técnica.
+
+Estrutura atual (feature-centric)
+
+CRM
+
+Projetos
+
+Propostas
+
+Financeiro
+
+AI
+
+Automações
+
+etc.
+
+Estrutura recomendada (value-centric)
+Bloco 1 — Venda com profissionalismo
+
+CRM simples e visual
+
+Propostas profissionais com aceite online
+
+Contratos digitais automáticos
+
+Mensagem:
+
+“Feche mais negócios com menos esforço.”
+
+Bloco 2 — Execute sem perder controle
+
+Projetos com Kanban e cronogramas
+
+Tarefas vinculadas a clientes e contratos
+
+Mensagem:
+
+“Saiba exatamente o que está sendo entregue.”
+
+Bloco 3 — Receba com previsibilidade
+
+Faturamento automático
+
+Contas a pagar e receber
+
+Fluxo de caixa em tempo real
+
+Mensagem:
+
+“Veja o dinheiro antes do problema aparecer.”
+
+Bloco 4 — Automatize e ganhe tempo
+
+Workflows visuais sem código
+
+Super AI como assistente operacional
+
+Notificações e integrações
+
+Mensagem:
+
+“Menos trabalho manual, mais foco no crescimento.”
+
+1.4 Ajuste nº 3 — Super AI precisa sair do “efeito buzzword”
+
+Hoje:
+
+“Assistente de IA para automatizar tarefas, gerar conteúdo e responder clientes”
+
+Isso é fraco, porque todo mundo diz isso.
+
+Reposicionamento da Super AI
+
+Transformar em Copiloto do Negócio.
+
+Nova copy sugerida:
+
+Super AI — seu copiloto operacional
+
+Gere propostas, responda clientes, automatize rotinas e ganhe tempo todos os dias.
+
+Exemplos práticos (importante):
+
+Gerar proposta a partir de briefing
+
+Criar mensagens de follow-up
+
+Responder perguntas frequentes de clientes
+
+Sugerir automações e próximos passos
+
+📌 IA precisa ser concreta, não conceitual.
+
+1.5 Ajuste nº 4 — Prova social mais estratégica
+
+Hoje os depoimentos são bons, mas genéricos.
+
+Sugestão de melhoria
+
+Reescrever títulos dos depoimentos como resultados:
+
+“Economizamos 10 horas por semana”
+
+“Fechamos 40% mais projetos”
+
+“Agora sabemos a rentabilidade de cada cliente”
+
+O texto pode ser o mesmo, muda o framing.
+
+2. Ajustes estratégicos no PRICING
+
+Agora o ponto mais sensível — e mais poderoso.
+
+2.1 Diagnóstico do pricing atual
+Plano	Preço	Leitura estratégica
+Starter	R$ 97	Ok, mas parece “baixo” para o valor entregue
+Professional	R$ 197	Melhor plano (âncora correta)
+Enterprise	R$ 497	Correto, mas mal explicado
+
+📌 O risco hoje:
+
+O Starter pode subvender o produto
+
+O valor real está no Professional
+
+Enterprise precisa justificar mais claramente
+
+2.2 Sugestão de AJUSTE (sem revolução)
+Opção A — Ajuste fino (recomendado agora)
+
+Starter
+R$ 97 → R$ 117
+Posicionamento: solo / início
+
+Professional (âncora)
+R$ 197 (mantém)
+Posicionamento: crescimento
+
+Enterprise
+R$ 497 (mantém)
+Posicionamento: escala / marca própria
+
+Por quê:
+
+Reforça premium acessível
+
+Diminui churn de usuário “barato demais”
+
+Valoriza o Professional
+
+2.3 Ajustes de copy no pricing (muito importante)
+Starter — mudar o framing
+
+❌ “Perfeito para freelancers”
+✅ “Para quem está organizando o negócio”
+
+Professional — reforçar como melhor escolha
+
+Adicionar selo + copy mais agressiva:
+
+⭐ Mais escolhido por estúdios e agências
+
+E bullets mais orientados a resultado:
+
+Automação de processos
+
+IA para produtividade
+
+Captação de leads e site
+
+Suporte prioritário
+
+Enterprise — vender TRANSFORMAÇÃO, não features
+
+Hoje:
+
+“API completa”
+
+“White-label”
+
+“Gerente dedicado”
+
+Reescrever como:
+
+Para quem quer escalar operação e marca
+
+Crie sua própria plataforma, automatize processos complexos e conte com suporte dedicado.
+
+2.4 Algo que eu NÃO recomendo agora
+
+Plano gratuito permanente
+
+Muitos planos intermediários
+
+Add-ons complexos no início
+
+Simplicidade vende mais neste estágio.
+
+3. O que eu faria em seguida (prioridade)
+
+Se eu estivesse conduzindo isso como CPO / Head de Growth:
+
+Ajustaria hero + estrutura de valor do site
+
+Reenquadraria Super AI
+
+Ajustaria framing do pricing
+
+Criaria 1 landing page vertical (ex: Designers) como piloto
+
+Mediria conversão do trial

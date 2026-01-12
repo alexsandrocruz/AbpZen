@@ -98,7 +98,17 @@ namespace LeptonXDemoApp.Web.Menus
             administration.SetSubItemOrder(AbpAuditLoggingMainMenuNames.GroupName, 5);
 
             //Administration->Settings
-            administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 6);
+            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Edital, l["Menu:Editais"], "~/Edital", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Edital.Default));
+            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Product, l["Menu:Products"], "~/Product", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Product.Default));
+            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Category, l["Menu:Categories"], "~/Category", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Category.Default));
+            context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Order, l["Menu:Orders"], "~/Order", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Order.Default));
+      context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Customer, l["Menu:Customers"], "~/Customer", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Customer.Default));
+      context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.OrderItem, l["Menu:OrderItems"], "~/OrderItem", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.OrderItem.Default));
+      context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.Lead, l["Menu:Leads"], "~/Lead", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.Lead.Default));
+      context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.LeadContact, l["Menu:LeadContacts"], "~/LeadContact", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.LeadContact.Default));
+                        context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.MessageTemplate, l["Menu:MessageTemplates"], "~/MessageTemplate", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.MessageTemplate.Default));
+                  context.Menu.AddItem(new ApplicationMenuItem(LeptonXDemoAppMenus.LeadMessage, l["Menu:LeadMessages"], "~/LeadMessage", icon: "fa fa-folder-open").RequirePermissions(LeptonXDemoAppPermissions.LeadMessage.Default));
+      // <ZenCode-Menu-Marker>
 
             return Task.CompletedTask;
         }

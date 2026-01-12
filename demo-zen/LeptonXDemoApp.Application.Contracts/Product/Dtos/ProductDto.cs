@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+using Volo.Abp.Application.Dtos;
+
+namespace LeptonXDemoApp.Product.Dtos;
+
+[Serializable]
+public class ProductDto : FullAuditedEntityDto<Guid>
+{
+    public string Name { get; set; }
+    public string Price { get; set; }
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    public Guid? CategoryId { get; set; }
+    public string? CategoryDisplayName { get; set; }
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+}

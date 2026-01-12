@@ -1,0 +1,51 @@
+@page
+@using LeptonXDemoApp.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using LeptonXDemoApp.Web.Pages.LeadMessage
+@using LeptonXDemoApp.Localization
+@using LeptonXDemoApp.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<LeptonXDemoAppResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["LeadMessages"].Value;
+    PageLayout.Content.MenuItemName = LeptonXDemoAppMenus.LeadMessage;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/LeadMessage/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/LeadMessage/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(LeptonXDemoAppPermissions.LeadMessage.Create))
+    {
+        <abp-button id="NewLeadMessageButton"
+            text="@L["NewLeadMessage"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="LeadMessageCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="LeadMessageFilter" id="LeadMessageFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="LeadMessageCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="LeadMessageTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

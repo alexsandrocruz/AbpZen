@@ -1,0 +1,247 @@
+Excelente pergunta — e no momento certo.
+Buscar os 5 primeiros usuários não é marketing, é recrutamento cirúrgico de early adopters.
+
+Abaixo está um guia prático, direto e testado para conseguir seus 5 primeiros usuários do Dominus, sem anúncio, sem landing nova, sem desgaste.
+
+Como conquistar os 5 primeiros usuários do Dominus
+Princípio fundamental
+
+Você não está vendendo software.
+Você está convidando pessoas para co-criar uma solução.
+
+Se você abordar como venda → rejeição.
+Se abordar como convite → colaboração.
+
+PASSO 1 — Defina exatamente QUEM são esses 5 usuários
+
+Antes de falar com qualquer pessoa, defina o perfil:
+
+Perfil ideal do primeiro usuário
+
+Presta serviços (não produto)
+
+Tem clientes ativos hoje
+
+Usa:
+
+planilha
+
+WhatsApp
+
+PDF
+
+Reclama de:
+
+bagunça
+
+falta de visão
+
+retrabalho
+
+Não é “tool nerd”
+
+Não precisa ser grande
+
+Bons exemplos
+
+Designer freelancer
+
+Dev solo ou micro-agência
+
+Consultor
+
+Fotógrafo
+
+Contador autônomo
+
+Evite neste momento
+
+Pessoas muito técnicas (querem customizar tudo)
+
+Empresas grandes
+
+Quem “adora” Notion/ClickUp
+
+Quem só quer algo grátis
+
+🎯 Objetivo: dor clara + abertura para testar algo novo.
+
+PASSO 2 — Onde encontrar essas pessoas (fontes reais)
+Fonte 1 — Sua rede pessoal (mais rápida)
+
+Pessoas que:
+
+já trabalharam com você
+
+já pediram dica de ferramenta
+
+já reclamaram de gestão
+
+👉 Este é o caminho nº 1.
+Não ignore por vergonha — isso é capital social legítimo.
+
+Fonte 2 — WhatsApp / Telegram / Slack (grupos pequenos)
+
+Procure:
+
+grupos de freelancers
+
+grupos de devs
+
+grupos de marketing/design
+
+Não faça post público ainda.
+Use DM individual.
+
+Fonte 3 — LinkedIn (cirúrgico)
+
+Busque por:
+
+“freelancer”
+
+“consultor”
+
+“designer”
+
+“dev”
+
+Olhe o perfil e veja:
+
+pessoa ativa
+
+trabalha sozinha ou com time pequeno
+
+PASSO 3 — A mensagem certa (script pronto)
+Script-base (WhatsApp / DM)
+
+Use exatamente esse tom (ajuste ao seu estilo):
+
+Oi, [Nome].
+
+Estou testando uma plataforma nova para organizar negócios de serviços (clientes, propostas, contratos, projetos e financeiro).
+
+Estou convidando algumas pessoas de confiança para usar gratuitamente por um período e me dar feedback real.
+
+Não é venda — é validação.
+
+Se fizer sentido para você, eu libero o acesso e depois queria ouvir sua opinião sem filtro.
+
+Topa testar?
+
+📌 Por que funciona:
+
+tira pressão
+
+não parece pitch
+
+ativa colaboração
+
+filtra curiosos
+
+PASSO 4 — Quantidade certa de convites
+
+Nunca convide só 5.
+
+📊 Regra prática:
+
+Convide 12–15 pessoas
+
+Espere 5–7 respostas positivas
+
+Selecione 5 usuários ativos
+
+Normal.
+
+PASSO 5 — O acordo psicológico (importantíssimo)
+
+Assim que a pessoa topar, deixe claro:
+
+“O uso é gratuito por X dias, em troca quero feedback honesto.
+Se não fizer sentido, sem problema nenhum.”
+
+Isso:
+
+reduz ghosting
+
+aumenta engajamento
+
+cria responsabilidade
+
+PASSO 6 — O que entregar no primeiro contato (não faça demo longa)
+
+Envie:
+
+link para criar conta
+
+uma única orientação:
+
+“Minha sugestão é começar criando um cliente real e uma proposta real.”
+
+Não explique o sistema inteiro.
+
+PASSO 7 — Acompanhar sem atrapalhar
+48 horas depois
+
+Mensagem curta:
+
+“Conseguiu criar algo? Travou em algum ponto?”
+
+Sem cobrança.
+
+7 dias depois
+
+Convite para feedback:
+
+“Queria muito ouvir sua experiência até agora. Pode ser 20 min?”
+
+PASSO 8 — Quando você já tem os 5 usuários certos
+
+Você saberá que conseguiu quando:
+
+Eles usam o sistema com dados reais
+
+Mandam prints
+
+Fazem perguntas de negócio (não só de botão)
+
+Dizem frases como:
+
+“Isso já me ajudou”
+
+“Agora ficou mais claro”
+
+Essas pessoas valem ouro.
+
+O que NÃO fazer para conseguir os 5 primeiros
+
+Não postar link público ainda
+
+Não anunciar
+
+Não prometer roadmap
+
+Não dizer “vai revolucionar”
+
+Não discutir preço agora
+
+Linha do tempo realista
+
+Dia 1: enviar 15 convites
+
+Dia 2–3: 5 aceitam
+
+Dia 4–7: começam a usar
+
+Dia 10: primeiras frases de ouro aparecem
+
+Próximo passo recomendado
+
+Se quiser, posso:
+
+Personalizar o script de convite para 2–3 perfis (dev, designer, consultor)
+
+Criar um checklist de acompanhamento desses 5 usuários
+
+Montar um template de registro de feedback (Notion-ready)
+
+Diga por onde quer seguir.

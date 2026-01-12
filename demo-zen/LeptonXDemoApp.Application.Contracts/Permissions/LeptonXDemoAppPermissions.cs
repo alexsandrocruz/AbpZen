@@ -11,7 +11,97 @@ namespace LeptonXDemoApp.Permissions
             public const string Tenant = DashboardGroup + ".Tenant";
         }
 
-        //Add your own permission names. Example:
-        //public const string MyPermission1 = GroupName + ".MyPermission1";
+        public static class Edital
+        {
+            public const string Default = GroupName + ".Edital";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Product
+        {
+            public const string Default = GroupName + ".Product";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Category
+        {
+            public const string Default = GroupName + ".Category";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Order
+        {
+            public const string Default = GroupName + ".Order";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Customer
+        {
+            public const string Default = GroupName + ".Customer";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class OrderItem
+        {
+            public const string Default = GroupName + ".OrderItem";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Lead
+        {
+            public const string Default = GroupName + ".Lead";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class LeadContact
+        {
+            public const string Default = GroupName + ".LeadContact";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+                    public static class MessageTemplate
+        {
+            public const string Default = GroupName + ".MessageTemplate";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+              public static class LeadMessage
+        {
+            public const string Default = GroupName + ".LeadMessage";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Aluno
+        {
+            public const string Default = GroupName + ".Aluno";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class Turma
+        {
+            public const string Default = GroupName + ".Turma";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      public static class AlunoTurma
+        {
+            public const string Default = GroupName + ".AlunoTurma";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
+      // <ZenCode-Permissions-Marker>
     }
 }

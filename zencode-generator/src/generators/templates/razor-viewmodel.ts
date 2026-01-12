@@ -3,8 +3,15 @@
  */
 export function getRazorCreateViewModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 
@@ -12,28 +19,34 @@ public class Create{{ entity.name }}ViewModel
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.isRequired %}
     [Required]
     {%- endif %}
     {%- if field.type == 'string' and field.maxLength %}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.isTextArea %}
     [TextArea(Rows = 3)]
     {%- endif %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'enum' and field.enumConfig %}
     {%- if field.isNullable %}
     public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
@@ -43,8 +56,35 @@ public class Create{{ entity.name }}ViewModel
     {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endif %}
-
     {%- endunless %}
+    {%- endunless %}
+    {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    {%- if rel.isRequired %}
+    [Required]
+    {%- endif %}
+    [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    {%- if rel.lookupMode == 'modal' %}
+    [DynamicFormIgnore] // Hidden - rendered via abp-lookup-input
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    [DynamicFormIgnore]
+    public string? {{ rel.parentEntityName }}DisplayName { get; set; }
+    {%- else %}
+    [SelectItems(nameof({{ rel.parentEntityName }}List))]
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endif %}
+    {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.navigationName }} { get; set; } = new();
+    {%- endif %}
     {%- endfor %}
 }
 `;
@@ -55,8 +95,15 @@ public class Create{{ entity.name }}ViewModel
  */
 export function getRazorEditViewModelTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+{%- for rel in relationships.asParent %}
+{%- if rel.isChildGrid %}
+using {{ project.namespace }}.{{ rel.targetEntityName }}.Dtos;
+{%- endif %}
+{%- endfor %}
 
 namespace {{ project.namespace }}.Web.Pages.{{ entity.name }}.ViewModels;
 
@@ -64,13 +111,18 @@ public class Edit{{ entity.name }}ViewModel
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.isRequired %}
     [Required]
     {%- endif %}
     {%- if field.type == 'string' and field.maxLength %}
     [StringLength({{ field.maxLength }})]
     {%- endif %}
-    [Display(Name = "{{ entity.name }}{{ field.name }}")]
+    [Display(Name = "{{ entity.name }}:{{ field.name }}")]
     {%- if field.isTextArea %}
     [TextArea(Rows = 3)]
     {%- endif %}
@@ -78,17 +130,18 @@ public class Edit{{ entity.name }}ViewModel
     [ReadOnlyInput]
     {%- endif %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'enum' and field.enumConfig %}
     {%- if field.isNullable %}
     public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
@@ -98,8 +151,35 @@ public class Edit{{ entity.name }}ViewModel
     {%- else %}
     public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
     {%- endif %}
-
     {%- endunless %}
+    {%- endunless %}
+    {%- endfor %}
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+    {%- for rel in relationships.asChild %}
+    {%- if rel.isRequired %}
+    [Required]
+    {%- endif %}
+    [Display(Name = "{{ entity.name }}:{{ rel.fkFieldName }}")]
+    {%- if rel.lookupMode == 'modal' %}
+    [DynamicFormIgnore] // Hidden - rendered via abp-lookup-input
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    [DynamicFormIgnore]
+    public string? {{ rel.parentEntityName }}DisplayName { get; set; }
+    {%- else %}
+    [SelectItems(nameof({{ rel.parentEntityName }}List))]
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+
+    public List<SelectListItem> {{ rel.parentEntityName }}List { get; set; } = new();
+    {%- endif %}
+    {%- endfor %}
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+    {%- for rel in relationships.asParent %}
+    {%- if rel.isChildGrid %}
+    public List<CreateUpdate{{ rel.targetEntityName }}Dto> {{ rel.navigationName }} { get; set; } = new();
+    {%- endif %}
     {%- endfor %}
 }
 `;
@@ -119,7 +199,12 @@ public class {{ entity.name }}WebAutoMapperProfile : Profile
 {
     public {{ entity.name }}WebAutoMapperProfile()
     {
-        CreateMap<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>();
+        CreateMap<{{ dto.readTypeName }}, Edit{{ entity.name }}ViewModel>()
+            {%- for rel in relationships.asChild %}
+            {%- if rel.lookupMode == 'modal' %}
+            .ForMember(dest => dest.{{ rel.parentEntityName }}DisplayName, opt => opt.MapFrom(src => src.{{ rel.parentEntityName }}DisplayName))
+            {%- endif %}
+            {%- endfor %};
         CreateMap<Create{{ entity.name }}ViewModel, {{ dto.createTypeName }}>();
         CreateMap<Edit{{ entity.name }}ViewModel, {{ dto.updateTypeName }}>();
     }

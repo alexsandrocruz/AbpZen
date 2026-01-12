@@ -3,6 +3,7 @@
  */
 export function getEntityTemplate(): string {
     return `using System;
+using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace {{ project.namespace }}.{{ entity.name }};
@@ -14,24 +15,48 @@ public class {{ entity.name }} : {{ entity.baseClass }}<{{ entity.primaryKey }}>
 {
     {%- for field in entity.fields %}
     {%- unless field.isLookup %}
+    {%- assign isFk = false %}
+    {%- for rel in relationships.asChild %}
+      {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
+    {%- endfor %}
+    {%- unless isFk %}
     {%- if field.type == 'string' %}
-    public string{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }{{ field.isRequired | if: ' = string.Empty;' }}
+    public string{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }{% if field.isRequired %} = string.Empty;{% endif %}
+
     {%- elsif field.type == 'guid' %}
-    public Guid{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public Guid{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'int' %}
-    public int{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public int{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'long' %}
-    public long{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public long{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'decimal' %}
-    public decimal{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public decimal{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'bool' %}
-    public bool{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public bool{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- elsif field.type == 'datetime' %}
-    public DateTime{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public DateTime{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
+    {%- elsif field.type == 'enum' and field.enumConfig %}
+    public {{ field.enumConfig.enumName }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- else %}
-    public {{ field.type }}{{ field.isNullable | if: '?' }} {{ field.name }} { get; set; }
+    public {{ field.type }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- endif %}
     {%- endunless %}
+    {%- endunless %}
+    {%- endfor %}
+
+    // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========
+    {%- for rel in relationships.asChild %}
+    public Guid{% unless rel.isRequired %}?{% endunless %} {{ rel.fkFieldName }} { get; set; }
+    {%- endfor %}
+
+    // ========== Navigation Properties ==========
+    {%- for rel in relationships.asChild %}
+    public virtual {{ project.namespace }}.{{ rel.parentEntityName }}.{{ rel.parentEntityName }}{% unless rel.isRequired %}?{% endunless %} {{ rel.navigationName }} { get; set; }
+    {%- endfor %}
+
+    // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
+    {%- for rel in relationships.asParent %}
+    public virtual ICollection<{{ project.namespace }}.{{ rel.childEntityName }}.{{ rel.childEntityName }}> {{ rel.navigationName }} { get; set; } = new List<{{ project.namespace }}.{{ rel.childEntityName }}.{{ rel.childEntityName }}>();
     {%- endfor %}
 
     protected {{ entity.name }}()

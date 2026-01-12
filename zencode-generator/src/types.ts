@@ -77,6 +77,7 @@ export interface EntityData {
     baseClass: EntityBaseClass;
     isMaster: boolean;
     fields: EntityField[];
+    renderType?: 'modal' | 'full-page';
 }
 
 export type RelationshipType = 'one-to-many' | 'many-to-many' | 'one-to-one';
@@ -88,11 +89,14 @@ export interface ChildGridConfig {
     allowEdit?: boolean;                 // Allow editing child items inline
     displayFields?: string[];            // Fields to show in the child grid (if empty, show all)
     defaultExpanded?: boolean;           // Start expanded
+    renderMode?: 'inline' | 'tab';       // Rendering mode: inline or in a tab
 }
 
 export interface JunctionConfig {
     tableName: string;                   // Junction table name (e.g., "AlunoTurma")
     junctionEntityId?: string;           // ID of the generated junction entity node
+    sourceForeignKey?: string;           // FK field name to source entity (e.g., "AlunoId")
+    targetForeignKey?: string;           // FK field name to target entity (e.g., "TurmaId")
     additionalFields?: EntityField[];    // Extra fields (e.g., DataMatricula)
     showInSource?: boolean;              // Show grid in source entity form
     showInTarget?: boolean;              // Show grid in target entity form
@@ -113,9 +117,60 @@ export interface RelationshipData {
     junctionConfig?: JunctionConfig;     // Configuration for junction table
 }
 
+// ============ MULTI-FRONTEND SUPPORT ============
+
+/**
+ * Frontend targets for code generation
+ */
+export type FrontendTarget = 'razor' | 'angular' | 'react' | 'react-v2';
+
+/**
+ * React (Next.js) specific configuration
+ */
+export interface ReactConfig {
+    /** Base URL for API calls (e.g., "http://localhost:44322") */
+    baseApiUrl: string;
+    /** Use OpenAPI generated client (recommended) */
+    useOpenApiClient: boolean;
+    /** UI component library */
+    uiLibrary: 'radix' | 'shadcn';
+    /** Generate Storybook stories */
+    generateStories?: boolean;
+}
+
+/**
+ * Angular specific configuration
+ */
+export interface AngularConfig {
+    /** Proxy module path (e.g., "@proxy") */
+    proxyModule: string;
+    /** UI framework for components */
+    uiFramework: 'primeng' | 'material' | 'bootstrap';
+    /** Use ngx-datatable for grids */
+    useNgxDatatable: boolean;
+    /** Generate lazy-loaded modules */
+    lazyLoad: boolean;
+}
+
+/**
+ * Frontend generation configuration
+ */
+export interface FrontendConfig {
+    /** Which frontends to generate code for */
+    targets: FrontendTarget[];
+    /** React-specific configuration */
+    react?: ReactConfig;
+    /** Angular-specific configuration */
+    angular?: AngularConfig;
+}
+
 export interface ZenMetadata {
     projectName: string;
     namespace: string;
+
+    /** Frontend generation configuration */
+    frontend?: FrontendConfig;
+
     entities: {
         id: string;
         data: EntityData;
@@ -127,3 +182,4 @@ export interface ZenMetadata {
         data: RelationshipData;
     }[];
 }
+

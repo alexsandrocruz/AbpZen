@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Volo.Abp.AutoMapper" Version="8.3.0" />
+        <ProjectReference Include="..\ProductManagement.Application.Contracts\ProductManagement.Application.Contracts.csproj" />
+        <ProjectReference Include="..\ProductManagement.Domain\ProductManagement.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
