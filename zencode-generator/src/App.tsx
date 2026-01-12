@@ -488,9 +488,18 @@ function App() {
 
       // Prioritize config values over file name
       if (project.config) {
-        setProjectName(project.config.projectName || project.name);
-        setProjectNamespace(project.config.namespace || '');
-        setProjectPath(project.config.projectPath || '');
+        const name = project.config.projectName || project.name;
+        const namespace = project.config.namespace || '';
+        const path = project.config.projectPath || '';
+
+        setProjectName(name);
+        setProjectNamespace(namespace);
+        setProjectPath(path);
+
+        // Persist to localStorage
+        localStorage.setItem('zen_project_name', name);
+        localStorage.setItem('zen_project_namespace', namespace);
+        localStorage.setItem('zen_project_path', path);
 
         // Load frontends from config if available
         if (project.config.frontends && Array.isArray(project.config.frontends)) {
@@ -499,6 +508,7 @@ function App() {
         }
       } else {
         setProjectName(project.name);
+        localStorage.setItem('zen_project_name', project.name);
       }
     } catch (error) {
       alert('Erro ao carregar projeto: ' + (error as Error).message);

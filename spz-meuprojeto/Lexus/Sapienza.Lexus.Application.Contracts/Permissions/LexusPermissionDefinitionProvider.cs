@@ -40,6 +40,14 @@ namespace Sapienza.Lexus.Permissions
             lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Create, L("Permission:Create"));
             lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Update, L("Permission:Update"));
             lawyerSpecializationPermission.AddChild(LawyerSpecializationPermissions.Delete, L("Permission:Delete"));
+                  var proposalPermission = myGroup.AddPermission(ProposalPermissions.Default, L("Permission:Proposal"));
+            proposalPermission.AddChild(ProposalPermissions.Create, L("Permission:Create"));
+            proposalPermission.AddChild(ProposalPermissions.Update, L("Permission:Update"));
+            proposalPermission.AddChild(ProposalPermissions.Delete, L("Permission:Delete"));
+                  var propostalItemPermission = myGroup.AddPermission(PropostalItemPermissions.Default, L("Permission:PropostalItem"));
+            propostalItemPermission.AddChild(PropostalItemPermissions.Create, L("Permission:Create"));
+            propostalItemPermission.AddChild(PropostalItemPermissions.Update, L("Permission:Update"));
+            propostalItemPermission.AddChild(PropostalItemPermissions.Delete, L("Permission:Delete"));
       // <ZenCode-PermissionDefinition-Marker>
         }
 

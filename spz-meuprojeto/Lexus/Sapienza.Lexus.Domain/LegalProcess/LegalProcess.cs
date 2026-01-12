@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -19,8 +20,8 @@ public class LegalProcess : FullAuditedAggregateRoot<Guid>
     public Guid ClientId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Lexus.Lawyer.Lawyer Lawyer { get; set; }
-    public virtual Sapienza.Lexus.Client.Client Client { get; set; }
+    public virtual Sapienza.Lexus.Lawyer.Lawyer Lawyer { get; set; } = null!;
+    public virtual Sapienza.Lexus.Client.Client Client { get; set; } = null!;
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

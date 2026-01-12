@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Volo.Abp.Domain.Entities;
 
 namespace Sapienza.Lexus.Lawyer.Dtos;
 
 [Serializable]
-public class CreateUpdateLawyerDto : IHasConcurrencyStamp
+public class CreateUpdateLawyerDto
 {
     /// <summary>
     /// Id for Master-Detail reconciliation (empty = new item)
@@ -17,7 +16,6 @@ public class CreateUpdateLawyerDto : IHasConcurrencyStamp
     public string FullName { get; set; }
     [StringLength(64)]
     public string PreferredName { get; set; }
-    public string ConcurrencyStamp { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 

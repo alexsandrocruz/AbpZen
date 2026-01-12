@@ -10,7 +10,11 @@ public class LegalProcessAutoMapperProfile : Profile
         CreateMap<LegalProcess, LegalProcessDto>()
             .ForMember(dest => dest.LawyerDisplayName, opt => opt.MapFrom(src => src.Lawyer.FullName))
             .ForMember(dest => dest.ClientDisplayName, opt => opt.MapFrom(src => src.Client.Name));
-        CreateMap<CreateUpdateLegalProcessDto, LegalProcess>();
-        CreateMap<CreateUpdateLegalProcessDto, LegalProcess>();
+        CreateMap<CreateUpdateLegalProcessDto, LegalProcess>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore());
+        CreateMap<CreateUpdateLegalProcessDto, LegalProcess>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore());
     }
 }

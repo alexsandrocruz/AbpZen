@@ -44,7 +44,7 @@ export default function LawyerFormPage() {
 
     // Queries & Mutations
     const { data: lawyer, isLoading } = useLawyer(id || '');
-    const { data: lawyerSpecs } = useLawyerSpecializations(id || '');
+    const { data: lawyerSpecs } = useLawyerSpecializations({ lawyerId: id });
     const createMutation = useCreateLawyer();
     const updateMutation = useUpdateLawyer();
     const toggleSpec = useToggleSpecialization(id || '');

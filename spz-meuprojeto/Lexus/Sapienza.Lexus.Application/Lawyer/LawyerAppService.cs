@@ -110,9 +110,7 @@ public class LawyerAppService :
 
     public virtual async Task<ListResultDto<LookupDto<Guid>>> GetLawyerLookupAsync()
     {
-        var entities = await _repository.GetListAsync();
-        
-        return new ListResultDto<LookupDto<Guid>>(
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
             entities.Select(x => new LookupDto<Guid>
             {
                 Id = x.Id,

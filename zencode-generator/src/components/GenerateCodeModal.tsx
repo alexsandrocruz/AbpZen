@@ -274,6 +274,10 @@ export default function GenerateCodeModal({
         entitiesToGenerate.forEach(e => { initialStatus[e.name] = 'pending'; });
         setEntityStatus(initialStatus);
 
+        // DEBUG: Log entities to be generated
+        console.log('[DEBUG] Entities to generate:', entitiesToGenerate.map(e => e.name));
+        console.log('[DEBUG] Relationships:', relationships.map(r => ({ id: r.id, source: r.source, target: r.target, type: r.data.type })));
+
         try {
             for (let i = 0; i < entitiesToGenerate.length; i++) {
                 const entity = entitiesToGenerate[i];
@@ -281,7 +285,9 @@ export default function GenerateCodeModal({
                 setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
 
                 try {
+                    console.log(`[DEBUG] Generating entity ${i + 1}/${entitiesToGenerate.length}: ${entity.name}`);
                     const { asParent, asChild } = getRelationshipContext(entity.name);
+                    console.log(`[DEBUG] ${entity.name} - asParent:`, asParent.length, 'asChild:', asChild.length);
                     const entityFiles = await codeGenerator.generateEntityWithFrontends(
                         entity,
                         projectName,
@@ -290,6 +296,7 @@ export default function GenerateCodeModal({
                         asChild,
                         Array.from(selectedFrontends)
                     );
+                    console.log(`[DEBUG] ${entity.name} generated ${entityFiles.length} files`);
                     allFiles.push(...entityFiles);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
                 } catch (err) {

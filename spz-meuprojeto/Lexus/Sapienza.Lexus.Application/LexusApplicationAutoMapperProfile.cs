@@ -27,7 +27,11 @@ namespace Sapienza.Lexus
 
             CreateMap<Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization, Sapienza.Lexus.LawyerSpecialization.Dtos.LawyerSpecializationDto>();
             CreateMap<Sapienza.Lexus.LawyerSpecialization.Dtos.CreateUpdateLawyerSpecializationDto, Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization>();
-            // <<GEN-MAPPINGS>>
+                        CreateMap<Sapienza.Lexus.Proposal.Proposal, Sapienza.Lexus.Proposal.Dtos.ProposalDto>();
+            CreateMap<Sapienza.Lexus.Proposal.Dtos.CreateUpdateProposalDto, Sapienza.Lexus.Proposal.Proposal>();
+                  CreateMap<Sapienza.Lexus.PropostalItem.PropostalItem, Sapienza.Lexus.PropostalItem.Dtos.PropostalItemDto>();
+            CreateMap<Sapienza.Lexus.PropostalItem.Dtos.CreateUpdatePropostalItemDto, Sapienza.Lexus.PropostalItem.PropostalItem>();
+      // <<GEN-MAPPINGS>>
         }
     }
 }

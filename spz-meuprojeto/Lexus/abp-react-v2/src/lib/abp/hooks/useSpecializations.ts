@@ -74,3 +74,17 @@ export function useDeleteSpecialization() {
     },
   });
 }
+
+export function useAllSpecializations() {
+  return useQuery({
+    queryKey: ["specializations", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/specialization", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}

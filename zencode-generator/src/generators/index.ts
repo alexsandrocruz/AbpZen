@@ -52,7 +52,9 @@ import {
     getReactV2PageTemplate,
     getReactV2ListComponentTemplate,
     getReactV2FormComponentTemplate,
-    getReactV2HookTemplate
+    getReactV2HookTemplate,
+    getReactV2MasterDetailListPageTemplate,
+    getReactV2MasterDetailFormPageTemplate
 } from './templates/react-v2/index.ts';
 import { getZenLookupModalTemplate, getZenLookupCssTemplate } from './templates/zen-lookup-modal.ts';
 import { getZenLookupJsTemplate } from './templates/zen-lookup-js.ts';
@@ -499,28 +501,71 @@ export class CodeGenerator {
         const files: GeneratedFile[] = [];
         const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-        // Page component
-        files.push({
-            path: `abp-react-v2/src/pages/admin/${kebabName}/index.tsx`,
-            content: await this.engine.parseAndRender(getReactV2PageTemplate(), ctx),
-            layer: 'React',
-        });
+        // Determine if this entity should use full-page layout
+        const hasChildGrid = asParent.some(r => r.isChildGrid);
+        const isFullPage = entity.renderType === 'full-page' || hasChildGrid;
 
-        // List component
-        files.push({
-            path: `abp-react-v2/src/components/${kebabName}/${entity.name}List.tsx`,
-            content: await this.engine.parseAndRender(getReactV2ListComponentTemplate(), ctx),
-            layer: 'React',
-        });
+        if (isFullPage) {
+            // Master-Detail: Full page layout with dedicated routes
+            // List page (navigates to /new and /:id/edit)
+            files.push({
+                path: `abp-react-v2/src/pages/admin/${kebabName}/index.tsx`,
+                content: await this.engine.parseAndRender(getReactV2MasterDetailListPageTemplate(), ctx),
+                layer: 'React',
+            });
 
-        // Form component (includes Create and Edit logic)
-        files.push({
-            path: `abp-react-v2/src/components/${kebabName}/${entity.name}Form.tsx`,
-            content: await this.engine.parseAndRender(getReactV2FormComponentTemplate(), ctx),
-            layer: 'React',
-        });
+            // Form page (used for both create and edit)
+            // Add child entities context for the form template
+            const formCtx = {
+                ...ctx,
+                entity: {
+                    ...ctx.entity,
+                    childEntities: asParent
+                        .filter(r => r.isChildGrid)
+                        .map(r => ({
+                            entityName: r.childEntityName,
+                            title: r.childGridConfig?.title || `${r.childEntityName}s`,
+                            fields: r.targetFields || [],
+                            displayFields: (r.targetFields || []).filter(f =>
+                                f.name !== 'Id' &&
+                                !f.name.endsWith('Id') &&
+                                f.showInGrid !== false
+                            ).slice(0, 5), // Limit to 5 display fields
+                            requiredFields: (r.targetFields || []).filter(f => f.isRequired),
+                        }))
+                }
+            };
 
-        // Hook
+            files.push({
+                path: `abp-react-v2/src/pages/admin/${kebabName}/form.tsx`,
+                content: await this.engine.parseAndRender(getReactV2MasterDetailFormPageTemplate(), formCtx),
+                layer: 'React',
+            });
+        } else {
+            // Modal layout (default for simple entities)
+            // Page component
+            files.push({
+                path: `abp-react-v2/src/pages/admin/${kebabName}/index.tsx`,
+                content: await this.engine.parseAndRender(getReactV2PageTemplate(), ctx),
+                layer: 'React',
+            });
+
+            // List component
+            files.push({
+                path: `abp-react-v2/src/components/${kebabName}/${entity.name}List.tsx`,
+                content: await this.engine.parseAndRender(getReactV2ListComponentTemplate(), ctx),
+                layer: 'React',
+            });
+
+            // Form component (modal)
+            files.push({
+                path: `abp-react-v2/src/components/${kebabName}/${entity.name}Form.tsx`,
+                content: await this.engine.parseAndRender(getReactV2FormComponentTemplate(), ctx),
+                layer: 'React',
+            });
+        }
+
+        // Hook (always generated)
         files.push({
             path: `abp-react-v2/src/lib/abp/hooks/use${entity.pluralName}.ts`,
             content: await this.engine.parseAndRender(getReactV2HookTemplate(), ctx),

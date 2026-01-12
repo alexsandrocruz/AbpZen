@@ -172,6 +172,10 @@ public class LawyerSpecializationAppService :
     {
         return queryable
             .WhereIf(input.LawyerId != null, x => x.LawyerId == input.LawyerId)
-            .WhereIf(input.SpecializationId != null, x => x.SpecializationId == input.SpecializationId);
+            .WhereIf(input.SpecializationId != null, x => x.SpecializationId == input.SpecializationId)
+            // ========== FK Filters ==========
+            .WhereIf(input.LawyerId != null, x => x.LawyerId == input.LawyerId)
+            .WhereIf(input.SpecializationId != null, x => x.SpecializationId == input.SpecializationId)
+            ;
     }
 }

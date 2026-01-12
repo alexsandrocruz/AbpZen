@@ -267,6 +267,19 @@ const Sidebar = ({ selectedEntity, selectedEdge, allEntities, onUpdateEntity, on
                         <label>Is Master?</label>
                         <input type="checkbox" checked={data.isMaster} onChange={(e) => onUpdateEntity(id, { ...data, isMaster: e.target.checked })} />
                     </div>
+                    <div className="form-group">
+                        <label>Render Type</label>
+                        <select
+                            value={data.renderType || 'modal'}
+                            onChange={(e) => onUpdateEntity(id, { ...data, renderType: e.target.value as 'modal' | 'full-page' })}
+                        >
+                            <option value="modal">Modal (Default)</option>
+                            <option value="full-page">Full Page (Master-Detail)</option>
+                        </select>
+                        <p style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '4px' }}>
+                            Full Page: Creates dedicated /new and /edit pages
+                        </p>
+                    </div>
                 </div>
 
                 <div className="fields-section">

@@ -16,6 +16,8 @@
               public const string Specialization = Prefix + ".Specialization";
               public const string LegalProcess = Prefix + ".LegalProcess";
               public const string LawyerSpecialization = Prefix + ".LawyerSpecialization";
+              public const string Proposal = Prefix + ".Proposal";
+              public const string PropostalItem = Prefix + ".PropostalItem";
       // <ZenCode-Menus-Marker>
     }
 }

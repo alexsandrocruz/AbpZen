@@ -1,18 +1,22 @@
 import { Shell } from "@/components/layout/shell";
 import { LawyerList } from "@/components/lawyer/LawyerList";
+import { LawyerForm } from "@/components/lawyer/LawyerForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function LawyersPage() {
-  const [, navigate] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<any>(null);
 
   const handleEdit = (item: any) => {
-    navigate(`/admin/lawyer/edit/${item.id}`);
+    setEditingItem(item);
+    setIsFormOpen(true);
   };
 
-  const handleCreate = () => {
-    navigate("/admin/lawyer/create");
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+    setEditingItem(null);
   };
 
   return (
@@ -28,13 +32,19 @@ export default function LawyersPage() {
               <p className="text-muted-foreground">Manage your lawyers</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={handleCreate}>
+          <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
             <Plus className="size-4" />
             New Lawyer
           </Button>
         </div>
 
         <LawyerList onEdit={handleEdit} />
+
+        <LawyerForm 
+          isOpen={isFormOpen} 
+          onClose={handleCloseForm} 
+          initialValues={editingItem} 
+        />
       </div>
     </Shell>
   );

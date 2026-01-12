@@ -44,6 +44,8 @@ import ClientPage from "@/pages/admin/client";
 import SpecializationPage from "@/pages/admin/specialization";
 import LegalProcessPage from "@/pages/admin/legal-process";
 import LawyerSpecializationPage from "@/pages/admin/lawyer-specialization";
+import ProposalPage from "@/pages/admin/proposal";
+import PropostalItemPage from "@/pages/admin/propostal-item";
 // <GEN-IMPORTS>
 
 export interface NavItem {
@@ -92,6 +94,8 @@ export const routes: RouteConfig[] = [
     { path: "/admin/specialization", component: SpecializationPage },
     { path: "/admin/legal-process", component: LegalProcessPage },
     { path: "/admin/lawyer-specialization", component: LawyerSpecializationPage },
+    { path: "/admin/proposal", component: ProposalPage },
+    { path: "/admin/propostal-item", component: PropostalItemPage },
     // <GEN-ROUTES>
 ];
 
@@ -127,5 +131,7 @@ export const menuItems: NavItem[] = [
     { label: "Specializations", href: "/admin/specialization", icon: LayoutDashboard, section: "entities" },
     { label: "LegalProcesses", href: "/admin/legal-process", icon: LayoutDashboard, section: "entities" },
     { label: "LawyerSpecializations", href: "/admin/lawyer-specialization", icon: LayoutDashboard, section: "entities" },
+    { label: "Proposals", href: "/admin/proposal", icon: LayoutDashboard, section: "entities" },
+    { label: "PropostalItems", href: "/admin/propostal-item", icon: LayoutDashboard, section: "entities" },
     // <GEN-MENU>
 ];
