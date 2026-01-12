@@ -429,18 +429,7 @@ function App() {
     setShowPreview(true);
   }, [nodes, edges]);
 
-  const handleImportSql = useCallback((newEntities: EntityData[]) => {
-    const newNodes: Node<EntityData>[] = newEntities.map((entity, index) => {
-      const id = `entity_${Date.now()}_${index}`;
-      return {
-        id,
-        type: 'entity',
-        data: entity,
-        position: { x: 100 + index * 220, y: 100 + (index % 3) * 50 },
-      };
-    });
-    setNodes((nds) => nds.concat(newNodes));
-  }, [setNodes]);
+
 
   // Undo handler
   const handleUndo = useCallback(() => {
@@ -802,7 +791,7 @@ function App() {
       {
         showImportModal && (
           <ImportSqlModal
-            onImport={handleImportSql}
+            onImport={handleImportDb}
             onClose={() => setShowImportModal(false)}
           />
         )

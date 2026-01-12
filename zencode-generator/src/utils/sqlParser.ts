@@ -1,16 +1,32 @@
 import type { EntityData, EntityField, FieldType } from '../types';
 import { pluralize } from './pluralize';
 
-export const parseSqlToEntities = (sql: string): EntityData[] => {
+export interface SqlRelationship {
+    sourceTable: string;
+    targetTable: string;
+    sourceColumn: string;
+    targetColumn: string;
+    constraintName: string;
+    isCascade?: boolean;
+}
+
+export interface SqlParseResult {
+    entities: EntityData[];
+    relationships: SqlRelationship[];
+}
+
+export const parseSqlToEntities = (sql: string): SqlParseResult => {
     const entities: EntityData[] = [];
+    const relationships: SqlRelationship[] = [];
 
     // Remove SQL comments but preserve structure
     let cleanSql = sql
         .replace(/\/\*[\s\S]*?\*\//g, '') // Remove block comments
         .replace(/--.*$/gm, '');          // Remove line comments
 
-    // Find all CREATE TABLE statements using a simple approach
-    const tableRegex = /CREATE\s+TABLE\s+(?:(?:\[?\w+\]?|\"\w+\")\.)?(?:\[?(\w+)\]?|\"(\w+)\")\s*\(/gi;
+    // Find all CREATE TABLE statements (supports [db].[schema].[table], [schema].[table], or just [table])
+    // Also supports hyphens in names (e.g. [my-db].[dbo].[table])
+    const tableRegex = /CREATE\s+TABLE\s+(?:(?:\[?[\w-]+\]?|\"[\w-]+\")\.)?(?:(?:\[?[\w-]+\]?|\"[\w-]+\")\.)?(?:\[?(\w+)\]?|\"(\w+)\")\s*\(/gi;
 
     let match;
     while ((match = tableRegex.exec(cleanSql)) !== null) {
@@ -39,13 +55,37 @@ export const parseSqlToEntities = (sql: string): EntityData[] => {
             // Remove trailing comma
             let trimmedLine = line.replace(/,\s*$/, '').trim();
 
-            // Skip empty lines and constraint definitions
+            // Skip empty lines
             if (!trimmedLine) return;
+
             const upperLine = trimmedLine.toUpperCase();
+
+            // Handle Foreign Key Constraints
+            // CONSTRAINT FK_Name FOREIGN KEY (col) REFERENCES Db.Schema.Table(col)
+            if (upperLine.startsWith('CONSTRAINT') && upperLine.includes('FOREIGN KEY')) {
+                // Regex to capture: Name, SourceCol, TargetTable, TargetCol
+                // Supports [db].[schema].[table] for target
+                const fkRegex = /CONSTRAINT\s+\[?(\w+)\]?\s+FOREIGN\s+KEY\s*\(\s*\[?(\w+)\]?\s*\)\s+REFERENCES\s+(?:(?:\[?[\w-]+\]?|\"[\w-]+\")\.)?(?:(?:\[?[\w-]+\]?|\"[\w-]+\")\.)?(?:\[?(\w+)\]?|\"(\w+)\")\s*\(\s*\[?(\w+)\]?\s*\)/i;
+                const fkMatch = fkRegex.exec(trimmedLine);
+
+                if (fkMatch) {
+                    relationships.push({
+                        sourceTable: tableName,
+                        constraintName: fkMatch[1],
+                        sourceColumn: fkMatch[2],
+                        targetTable: fkMatch[3] || fkMatch[4],
+                        targetColumn: fkMatch[5],
+                        isCascade: upperLine.includes('ON DELETE CASCADE')
+                    });
+                    return;
+                }
+            }
+
+            // Skip other constraints
             if (upperLine.startsWith('PRIMARY KEY') ||
                 upperLine.startsWith('CONSTRAINT') ||
                 upperLine.startsWith('INDEX') ||
-                upperLine.startsWith('FOREIGN KEY') ||
+                upperLine.startsWith('FOREIGN KEY') || // Standalone FOREIGN KEY
                 upperLine.startsWith('UNIQUE') ||
                 upperLine.startsWith('CHECK')) {
                 return;
@@ -86,7 +126,7 @@ export const parseSqlToEntities = (sql: string): EntityData[] => {
         }
     }
 
-    return entities;
+    return { entities, relationships };
 };
 
 const mapSqlTypeToAppType = (sqlType: string): FieldType => {
