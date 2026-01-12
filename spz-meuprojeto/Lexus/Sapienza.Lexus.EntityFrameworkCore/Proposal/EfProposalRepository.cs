@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Sapienza.Lexus.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Threading.Tasks;
 using Sapienza.Lexus.LegalProcess.Dtos;
@@ -19,6 +20,6 @@ public interface ILegalProcessAppService :
 
 public class LookupDto<TKey>
 {
-    public TKey Id { get; set; }
-    public string DisplayName { get; set; }
+    public TKey? Id { get; set; }
+    public string? DisplayName { get; set; }
 }

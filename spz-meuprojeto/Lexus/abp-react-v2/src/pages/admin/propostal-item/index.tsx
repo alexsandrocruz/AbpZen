@@ -74,7 +74,7 @@ export default function PropostalItemsPage() {
                 />
               </div>
             </div>
-
+            
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -83,58 +83,58 @@ export default function PropostalItemsPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-
+                    
                     <TableHead>Desc</TableHead>
-
+                    
                     <TableHead>Quant</TableHead>
-
+                    
                     <TableHead>UnitPrice</TableHead>
-
+                    
                     <TableHead>Total</TableHead>
-
+                    
                     <TableHead>ProposalId</TableHead>
-
+                    
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {data?.items?.map((item: any) => (
-                    <TableRow
-                      key={item.id}
+                    <TableRow 
+                      key={item.id} 
                       className="cursor-pointer hover:bg-muted/50"
                       onClick={() => setLocation(`/admin/propostal-item/${item.id}/edit`)}
                     >
-
+                      
                       <TableCell>
-
+                        
                         {item.desc}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.quant}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.unitPrice}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.total}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.proposalId}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -149,7 +149,7 @@ export default function PropostalItemsPage() {
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem
+                            <DropdownMenuItem 
                               className="text-destructive"
                               onClick={() => handleDelete(item.id)}
                             >

@@ -3,19 +3,23 @@ import { apiClient } from "../api-client";
 
 interface GetLegalProcessesInput {
   filter?: string;
+  lawyerId?: string;
+  clientId?: string;
   skipCount?: number;
   maxResultCount?: number;
 }
 
 export function useLegalProcesses(input: GetLegalProcessesInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, lawyerId, clientId, skipCount = 0, maxResultCount = 10 } = input;
 
   return useQuery({
-    queryKey: ["legalProcesses", filter, skipCount, maxResultCount],
+    queryKey: ["legalProcesses", filter, lawyerId, clientId, skipCount, maxResultCount],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/legal-process", {
         params: {
           filter,
+          lawyerId,
+          clientId,
           skipCount,
           maxResultCount,
         },
@@ -74,3 +78,89 @@ export function useDeleteLegalProcess() {
     },
   });
 }
+
+export function useAllLegalProcesses() {
+  return useQuery({
+    queryKey: ["legalProcesses", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/legal-process", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+
+
+
+
+
+
+export function useToggleClient(lawyerId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ clientId, isChecked }: { clientId: string; isChecked: boolean }) => {
+      if (isChecked) {
+        const response = await apiClient.get("/api/app/legal-process", {
+          params: {
+            lawyerId,
+            clientId,
+          },
+        });
+        const items = response.data.items;
+        if (items && items.length > 0) {
+          await apiClient.delete(`/api/app/legal-process/${items[0].id}`);
+        }
+      } else {
+        await apiClient.post("/api/app/legal-process", {
+          lawyerId,
+          clientId,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["legalProcesses"] });
+    },
+  });
+}
+
+
+
+
+
+export function useToggleLawyer(clientId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ lawyerId, isChecked }: { lawyerId: string; isChecked: boolean }) => {
+      if (isChecked) {
+        const response = await apiClient.get("/api/app/legal-process", {
+          params: {
+            clientId,
+            lawyerId,
+          },
+        });
+        const items = response.data.items;
+        if (items && items.length > 0) {
+          await apiClient.delete(`/api/app/legal-process/${items[0].id}`);
+        }
+      } else {
+        await apiClient.post("/api/app/legal-process", {
+          clientId,
+          lawyerId,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["legalProcesses"] });
+    },
+  });
+}
+
+
+
+
+
+

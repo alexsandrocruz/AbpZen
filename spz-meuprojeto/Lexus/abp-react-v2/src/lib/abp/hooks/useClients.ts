@@ -74,3 +74,19 @@ export function useDeleteClient() {
     },
   });
 }
+
+export function useAllClients() {
+  return useQuery({
+    queryKey: ["clients", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/client", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+

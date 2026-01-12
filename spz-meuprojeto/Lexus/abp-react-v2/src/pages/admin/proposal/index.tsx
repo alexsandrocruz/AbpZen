@@ -74,7 +74,7 @@ export default function ProposalsPage() {
                 />
               </div>
             </div>
-
+            
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -83,58 +83,58 @@ export default function ProposalsPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-
+                    
                     <TableHead>Number</TableHead>
-
+                    
                     <TableHead>Date</TableHead>
-
+                    
                     <TableHead>Validate</TableHead>
-
+                    
                     <TableHead>Obs</TableHead>
-
+                    
                     <TableHead>ClientId</TableHead>
-
+                    
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {data?.items?.map((item: any) => (
-                    <TableRow
-                      key={item.id}
+                    <TableRow 
+                      key={item.id} 
                       className="cursor-pointer hover:bg-muted/50"
                       onClick={() => setLocation(`/admin/proposal/${item.id}/edit`)}
                     >
-
+                      
                       <TableCell>
-
+                        
                         {item.number}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.date ? new Date(item.date).toLocaleDateString() : "-"}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.validate ? new Date(item.validate).toLocaleDateString() : "-"}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.obs}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.clientId}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -149,7 +149,7 @@ export default function ProposalsPage() {
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem
+                            <DropdownMenuItem 
                               className="text-destructive"
                               onClick={() => handleDelete(item.id)}
                             >

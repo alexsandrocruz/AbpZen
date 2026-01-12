@@ -79,12 +79,31 @@ export function useDeleteLawyerSpecialization() {
   });
 }
 
+export function useAllLawyerSpecializations() {
+  return useQuery({
+    queryKey: ["lawyerSpecializations", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/lawyer-specialization", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+
+
+
+
+
+
 export function useToggleSpecialization(lawyerId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ specializationId, isChecked }: { specializationId: string; isChecked: boolean }) => {
       if (isChecked) {
-        // If it was checked, we need to remove it (find the relationship ID and delete)
         const response = await apiClient.get("/api/app/lawyer-specialization", {
           params: {
             lawyerId,
@@ -96,7 +115,6 @@ export function useToggleSpecialization(lawyerId: string) {
           await apiClient.delete(`/api/app/lawyer-specialization/${items[0].id}`);
         }
       } else {
-        // If it was not checked, we need to add it
         await apiClient.post("/api/app/lawyer-specialization", {
           lawyerId,
           specializationId,
@@ -104,9 +122,45 @@ export function useToggleSpecialization(lawyerId: string) {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations", "", 0, 10] });
-      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations", undefined, 0, 10] });
       queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations"] });
     },
   });
 }
+
+
+
+
+
+export function useToggleLawyer(specializationId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ lawyerId, isChecked }: { lawyerId: string; isChecked: boolean }) => {
+      if (isChecked) {
+        const response = await apiClient.get("/api/app/lawyer-specialization", {
+          params: {
+            specializationId,
+            lawyerId,
+          },
+        });
+        const items = response.data.items;
+        if (items && items.length > 0) {
+          await apiClient.delete(`/api/app/lawyer-specialization/${items[0].id}`);
+        }
+      } else {
+        await apiClient.post("/api/app/lawyer-specialization", {
+          specializationId,
+          lawyerId,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations"] });
+    },
+  });
+}
+
+
+
+
+
+

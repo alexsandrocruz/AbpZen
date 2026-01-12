@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,9 +172,9 @@ public class LegalProcessAppService :
     protected virtual IQueryable<Sapienza.Lexus.LegalProcess.LegalProcess> ApplyFilters(IQueryable<Sapienza.Lexus.LegalProcess.LegalProcess> queryable, LegalProcessGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.ProcessNumber.Contains(input.Filter) || x.Title.Contains(input.Filter))
-            .WhereIf(!input.ProcessNumber.IsNullOrWhiteSpace(), x => x.ProcessNumber.Contains(input.ProcessNumber))
-            .WhereIf(!input.Title.IsNullOrWhiteSpace(), x => x.Title.Contains(input.Title))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.ProcessNumber != null && x.ProcessNumber.Contains(input.Filter)) || (x.Title != null && x.Title.Contains(input.Filter)))
+            .WhereIf(!input.ProcessNumber.IsNullOrWhiteSpace(), x => x.ProcessNumber != null && x.ProcessNumber.Contains(input.ProcessNumber))
+            .WhereIf(!input.Title.IsNullOrWhiteSpace(), x => x.Title != null && x.Title.Contains(input.Title))
             .WhereIf(input.DateOpened != null, x => x.DateOpened == input.DateOpened)
             .WhereIf(input.LawyerId != null, x => x.LawyerId == input.LawyerId)
             .WhereIf(input.ClientId != null, x => x.ClientId == input.ClientId)

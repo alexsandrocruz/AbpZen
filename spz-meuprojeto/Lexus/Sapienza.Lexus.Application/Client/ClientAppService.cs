@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,11 +126,11 @@ public class ClientAppService :
     protected virtual IQueryable<Sapienza.Lexus.Client.Client> ApplyFilters(IQueryable<Sapienza.Lexus.Client.Client> queryable, ClientGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.Name.Contains(input.Filter) || x.Email.Contains(input.Filter) || x.Phone.Contains(input.Filter) || x.CpfCnpj.Contains(input.Filter))
-            .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Name))
-            .WhereIf(!input.Email.IsNullOrWhiteSpace(), x => x.Email.Contains(input.Email))
-            .WhereIf(!input.Phone.IsNullOrWhiteSpace(), x => x.Phone.Contains(input.Phone))
-            .WhereIf(!input.CpfCnpj.IsNullOrWhiteSpace(), x => x.CpfCnpj.Contains(input.CpfCnpj))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.Name != null && x.Name.Contains(input.Filter)) || (x.Email != null && x.Email.Contains(input.Filter)) || (x.Phone != null && x.Phone.Contains(input.Filter)) || (x.CpfCnpj != null && x.CpfCnpj.Contains(input.Filter)))
+            .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name != null && x.Name.Contains(input.Name))
+            .WhereIf(!input.Email.IsNullOrWhiteSpace(), x => x.Email != null && x.Email.Contains(input.Email))
+            .WhereIf(!input.Phone.IsNullOrWhiteSpace(), x => x.Phone != null && x.Phone.Contains(input.Phone))
+            .WhereIf(!input.CpfCnpj.IsNullOrWhiteSpace(), x => x.CpfCnpj != null && x.CpfCnpj.Contains(input.CpfCnpj))
             // ========== FK Filters ==========
             ;
     }

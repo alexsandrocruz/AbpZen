@@ -20,9 +20,9 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   
-  lawyerId: z.any(),
+  lawyerId: z.string(),
   
-  specializationId: z.any(),
+  specializationId: z.string(),
   
 });
 

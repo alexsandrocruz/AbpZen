@@ -74,3 +74,19 @@ export function useDeleteLawyer() {
     },
   });
 }
+
+export function useAllLawyers() {
+  return useQuery({
+    queryKey: ["lawyers", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/lawyer", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+

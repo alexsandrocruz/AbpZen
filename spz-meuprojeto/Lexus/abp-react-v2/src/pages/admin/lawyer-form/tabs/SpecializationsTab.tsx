@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useLawyerSpecializations } from "@/lib/abp/hooks/useLawyerSpecializations";
 import { useAllSpecializations } from "@/lib/abp/hooks/useSpecializations";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,9 +16,8 @@ export function SpecializationsTab({
     onToggle
 }: SpecializationsTabProps) {
     const { data: allSpecs, isLoading: loadingAll } = useAllSpecializations();
-    const { data: lawyerSpecs, isLoading: loadingLawyer } = useLawyerSpecializations({ lawyerId });
 
-    if (loadingAll || loadingLawyer) {
+    if (loadingAll) {
         return (
             <Card className="p-6">
                 <div className="space-y-3">

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ public class CreateUpdateLegalProcessDto
     [StringLength(128)]
     public string Title { get; set; }
     [StringLength(2048)]
-    public string Description { get; set; }
+    public string? Description { get; set; }
     [Required]
     public DateTime DateOpened { get; set; }
 

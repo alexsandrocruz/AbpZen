@@ -20,17 +20,17 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   
-  processNumber: z.any(),
+  processNumber: z.string(),
   
-  title: z.any(),
+  title: z.string(),
   
-  description: z.any(),
+  description: z.string().optional(),
   
-  dateOpened: z.any(),
+  dateOpened: z.string(),
   
-  lawyerId: z.any(),
+  lawyerId: z.string(),
   
-  clientId: z.any(),
+  clientId: z.string(),
   
 });
 
