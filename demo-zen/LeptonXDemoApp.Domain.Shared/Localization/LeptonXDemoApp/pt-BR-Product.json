@@ -1,0 +1,22 @@
+{
+  "culture": "pt-BR",
+  "texts": {
+    "Permission:Product": "Gerenciamento de Product",
+    "Permission:Product.Create": "Criar Product",
+    "Permission:Product.Update": "Editar Product",
+    "Permission:Product.Delete": "Excluir Product",
+    "Menu:Products": "Products",
+    "Product": "Product",
+    "Products": "Products",
+    "NewProduct": "Novo Product",
+    "EditProduct": "Editar Product",
+    "ProductDeletionConfirmationMessage": "Tem certeza que deseja excluir este Product?",
+    "SuccessfullyProductCreated": "Product criado com sucesso.",
+    "SuccessfullyProductUpdated": "Product atualizado com sucesso.",
+    "SuccessfullyProductDeleted": "Product excluído com sucesso.",
+    "Product:Name": "Name",
+    "Product:Price": "Price",
+    "Product:CategoryId": "Category",
+    "Product:CategoryId": "Category"
+  }
+}

@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
@@ -47,7 +48,7 @@ apiClient.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        // Handle 401 Unauthorized - token refresh
+        // Handle 401 Unauthorized - token refresh or redirect
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
@@ -69,12 +70,27 @@ apiClient.interceptors.response.use(
                     return apiClient(originalRequest);
                 } catch (refreshError) {
                     // Refresh failed, redirect to login
+                    console.warn('[API Client] Token refresh failed, redirecting to login');
                     localStorage.removeItem("abp_access_token");
                     localStorage.removeItem("abp_refresh_token");
                     window.location.href = "/auth/login";
                     return Promise.reject(refreshError);
                 }
+            } else {
+                // No refresh token, redirect to login
+                console.warn('[API Client] No authentication token, redirecting to login');
+                localStorage.removeItem("abp_access_token");
+                localStorage.removeItem("abp_refresh_token");
+                window.location.href = "/auth/login";
+                return Promise.reject(error);
             }
+        }
+
+        // Handle 403 Forbidden - redirect to login
+        if (error.response?.status === 403) {
+            console.warn('[API Client] Access forbidden (403), redirecting to login');
+            window.location.href = "/auth/login";
+            return Promise.reject(error);
         }
 
         // Handle ABP error format
@@ -82,6 +98,16 @@ apiClient.interceptors.response.use(
             const abpError = error.response.data.error;
             console.error("[API Client] ABP Error:", abpError);
             return Promise.reject(new Error(abpError.message || "An error occurred"));
+        }
+
+        // Handle 400 Bad Request
+        if (error.response?.status === 400) {
+            console.error("[API Client] Bad Request (400):", {
+                url: error.config?.url,
+                method: error.config?.method,
+                data: error.config?.data,
+                response: error.response?.data
+            });
         }
 
         if (error.response?.status === 500) {

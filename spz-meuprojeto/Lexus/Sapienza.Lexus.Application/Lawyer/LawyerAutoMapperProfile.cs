@@ -8,7 +8,9 @@ public class LawyerAutoMapperProfile : Profile
     public LawyerAutoMapperProfile()
     {
         CreateMap<Lawyer, LawyerDto>();
-        CreateMap<CreateUpdateLawyerDto, Lawyer>();
-        CreateMap<CreateUpdateLawyerDto, Lawyer>();
+        CreateMap<CreateUpdateLawyerDto, Lawyer>()
+            .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
     }
 }
+

@@ -78,6 +78,81 @@ export async function createProjectLocal(
 }
 
 /**
+ * Scaffold a project from an existing .zen file
+ * Creates the project structure and returns entity data for code generation
+ */
+export interface ScaffoldResult {
+    success: boolean;
+    projectPath?: string;
+    projectName?: string;
+    namespace?: string;
+    entities?: EntityData[];
+    relationships?: RelationshipInfo[];
+    frontends?: string[];
+    error?: string;
+}
+
+interface EntityData {
+    name: string;
+    pluralName: string;
+    tableName: string;
+    namespace: string;
+    baseClass: string;
+    isMaster: boolean;
+    fields: unknown[];
+}
+
+interface RelationshipInfo {
+    id: string;
+    source: string;
+    target: string;
+    data: unknown;
+}
+
+export async function scaffoldFromZen(
+    zenFilePath: string,
+    destinationPath: string,
+    options?: {
+        projectName?: string;
+        frontends?: string[];
+    }
+): Promise<ScaffoldResult> {
+    try {
+        const response = await fetch(`${BRIDGE_URL}/api/scaffold-from-zen`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                zenFilePath,
+                destinationPath,
+                projectName: options?.projectName,
+                frontends: options?.frontends || ['react-v2'],
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            return { success: false, error: data.error || 'Unknown error' };
+        }
+
+        return {
+            success: true,
+            projectPath: data.projectPath,
+            projectName: data.projectName,
+            namespace: data.namespace,
+            entities: data.entities,
+            relationships: data.relationships,
+            frontends: data.frontends,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Bridge connection failed'
+        };
+    }
+}
+
+/**
  * Create project as ZIP download
  * Fetches boilerplate files from Bridge API and packages them with JSZip
  */

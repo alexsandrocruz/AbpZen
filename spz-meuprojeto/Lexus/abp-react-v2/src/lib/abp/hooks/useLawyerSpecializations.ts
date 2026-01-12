@@ -1,27 +1,35 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
-interface GetLawyerSpecializationsInput {
-  filter?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
-
-export function useLawyerSpecializations(input: GetLawyerSpecializationsInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
-
+// Hook to get all specializations (not lawyer-specific)
+export function useAllSpecializations() {
   return useQuery({
-    queryKey: ["lawyerSpecializations", filter, skipCount, maxResultCount],
+    queryKey: ["specializations"],
     queryFn: async () => {
-      const response = await apiClient.get("/api/app/lawyer-specialization", {
+      const response = await apiClient.get("/api/app/specialization", {
         params: {
-          filter,
-          skipCount,
-          maxResultCount,
+          maxResultCount: 1000,
         },
       });
       return response.data;
     },
+  });
+}
+
+// Hook to get lawyer-specialization relationships for a specific lawyer
+export function useLawyerSpecializations(lawyerId?: string) {
+  return useQuery({
+    queryKey: ["lawyerSpecializations", lawyerId],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/lawyer-specialization", {
+        params: {
+          lawyerId,
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+    enabled: !!lawyerId,
   });
 }
 
@@ -71,6 +79,33 @@ export function useDeleteLawyerSpecialization() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations"] });
+    },
+  });
+}
+
+// Hook to toggle a specialization for a lawyer
+export function useToggleSpecialization(lawyerId?: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ specializationId, isChecked }: { specializationId: string; isChecked: boolean }) => {
+      if (isChecked) {
+        // Remove the relationship
+        const response = await apiClient.get("/api/app/lawyer-specialization", {
+          params: { lawyerId, specializationId, maxResultCount: 1 },
+        });
+        if (response.data.items?.length > 0) {
+          await apiClient.delete(`/api/app/lawyer-specialization/${response.data.items[0].id}`);
+        }
+      } else {
+        // Add the relationship
+        await apiClient.post("/api/app/lawyer-specialization", {
+          lawyerId,
+          specializationId,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations", lawyerId] });
     },
   });
 }

@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import {
     FolderPlus, X, ChevronRight, ChevronLeft,
-    Download, Folder, Check, Server, Layout, Layers, Loader2, FolderOpen
+    Download, Folder, Check, Server, Layout, Layers, Loader2, FolderOpen, Upload
 } from 'lucide-react';
 import type { ProjectConfig, ProjectCreationMode } from '../lib/project/types';
 import type { FrontendTarget } from '../types';
-import { pickDirectory, createProjectLocal, isBridgeAvailable } from '../lib/project/generator';
+import { pickDirectory, createProjectLocal, isBridgeAvailable, scaffoldFromZen, type ScaffoldResult } from '../lib/project/generator';
 
 interface NewProjectModalProps {
     onClose: () => void;
     onCreate: (config: ProjectConfig, mode: ProjectCreationMode, createdPath?: string) => void;
+    onScaffoldComplete?: (result: ScaffoldResult) => void;
 }
 
-type WizardStep = 'name' | 'frontends' | 'destination';
+type WizardStep = 'mode' | 'name' | 'frontends' | 'destination';
 
 const FRONTEND_OPTIONS: { id: FrontendTarget; name: string; icon: React.ReactNode; description: string }[] = [
     { id: 'react-v2', name: 'React (Vite)', icon: <Layers size={24} />, description: 'Modern React with Vite + Tailwind 4' },
@@ -20,8 +21,10 @@ const FRONTEND_OPTIONS: { id: FrontendTarget; name: string; icon: React.ReactNod
     { id: 'razor', name: 'Razor Pages', icon: <Layout size={24} />, description: 'ASP.NET Core Razor Pages UI' },
 ];
 
-export default function NewProjectModal({ onClose, onCreate }: NewProjectModalProps) {
-    const [step, setStep] = useState<WizardStep>('name');
+export default function NewProjectModal({ onClose, onCreate, onScaffoldComplete }: NewProjectModalProps) {
+    const [step, setStep] = useState<WizardStep>('mode');
+    const [projectMode, setProjectMode] = useState<'new' | 'from-zen'>('new');
+    const [zenFilePath, setZenFilePath] = useState('');
     const [name, setName] = useState('');
     const [namespace, setNamespace] = useState('');
     const [selectedFrontend, setSelectedFrontend] = useState<FrontendTarget>('react-v2');
@@ -56,19 +59,48 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
     };
 
     const handleNext = () => {
-        if (step === 'name') setStep('frontends');
+        if (step === 'mode') setStep('name');
+        else if (step === 'name') {
+            if (projectMode === 'from-zen') setStep('destination');
+            else setStep('frontends');
+        }
         else if (step === 'frontends') setStep('destination');
     };
 
     const handleBack = () => {
-        if (step === 'frontends') setStep('name');
-        else if (step === 'destination') setStep('frontends');
+        if (step === 'name') setStep('mode');
+        else if (step === 'frontends') setStep('name');
+        else if (step === 'destination') {
+            if (projectMode === 'from-zen') setStep('name');
+            else setStep('frontends');
+        }
     };
 
     const handleCreate = async () => {
         setError(null);
         setIsLoading(true);
 
+        // Scaffold from .zen mode
+        if (projectMode === 'from-zen' && zenFilePath) {
+            const result = await scaffoldFromZen(zenFilePath, destinationPath, {
+                projectName: name || undefined,
+                frontends: [selectedFrontend],
+            });
+
+            setIsLoading(false);
+
+            if (result.success) {
+                if (onScaffoldComplete) {
+                    onScaffoldComplete(result);
+                }
+                onClose();
+            } else {
+                setError(result.error || 'Failed to scaffold project');
+            }
+            return;
+        }
+
+        // New project mode
         const config: ProjectConfig = {
             name,
             namespace,
@@ -115,12 +147,16 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
     };
 
     const canProceed = () => {
-        if (step === 'name') return name.length >= 3 && namespace.length >= 3;
-        if (step === 'frontends') return true; // Can have no frontend selected
+        if (step === 'mode') return true;
+        if (step === 'name') {
+            if (projectMode === 'from-zen') return zenFilePath.length > 0;
+            return name.length >= 3 && namespace.length >= 3;
+        }
+        if (step === 'frontends') return true;
         return true;
     };
 
-    const stepNumber = step === 'name' ? 1 : step === 'frontends' ? 2 : 3;
+    const stepNumber = step === 'mode' ? 1 : step === 'name' ? 2 : step === 'frontends' ? 3 : 4;
 
     return (
         <div className="ui-dialog-overlay" onClick={onClose}>
@@ -147,7 +183,7 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                     padding: '16px',
                     borderBottom: '1px solid #334155'
                 }}>
-                    {['name', 'frontends', 'destination'].map((s, i) => (
+                    {(projectMode === 'from-zen' ? ['mode', 'name', 'destination'] : ['mode', 'name', 'frontends', 'destination']).map((s, i) => (
                         <div
                             key={s}
                             style={{
@@ -157,20 +193,95 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                background: stepNumber > i ? '#22c55e' : stepNumber === i + 1 ? '#6366f1' : '#334155',
+                                background: stepNumber > i + 1 ? '#22c55e' : stepNumber === i + 1 ? '#6366f1' : '#334155',
                                 color: '#fff',
                                 fontSize: '14px',
                                 fontWeight: 600,
                             }}
                         >
-                            {stepNumber > i ? <Check size={16} /> : i + 1}
+                            {stepNumber > i + 1 ? <Check size={16} /> : i + 1}
                         </div>
                     ))}
                 </div>
 
                 <div className="ui-dialog-content" style={{ padding: '24px' }}>
+                    {/* Step 0: Mode Selection */}
+                    {step === 'mode' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <h3 style={{ color: '#f8fafc', margin: 0 }}>How would you like to create your project?</h3>
+
+                            <div
+                                onClick={() => setProjectMode('new')}
+                                style={{
+                                    padding: '20px',
+                                    background: projectMode === 'new' ? 'rgba(34, 197, 94, 0.1)' : '#0f172a',
+                                    border: `2px solid ${projectMode === 'new' ? '#22c55e' : '#334155'}`,
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '16px',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <FolderPlus size={32} style={{ color: projectMode === 'new' ? '#22c55e' : '#64748b' }} />
+                                <div style={{ flex: 1 }}>
+                                    <strong style={{ color: '#f8fafc' }}>New Empty Project</strong>
+                                    <p style={{ color: '#94a3b8', margin: 0, fontSize: '0.875rem' }}>
+                                        Start fresh with zencode-template base
+                                    </p>
+                                </div>
+                                <div style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    borderRadius: '50%',
+                                    border: `2px solid ${projectMode === 'new' ? '#22c55e' : '#334155'}`,
+                                    background: projectMode === 'new' ? '#22c55e' : 'transparent',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    {projectMode === 'new' && <Check size={14} style={{ color: '#fff' }} />}
+                                </div>
+                            </div>
+
+                            <div
+                                onClick={() => setProjectMode('from-zen')}
+                                style={{
+                                    padding: '20px',
+                                    background: projectMode === 'from-zen' ? 'rgba(99, 102, 241, 0.1)' : '#0f172a',
+                                    border: `2px solid ${projectMode === 'from-zen' ? '#6366f1' : '#334155'}`,
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '16px',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <Upload size={32} style={{ color: projectMode === 'from-zen' ? '#6366f1' : '#64748b' }} />
+                                <div style={{ flex: 1 }}>
+                                    <strong style={{ color: '#f8fafc' }}>From Existing .zen File</strong>
+                                    <p style={{ color: '#94a3b8', margin: 0, fontSize: '0.875rem' }}>
+                                        Load entities from a saved project file
+                                    </p>
+                                </div>
+                                <div style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    borderRadius: '50%',
+                                    border: `2px solid ${projectMode === 'from-zen' ? '#6366f1' : '#334155'}`,
+                                    background: projectMode === 'from-zen' ? '#6366f1' : 'transparent',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    {projectMode === 'from-zen' && <Check size={14} style={{ color: '#fff' }} />}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Step 1: Name */}
-                    {step === 'name' && (
+                    {step === 'name' && projectMode === 'new' && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                             <h3 style={{ color: '#f8fafc', margin: 0 }}>Project Identity</h3>
 
@@ -205,6 +316,56 @@ export default function NewProjectModal({ onClose, onCreate }: NewProjectModalPr
                                 <p style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '4px' }}>
                                     .NET namespace for all projects
                                 </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 1b: Select .zen file (from-zen mode) */}
+                    {step === 'name' && projectMode === 'from-zen' && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <h3 style={{ color: '#f8fafc', margin: 0 }}>Select .zen File</h3>
+                            <p style={{ color: '#64748b', margin: 0 }}>
+                                Choose a project file to scaffold from
+                            </p>
+
+                            <div className="form-group">
+                                <label style={{ color: '#f8fafc', marginBottom: '8px', display: 'block' }}>
+                                    .zen File Path
+                                </label>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <input
+                                        type="text"
+                                        value={zenFilePath}
+                                        onChange={(e) => setZenFilePath(e.target.value)}
+                                        placeholder="/path/to/project.zen"
+                                        className="ui-input"
+                                        style={{ flex: 1 }}
+                                    />
+                                    <button
+                                        className="ui-button ui-button-secondary"
+                                        onClick={handlePickDirectory}
+                                        type="button"
+                                    >
+                                        <FolderOpen size={16} />
+                                        Browse
+                                    </button>
+                                </div>
+                                <p style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '4px' }}>
+                                    Tip: You can also type the path directly
+                                </p>
+                            </div>
+
+                            <div className="form-group">
+                                <label style={{ color: '#f8fafc', marginBottom: '8px', display: 'block' }}>
+                                    Project Name Override (optional)
+                                </label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Leave empty to use name from .zen file"
+                                    className="ui-input"
+                                />
                             </div>
                         </div>
                     )}

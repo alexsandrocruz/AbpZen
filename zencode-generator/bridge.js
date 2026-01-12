@@ -440,6 +440,191 @@ app.post('/api/create-project', (req, res) => {
     }
 });
 
+// Scaffold a complete project from a .zen file
+// This combines create-project with entity info for frontend to generate
+app.post('/api/scaffold-from-zen', (req, res) => {
+    const { zenFilePath, destinationPath, projectName: overrideName, frontends = ['react-v2'] } = req.body;
+    console.log(`[Bridge] Scaffolding project from .zen file: ${zenFilePath}`);
+
+    if (!zenFilePath || !destinationPath) {
+        return res.status(400).json({ error: 'Missing zenFilePath or destinationPath' });
+    }
+
+    try {
+        // 1. Read and parse the .zen file
+        if (!fs.existsSync(zenFilePath)) {
+            return res.status(404).json({ error: `Zen file not found: ${zenFilePath}` });
+        }
+
+        const zenContent = fs.readFileSync(zenFilePath, 'utf8');
+        let zenData;
+        try {
+            zenData = JSON.parse(zenContent);
+        } catch (parseErr) {
+            return res.status(400).json({ error: `Invalid JSON in .zen file: ${parseErr.message}` });
+        }
+
+        // Extract project info from .zen file
+        const projectName = overrideName || zenData.name || zenData.config?.projectName || 'NewProject';
+        const namespace = zenData.config?.namespace || `Sapienza.${projectName}`;
+        const entities = zenData.nodes?.filter(n => n.type === 'entity') || [];
+        const relationships = zenData.edges?.filter(e => e.type === 'relation') || [];
+
+        console.log(`[Bridge] Project: ${projectName}, Namespace: ${namespace}, Entities: ${entities.length}`);
+
+        // 2. Create project directory
+        const projectPath = path.join(destinationPath, projectName);
+        if (fs.existsSync(projectPath)) {
+            return res.status(400).json({ error: 'Project directory already exists' });
+        }
+        fs.mkdirSync(projectPath, { recursive: true });
+
+        const baseTemplatePath = path.join(process.cwd(), '..', 'zencode-template');
+        if (!fs.existsSync(baseTemplatePath)) {
+            return res.status(500).json({ error: `Template not found at: ${baseTemplatePath}` });
+        }
+
+        const copiedItems = [];
+
+        // 3. Prepare replacements
+        const replacements = [
+            { search: 'Sapienza.Zen', replace: namespace },
+            { search: 'SapienzaZen', replace: projectName }
+        ];
+
+        // Helper to copy and transform (reuse from create-project)
+        const copyAndTransform = (src, dest) => {
+            if (!fs.existsSync(src)) return false;
+
+            const entries = fs.readdirSync(src, { withFileTypes: true });
+            if (!fs.existsSync(dest)) {
+                fs.mkdirSync(dest, { recursive: true });
+            }
+
+            for (const entry of entries) {
+                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) continue;
+                if (entry.isSymbolicLink()) continue;
+
+                let targetName = entry.name;
+                for (const r of replacements) {
+                    targetName = targetName.split(r.search).join(r.replace);
+                }
+
+                const srcPath = path.join(src, entry.name);
+                const destPath = path.join(dest, targetName);
+
+                if (entry.isDirectory()) {
+                    copyAndTransform(srcPath, destPath);
+                } else {
+                    const ext = path.extname(entry.name).toLowerCase();
+                    if (BINARY_EXTENSIONS.has(ext)) {
+                        fs.copyFileSync(srcPath, destPath);
+                    } else {
+                        try {
+                            let content = fs.readFileSync(srcPath, 'utf8');
+                            for (const r of replacements) {
+                                content = content.split(r.search).join(r.replace);
+                            }
+                            fs.writeFileSync(destPath, content);
+                        } catch (err) {
+                            fs.copyFileSync(srcPath, destPath);
+                        }
+                    }
+                }
+            }
+            return true;
+        };
+
+        // 4. Copy backend template files
+        const items = fs.readdirSync(baseTemplatePath, { withFileTypes: true });
+        for (const item of items) {
+            if (SKIP_FOLDERS.has(item.name)) continue;
+            if (item.name === 'abp-react-v2' || item.name === 'angular') continue;
+
+            const src = path.join(baseTemplatePath, item.name);
+            let targetName = item.name;
+            for (const r of replacements) {
+                targetName = targetName.split(r.search).join(r.replace);
+            }
+            const dest = path.join(projectPath, targetName);
+
+            if (item.isDirectory()) {
+                copyAndTransform(src, dest);
+                copiedItems.push(targetName);
+            } else {
+                const ext = path.extname(item.name).toLowerCase();
+                if (BINARY_EXTENSIONS.has(ext)) {
+                    fs.copyFileSync(src, dest);
+                } else {
+                    let content = fs.readFileSync(src, 'utf8');
+                    for (const r of replacements) {
+                        content = content.split(r.search).join(r.replace);
+                    }
+                    fs.writeFileSync(dest, content);
+                }
+                copiedItems.push(targetName);
+            }
+        }
+
+        // 5. Copy frontend templates
+        for (const frontend of frontends) {
+            let srcFolder = '';
+            let destFolder = '';
+
+            switch (frontend) {
+                case 'react-v2':
+                    srcFolder = path.join(baseTemplatePath, 'abp-react-v2');
+                    destFolder = path.join(projectPath, 'abp-react-v2');
+                    break;
+                case 'angular':
+                    srcFolder = path.join(baseTemplatePath, 'angular');
+                    destFolder = path.join(projectPath, 'angular');
+                    break;
+            }
+
+            if (srcFolder && copyAndTransform(srcFolder, destFolder)) {
+                copiedItems.push(frontend);
+            }
+        }
+
+        // 6. Create updated zencode.json in new project
+        const manifest = {
+            ...zenData,
+            config: {
+                ...zenData.config,
+                projectName,
+                namespace,
+                projectPath,
+                frontends
+            }
+        };
+        fs.writeFileSync(path.join(projectPath, 'zencode.json'), JSON.stringify(manifest, null, 2));
+        copiedItems.push('zencode.json');
+
+        // 7. Also save the .zen file reference
+        const zenFileName = path.basename(zenFilePath);
+        fs.copyFileSync(zenFilePath, path.join(path.dirname(projectPath), zenFileName));
+
+        console.log(`[Bridge] Project scaffolded successfully: ${copiedItems.length} items, ${entities.length} entities to generate`);
+
+        res.json({
+            success: true,
+            projectPath,
+            projectName,
+            namespace,
+            copiedItems,
+            // Return entity data for frontend to generate code
+            entities: entities.map(e => e.data),
+            relationships: relationships.map(r => ({ id: r.id, source: r.source, target: r.target, data: r.data })),
+            frontends,
+            message: `Project scaffolded. Use /api/generate-code to generate entity files.`
+        });
+    } catch (error) {
+        console.error(`[Bridge] Error scaffolding project: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // --- Terminal & Process Management ---
 
 const activeTerminals = new Map();

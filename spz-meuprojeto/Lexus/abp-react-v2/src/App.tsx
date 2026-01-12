@@ -2,6 +2,7 @@ import { Route, Switch, Redirect } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { AbpProvider } from "@/providers/abp-provider";
+import { Toaster } from "@/components/ui/toaster";
 import { routes } from "@/config/navigation";
 import LoginPage from "@/pages/auth/login";
 import "./index.css";
@@ -48,6 +49,7 @@ function App() {
               </div>
             </Route>
           </Switch>
+          <Toaster />
         </AbpProvider>
       </QueryClientProvider>
     </ThemeProvider>
@@ -55,3 +57,4 @@ function App() {
 }
 
 export default App;
+

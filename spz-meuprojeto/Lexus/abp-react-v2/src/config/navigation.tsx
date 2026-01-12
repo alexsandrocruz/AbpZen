@@ -38,6 +38,7 @@ import LgpdPage from "@/pages/profile/lgpd";
 import TermsPage from "@/pages/legal/terms";
 import PrivacyPage from "@/pages/legal/privacy";
 import LawyerPage from "@/pages/admin/lawyer";
+import LawyerFormPage from "@/pages/admin/lawyer-form";
 import CasePage from "@/pages/admin/case";
 import ClientPage from "@/pages/admin/client";
 import SpecializationPage from "@/pages/admin/specialization";
@@ -84,6 +85,8 @@ export const routes: RouteConfig[] = [
     { path: "/legal/terms", component: TermsPage },
     { path: "/legal/privacy", component: PrivacyPage },
     { path: "/admin/lawyer", component: LawyerPage },
+    { path: "/admin/lawyer/create", component: LawyerFormPage },
+    { path: "/admin/lawyer/edit/:id", component: LawyerFormPage },
     { path: "/admin/case", component: CasePage },
     { path: "/admin/client", component: ClientPage },
     { path: "/admin/specialization", component: SpecializationPage },
