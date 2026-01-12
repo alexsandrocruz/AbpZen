@@ -7,6 +7,7 @@ import os from 'os';
 import { exec, spawn } from 'child_process';
 
 import { injectCode } from './injector.js';
+import { importDatabase } from './db-importer.js';
 
 const app = express();
 const port = 3005;
@@ -39,6 +40,19 @@ app.post('/api/pick-directory', (req, res) => {
         const selectedPath = stdout.trim();
         res.json({ path: selectedPath });
     });
+});
+
+app.post('/api/import-db', async (req, res) => {
+    const config = req.body;
+    console.log(`[Bridge] Importing from DB: ${config.provider} @ ${config.host}`);
+
+    try {
+        const result = await importDatabase(config);
+        res.json({ success: true, ...result });
+    } catch (error) {
+        console.error(`[Bridge] Import DB Error: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 app.post('/api/detect-project-info', (req, res) => {

@@ -27,6 +27,7 @@ import GenerateCodeModal from './components/GenerateCodeModal';
 import SettingsModal from './components/SettingsModal';
 import AISettingsModal from './components/AISettingsModal';
 import ImportFromAIModal from './components/ImportFromAIModal';
+import { ImportDbModal } from './components/ImportDbModal';
 import NewProjectModal from './components/NewProjectModal';
 import type { EntityData, RelationshipData, ZenMetadata, FrontendTarget } from './types';
 import type { AIExtractionResult } from './lib/gemini/types';
@@ -68,6 +69,7 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialState.edges);
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showImportDbModal, setShowImportDbModal] = useState(false);
   const [showCrudPreview, setShowCrudPreview] = useState(false);
   const [showGenerateCode, setShowGenerateCode] = useState(false);
   const [previewEntityId, setPreviewEntityId] = useState<string | null>(null);
@@ -586,11 +588,19 @@ function App() {
       }
     });
 
-    // Add nodes and edges to canvas
+    // Add nodes and edges to    });
     setNodes((nds) => nds.concat(newNodes));
     setEdges((eds) => eds.concat(newEdges));
 
     console.log(`AI Import: ${newNodes.length} entities, ${newEdges.length} relationships`);
+  }, [setNodes, setEdges]);
+
+  // Handle DB Import
+  const handleImportDb = useCallback((newNodes: Node[], newEdges: Edge[]) => {
+    // Calculate positions if they overlap significantly (simple logical shift)
+    // For now, accept positions from the importer
+    setNodes((nds) => nds.concat(newNodes));
+    setEdges((eds) => eds.concat(newEdges));
   }, [setNodes, setEdges]);
 
   return (
@@ -659,6 +669,10 @@ function App() {
             <button className="btn-primary" onClick={addEntity}>
               <Plus size={18} />
               Add Entity
+            </button>
+            <button className="btn-secondary" onClick={() => { console.log('Import DB Clicked'); setShowImportDbModal(true); }}>
+              <Database size={18} />
+              Import DB
             </button>
             <button className="btn-secondary" onClick={() => setShowImportModal(true)}>
               <Upload size={18} />
@@ -778,6 +792,12 @@ function App() {
           />
         )
       }
+
+      <ImportDbModal
+        isOpen={showImportDbModal}
+        onClose={() => setShowImportDbModal(false)}
+        onImport={handleImportDb}
+      />
 
       {
         showImportModal && (
