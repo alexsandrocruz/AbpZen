@@ -3,19 +3,21 @@ import { apiClient } from "../api-client";
 
 interface GetPropostalItemsInput {
   filter?: string;
+  proposalId?: string;
   skipCount?: number;
   maxResultCount?: number;
 }
 
 export function usePropostalItems(input: GetPropostalItemsInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, proposalId, skipCount = 0, maxResultCount = 10 } = input;
 
   return useQuery({
-    queryKey: ["propostalItems", filter, skipCount, maxResultCount],
+    queryKey: ["propostalItems", filter, proposalId, skipCount, maxResultCount],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/propostal-item", {
         params: {
           filter,
+          proposalId,
           skipCount,
           maxResultCount,
         },

@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +70,7 @@ public class ProposalAppService :
         var dtoList = ObjectMapper.Map<List<Sapienza.Lexus.Proposal.Proposal>, List<ProposalDto>>(entities);
         var clientIds = entities
             .Where(x => x.ClientId != null)
-            .Select(x => x.ClientId!.Value)
+            .Select(x => x.ClientId.Value)
             .Distinct()
             .ToList();
 
@@ -82,7 +81,7 @@ public class ProposalAppService :
 
             foreach (var dto in dtoList.Where(x => x.ClientId != null))
             {
-                if (parentMap.TryGetValue(dto.ClientId!.Value, out var displayName))
+                if (parentMap.TryGetValue(dto.ClientId.Value, out var displayName))
                 {
                     dto.ClientDisplayName = displayName;
                 }
@@ -138,12 +137,11 @@ public class ProposalAppService :
 
     public virtual async Task<ListResultDto<LookupDto<Guid>>> GetProposalLookupAsync()
     {
-        var entities = await _repository.GetListAsync();
-        return new ListResultDto<LookupDto<Guid>>(
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
             entities.Select(x => new LookupDto<Guid>
             {
                 Id = x.Id,
-                DisplayName = x.Number ?? string.Empty
+                DisplayName = x.Number
             }).ToList()
         );
     }
@@ -154,11 +152,11 @@ public class ProposalAppService :
     protected virtual IQueryable<Sapienza.Lexus.Proposal.Proposal> ApplyFilters(IQueryable<Sapienza.Lexus.Proposal.Proposal> queryable, ProposalGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x => (x.Number != null && x.Number.Contains(input.Filter!)) || (x.Obs != null && x.Obs.Contains(input.Filter!)))
-            .WhereIf(!input.Number.IsNullOrWhiteSpace(), x => x.Number != null && x.Number.Contains(input.Number!))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.Number.Contains(input.Filter) || x.Obs.Contains(input.Filter))
+            .WhereIf(!input.Number.IsNullOrWhiteSpace(), x => x.Number.Contains(input.Number))
             .WhereIf(input.Date != null, x => x.Date == input.Date)
-            .WhereIf(input.ValidityDate != null, x => x.ValidityDate == input.ValidityDate)
-            .WhereIf(!input.Obs.IsNullOrWhiteSpace(), x => x.Obs != null && x.Obs.Contains(input.Obs!))
+            .WhereIf(input.Validate != null, x => x.Validate == input.Validate)
+            .WhereIf(!input.Obs.IsNullOrWhiteSpace(), x => x.Obs.Contains(input.Obs))
             .WhereIf(input.ClientId != null, x => x.ClientId == input.ClientId)
             // ========== FK Filters ==========
             .WhereIf(input.ClientId != null, x => x.ClientId == input.ClientId)

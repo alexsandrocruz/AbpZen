@@ -39,7 +39,7 @@ function toKebabCase(str: string): string {
 export async function injectReactV2Route(config: InjectorConfig): Promise<{ success: boolean; message: string }> {
     const { reactV2SrcPath, entityName, pluralName } = config;
     const navigationPath = path.join(reactV2SrcPath, 'config', 'navigation.tsx');
-    const kebabName = toKebabCase(pluralName);
+    const kebabName = toKebabCase(entityName);
 
     try {
         const project = new Project();
@@ -49,24 +49,24 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
         const importMarker = '// <GEN-IMPORTS>';
         const fileText = sourceFile.getFullText();
 
-        if (fileText.includes(`import ${pluralName}Page`)) {
-            return { success: false, message: `Route for ${pluralName} already exists.` };
+        if (fileText.includes(`import ${entityName}Page`)) {
+            return { success: false, message: `Route for ${entityName} already exists.` };
         }
 
-        const newImport = `import ${pluralName}Page from "@/pages/${kebabName}";\n`;
+        const newImport = `import ${entityName}Page from "@/pages/admin/${kebabName}";\n`;
         const updatedImports = fileText.replace(importMarker, `${newImport}${importMarker}`);
         sourceFile.replaceWithText(updatedImports);
 
         // 2. Add route to routes array before // <GEN-ROUTES> marker
         const routeMarker = '// <GEN-ROUTES>';
         const currentText = sourceFile.getFullText();
-        const newRoute = `    { path: "/${kebabName}", component: ${pluralName}Page },\n    `;
+        const newRoute = `    { path: "/admin/${kebabName}", component: ${entityName}Page },\n    `;
         const updatedRoutes = currentText.replace(routeMarker, `${newRoute}${routeMarker}`);
         sourceFile.replaceWithText(updatedRoutes);
 
         await sourceFile.save();
 
-        return { success: true, message: `Successfully injected route for ${pluralName} at /${kebabName}` };
+        return { success: true, message: `Successfully injected route for ${entityName} at /admin/${kebabName}` };
     } catch (error) {
         return { success: false, message: `Failed to inject route: ${error}` };
     }
@@ -76,7 +76,7 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
  * Injects a new menu item into the menuItems array in navigation.tsx
  */
 export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ success: boolean; message: string }> {
-    const { reactV2SrcPath, pluralName, iconName = 'Box', section = 'entities' } = config;
+    const { reactV2SrcPath, entityName, pluralName, iconName = 'Box', section = 'entities' } = config;
     const navigationPath = path.join(reactV2SrcPath, 'config', 'navigation.tsx');
     const kebabName = toKebabCase(pluralName);
 
@@ -97,10 +97,10 @@ export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ s
 
         // Check if item already exists
         const existingItem = initializer.getElements().find(el =>
-            el.getText().includes(`href: "/${kebabName}"`)
+            el.getText().includes(`href: "/admin/${kebabName}"`)
         );
         if (existingItem) {
-            return { success: false, message: `Menu item for ${pluralName} already exists.` };
+            return { success: false, message: `Menu item for ${entityName} already exists.` };
         }
 
         // Add icon import if not present
@@ -119,7 +119,7 @@ export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ s
         }
 
         // Add new menu item
-        const newItem = `{ label: "${pluralName}", href: "/${kebabName}", icon: ${iconName}, section: "${section}" }`;
+        const newItem = `{ label: "${pluralName}", href: "/admin/${kebabName}", icon: ${iconName}, section: "${section}" }`;
         initializer.addElement(newItem);
 
         await sourceFile.save();

@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -12,7 +11,7 @@ public class Proposal : FullAuditedAggregateRoot<Guid>
 {
     public string? Number { get; set; }
     public DateTime? Date { get; set; }
-    public DateTime? ValidityDate { get; set; }
+    public DateTime? Validate { get; set; }
     public string? Obs { get; set; }
 
     // ========== Foreign Key Properties (1:N - This entity is the "Many" side) ==========

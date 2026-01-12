@@ -572,17 +572,17 @@ export default function GenerateCodeModal({
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-IMPORTS',
-                        content: `import ${entity.pluralName}Page from "@/pages/${kebabCase(entity.pluralName)}";`
+                        content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
                     },
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-ROUTES',
-                        content: `    { path: "/${kebabCase(entity.pluralName)}", component: ${entity.pluralName}Page },`
+                        content: `    { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
                     },
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-MENU',
-                        content: `    { label: "${entity.pluralName}", href: "/${kebabCase(entity.pluralName)}", icon: Box, section: "entities" },`
+                        content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: Box, section: "entities" },`
                     }
                 ]);
                 instructions.push(...reactV2Instructions);

@@ -55,7 +55,7 @@ export default function PropostalItemsPage() {
               <p className="text-muted-foreground">Manage your propostalitems</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/propostal-items/new")}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/propostal-item/new")}>
             <Plus className="size-4" />
             New PropostalItem
           </Button>
@@ -102,7 +102,7 @@ export default function PropostalItemsPage() {
                     <TableRow
                       key={item.id}
                       className="cursor-pointer hover:bg-muted/50"
-                      onClick={() => setLocation(`/propostal-items/${item.id}/edit`)}
+                      onClick={() => setLocation(`/admin/propostal-item/${item.id}/edit`)}
                     >
 
                       <TableCell>
@@ -145,7 +145,7 @@ export default function PropostalItemsPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setLocation(`/propostal-items/${item.id}/edit`)}>
+                            <DropdownMenuItem onClick={() => setLocation(`/admin/propostal-item/${item.id}/edit`)}>
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>

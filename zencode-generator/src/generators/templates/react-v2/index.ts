@@ -427,7 +427,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Box, Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import { use{{ entity.pluralName }}, useDelete{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
 import { toast } from "sonner";
 import {
@@ -448,7 +448,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function {{ entity.pluralName }}Page() {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isLoading } = use{{ entity.pluralName }}({ filter: searchTerm });
   const deleteMutation = useDelete{{ entity.name }}();
@@ -477,7 +477,7 @@ export default function {{ entity.pluralName }}Page() {
               <p className="text-muted-foreground">Manage your {{ entity.pluralName | downcase }}</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => navigate("/{{ entity.pluralName | kebabCase }}/new")}>
+          <Button className="gap-2" onClick={() => navigate("/admin/{{ entity.name | kebabCase }}/new")}>
             <Plus className="size-4" />
             New {{ entity.name }}
           </Button>
@@ -516,7 +516,8 @@ export default function {{ entity.pluralName }}Page() {
                     <TableRow 
                       key={item.id} 
                       className="cursor-pointer hover:bg-muted/50"
-                      onClick={() => navigate(\`/{{ entity.pluralName | kebabCase }}/\${item.id}/edit\`)}
+                      onClick={() => setLocation(`/ admin / {{ entity.name | kebabCase }
+} /${item.id}/edit`)}
                     >
                       {% for field in entity.fields %}
                       <TableCell>
@@ -541,7 +542,7 @@ export default function {{ entity.pluralName }}Page() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => navigate(\`/{{ entity.pluralName | kebabCase }}/\${item.id}/edit\`)}>
+                            <DropdownMenuItem onClick={() => setLocation(`/ admin / {{ entity.name | kebabCase }}/${item.id}/edit`)}>
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
@@ -583,7 +584,7 @@ export function getReactV2MasterDetailFormPageTemplate(): string {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "wouter";
 import { Shell } from "@/components/layout/shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -693,7 +694,7 @@ export default function {{ entity.name }}FormPage() {
         await createMutation.mutateAsync(payload);
         toast.success("{{ entity.name }} created successfully");
       }
-      navigate("/{{ entity.pluralName | kebabCase }}");
+      setLocation("/admin/{{ entity.name | kebabCase }}");
     } catch (error: any) {
       toast.error(error.message || "Failed to save {{ entity.name | downcase }}");
     }
@@ -720,7 +721,7 @@ export default function {{ entity.name }}FormPage() {
             <Button 
               variant="ghost" 
               size="icon"
-              onClick={() => navigate("/{{ entity.pluralName | kebabCase }}")}
+              onClick={() => setLocation("/admin/{{ entity.name | kebabCase }}")}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -861,7 +862,7 @@ export default function {{ entity.name }}FormPage() {
                     type="button" 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => navigate("/{{ entity.pluralName | kebabCase }}")}
+                    onClick={() => setLocation("/admin/{{ entity.name | kebabCase }}")}
                   >
                     Cancel
                   </Button>

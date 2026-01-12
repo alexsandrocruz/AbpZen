@@ -4,20 +4,22 @@ import { apiClient } from "../api-client";
 interface GetLawyerSpecializationsInput {
   filter?: string;
   lawyerId?: string;
+  specializationId?: string;
   skipCount?: number;
   maxResultCount?: number;
 }
 
 export function useLawyerSpecializations(input: GetLawyerSpecializationsInput = {}) {
-  const { filter, lawyerId, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, lawyerId, specializationId, skipCount = 0, maxResultCount = 10 } = input;
 
   return useQuery({
-    queryKey: ["lawyerSpecializations", filter, lawyerId, skipCount, maxResultCount],
+    queryKey: ["lawyerSpecializations", filter, lawyerId, specializationId, skipCount, maxResultCount],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/lawyer-specialization", {
         params: {
           filter,
           lawyerId,
+          specializationId,
           skipCount,
           maxResultCount,
         },
@@ -82,23 +84,28 @@ export function useToggleSpecialization(lawyerId: string) {
   return useMutation({
     mutationFn: async ({ specializationId, isChecked }: { specializationId: string; isChecked: boolean }) => {
       if (isChecked) {
-        // REMOVE: find the relation first
+        // If it was checked, we need to remove it (find the relationship ID and delete)
         const response = await apiClient.get("/api/app/lawyer-specialization", {
-          params: { lawyerId, maxResultCount: 1000 }
+          params: {
+            lawyerId,
+            specializationId,
+          },
         });
-        const relation = response.data.items.find((x: any) => x.specializationId === specializationId);
-        if (relation) {
-          await apiClient.delete(`/api/app/lawyer-specialization/${relation.id}`);
+        const items = response.data.items;
+        if (items && items.length > 0) {
+          await apiClient.delete(`/api/app/lawyer-specialization/${items[0].id}`);
         }
       } else {
-        // ADD
+        // If it was not checked, we need to add it
         await apiClient.post("/api/app/lawyer-specialization", {
           lawyerId,
-          specializationId
+          specializationId,
         });
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations", "", 0, 10] });
+      queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations", undefined, 0, 10] });
       queryClient.invalidateQueries({ queryKey: ["lawyerSpecializations"] });
     },
   });
