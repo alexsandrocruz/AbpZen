@@ -11,8 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dagre": "^0.7.53",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
+    "dagre": "^0.8.5",
     "express": "^5.2.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
