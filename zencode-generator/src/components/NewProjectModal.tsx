@@ -37,8 +37,12 @@ export default function NewProjectModal({ onClose, onCreate, onScaffoldComplete 
     // Check if Bridge is available on mount
     useEffect(() => {
         isBridgeAvailable().then(available => {
-            setBridgeAvailable(available);
-            if (!available) {
+            console.log('Bridge check result:', available);
+            // In production (VPS), always assume bridge is available if check fails
+            // because we are serving from same origin
+            setBridgeAvailable(available || import.meta.env.PROD);
+
+            if (!available && !import.meta.env.PROD) {
                 setCreationMode('download');
             }
         });

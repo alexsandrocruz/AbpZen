@@ -392,12 +392,19 @@ app.post('/api/create-project', (req, res) => {
         console.log(`[Bridge] Target Project Path: ${projectPath}`);
 
         // [Production Fix] In container, zencode-template is at /zencode-template
-        const defaultTemplate = fs.existsSync('/zencode-template')
+        // We check for /app to confirm we are in the container
+        const isContainer = fs.existsSync('/app');
+        const defaultTemplate = (isContainer && fs.existsSync('/zencode-template'))
             ? '/zencode-template'
             : path.join(process.cwd(), '..', 'zencode-template');
 
         const baseTemplatePath = templatePath || defaultTemplate;
         console.log(`[Bridge] Using template from: ${baseTemplatePath} (Exists: ${fs.existsSync(baseTemplatePath)})`);
+
+        if (!fs.existsSync(baseTemplatePath)) {
+            console.error(`[Bridge] CRITICAL: Template NOT found at ${baseTemplatePath}`);
+            return res.status(500).json({ error: 'Template not found (Server Misconfiguration)' });
+        }
 
         // Create project directory
         console.log(`[Bridge] Creating directory: ${projectPath}`);
