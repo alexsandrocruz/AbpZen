@@ -1,6 +1,0 @@
-﻿namespace InterceptionSampleMongoApp;
-
-public abstract class InterceptionSampleMongoAppApplicationTestBase : InterceptionSampleMongoAppTestBase<InterceptionSampleMongoAppApplicationTestModule>
-{
-
-}
