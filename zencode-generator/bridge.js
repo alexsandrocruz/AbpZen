@@ -222,7 +222,7 @@ app.post('/api/list-dirs', (req, res) => {
     }
 });
 
-app.post('/api/inject-code', (req, res) => {
+app.post('/api/inject-code', async (req, res) => {
     const { projectPath, instructions } = req.body;
     console.log(`[Bridge] Injecting/Merging for ${instructions.length} instructions in ${projectPath}`);
     if (!projectPath || !instructions) {
