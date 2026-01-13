@@ -6,8 +6,9 @@ import path from 'path';
 import os from 'os';
 import { exec, spawn } from 'child_process';
 
-import { injectCode } from './injector.js';
-import { importDatabase } from './db-importer.js';
+// Local modules will be imported dynamically to prevent startup crashes
+// import { injectCode } from './injector.js';
+// import { importDatabase } from './db-importer.js';
 
 const app = express();
 const port = process.env.PORT || 3005;
@@ -78,6 +79,7 @@ app.post('/api/import-db', async (req, res) => {
     console.log(`[Bridge] Importing from DB: ${config.provider} @ ${config.host}`);
 
     try {
+        const { importDatabase } = await import('./db-importer.js');
         const result = await importDatabase(config);
         res.json({ success: true, ...result });
     } catch (error) {
@@ -228,6 +230,7 @@ app.post('/api/inject-code', (req, res) => {
     }
 
     try {
+        const { injectCode } = await import('./injector.js');
         const results = injectCode(projectPath, instructions);
         res.json({ success: true, results });
     } catch (error) {
@@ -821,10 +824,24 @@ app.get('/api/terminal/status', (req, res) => {
 });
 
 // SPA Catch-all: If not an API request and file exists, serve index.html
+// Health Check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', uptime: process.uptime(), timestamp: Date.now() });
+});
+
 if (fs.existsSync(distPath)) {
     app.get('*', (req, res, next) => {
         if (req.path.startsWith('/api/')) return next();
         res.sendFile(path.join(distPath, 'index.html'));
+    });
+} else {
+    // Fallback if frontend build is missing
+    app.get('/', (req, res) => {
+        res.send(`
+            <h1>ZenCode Bridge is Running!</h1>
+            <p>Frontend static files were not found at <code>${distPath}</code>.</p>
+            <p>Check the build logs or Dockerfile.</p>
+        `);
     });
 }
 
