@@ -4,12 +4,16 @@ import type { GeneratedFile } from './index';
 /**
  * Create a ZIP file from generated files and trigger download
  */
-export async function downloadAsZip(files: GeneratedFile[], projectName: string): Promise<void> {
+export async function downloadAsZip(files: any[], projectName: string): Promise<void> {
     const zip = new JSZip();
 
     // Group files by layer for organization
     for (const file of files) {
-        zip.file(file.path, file.content);
+        if (file.encoding === 'base64') {
+            zip.file(file.path, file.content, { base64: true });
+        } else {
+            zip.file(file.path, file.content);
+        }
     }
 
     // Generate the ZIP

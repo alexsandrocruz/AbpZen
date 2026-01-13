@@ -138,6 +138,58 @@ app.post('/api/import-db', async (req, res) => {
     }
 });
 
+// Endpoint to download the full project from the server
+app.get('/api/download-project', (req, res) => {
+    const { path: projectPath } = req.query;
+
+    if (!projectPath || !fs.existsSync(projectPath)) {
+        return res.status(404).json({ error: 'Project path not found' });
+    }
+
+    console.log(`[Bridge] Downloading project from: ${projectPath}`);
+
+    try {
+        const files = [];
+        const collectForDownload = (dir, prefix = '') => {
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                if (entry.isDirectory() && SKIP_FOLDERS.has(entry.name)) continue;
+                if (entry.isSymbolicLink()) continue;
+
+                const fullPath = path.join(dir, entry.name);
+                const relativePath = path.join(prefix, entry.name);
+
+                if (entry.isDirectory()) {
+                    collectForDownload(fullPath, relativePath);
+                } else {
+                    const ext = path.extname(entry.name).toLowerCase();
+                    const isBinary = BINARY_EXTENSIONS.has(ext);
+
+                    try {
+                        if (isBinary) {
+                            const content = fs.readFileSync(fullPath).toString('base64');
+                            files.push({ path: relativePath, content, encoding: 'base64' });
+                        } else {
+                            const content = fs.readFileSync(fullPath, 'utf-8');
+                            files.push({ path: relativePath, content, encoding: 'utf-8' });
+                        }
+                    } catch (readErr) {
+                        console.warn(`[Bridge] Warning: Could not read ${fullPath}: ${readErr.message}`);
+                    }
+                }
+            }
+        };
+
+        collectForDownload(projectPath);
+        console.log(`[Bridge] Prepared ${files.length} files for download`);
+        res.json({ success: true, files });
+
+    } catch (error) {
+        console.error(`[Bridge] Download Error: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/api/detect-project-info', (req, res) => {
     const { projectPath } = req.body;
     if (!projectPath) {

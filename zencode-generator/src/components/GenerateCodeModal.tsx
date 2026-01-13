@@ -300,7 +300,37 @@ export default function GenerateCodeModal({
     };
 
     const handleDownload = async () => {
-        await downloadAsZip(files, projectName);
+        // If we have a connected remote path, try to download the REAL project from server
+        if (localProjectPath) {
+            setGenerating(true); // Re-use generating spinner or a new one
+            try {
+                const response = await fetch(`${BRIDGE_URL}/api/download-project?path=${encodeURIComponent(localProjectPath)}`);
+                if (!response.ok) throw new Error('Failed to download project from server');
+
+                const data = await response.json();
+                if (!data.success || !data.files) throw new Error('Invalid server response');
+
+                await downloadAsZip(data.files, `${projectName || 'project'}.zip`);
+            } catch (error) {
+                console.error('Remote download failed, falling back to local files:', error);
+                // Fallback to downloading only generated files
+                const zipFiles = files.map(f => ({
+                    path: f.path,
+                    content: f.content
+                }));
+                await downloadAsZip(zipFiles, `${projectName || 'PureZen_Code'}.zip`);
+            } finally {
+                setGenerating(false);
+            }
+            return;
+        }
+
+        if (files.length === 0) return;
+        const zipFiles = files.map(f => ({
+            path: f.path,
+            content: f.content
+        }));
+        await downloadAsZip(zipFiles, `${projectName || 'ZenGenerated'}.zip`);
     };
 
     const handleApply = async () => {
