@@ -58,6 +58,33 @@ const BINARY_EXTENSIONS = new Set([
     '.png', '.jpg', '.jpeg', '.gif', '.ico', '.woff', '.woff2', '.ttf', '.eot'
 ]);
 
+// Debug File System endpoint
+app.get('/api/debug-fs', (req, res) => {
+    const paths = ['/app', '/opt', '/opt/gerador', '/tmp', os.homedir()];
+    const results = paths.map(p => {
+        let stats = null;
+        let writable = false;
+        try {
+            stats = fs.statSync(p);
+            fs.accessSync(p, fs.constants.W_OK);
+            writable = true;
+        } catch (e) {
+            // Error
+        }
+        return {
+            path: p,
+            exists: fs.existsSync(p),
+            writable,
+            uid: stats?.uid,
+            gid: stats?.gid,
+            mode: stats?.mode?.toString(8),
+            currentUser: os.userInfo().username,
+            currentUid: os.userInfo().uid
+        };
+    });
+    res.json(results);
+});
+
 app.post('/api/pick-directory', (req, res) => {
     // macOS only for now using osascript
     const appleScript = 'POSIX path of (choose folder with prompt "Select ABP Project Root")';
