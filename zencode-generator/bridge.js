@@ -60,26 +60,49 @@ const BINARY_EXTENSIONS = new Set([
 
 // Debug File System endpoint
 app.get('/api/debug-fs', (req, res) => {
-    const paths = ['/app', '/opt', '/opt/gerador', '/tmp', os.homedir()];
+    const paths = ['/app', '/opt', '/opt/gerador', '/tmp', '/zencode-template'];
     const results = paths.map(p => {
         let stats = null;
         let writable = false;
+        let testWrite = 'not_attempted';
+        let contents = [];
+
         try {
-            stats = fs.statSync(p);
-            fs.accessSync(p, fs.constants.W_OK);
-            writable = true;
+            if (fs.existsSync(p)) {
+                stats = fs.statSync(p);
+                fs.accessSync(p, fs.constants.W_OK);
+                writable = true;
+
+                if (stats.isDirectory()) {
+                    contents = fs.readdirSync(p).slice(0, 10); // First 10 items
+                }
+
+                // Explicit write test for the target volume
+                if (p === '/opt/gerador') {
+                    const testFile = path.join(p, `.write_test_${Date.now()}`);
+                    try {
+                        fs.writeFileSync(testFile, 'ok');
+                        fs.unlinkSync(testFile);
+                        testWrite = 'success';
+                    } catch (e) {
+                        testWrite = `failed: ${e.message}`;
+                    }
+                }
+            }
         } catch (e) {
             // Error
         }
+
         return {
             path: p,
             exists: fs.existsSync(p),
             writable,
+            testWrite,
+            contents,
             uid: stats?.uid,
             gid: stats?.gid,
             mode: stats?.mode?.toString(8),
-            currentUser: os.userInfo().username,
-            currentUid: os.userInfo().uid
+            currentUser: os.userInfo().username
         };
     });
     res.json(results);
