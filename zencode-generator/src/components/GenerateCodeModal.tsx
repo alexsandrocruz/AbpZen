@@ -150,41 +150,52 @@ export default function GenerateCodeModal({
             return;
         }
 
-        if (folderName !== projectName && !confirm(`Folder name (${folderName}) differs from Project Name (${projectName}). Continue?`)) {
-            return;
+        if (folderName !== projectName) {
+            if (!confirm(`Folder name (${folderName}) differs from Project Name (${projectName}). Continue?`)) return;
         }
 
         setScaffolding(true);
         setApplyStatus(null);
 
-        try {
-            const response = await fetch(`${BRIDGE_URL}/api/create-project`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    projectName: folderName, // Use the folder name as the project name on disk
-                    destinationPath: parentPath,
-                    frontends: Array.from(selectedFrontends)
-                })
-            });
+        const doScaffold = async (forceOverwrite = false) => {
+            try {
+                const response = await fetch(`${BRIDGE_URL}/api/create-project`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        projectName: folderName,
+                        destinationPath: parentPath,
+                        frontends: Array.from(selectedFrontends),
+                        overwrite: forceOverwrite
+                    })
+                });
 
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || 'Failed to scaffold project');
+                if (!response.ok) {
+                    const data = await response.json();
+                    if (data.error && data.error.includes('already exists')) {
+                        if (confirm('Project folder already exists. Do you want to FORCE RE-INITIALIZE (overwrite boilerplate files)?')) {
+                            return doScaffold(true);
+                        }
+                    }
+                    throw new Error(data.error || 'Failed to scaffold project');
+                }
+
+                setApplyStatus({ success: true, message: 'Boilerplate scaffolded successfully!' });
+            } catch (error: any) {
+                console.error('Scaffold error:', error);
+                setApplyStatus({ success: false, message: `Scaffold failed: ${error.message}` });
+            } finally {
+                setScaffolding(false);
             }
+        };
 
-            setApplyStatus({ success: true, message: 'Boilerplate scaffolded successfully!' });
-        } catch (error: any) {
-            console.error('Scaffold error:', error);
-            setApplyStatus({ success: false, message: `Scaffold failed: ${error.message}` });
-        } finally {
-            setScaffolding(false);
-        }
+        await doScaffold(false);
     };
 
     const handleGenerate = async () => {
         setGenerating(true);
         setGenerationError(null);
+
         const allFiles: GeneratedFile[] = [];
 
         // Filter to only selected entities
@@ -939,11 +950,11 @@ export default function GenerateCodeModal({
                                         className="ui-button ui-button-primary"
                                         onClick={handleScaffold}
                                         disabled={scaffolding || applying || injecting}
-                                        title="Copy base ABP framework files (DbContext, .csproj, etc.) to this folder"
+                                        title="Initialize or Repair Project Boilerplate (DbContext, .csproj, etc.)"
                                         style={{ background: '#3b82f6', border: '1px solid #2563eb' }}
                                     >
                                         {scaffolding ? <Loader2 size={18} className="animate-spin" /> : <FolderPlus size={18} />}
-                                        Initialize
+                                        Repair / Init
                                     </button>
                                     <button
                                         className="ui-button ui-button-primary"

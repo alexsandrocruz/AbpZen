@@ -408,9 +408,10 @@ app.post('/api/create-project', (req, res) => {
 
         // Create project directory
         console.log(`[Bridge] Creating directory: ${projectPath}`);
-        if (fs.existsSync(projectPath)) {
+        // Allow overwrite if explicitly requested
+        if (fs.existsSync(projectPath) && !req.body.overwrite) {
             console.warn(`[Bridge] Error: Project directory already exists: ${projectPath}`);
-            return res.status(400).json({ error: 'Project directory already exists' });
+            return res.status(400).json({ error: 'Project directory already exists (use overwrite to force)' });
         }
 
         try {
