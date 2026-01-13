@@ -2,7 +2,8 @@
  * Entity class template for ABP Domain layer
  */
 export function getEntityTemplate(): string {
-    return `using System;
+    return `// Generated with Fixed Generator
+using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
 

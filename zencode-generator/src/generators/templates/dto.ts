@@ -87,7 +87,7 @@ public class {{ dto.createTypeName }}
     {%- if field.type == 'enum' and field.enumConfig %}
     public {{ field.enumConfig.enumName }}{% if field.isNullable %}?{% endif %} {{ field.name }} { get; set; }
     {%- else %}
-    public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }
+    public {{ field.type | csharpType: field.isNullable }} {{ field.name }} { get; set; }{% if field.type == 'string' and field.isNullable == false %} = string.Empty;{% endif %}
     {%- endif %}
     {%- endunless %}
     {%- endunless %}
@@ -131,12 +131,22 @@ public class {{ entity.name }}GetListInput : PagedAndSortedResultRequestDto
       {%- if rel.fkFieldName == field.name %}{% assign isFk = true %}{% endif %}
     {%- endfor %}
     {%- unless isFk %}
+    {%- if field.name == 'Filter' or field.name == 'Sorting' or field.name == 'SkipCount' or field.name == 'MaxResultCount' or field.name == 'Validate' %}
+    {%- if field.type == 'string' %}
+    public new string? {{ field.name }} { get; set; }
+    {%- elsif field.type == 'enum' and field.enumConfig %}
+    public new {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
+    {%- elsif field.type == 'guid' or field.type == 'int' or field.type == 'long' or field.type == 'datetime' or field.type == 'bool' or field.type == 'decimal' or field.type == 'double' or field.type == 'float' or field.type == 'short' or field.type == 'byte' %}
+    public new {{ field.type | csharpType: true }} {{ field.name }} { get; set; }
+    {%- endif %}
+    {%- else %}
     {%- if field.type == 'string' %}
     public string? {{ field.name }} { get; set; }
     {%- elsif field.type == 'enum' and field.enumConfig %}
     public {{ field.enumConfig.enumName }}? {{ field.name }} { get; set; }
-    {%- elsif field.type == 'guid' or field.type == 'int' or field.type == 'long' or field.type == 'datetime' or field.type == 'bool' or field.type == 'decimal' %}
+    {%- elsif field.type == 'guid' or field.type == 'int' or field.type == 'long' or field.type == 'datetime' or field.type == 'bool' or field.type == 'decimal' or field.type == 'double' or field.type == 'float' or field.type == 'short' or field.type == 'byte' %}
     public {{ field.type | csharpType: true }} {{ field.name }} { get; set; }
+    {%- endif %}
     {%- endif %}
     {%- endunless %}
     {%- endif %}

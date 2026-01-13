@@ -55,7 +55,7 @@ export default function ProposalsPage() {
               <p className="text-muted-foreground">Manage your proposals</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/proposal/new")}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/proposal/create")}>
             <Plus className="size-4" />
             New Proposal
           </Button>
@@ -74,7 +74,7 @@ export default function ProposalsPage() {
                 />
               </div>
             </div>
-            
+
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />

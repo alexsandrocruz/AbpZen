@@ -7,12 +7,12 @@
 
 export function getReactV2PageTemplate(): string {
   return `import { Shell } from "@/components/layout/shell";
-import { {{ entity.name }}List } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name }}List";
+import { {{ entity.name | pascalCase }}List } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name | pascalCase }}List";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
 import { useLocation } from "wouter";
 
-export default function {{ entity.pluralName }}Page() {
+export default function {{ entity.pluralName | pascalCase }}Page() {
   const [, setLocation] = useLocation();
 
   return (
@@ -34,7 +34,7 @@ export default function {{ entity.pluralName }}Page() {
           </Button>
         </div>
 
-        <{{ entity.name }}List onEdit={(item) => setLocation(\`/admin/{{ entity.name | kebabCase }}/edit/\${item.id}\`)} />
+        <{{ entity.name | pascalCase }}List onEdit={(item) => setLocation(\`/admin/{{ entity.name | kebabCase }}/\${item.id}/edit\`)} />
       </div>
     </Shell>
   );
@@ -46,7 +46,7 @@ export default function {{ entity.pluralName }}Page() {
 
 export function getReactV2ListComponentTemplate(): string {
   return `import { useMemo, useState } from "react";
-import { use{{ entity.pluralName }}, useDelete{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+import { use{{ entity.pluralName | pascalCase }}, useDelete{{ entity.name | pascalCase }} } from "@/lib/abp/hooks/use{{ entity.pluralName | pascalCase }}";
 import {
   Table,
   TableBody,
@@ -70,16 +70,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface {{ entity.name }}ListProps {
+interface {{ entity.name | pascalCase }}ListProps {
   onEdit: (item: any) => void;
 }
 
-export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
+export function {{ entity.name | pascalCase }}List({ onEdit }: {{ entity.name | pascalCase }}ListProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading, isError } = use{{ entity.pluralName }}({
+  const { data, isLoading, isError } = use{{ entity.pluralName | pascalCase }}({
     filter: searchTerm,
   });
-  const deleteMutation = useDelete{{ entity.name }}();
+  const deleteMutation = useDelete{{ entity.name | pascalCase }}();
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this {{ entity.name | downcase }}?")) {
@@ -178,54 +178,53 @@ export function {{ entity.name }}List({ onEdit }: {{ entity.name }}ListProps) {
     </Card>
   );
 }
-`
-    ;
+`;
 }
 
 // ============ FORM COMPONENT TEMPLATE ============
 
 export function getReactV2FormComponentTemplate(): string {
   return `import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
-import { useCreate{{ entity.name }}, useUpdate{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+  import { zodResolver } from "@hookform/resolvers/zod";
+  import * as z from "zod";
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog";
+  import { Button } from "@/components/ui/button";
+  import { Input } from "@/components/ui/input";
+  import { Label } from "@/components/ui/label";
+  import { Checkbox } from "@/components/ui/checkbox";
+  import { Loader2 } from "lucide-react";
+  import { useEffect } from "react";
+  import { useCreate{{ entity.name | pascalCase }}, useUpdate{{ entity.name | pascalCase }} } from "@/lib/abp/hooks/use{{ entity.pluralName | pascalCase }}";
 import { toast } from "sonner";
 
 const formSchema = z.object({
   {% for field in entity.fields %}
-  {{ field.name | camelCase }}: z.any(),
+    {{ field.name | camelCase }}: z.any(),
   {% endfor %}
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-interface {{ entity.name }}FormProps {
+interface {{ entity.name | pascalCase }}FormProps {
   isOpen: boolean;
   onClose: () => void;
-  initialValues?: any;
+  initialValues ?: any;
 }
 
-export function {{ entity.name }}Form({
+export function {{ entity.name | pascalCase }}Form({
   isOpen,
   onClose,
   initialValues,
-}: {{ entity.name }}FormProps) {
+}: {{ entity.name | pascalCase }}FormProps) {
   const isEditing = !!initialValues;
-  
+
   const {
     register,
     handleSubmit,
@@ -246,71 +245,72 @@ export function {{ entity.name }}Form({
     }
   }, [initialValues, reset]);
 
-  const createMutation = useCreate{{ entity.name }}();
-  const updateMutation = useUpdate{{ entity.name }}();
+  const createMutation = useCreate{{ entity.name | pascalCase
+}}();
+const updateMutation = useUpdate{{ entity.name | pascalCase }}();
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      if (isEditing) {
-        await updateMutation.mutateAsync({ id: initialValues.id, data });
-        toast.success("{{ entity.name }} updated successfully");
-      } else {
-        await createMutation.mutateAsync(data);
-        toast.success("{{ entity.name }} created successfully");
-      }
-      onClose();
-    } catch (error: any) {
-      console.error("Failed to save {{ entity.name | downcase }}:", error);
-      toast.error(error.message || "Failed to save {{ entity.name | downcase }}");
+const onSubmit = async (data: FormValues) => {
+  try {
+    if (isEditing) {
+      await updateMutation.mutateAsync({ id: initialValues.id, data });
+      toast.success("{{ entity.name }} updated successfully");
+    } else {
+      await createMutation.mutateAsync(data);
+      toast.success("{{ entity.name }} created successfully");
     }
-  };
+    onClose();
+  } catch (error: any) {
+    console.error("Failed to save {{ entity.name | downcase }}:", error);
+    toast.error(error.message || "Failed to save {{ entity.name | downcase }}");
+  }
+};
 
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>{isEditing ? "Edit {{ entity.name }}" : "Create {{ entity.name }}"}</DialogTitle>
-          <DialogDescription>
-            {isEditing ? "Update the details of the {{ entity.name | downcase }}." : "Fill in the details to create a new {{ entity.name | downcase }}."}
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          {% for field in entity.fields %}
-          <div className="space-y-2">
-            <Label htmlFor="{{ field.name | camelCase }}">{{ field.name }}{% if field.isRequired %} *{% endif %}</Label>
-            {% if field.type == "bool" %}
-            <div className="flex items-center space-x-2 pt-1">
-              <Checkbox
+return (
+  <Dialog open= { isOpen } onOpenChange = { onClose } >
+    <DialogContent className="sm:max-w-[500px]" >
+      <DialogHeader>
+      <DialogTitle>{ isEditing? "Edit {{ entity.name }}": "Create {{ entity.name }}" } </DialogTitle>
+      <DialogDescription>
+{ isEditing ? "Update the details of the {{ entity.name | downcase }}." : "Fill in the details to create a new {{ entity.name | downcase }}." }
+</DialogDescription>
+  </DialogHeader>
+  < form onSubmit = { handleSubmit(onSubmit) } className = "space-y-4 py-4" >
+    {% for field in entity.fields %}
+<div className="space-y-2" >
+  <Label htmlFor="{{ field.name | camelCase }}" > {{ field.name }}{% if field.isRequired %} * {% endif %}</Label>
+{% if field.type == "bool" %}
+<div className="flex items-center space-x-2 pt-1" >
+  <Checkbox
                 id="{{ field.name | camelCase }}"
-                checked={watch("{{ field.name | camelCase }}")}
-                onCheckedChange={(checked) => setValue("{{ field.name | camelCase }}", !!checked)}
+checked = { watch("{{ field.name | camelCase }}") }
+onCheckedChange = {(checked) => setValue("{{ field.name | camelCase }}", !!checked)}
               />
-              <label htmlFor="{{ field.name | camelCase }}" className="text-sm font-normal">
-                {watch("{{ field.name | camelCase }}") ? "Enabled" : "Disabled"}
-              </label>
-            </div>
-            {% elsif field.type == "datetime" %}
-            <Input id="{{ field.name | camelCase }}" type="date" {...register("{{ field.name | camelCase }}")} />
-            {% elsif field.type == "int" or field.type == "long" or field.type == "double" or field.type == "decimal" %}
-            <Input id="{{ field.name | camelCase }}" type="number" step="any" {...register("{{ field.name | camelCase }}")} />
-            {% else %}
-            <Input id="{{ field.name | camelCase }}" {...register("{{ field.name | camelCase }}")} />
-            {% endif %}
-          </div>
-          {% endfor %}
+  < label htmlFor = "{{ field.name | camelCase }}" className = "text-sm font-normal" >
+    { watch("{{ field.name | camelCase }}") ?"Enabled": "Disabled" }
+    </label>
+    </div>
+{% elsif field.type == "datetime" %}
+<Input id="{{ field.name | camelCase }}" type = "date" {...register("{{ field.name | camelCase }}") } />
+{% elsif field.type == "int" or field.type == "long" or field.type == "double" or field.type == "decimal" %}
+<Input id="{{ field.name | camelCase }}" type = "number" step = "any" {...register("{{ field.name | camelCase }}") } />
+{% else %}
+<Input id="{{ field.name | camelCase }}" {...register("{{ field.name | camelCase }}") } />
+{% endif %}
+</div>
+{% endfor %}
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEditing ? "Save Changes" : "Create"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+<DialogFooter>
+  <Button type="button" variant = "outline" onClick = { onClose } disabled = { isSubmitting } >
+    Cancel
+    </Button>
+    < Button type = "submit" disabled = { isSubmitting } >
+      { isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+{ isEditing ? "Save Changes" : "Create" }
+</Button>
+  </DialogFooter>
+  </form>
+  </DialogContent>
+  </Dialog>
   );
 }
 `;
@@ -322,23 +322,27 @@ export function getReactV2HookTemplate(): string {
   return `import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
-interface Get{{ entity.pluralName }}Input {
-  filter?: string;
-  skipCount?: number;
-  maxResultCount?: number;
+interface Get{{ entity.pluralName | pascalCase }}Input {
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
+  {% for rel in relationships.asChild -%}
+  {{ rel.fkFieldName | camelCase }}?: string;
+  {% endfor -%}
 }
 
-export function use{{ entity.pluralName }}(input: Get{{ entity.pluralName }}Input = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+export function use{{ entity.pluralName | pascalCase }}(input: Get{{ entity.pluralName | pascalCase }}Input = {}) {
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["{{ entity.pluralName | camelCase }}", filter, skipCount, maxResultCount],
+    queryKey: ["{{ entity.pluralName | camelCase }}", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/{{ entity.name | kebabCase }}", {
         params: {
           filter,
           skipCount,
           maxResultCount,
+          ...rest,
         },
       });
       return response.data;
@@ -346,7 +350,21 @@ export function use{{ entity.pluralName }}(input: Get{{ entity.pluralName }}Inpu
   });
 }
 
-export function use{{ entity.name }}(id: string) {
+export function useAll{{ entity.pluralName | pascalCase }}() {
+  return useQuery({
+    queryKey: ["{{ entity.pluralName | camelCase }}", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/{{ entity.name | kebabCase }}", {
+        params: {
+          maxResultCount: 1000,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function use{{ entity.name | pascalCase }}(id: string) {
   return useQuery({
     queryKey: ["{{ entity.name | camelCase }}", id],
     queryFn: async () => {
@@ -357,7 +375,7 @@ export function use{{ entity.name }}(id: string) {
   });
 }
 
-export function useCreate{{ entity.name }}() {
+export function useCreate{{ entity.name | pascalCase }}() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: any) => {
@@ -370,7 +388,7 @@ export function useCreate{{ entity.name }}() {
   });
 }
 
-export function useUpdate{{ entity.name }}() {
+export function useUpdate{{ entity.name | pascalCase }}() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: any }) => {
@@ -384,7 +402,7 @@ export function useUpdate{{ entity.name }}() {
   });
 }
 
-export function useDelete{{ entity.name }}() {
+export function useDelete{{ entity.name | pascalCase }}() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
@@ -395,6 +413,75 @@ export function useDelete{{ entity.name }}() {
     },
   });
 }
+
+{% if relationships.asChild.size == 2 %}
+{% assign p1 = relationships.asChild[0] %}
+{% assign p2 = relationships.asChild[1] %}
+
+/**
+ * Toggle hook for many-to-many relationship: {{ p1.parentEntityName }} <-> {{ p2.parentEntityName }}
+ * Given a {{ p1.parentEntityName }}, toggle a {{ p2.parentEntityName }}
+ */
+export function useToggle{{ p2.parentEntityName | pascalCase }}({{ p1.parentEntityName | camelCase }}Id: string) {
+  const queryClient = useQueryClient();
+  const createMutation = useCreate{{ entity.name | pascalCase }}();
+  const deleteMutation = useDelete{{ entity.name | pascalCase }}();
+  const { data: existing } = use{{ entity.pluralName | pascalCase }}({ {{ p1.fkFieldName | camelCase }}: {{ p1.parentEntityName | camelCase }}Id, maxResultCount: 1000 });
+
+  return useMutation({
+    mutationFn: async ({ {{ p2.parentEntityName | camelCase }}Id, isChecked }: { {{ p2.parentEntityName | camelCase }}Id: string; isChecked: boolean }) => {
+      if (isChecked) {
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.{{ p2.fkFieldName | camelCase }} === {{ p2.parentEntityName | camelCase }}Id);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
+        }
+      } else {
+        // Add relationship
+        await createMutation.mutateAsync({
+          {{ p1.fkFieldName | camelCase }}: {{ p1.parentEntityName | camelCase }}Id,
+          {{ p2.fkFieldName | camelCase }}: {{ p2.parentEntityName | camelCase }}Id,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.pluralName | camelCase }}"] });
+    },
+  });
+}
+
+/**
+ * Toggle hook for many-to-many relationship: {{ p1.parentEntityName }} <-> {{ p2.parentEntityName }}
+ * Given a {{ p2.parentEntityName }}, toggle a {{ p1.parentEntityName }}
+ */
+export function useToggle{{ p1.parentEntityName | pascalCase }}({{ p2.parentEntityName | camelCase }}Id: string) {
+  const queryClient = useQueryClient();
+  const createMutation = useCreate{{ entity.name | pascalCase }}();
+  const deleteMutation = useDelete{{ entity.name | pascalCase }}();
+  const { data: existing } = use{{ entity.pluralName | pascalCase }}({ {{ p2.fkFieldName | camelCase }}: {{ p2.parentEntityName | camelCase }}Id, maxResultCount: 1000 });
+
+  return useMutation({
+    mutationFn: async ({ {{ p1.parentEntityName | camelCase }}Id, isChecked }: { {{ p1.parentEntityName | camelCase }}Id: string; isChecked: boolean }) => {
+      if (isChecked) {
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.{{ p1.fkFieldName | camelCase }} === {{ p1.parentEntityName | camelCase }}Id);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
+        }
+      } else {
+        // Add relationship
+        await createMutation.mutateAsync({
+          {{ p1.fkFieldName | camelCase }}: {{ p1.parentEntityName | camelCase }}Id,
+          {{ p2.fkFieldName | camelCase }}: {{ p2.parentEntityName | camelCase }}Id,
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["{{ entity.pluralName | camelCase }}"] });
+    },
+  });
+}
+{% endif %}
 `;
 }
 
@@ -410,7 +497,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Box, Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { use{{ entity.pluralName }}, useDelete{{ entity.name }} } from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+import { use{{ entity.pluralName | pascalCase }}, useDelete{{ entity.name | pascalCase }} } from "@/lib/abp/hooks/use{{ entity.pluralName | pascalCase }}";
 import { toast } from "sonner";
 import {
   Table,
@@ -429,11 +516,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function {{ entity.pluralName }}Page() {
+export default function {{ entity.pluralName | pascalCase }}Page() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isLoading } = use{{ entity.pluralName }}({ filter: searchTerm });
-  const deleteMutation = useDelete{{ entity.name }}();
+  const { data, isLoading } = use{{ entity.pluralName | pascalCase }}({ filter: searchTerm });
+  const deleteMutation = useDelete{{ entity.name | pascalCase }}();
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this {{ entity.name | downcase }}?")) {
@@ -459,7 +546,7 @@ export default function {{ entity.pluralName }}Page() {
               <p className="text-muted-foreground">Manage your {{ entity.pluralName | downcase }}</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => navigate("/admin/{{ entity.name | kebabCase }}/new")}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/{{ entity.name | kebabCase }}/create")}>
             <Plus className="size-4" />
             New {{ entity.name }}
           </Button>
@@ -478,7 +565,7 @@ export default function {{ entity.pluralName }}Page() {
                 />
               </div>
             </div>
-            
+
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -583,15 +670,15 @@ import {
 import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { 
-  use{{ entity.name }}, 
-  useCreate{{ entity.name }}, 
-  useUpdate{{ entity.name }} 
-} from "@/lib/abp/hooks/use{{ entity.pluralName }}";
+  use{{ entity.name | pascalCase }}, 
+  useCreate{{ entity.name | pascalCase }}, 
+  useUpdate{{ entity.name | pascalCase }} 
+} from "@/lib/abp/hooks/use{{ entity.pluralName | pascalCase }}";
 {% for rel in entity.manyToManyEntities %}
-import { use{{ rel.relatedEntity | pluralize }} } from "@/lib/abp/hooks/use{{ rel.relatedEntity | pluralize }}";
+import { use{{ rel.relatedEntity | pluralize | pascalCase }} } from "@/lib/abp/hooks/use{{ rel.relatedEntity | pluralize | pascalCase }}";
 {% endfor %}
 {% for rel in relationships.asChild %}
-import { use{{ rel.parentPluralName }} } from "@/lib/abp/hooks/use{{ rel.parentPluralName }}";
+import { use{{ rel.parentPluralName | pascalCase }} } from "@/lib/abp/hooks/use{{ rel.parentPluralName | pascalCase }}";
 {% endfor %}
 
 const formSchema = z.object({
@@ -603,7 +690,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 {% for child in entity.childEntities %}
-interface {{ child.entityName }}Item {
+interface {{ child.entityName | pascalCase }}Item {
   id?: string;
   {% for field in child.fields %}
   {{ field.name | camelCase }}{% if not field.isRequired %}?{% endif %}: {{ field.tsType }};
@@ -611,24 +698,24 @@ interface {{ child.entityName }}Item {
 }
 {% endfor %}
 
-export default function {{ entity.name }}FormPage() {
-  const navigate = useNavigate();
+export default function {{ entity.name | pascalCase }}FormPage() {
+  const [, setLocation] = useLocation();
   const { id } = useParams<{ id: string }>();
   const isEditing = !!id;
 
-  const { data: existing, isLoading: loadingExisting } = use{{ entity.name }}(id || "");
-  const createMutation = useCreate{{ entity.name }}();
-  const updateMutation = useUpdate{{ entity.name }}();
+  const { data: existing, isLoading: loadingExisting } = use{{ entity.name | pascalCase }}(id || "");
+  const createMutation = useCreate{{ entity.name | pascalCase }}();
+  const updateMutation = useUpdate{{ entity.name | pascalCase }}();
 
   {% for rel in entity.manyToManyEntities %}
-  const { data: {{ rel.relatedEntity | camelCase | pluralize }} } = use{{ rel.relatedEntity | pluralize }}({ maxResultCount: 1000 });
+  const { data: {{ rel.relatedEntity | camelCase | pluralize }} } = use{{ rel.relatedEntity | pluralize | pascalCase }}({ maxResultCount: 1000 });
   {% endfor %}
   {% for rel in relationships.asChild %}
-  const { data: {{ rel.parentPluralName | camelCase }} } = use{{ rel.parentPluralName }}({ maxResultCount: 1000 });
+  const { data: {{ rel.parentPluralName | camelCase }} } = use{{ rel.parentPluralName | pascalCase }}({ maxResultCount: 1000 });
   {% endfor %}
 
   {% for child in entity.childEntities %}
-  const [{{ child.entityName | camelCase }}Items, set{{ child.entityName }}Items] = useState<{{ child.entityName }}Item[]>([]);
+  const [{{ child.entityName | camelCase }}Items, set{{ child.entityName }}Items] = useState<{{ child.entityName | pascalCase }}Item[]>([]);
   {% endfor %}
 
   const {
@@ -655,7 +742,7 @@ export default function {{ entity.name }}FormPage() {
   }, [existing, reset]);
 
   {% for child in entity.childEntities %}
-  const add{{ child.entityName }} = () => {
+  const add{{ child.entityName | pascalCase }} = () => {
     set{{ child.entityName }}Items([...{{ child.entityName | camelCase }}Items, { 
       {% for field in child.fields %}
       {{ field.name | camelCase }}: {{ field.defaultValue }},
@@ -663,11 +750,11 @@ export default function {{ entity.name }}FormPage() {
     }]);
   };
 
-  const remove{{ child.entityName }} = (index: number) => {
+  const remove{{ child.entityName | pascalCase }} = (index: number) => {
     set{{ child.entityName }}Items({{ child.entityName | camelCase }}Items.filter((_, i) => i !== index));
   };
 
-  const update{{ child.entityName }} = (index: number, field: keyof {{ child.entityName }}Item, value: any) => {
+  const update{{ child.entityName | pascalCase }} = (index: number, field: keyof {{ child.entityName | pascalCase }}Item, value: any) => {
     const updated = [...{{ child.entityName | camelCase }}Items];
     updated[index] = { ...updated[index], [field]: value };
     set{{ child.entityName }}Items(updated);
@@ -763,7 +850,7 @@ export default function {{ entity.name }}FormPage() {
                           <SelectValue placeholder="Select {{ fkRel.displayField }}" />
                         </SelectTrigger>
                         <SelectContent>
-                          { {%raw%}{{%endraw%}{{ fkRel.parentPluralName | camelCase }}?.items?.map((item: any) => (
+                          { ({{ fkRel.parentPluralName | camelCase }} as any)?.items?.map((item: any) => (
                             <SelectItem key={item.id} value={item.id}>
                               {item.{{ fkRel.displayField }}}
                             </SelectItem>
@@ -810,14 +897,14 @@ export default function {{ entity.name }}FormPage() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>{{ child.title }}</CardTitle>
-                  <Button type="button" variant="outline" size="sm" onClick={add{{ child.entityName }}}>
+                  <Button type="button" variant="outline" size="sm" onClick={add{{ child.entityName | pascalCase }}}>
                     <Plus className="h-4 w-4 mr-1" />
                     Add Item
                   </Button>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {%raw%}{{%endraw%}{{ child.entityName | camelCase }}Items.map((item, index) => (
+                    { ({{ child.entityName | camelCase }}Items || []).map((item, index) => (
                       <div key={index} className="p-4 border rounded-lg space-y-3 bg-muted/30">
                         <div className="flex gap-3 items-start">
                           <div className="flex-1 grid grid-cols-2 md:grid-cols-{{ child.displayFields | size | plus: 1 }} gap-3">
@@ -829,7 +916,7 @@ export default function {{ entity.name }}FormPage() {
                                 type="number"
                                 step="any"
                                 value={item.{{ field.name | camelCase }} || ""}
-                                onChange={(e) => update{{ child.entityName }}(index, "{{ field.name | camelCase }}", e.target.value)}
+                                onChange={(e) => update{{ child.entityName | pascalCase }}(index, "{{ field.name | camelCase }}", e.target.value)}
                               />
                               {% else %}
                               <Input
@@ -840,12 +927,12 @@ export default function {{ entity.name }}FormPage() {
                             </div>
                             {% endfor %}
                           </div>
-                          {%raw%}{{%endraw%}{{ child.entityName | camelCase }}Items.length > 1 && (
+                          { {{ child.entityName | camelCase }}Items.length > 1 && (
                             <Button 
                               type="button" 
                               variant="ghost" 
                               size="icon" 
-                              onClick={() => remove{{ child.entityName }}(index)}
+                              onClick={() => remove{{ child.entityName | pascalCase }}(index)}
                             >
                               <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
@@ -853,7 +940,7 @@ export default function {{ entity.name }}FormPage() {
                         </div>
                       </div>
                     ))}
-                    {%raw%}{{%endraw%}{{ child.entityName | camelCase }}Items.length === 0 && (
+                    { {{ child.entityName | camelCase }}Items.length === 0 && (
                       <div className="text-center py-8 text-muted-foreground">
                         No items yet. Click "Add Item" to start.
                       </div>
@@ -870,7 +957,7 @@ export default function {{ entity.name }}FormPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {%raw%}{{%endraw%}{{ rel.relatedEntity | camelCase | pluralize }}?.items?.map((item: any) => (
+                    { ({{ rel.relatedEntity | camelCase | pluralize }} as any)?.items?.map((item: any) => (
                       <div key={item.id} className="flex items-center space-x-2">
                         <Checkbox
                           id={\`rel-\${item.id}\`}
@@ -887,7 +974,7 @@ export default function {{ entity.name }}FormPage() {
                         <Label htmlFor={\`rel-\${item.id}\`}>{item.{{ rel.displayField }}}</Label>
                       </div>
                     ))}
-                    {%raw%}{!{%endraw%}{{ rel.relatedEntity | camelCase | pluralize }}?.items?.length && (
+                    {!{{ rel.relatedEntity | camelCase | pluralize }}?.items?.length && (
                       <div className="text-sm text-muted-foreground col-span-full">
                         No {{ rel.pluralName | downcase }} found.
                       </div>

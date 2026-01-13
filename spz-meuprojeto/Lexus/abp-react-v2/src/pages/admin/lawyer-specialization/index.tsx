@@ -1,23 +1,11 @@
 import { Shell } from "@/components/layout/shell";
 import { LawyerSpecializationList } from "@/components/lawyer-specialization/LawyerSpecializationList";
-import { LawyerSpecializationForm } from "@/components/lawyer-specialization/LawyerSpecializationForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useState } from "react";
+import { useLocation } from "wouter";
 
 export default function LawyerSpecializationsPage() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-
-  const handleEdit = (item: any) => {
-    setEditingItem(item);
-    setIsFormOpen(true);
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingItem(null);
-  };
+  const [, setLocation] = useLocation();
 
   return (
     <Shell>
@@ -32,19 +20,13 @@ export default function LawyerSpecializationsPage() {
               <p className="text-muted-foreground">Manage your lawyerspecializations</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/lawyer-specialization/create")}>
             <Plus className="size-4" />
             New LawyerSpecialization
           </Button>
         </div>
 
-        <LawyerSpecializationList onEdit={handleEdit} />
-
-        <LawyerSpecializationForm 
-          isOpen={isFormOpen} 
-          onClose={handleCloseForm} 
-          initialValues={editingItem} 
-        />
+        <LawyerSpecializationList onEdit={(item) => setLocation(`/admin/lawyer-specialization/${item.id}/edit`)} />
       </div>
     </Shell>
   );

@@ -1,4 +1,3 @@
-#nullable enable
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
@@ -10,7 +9,7 @@ public static class PropostalItemDbContextModelCreatingExtensions
     {
         builder.Entity<PropostalItem>(b =>
         {
-            b.ToTable(LexusConsts.DbTablePrefix + "PropostalItems", LexusConsts.DbSchema);
+            b.ToTable(Sapienza.LexusConsts.DbTablePrefix + "PropostalItems", Sapienza.LexusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

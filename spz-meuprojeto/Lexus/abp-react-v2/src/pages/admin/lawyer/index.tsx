@@ -83,34 +83,34 @@ export default function LawyersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-
+                    
                     <TableHead>FullName</TableHead>
-
+                    
                     <TableHead>PreferredName</TableHead>
-
+                    
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {data?.items?.map((item: any) => (
-                    <TableRow
-                      key={item.id}
+                    <TableRow 
+                      key={item.id} 
                       className="cursor-pointer hover:bg-muted/50"
-                      onClick={() => setLocation(`/admin/lawyer/edit/${item.id}`)}
+                      onClick={() => setLocation(`/admin/lawyer/${item.id}/edit`)}
                     >
-
+                      
                       <TableCell>
-
+                        
                         {item.fullName}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell>
-
+                        
                         {item.preferredName}
-
+                        
                       </TableCell>
-
+                      
                       <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -121,11 +121,11 @@ export default function LawyersPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setLocation(`/admin/lawyer/edit/${item.id}`)}>
+                            <DropdownMenuItem onClick={() => setLocation(`/admin/lawyer/${item.id}/edit`)}>
                               <Pencil className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem
+                            <DropdownMenuItem 
                               className="text-destructive"
                               onClick={() => handleDelete(item.id)}
                             >

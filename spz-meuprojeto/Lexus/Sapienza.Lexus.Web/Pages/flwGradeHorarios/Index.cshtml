@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.flwGradeHorarios
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["flwGradeHorarioses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.flwGradeHorarios;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/flwGradeHorarios/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/flwGradeHorarios/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.flwGradeHorarios.Create))
+    {
+        <abp-button id="NewflwGradeHorariosButton"
+            text="@L["NewflwGradeHorarios"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="flwGradeHorariosCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="flwGradeHorariosFilter" id="flwGradeHorariosFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="flwGradeHorariosCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="flwGradeHorariosTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

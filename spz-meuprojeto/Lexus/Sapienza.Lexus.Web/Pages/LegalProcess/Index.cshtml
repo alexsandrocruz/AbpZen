@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.LegalProcess
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["LegalProcesses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.LegalProcess;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/LegalProcess/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/LegalProcess/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.LegalProcess.Create))
+    {
+        <abp-button id="NewLegalProcessButton"
+            text="@L["NewLegalProcess"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="LegalProcessCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="LegalProcessFilter" id="LegalProcessFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="LegalProcessCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="LegalProcessTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

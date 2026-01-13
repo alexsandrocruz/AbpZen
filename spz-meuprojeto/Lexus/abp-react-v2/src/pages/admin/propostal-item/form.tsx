@@ -10,6 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { 
@@ -18,17 +25,21 @@ import {
   useUpdatePropostalItem 
 } from "@/lib/abp/hooks/usePropostalItems";
 
+
+import { useProposals } from "@/lib/abp/hooks/useProposals";
+
+
 const formSchema = z.object({
   
-  desc: z.string().optional(),
+  desc: z.any(),
   
-  quant: z.coerce.number().optional(),
+  quant: z.any(),
   
-  unitPrice: z.coerce.number().optional(),
+  unitPrice: z.any(),
   
-  total: z.coerce.number().optional(),
+  total: z.any(),
   
-  proposalId: z.string().optional(),
+  proposalId: z.any(),
   
 });
 
@@ -44,6 +55,11 @@ export default function PropostalItemFormPage() {
   const { data: existing, isLoading: loadingExisting } = usePropostalItem(id || "");
   const createMutation = useCreatePropostalItem();
   const updateMutation = useUpdatePropostalItem();
+
+  
+  
+  const { data: proposals } = useProposals({ maxResultCount: 1000 });
+  
 
   
 
@@ -136,6 +152,7 @@ export default function PropostalItemFormPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     
+                    
                     <div className="space-y-2">
                       <Label htmlFor="desc">
                         Desc
@@ -149,6 +166,7 @@ export default function PropostalItemFormPage() {
                       
                     </div>
                     
+                    
                     <div className="space-y-2">
                       <Label htmlFor="quant">
                         Quant
@@ -157,6 +175,7 @@ export default function PropostalItemFormPage() {
                       <Input id="quant" type="number" step="any" {...register("quant")} />
                       
                     </div>
+                    
                     
                     <div className="space-y-2">
                       <Label htmlFor="unitPrice">
@@ -167,6 +186,7 @@ export default function PropostalItemFormPage() {
                       
                     </div>
                     
+                    
                     <div className="space-y-2">
                       <Label htmlFor="total">
                         Total
@@ -176,22 +196,35 @@ export default function PropostalItemFormPage() {
                       
                     </div>
                     
+                    
                     <div className="space-y-2">
                       <Label htmlFor="proposalId">
                         Proposal
                       </Label>
                       
-                      <Input 
-                        id="proposalId" 
-                        placeholder=""
-                        {...register("proposalId")} 
-                      />
+                      <Select
+                        value={watch("proposalId")?.toString()}
+                        onValueChange={(val) => setValue("proposalId", val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Number" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          { (proposals as any)?.items?.map((item: any) => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.Number}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       
                     </div>
                     
                   </div>
                 </CardContent>
               </Card>
+
+              
 
               
             </div>

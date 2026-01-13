@@ -2,22 +2,37 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetSpecializationsInput {
-  filter?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
+  }
 
 export function useSpecializations(input: GetSpecializationsInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["specializations", filter, skipCount, maxResultCount],
+    queryKey: ["specializations", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/specialization", {
         params: {
           filter,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllSpecializations() {
+  return useQuery({
+    queryKey: ["specializations", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/specialization", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -71,20 +86,6 @@ export function useDeleteSpecialization() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["specializations"] });
-    },
-  });
-}
-
-export function useAllSpecializations() {
-  return useQuery({
-    queryKey: ["specializations", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/specialization", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
     },
   });
 }

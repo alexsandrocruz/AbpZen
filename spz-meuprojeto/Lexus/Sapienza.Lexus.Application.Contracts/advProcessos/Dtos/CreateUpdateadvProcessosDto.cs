@@ -1,0 +1,123 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Sapienza.Lexus.advProcessos.Dtos;
+
+[Serializable]
+public class CreateUpdateadvProcessosDto
+{
+    /// <summary>
+    /// Id for Master-Detail reconciliation (empty = new item)
+    /// </summary>
+    public Guid Id { get; set; }
+    public int? idProcesso { get; set; }
+    public int? idCliente { get; set; }
+    public int? idUsuarioInclusao { get; set; }
+    public int? idEscritorioOrigem { get; set; }
+    public int? idEscritorioResponsavel { get; set; }
+    public int? idAutorPeticao { get; set; }
+    public int? idResponsavel { get; set; }
+    public string sintese { get; set; }
+    public string numero { get; set; }
+    public string dataDistribuicao { get; set; }
+    public int? idStatus { get; set; }
+    public int? idNatureza { get; set; }
+    public int? idTipo { get; set; }
+    public string estado { get; set; }
+    public string cidade { get; set; }
+    public int? idFase { get; set; }
+    public int? idRelevancia { get; set; }
+    public int? idProbabilidade { get; set; }
+    public double? valorCausa { get; set; }
+    public double? valorHonorarios { get; set; }
+    public string valorHonorariosTipo { get; set; }
+    public string observacoes { get; set; }
+    public int? idSentenca { get; set; }
+    public string dataSentenca { get; set; }
+    public bool? alvara { get; set; }
+    public double? valorDeferido { get; set; }
+    public string dataEncerramento { get; set; }
+    public bool? ativo { get; set; }
+    public DateTime? tsInclusao { get; set; }
+    public DateTime? tsAlteracao { get; set; }
+    public int? idOrgao { get; set; }
+    public int? idInstancia { get; set; }
+    public int? idVara { get; set; }
+    public bool? recurso { get; set; }
+    public int? recursoIdSentenca { get; set; }
+    public string recursoDataSentenca { get; set; }
+    public bool? alvaraPendente { get; set; }
+    public string alvaraPendenteDesde { get; set; }
+    public string historicoNumeros { get; set; }
+    public bool? recebeAcordo { get; set; }
+    public bool? recebeRPV { get; set; }
+    public bool? recebePrecatorio { get; set; }
+    public bool? recebeAlvara { get; set; }
+    public string recebeBanco { get; set; }
+    public string recebeDataLiberacao { get; set; }
+    public bool? pendOutrosValores { get; set; }
+    public string pendOutrosValoresDataEncerramento { get; set; }
+    public bool? pendOutrosValoresDeferido { get; set; }
+    public double? pendOutrosValoresValorDeferido { get; set; }
+    public bool? acaoColetiva { get; set; }
+    public bool? temResponsavel { get; set; }
+    public string nomeResponsavel { get; set; }
+    public string cpfResponsavel { get; set; }
+    public double? imposto { get; set; }
+    public double? tarifa { get; set; }
+    public double? complementoPositivo { get; set; }
+    public string RPV { get; set; }
+    public string bancarioBanco { get; set; }
+    public string bancarioTipoConta { get; set; }
+    public string bancarioAgencia { get; set; }
+    public string bancarioConta { get; set; }
+    public string bancarioFavorecido { get; set; }
+    public string bancarioCpf { get; set; }
+    public string nomeReu { get; set; }
+    public double? sucumbencia { get; set; }
+    public int? idConta { get; set; }
+    public string dataLiberacaoValorDeferido { get; set; }
+    public bool? boleto { get; set; }
+    public string precatorio { get; set; }
+    public string emitir { get; set; }
+    public bool? emitido { get; set; }
+    public string formaRecebimento { get; set; }
+    public int? bancarioBancoId { get; set; }
+    public string dataPrevisaoRepasseCliente { get; set; }
+    public string honorariosTextoFicha { get; set; }
+    public bool? nfComComplementoPositivo { get; set; }
+    public double? valorHonorariosDestaque { get; set; }
+    public string valorHonorariosDestaqueTipo { get; set; }
+    public string dataPrevisaoHonorariosDestaque { get; set; }
+    public int? idContaPagar { get; set; }
+    public double? bancarioPerc { get; set; }
+    public string dataPrevistaClienteReceber { get; set; }
+    public double? sucumbenciaAdd { get; set; }
+    public string sucumbenciaAddData { get; set; }
+    public int? sucumbenciaAddIdBanco { get; set; }
+    public double? saldoDevedor { get; set; }
+    public string herdeirosTipoValor { get; set; }
+    public int? nrParcelasProcesso { get; set; }
+    public int? nrParcelasSomenteSucumbencia { get; set; }
+    public bool? preProcesso { get; set; }
+    public string preProcessoPasta { get; set; }
+    public string preProcessoDataCriacao { get; set; }
+    public string preProcessoDataPrevista { get; set; }
+    public string preProcessoDataRealizada { get; set; }
+    public int? preProcessoIdStatus { get; set; }
+    public DateTime? tsConversao { get; set; }
+    public bool? perdido { get; set; }
+    public DateTime? tsPerdido { get; set; }
+    public int? idMotivoPerda { get; set; }
+    public bool? convertido { get; set; }
+    public bool? clientePrimeiraVez { get; set; }
+    public int? preProcessoIdTipo { get; set; }
+    public string tarifaParcelas { get; set; }
+    public int? idOrigem { get; set; }
+    public string dataEntrada { get; set; }
+
+    // ========== Foreign Key Fields (1:N Relationships) ==========
+
+    // ========== Child Collections (1:N Master-Detail) ==========
+}

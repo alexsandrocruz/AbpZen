@@ -2,24 +2,38 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetProposalsInput {
-  filter?: string;
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
   clientId?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  }
 
 export function useProposals(input: GetProposalsInput = {}) {
-  const { filter, clientId, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["proposals", filter, clientId, skipCount, maxResultCount],
+    queryKey: ["proposals", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/proposal", {
         params: {
           filter,
-          clientId,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllProposals() {
+  return useQuery({
+    queryKey: ["proposals", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/proposal", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -73,20 +87,6 @@ export function useDeleteProposal() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["proposals"] });
-    },
-  });
-}
-
-export function useAllProposals() {
-  return useQuery({
-    queryKey: ["proposals", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/proposal", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
     },
   });
 }

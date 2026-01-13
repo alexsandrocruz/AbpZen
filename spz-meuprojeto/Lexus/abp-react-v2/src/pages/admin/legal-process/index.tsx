@@ -1,23 +1,11 @@
 import { Shell } from "@/components/layout/shell";
 import { LegalProcessList } from "@/components/legal-process/LegalProcessList";
-import { LegalProcessForm } from "@/components/legal-process/LegalProcessForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useState } from "react";
+import { useLocation } from "wouter";
 
 export default function LegalProcessesPage() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-
-  const handleEdit = (item: any) => {
-    setEditingItem(item);
-    setIsFormOpen(true);
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingItem(null);
-  };
+  const [, setLocation] = useLocation();
 
   return (
     <Shell>
@@ -32,19 +20,13 @@ export default function LegalProcessesPage() {
               <p className="text-muted-foreground">Manage your legalprocesses</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/legal-process/create")}>
             <Plus className="size-4" />
             New LegalProcess
           </Button>
         </div>
 
-        <LegalProcessList onEdit={handleEdit} />
-
-        <LegalProcessForm 
-          isOpen={isFormOpen} 
-          onClose={handleCloseForm} 
-          initialValues={editingItem} 
-        />
+        <LegalProcessList onEdit={(item) => setLocation(`/admin/legal-process/${item.id}/edit`)} />
       </div>
     </Shell>
   );

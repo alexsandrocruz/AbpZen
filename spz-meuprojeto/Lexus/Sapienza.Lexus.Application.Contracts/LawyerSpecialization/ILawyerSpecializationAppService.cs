@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Threading.Tasks;
 using Sapienza.Lexus.LawyerSpecialization.Dtos;
@@ -20,6 +19,6 @@ public interface ILawyerSpecializationAppService :
 
 public class LookupDto<TKey>
 {
-    public TKey? Id { get; set; }
-    public string? DisplayName { get; set; }
+    public TKey Id { get; set; }
+    public string DisplayName { get; set; }
 }

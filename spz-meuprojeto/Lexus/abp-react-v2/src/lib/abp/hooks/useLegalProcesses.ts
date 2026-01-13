@@ -2,26 +2,39 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetLegalProcessesInput {
-  filter?: string;
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
   lawyerId?: string;
   clientId?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  }
 
 export function useLegalProcesses(input: GetLegalProcessesInput = {}) {
-  const { filter, lawyerId, clientId, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["legalProcesses", filter, lawyerId, clientId, skipCount, maxResultCount],
+    queryKey: ["legalProcesses", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/legal-process", {
         params: {
           filter,
-          lawyerId,
-          clientId,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllLegalProcesses() {
+  return useQuery({
+    queryKey: ["legalProcesses", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/legal-process", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -79,45 +92,33 @@ export function useDeleteLegalProcess() {
   });
 }
 
-export function useAllLegalProcesses() {
-  return useQuery({
-    queryKey: ["legalProcesses", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/legal-process", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
-    },
-  });
-}
 
 
 
 
-
-
-
+/**
+ * Toggle hook for many-to-many relationship: Lawyer <-> Client
+ * Given a Lawyer, toggle a Client
+ */
 export function useToggleClient(lawyerId: string) {
   const queryClient = useQueryClient();
+  const createMutation = useCreateLegalProcess();
+  const deleteMutation = useDeleteLegalProcess();
+  const { data: existing } = useLegalProcesses({ lawyerId: lawyerId, maxResultCount: 1000 });
+
   return useMutation({
     mutationFn: async ({ clientId, isChecked }: { clientId: string; isChecked: boolean }) => {
       if (isChecked) {
-        const response = await apiClient.get("/api/app/legal-process", {
-          params: {
-            lawyerId,
-            clientId,
-          },
-        });
-        const items = response.data.items;
-        if (items && items.length > 0) {
-          await apiClient.delete(`/api/app/legal-process/${items[0].id}`);
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.clientId === clientId);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
         }
       } else {
-        await apiClient.post("/api/app/legal-process", {
-          lawyerId,
-          clientId,
+        // Add relationship
+        await createMutation.mutateAsync({
+          lawyerId: lawyerId,
+          clientId: clientId,
         });
       }
     },
@@ -127,29 +128,29 @@ export function useToggleClient(lawyerId: string) {
   });
 }
 
-
-
-
-
+/**
+ * Toggle hook for many-to-many relationship: Lawyer <-> Client
+ * Given a Client, toggle a Lawyer
+ */
 export function useToggleLawyer(clientId: string) {
   const queryClient = useQueryClient();
+  const createMutation = useCreateLegalProcess();
+  const deleteMutation = useDeleteLegalProcess();
+  const { data: existing } = useLegalProcesses({ clientId: clientId, maxResultCount: 1000 });
+
   return useMutation({
     mutationFn: async ({ lawyerId, isChecked }: { lawyerId: string; isChecked: boolean }) => {
       if (isChecked) {
-        const response = await apiClient.get("/api/app/legal-process", {
-          params: {
-            clientId,
-            lawyerId,
-          },
-        });
-        const items = response.data.items;
-        if (items && items.length > 0) {
-          await apiClient.delete(`/api/app/legal-process/${items[0].id}`);
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.lawyerId === lawyerId);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
         }
       } else {
-        await apiClient.post("/api/app/legal-process", {
-          clientId,
-          lawyerId,
+        // Add relationship
+        await createMutation.mutateAsync({
+          lawyerId: lawyerId,
+          clientId: clientId,
         });
       }
     },
@@ -158,9 +159,4 @@ export function useToggleLawyer(clientId: string) {
     },
   });
 }
-
-
-
-
-
 

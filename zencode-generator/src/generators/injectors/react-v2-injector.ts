@@ -7,8 +7,9 @@
  * Uses ts-morph for AST manipulation to ensure safe code injection.
  */
 
-import { Project, SyntaxKind, ArrayLiteralExpression, SourceFile } from 'ts-morph';
+import { Project, SyntaxKind } from 'ts-morph';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export interface InjectorConfig {
     /** Path to the React V2 src directory */
@@ -37,11 +38,15 @@ function toKebabCase(str: string): string {
  * Injects a new page import and route into navigation.tsx
  */
 export async function injectReactV2Route(config: InjectorConfig): Promise<{ success: boolean; message: string }> {
-    const { reactV2SrcPath, entityName, pluralName } = config;
+    const { reactV2SrcPath, entityName } = config;
     const navigationPath = path.join(reactV2SrcPath, 'config', 'navigation.tsx');
     const kebabName = toKebabCase(entityName);
 
     try {
+        if (!fs.existsSync(navigationPath)) {
+            return { success: false, message: `Navigation file not found at ${navigationPath}` };
+        }
+
         const project = new Project();
         const sourceFile = project.addSourceFileAtPath(navigationPath);
 
@@ -49,7 +54,8 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
         const importMarker = '// <GEN-IMPORTS>';
         const fileText = sourceFile.getFullText();
 
-        if (fileText.includes(`path: "/admin/${kebabName}"`)) {
+        const routePath = `/admin/${kebabName}`;
+        if (fileText.includes(`path: "${routePath}"`) || fileText.includes(`path: '${routePath}'`)) {
             return { success: false, message: `Route for ${entityName} already exists.` };
         }
 
@@ -60,13 +66,13 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
         // 2. Add route to routes array before // <GEN-ROUTES> marker
         const routeMarker = '// <GEN-ROUTES>';
         const currentText = sourceFile.getFullText();
-        const newRoute = `    { path: "/admin/${kebabName}", component: ${entityName}Page },\n    { path: "/admin/${kebabName}/create", component: ${entityName}FormPage },\n    { path: "/admin/${kebabName}/edit/:id", component: ${entityName}FormPage },\n    `;
+        const newRoute = `    { path: "${routePath}", component: ${entityName}Page },\n    { path: "${routePath}/create", component: ${entityName}FormPage },\n    { path: "${routePath}/:id/edit", component: ${entityName}FormPage },\n    `;
         const updatedRoutes = currentText.replace(routeMarker, `${newRoute}${routeMarker}`);
         sourceFile.replaceWithText(updatedRoutes);
 
         await sourceFile.save();
 
-        return { success: true, message: `Successfully injected route for ${entityName} at /admin/${kebabName}` };
+        return { success: true, message: `Successfully injected route for ${entityName} at ${routePath}` };
     } catch (error) {
         return { success: false, message: `Failed to inject route: ${error}` };
     }
@@ -78,9 +84,13 @@ export async function injectReactV2Route(config: InjectorConfig): Promise<{ succ
 export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ success: boolean; message: string }> {
     const { reactV2SrcPath, entityName, pluralName, iconName = 'Box', section = 'entities' } = config;
     const navigationPath = path.join(reactV2SrcPath, 'config', 'navigation.tsx');
-    const kebabName = toKebabCase(pluralName);
+    const kebabName = toKebabCase(entityName); // Use entityName to be consistent with route
 
     try {
+        if (!fs.existsSync(navigationPath)) {
+            return { success: false, message: `Navigation file not found at ${navigationPath}` };
+        }
+
         const project = new Project();
         const sourceFile = project.addSourceFileAtPath(navigationPath);
 
@@ -95,10 +105,13 @@ export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ s
             return { success: false, message: 'menuItems is not an array.' };
         }
 
-        // Check if item already exists
-        const existingItem = initializer.getElements().find(el =>
-            el.getText().includes(`href: "/admin/${kebabName}"`)
-        );
+        // Check if item already exists by href
+        const href = `/admin/${kebabName}`;
+        const existingItem = initializer.getElements().find(el => {
+            const text = el.getText();
+            return text.includes(`href: "${href}"`) || text.includes(`href: '${href}'`);
+        });
+
         if (existingItem) {
             return { success: false, message: `Menu item for ${entityName} already exists.` };
         }
@@ -106,7 +119,6 @@ export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ s
         // Add icon import if not present
         const fileText = sourceFile.getFullText();
         if (!fileText.includes(`${iconName},`) && !fileText.includes(`${iconName} }`)) {
-            // Find the lucide-react import and add the icon
             const importDecl = sourceFile.getImportDeclarations().find(
                 decl => decl.getModuleSpecifierValue() === 'lucide-react'
             );
@@ -115,6 +127,11 @@ export async function injectReactV2MenuItem(config: InjectorConfig): Promise<{ s
                 if (!namedImports.some(ni => ni.getName() === iconName)) {
                     importDecl.addNamedImport(iconName);
                 }
+            } else {
+                sourceFile.addImportDeclaration({
+                    namedImports: [iconName],
+                    moduleSpecifier: 'lucide-react'
+                });
             }
         }
 

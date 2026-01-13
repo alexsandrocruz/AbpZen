@@ -1,10 +1,10 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sapienza.Lexus.Permissions;
 using Sapienza.Lexus.Specialization.Dtos;
+using Sapienza.Lexus.LawyerSpecialization.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -75,6 +75,15 @@ public class SpecializationAppService :
     public virtual async Task<SpecializationDto> CreateAsync(CreateUpdateSpecializationDto input)
     {
         var entity = ObjectMapper.Map<CreateUpdateSpecializationDto, Sapienza.Lexus.Specialization.Specialization>(input);
+        // Master-Detail: LawyerSpecialization
+        if (input.LawyerSpecializations != null && input.LawyerSpecializations.Any())
+        {
+            foreach (var itemDto in input.LawyerSpecializations)
+            {
+                var item = ObjectMapper.Map<CreateUpdateLawyerSpecializationDto, Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization>(itemDto);
+                entity.LawyerSpecializations.Add(item);
+            }
+        }
 
         await _repository.InsertAsync(entity, autoSave: true);
 
@@ -87,13 +96,46 @@ public class SpecializationAppService :
     [Authorize(SpecializationPermissions.Update)]
     public virtual async Task<SpecializationDto> UpdateAsync(Guid id, CreateUpdateSpecializationDto input)
     {
-        var entity = await _repository.GetAsync(id);
+        // Fetch with details for Master-Detail update
+        var query = await _repository.WithDetailsAsync(x => x.LawyerSpecializations);
+        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Lexus.Specialization.Specialization), id);
         }
 
         ObjectMapper.Map(input, entity);
+        // Master-Detail Reconciliation: LawyerSpecialization
+        if (input.LawyerSpecializations != null)
+        {
+            // 1. Remove deleted items
+            var inputIds = input.LawyerSpecializations.Select(x => x.Id).Where(x => x != Guid.Empty).ToList();
+            var itemsToRemove = entity.LawyerSpecializations.Where(x => !inputIds.Contains(x.Id)).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                entity.LawyerSpecializations.Remove(item);
+            }
+
+            // 2. Add or Update
+            foreach (var itemDto in input.LawyerSpecializations)
+            {
+                if (itemDto.Id == Guid.Empty)
+                {
+                    // Add new
+                    var newItem = ObjectMapper.Map<CreateUpdateLawyerSpecializationDto, Sapienza.Lexus.LawyerSpecialization.LawyerSpecialization>(itemDto);
+                    entity.LawyerSpecializations.Add(newItem);
+                }
+                else
+                {
+                    // Update existing
+                    var existingItem = entity.LawyerSpecializations.FirstOrDefault(x => x.Id == itemDto.Id);
+                    if (existingItem != null)
+                    {
+                        ObjectMapper.Map(itemDto, existingItem);
+                    }
+                }
+            }
+        }
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
@@ -126,8 +168,8 @@ public class SpecializationAppService :
     protected virtual IQueryable<Sapienza.Lexus.Specialization.Specialization> ApplyFilters(IQueryable<Sapienza.Lexus.Specialization.Specialization> queryable, SpecializationGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.Name != null && x.Name.Contains(input.Filter)))
-            .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name != null && x.Name.Contains(input.Name))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.Name.Contains(input.Filter))
+            .WhereIf(!input.Name.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Name))
             // ========== FK Filters ==========
             ;
     }

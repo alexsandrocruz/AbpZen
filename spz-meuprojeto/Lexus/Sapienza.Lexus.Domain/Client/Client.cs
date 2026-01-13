@@ -1,4 +1,4 @@
-#nullable enable
+// Generated with Fixed Generator
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -21,7 +21,6 @@ public class Client : FullAuditedAggregateRoot<Guid>
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
     public virtual ICollection<Sapienza.Lexus.LegalProcess.LegalProcess> Processes { get; set; } = new List<Sapienza.Lexus.LegalProcess.LegalProcess>();
-    public virtual ICollection<Sapienza.Lexus.Proposal.Proposal> Proposals { get; set; } = new List<Sapienza.Lexus.Proposal.Proposal>();
 
     protected Client()
     {

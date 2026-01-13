@@ -1,23 +1,11 @@
 import { Shell } from "@/components/layout/shell";
 import { ClientList } from "@/components/client/ClientList";
-import { ClientForm } from "@/components/client/ClientForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useState } from "react";
+import { useLocation } from "wouter";
 
 export default function ClientsPage() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-
-  const handleEdit = (item: any) => {
-    setEditingItem(item);
-    setIsFormOpen(true);
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingItem(null);
-  };
+  const [, setLocation] = useLocation();
 
   return (
     <Shell>
@@ -32,19 +20,13 @@ export default function ClientsPage() {
               <p className="text-muted-foreground">Manage your clients</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/client/create")}>
             <Plus className="size-4" />
             New Client
           </Button>
         </div>
 
-        <ClientList onEdit={handleEdit} />
-
-        <ClientForm 
-          isOpen={isFormOpen} 
-          onClose={handleCloseForm} 
-          initialValues={editingItem} 
-        />
+        <ClientList onEdit={(item) => setLocation(`/admin/client/${item.id}/edit`)} />
       </div>
     </Shell>
   );

@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "name": "FabioRibeiro",
+  "namespace": "Sapienza.FabioRibeiro",
+  "createdAt": "2026-01-12T21:54:19.554Z",
+  "frontend": "react-v2",
+  "entities": []
+}

@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advProMeritos
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advProMeritoses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advProMeritos;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advProMeritos/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advProMeritos/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advProMeritos.Create))
+    {
+        <abp-button id="NewadvProMeritosButton"
+            text="@L["NewadvProMeritos"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advProMeritosCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advProMeritosFilter" id="advProMeritosFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advProMeritosCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advProMeritosTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

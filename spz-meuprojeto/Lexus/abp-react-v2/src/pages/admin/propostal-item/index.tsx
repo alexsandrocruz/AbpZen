@@ -55,7 +55,7 @@ export default function PropostalItemsPage() {
               <p className="text-muted-foreground">Manage your propostalitems</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/propostal-item/new")}>
+          <Button className="gap-2" onClick={() => setLocation("/admin/propostal-item/create")}>
             <Plus className="size-4" />
             New PropostalItem
           </Button>
@@ -74,7 +74,7 @@ export default function PropostalItemsPage() {
                 />
               </div>
             </div>
-            
+
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />

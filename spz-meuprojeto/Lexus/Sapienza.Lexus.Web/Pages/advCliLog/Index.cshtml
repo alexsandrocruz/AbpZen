@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advCliLog
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advCliLogs"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advCliLog;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advCliLog/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advCliLog/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advCliLog.Create))
+    {
+        <abp-button id="NewadvCliLogButton"
+            text="@L["NewadvCliLog"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advCliLogCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advCliLogFilter" id="advCliLogFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advCliLogCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advCliLogTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

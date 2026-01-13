@@ -23,7 +23,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function LawyerFormPage() {
     const [, navigate] = useLocation();
-    const [match, params] = useRoute("/admin/lawyer/edit/:id");
+    const [match, params] = useRoute("/admin/lawyer/:id/edit");
     const id = match ? params?.id : undefined;
     const isEditMode = !!id;
 
