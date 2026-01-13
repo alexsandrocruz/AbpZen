@@ -366,12 +366,7 @@ app.post('/api/create-project', (req, res) => {
     try {
         // Full path for the new project
         const projectPath = path.join(destinationPath, projectName);
-
-        // Create project directory
-        if (fs.existsSync(projectPath)) {
-            return res.status(400).json({ error: 'Project directory already exists' });
-        }
-        fs.mkdirSync(projectPath, { recursive: true });
+        console.log(`[Bridge] Target Project Path: ${projectPath}`);
 
         // [Production Fix] In container, zencode-template is at /zencode-template
         const defaultTemplate = fs.existsSync('/zencode-template')
@@ -379,6 +374,23 @@ app.post('/api/create-project', (req, res) => {
             : path.join(process.cwd(), '..', 'zencode-template');
 
         const baseTemplatePath = templatePath || defaultTemplate;
+        console.log(`[Bridge] Using template from: ${baseTemplatePath} (Exists: ${fs.existsSync(baseTemplatePath)})`);
+
+        // Create project directory
+        console.log(`[Bridge] Creating directory: ${projectPath}`);
+        if (fs.existsSync(projectPath)) {
+            console.warn(`[Bridge] Error: Project directory already exists: ${projectPath}`);
+            return res.status(400).json({ error: 'Project directory already exists' });
+        }
+
+        try {
+            fs.mkdirSync(projectPath, { recursive: true });
+            console.log(`[Bridge] Directory created successfully: ${projectPath}`);
+        } catch (mkdirErr) {
+            console.error(`[Bridge] FAILED to create directory ${projectPath}: ${mkdirErr.message}`);
+            throw mkdirErr;
+        }
+
         const copiedItems = [];
 
         // Create zencode.json manifest
