@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Database, Loader2, X, Check, Server, Eye, EyeOff } from 'lucide-react';
 import type { Node, Edge } from 'reactflow';
+import { BRIDGE_URL } from '../config';
 
 interface ImportDbModalProps {
     isOpen: boolean;
@@ -48,7 +49,7 @@ export function ImportDbModal({ isOpen, onClose, onImport }: ImportDbModalProps)
         setError(null);
 
         try {
-            const response = await fetch('http://localhost:3005/api/import-db', {
+            const response = await fetch(`${BRIDGE_URL}/api/import-db`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

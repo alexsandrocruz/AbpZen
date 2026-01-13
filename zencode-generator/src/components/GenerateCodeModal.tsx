@@ -4,6 +4,7 @@ import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2, 
 import type { EntityData, FrontendTarget } from '../types';
 import { codeGenerator, type GeneratedFile, type RelationshipInfo } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
+import { BRIDGE_URL } from '../config';
 
 interface GenerateCodeModalProps {
     entities: EntityData[];
@@ -250,7 +251,7 @@ export default function GenerateCodeModal({
                 const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
                 try {
-                    const response = await fetch('http://localhost:3005/api/generate-code', {
+                    const response = await fetch(`${BRIDGE_URL}/api/generate-code`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -280,7 +281,7 @@ export default function GenerateCodeModal({
                     type: 'json-merge' as const
                 }));
 
-                const response = await fetch('http://localhost:3005/api/inject-code', {
+                const response = await fetch(`${BRIDGE_URL}/api/inject-code`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -382,7 +383,7 @@ export default function GenerateCodeModal({
                     injectInstructions.push(...reactV2Instructions);
                 }
 
-                const injectResponse = await fetch('http://localhost:3005/api/inject-code', {
+                const injectResponse = await fetch(`${BRIDGE_URL}/api/inject-code`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -468,7 +469,7 @@ export default function GenerateCodeModal({
                 instructions.push(...reactV2Instructions);
             }
 
-            const response = await fetch('http://localhost:3005/api/inject-code', {
+            const response = await fetch(`${BRIDGE_URL}/api/inject-code`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

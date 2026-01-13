@@ -5,7 +5,7 @@
 
 import type { ProjectConfig, ProjectCreationMode, ProjectManifest } from './types';
 
-const BRIDGE_URL = import.meta.env.PROD ? window.location.origin : 'http://localhost:3005';
+import { BRIDGE_URL } from '../../config';
 
 /**
  * Check if Bridge API is available
