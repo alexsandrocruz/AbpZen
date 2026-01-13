@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2, Monitor, Globe, Atom } from 'lucide-react';
+import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2, Monitor, Globe, Atom, FolderPlus } from 'lucide-react';
 import type { EntityData, FrontendTarget } from '../types';
 import { codeGenerator, type GeneratedFile, type RelationshipInfo } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
@@ -119,7 +119,6 @@ export default function GenerateCodeModal({
         }
     };
 
-    // Toggle frontend selection
     const toggleFrontend = (frontend: FrontendTarget) => {
         setSelectedFrontends(prev => {
             const next = new Set(prev);
@@ -133,6 +132,54 @@ export default function GenerateCodeModal({
             }
             return next;
         });
+    };
+
+    // New function to scaffold boilerplate if missing
+    const handleScaffold = async () => {
+        if (!localProjectPath || !projectName) return;
+
+        // Extract parent path and ensure folder name matches project name
+        // path: /app/projects/EventosZen -> parent: /app/projects
+        const pathParts = localProjectPath.split('/');
+        const folderName = pathParts.pop(); // EventosZen
+        const parentPath = pathParts.join('/'); // /app/projects
+
+        // If the path ends with slash, handle it
+        if (!folderName) {
+            setApplyStatus({ success: false, message: 'Invalid path format' });
+            return;
+        }
+
+        if (folderName !== projectName && !confirm(`Folder name (${folderName}) differs from Project Name (${projectName}). Continue?`)) {
+            return;
+        }
+
+        setScaffolding(true);
+        setApplyStatus(null);
+
+        try {
+            const response = await fetch(`${BRIDGE_URL}/api/create-project`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectName: folderName, // Use the folder name as the project name on disk
+                    destinationPath: parentPath,
+                    frontends: Array.from(selectedFrontends)
+                })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to scaffold project');
+            }
+
+            setApplyStatus({ success: true, message: 'Boilerplate scaffolded successfully!' });
+        } catch (error: any) {
+            console.error('Scaffold error:', error);
+            setApplyStatus({ success: false, message: `Scaffold failed: ${error.message}` });
+        } finally {
+            setScaffolding(false);
+        }
     };
 
     const handleGenerate = async () => {
