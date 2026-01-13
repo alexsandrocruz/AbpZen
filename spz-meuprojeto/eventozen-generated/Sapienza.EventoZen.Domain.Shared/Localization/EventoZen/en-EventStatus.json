@@ -1,0 +1,11 @@
+{
+  "Enum:EventStatus": "EventStatus",
+  "Enum:EventStatus.Lead": "Lead",
+  "Enum:EventStatus.ProposalSent": "ProposalSent",
+  "Enum:EventStatus.Negotiation": "Negotiation",
+  "Enum:EventStatus.Confirmed": "Confirmed",
+  "Enum:EventStatus.InProgress": "InProgress",
+  "Enum:EventStatus.Completed": "Completed",
+  "Enum:EventStatus.Cancelled": "Cancelled",
+  "Enum:EventStatus.Lost": "Lost"
+}

@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "name": "EventoZen",
+  "namespace": "Sapienza.EventoZen",
+  "createdAt": "2026-01-13T21:27:07.373Z",
+  "frontend": "react-v2",
+  "entities": []
+}

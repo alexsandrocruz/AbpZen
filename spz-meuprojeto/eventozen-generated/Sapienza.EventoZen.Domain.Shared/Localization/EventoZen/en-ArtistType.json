@@ -1,0 +1,11 @@
+{
+  "Enum:ArtistType": "ArtistType",
+  "Enum:ArtistType.Singer": "Singer",
+  "Enum:ArtistType.Musician": "Musician",
+  "Enum:ArtistType.Speaker": "Speaker",
+  "Enum:ArtistType.Teacher": "Teacher",
+  "Enum:ArtistType.Activist": "Activist",
+  "Enum:ArtistType.Influencer": "Influencer",
+  "Enum:ArtistType.Actor": "Actor",
+  "Enum:ArtistType.Other": "Other"
+}

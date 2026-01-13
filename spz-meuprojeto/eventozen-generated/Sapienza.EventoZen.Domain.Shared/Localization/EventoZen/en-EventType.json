@@ -1,0 +1,13 @@
+{
+  "Enum:EventType": "EventType",
+  "Enum:EventType.Show": "Show",
+  "Enum:EventType.Lecture": "Lecture",
+  "Enum:EventType.Workshop": "Workshop",
+  "Enum:EventType.TvAppearance": "TvAppearance",
+  "Enum:EventType.RadioAppearance": "RadioAppearance",
+  "Enum:EventType.PodcastAppearance": "PodcastAppearance",
+  "Enum:EventType.InstitutionalEvent": "InstitutionalEvent",
+  "Enum:EventType.Corporate": "Corporate",
+  "Enum:EventType.Training": "Training",
+  "Enum:EventType.Other": "Other"
+}

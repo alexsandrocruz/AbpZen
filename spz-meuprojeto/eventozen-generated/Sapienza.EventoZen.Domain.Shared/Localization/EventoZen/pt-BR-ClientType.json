@@ -1,0 +1,12 @@
+{
+  "Enum:ClientType": "ClientType",
+  "Enum:ClientType.Municipality": "Municipality",
+  "Enum:ClientType.StateGovernment": "StateGovernment",
+  "Enum:ClientType.SistemaS": "SistemaS",
+  "Enum:ClientType.Church": "Church",
+  "Enum:ClientType.PrivateCompany": "PrivateCompany",
+  "Enum:ClientType.LocalProducer": "LocalProducer",
+  "Enum:ClientType.EventAgency": "EventAgency",
+  "Enum:ClientType.TvRadioPodcast": "TvRadioPodcast",
+  "Enum:ClientType.Other": "Other"
+}

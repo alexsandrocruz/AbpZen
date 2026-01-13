@@ -1,0 +1,6 @@
+{
+  "Enum:AvailabilityType": "AvailabilityType",
+  "Enum:AvailabilityType.Available": "Available",
+  "Enum:AvailabilityType.Blocked": "Blocked",
+  "Enum:AvailabilityType.Tentative": "Tentative"
+}
