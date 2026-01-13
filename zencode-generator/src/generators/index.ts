@@ -758,7 +758,7 @@ export class CodeGenerator {
             if (entityIdMap) {
                 if (entityIdMap.has(idOrName)) return entityIdMap.get(idOrName);
                 // Also check if idOrName IS an entity name in the map (reverse lookup or direct hit)
-                for (const [id, name] of entityIdMap.entries()) {
+                for (const [, name] of entityIdMap.entries()) {
                     if (name === idOrName) return name;
                 }
             }

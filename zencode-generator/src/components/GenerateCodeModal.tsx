@@ -1,7 +1,8 @@
+```
 import { useState } from 'react';
 import { Download, X, FileCode, FolderOpen, ChevronDown, ChevronRight, Loader2, Monitor, Globe, Atom } from 'lucide-react';
 import type { EntityData, FrontendTarget } from '../types';
-import { codeGenerator, type GeneratedFile, type ParentRelationshipContext, type ChildRelationshipContext, type RelationshipInfo } from '../generators';
+import { codeGenerator, type GeneratedFile, type RelationshipInfo } from '../generators';
 import { downloadAsZip, getFileIcon, getLayerColor } from '../generators/zip';
 
 interface GenerateCodeModalProps {
@@ -175,9 +176,9 @@ export default function GenerateCodeModal({
                     allFiles.push(...entityFiles);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
                 } catch (err) {
-                    console.error(`Error generating ${entity.name}:`, err);
+                    console.error(`Error generating ${ entity.name }: `, err);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'error' }));
-                    setGenerationError(`Failed to generate ${entity.name}: ${err}`);
+                    setGenerationError(`Failed to generate ${ entity.name }: ${ err } `);
                 }
             }
 
@@ -187,7 +188,7 @@ export default function GenerateCodeModal({
             }
         } catch (error) {
             console.error('Generation error:', error);
-            setGenerationError(`Generation failed: ${error}`);
+            setGenerationError(`Generation failed: ${ error } `);
         } finally {
             setGenerating(false);
         }
@@ -214,210 +215,96 @@ export default function GenerateCodeModal({
 
             // Remove old files for this entity and add new ones
             setFiles(prev => {
-                const filtered = prev.filter(f => !f.path.includes(`/${entity.name}/`) && !f.path.includes(`${entity.name}Dto`));
-                return [...filtered, ...entityFiles];
+                const filtered = prev.filter(f => !f.path.includes(`/ ${ entity.name }/`) && !f.path.includes(`${entity.name}Dto`));
+return [...filtered, ...entityFiles];
             });
 
-            setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
-            if (entityFiles.length > 0) {
-                setSelectedFile(entityFiles[0]);
-            }
+setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
+if (entityFiles.length > 0) {
+    setSelectedFile(entityFiles[0]);
+}
         } catch (err) {
-            console.error(`Error generating ${entity.name}:`, err);
-            setEntityStatus(prev => ({ ...prev, [entity.name]: 'error' }));
-        } finally {
-            setGenerating(false);
-        }
+    console.error(`Error generating ${entity.name}:`, err);
+    setEntityStatus(prev => ({ ...prev, [entity.name]: 'error' }));
+} finally {
+    setGenerating(false);
+}
     };
 
-    const handleDownload = async () => {
-        await downloadAsZip(files, projectName);
-    };
+const handleDownload = async () => {
+    await downloadAsZip(files, projectName);
+};
 
-    const handleApply = async () => {
-        if (!projectPath) return;
-        setApplying(true);
-        setApplyStatus(null);
-        try {
-            // Separate files to overwrite and files to merge
-            const normalFiles = files.filter(f => !f.path.endsWith('.json-merge'));
-            const mergeFiles = files.filter(f => f.path.endsWith('.json-merge'));
+const handleApply = async () => {
+    if (!projectPath) return;
+    setApplying(true);
+    setApplyStatus(null);
+    try {
+        // Separate files to overwrite and files to merge
+        const normalFiles = files.filter(f => !f.path.endsWith('.json-merge'));
+        const mergeFiles = files.filter(f => f.path.endsWith('.json-merge'));
 
-            // 1. Send normal files to /api/generate-code
-            if (normalFiles.length > 0) {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+        // 1. Send normal files to /api/generate-code
+        if (normalFiles.length > 0) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
-                try {
-                    const response = await fetch('http://localhost:3005/api/generate-code', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            projectPath,
-                            files: normalFiles.map(f => ({ path: f.path, content: f.content }))
-                        }),
-                        signal: controller.signal
-                    });
-
-                    clearTimeout(timeoutId);
-
-                    if (!response.ok) {
-                        const data = await response.json();
-                        throw new Error(data.error || 'Failed to apply normal files');
-                    }
-                } catch (err: any) {
-                    if (err.name === 'AbortError') throw new Error('Request timed out after 15 seconds');
-                    throw err;
-                }
-            }
-
-            // 2. Send merge files to /api/inject-code as 'json-merge' type
-            if (mergeFiles.length > 0) {
-                const instructions = mergeFiles.map(f => ({
-                    file: f.path.replace('.json-merge', '.json'),
-                    content: f.content,
-                    type: 'json-merge' as const
-                }));
-
-                const response = await fetch('http://localhost:3005/api/inject-code', {
+            try {
+                const response = await fetch('http://localhost:3005/api/generate-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         projectPath,
-                        instructions
-                    })
+                        files: normalFiles.map(f => ({ path: f.path, content: f.content }))
+                    }),
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
 
                 if (!response.ok) {
                     const data = await response.json();
-                    throw new Error(data.error || 'Failed to merge localization files');
+                    throw new Error(data.error || 'Failed to apply normal files');
                 }
-
-                const data = await response.json();
-                const failed = data.results.filter((r: any) => !r.success);
-                if (failed.length > 0) {
-                    throw new Error(`Merge failed: ${failed[0].error}`);
-                }
+            } catch (err: any) {
+                if (err.name === 'AbortError') throw new Error('Request timed out after 15 seconds');
+                throw err;
             }
-
-            // 3. Auto-inject permissions, menus, etc. (only for selected entities)
-            const selectedEntityList = entities.filter(e => selectedEntities.has(e.name));
-            if (selectedEntityList.length > 0) {
-                const injectInstructions = selectedEntityList.flatMap(entity => [
-                    {
-                        file: `${projectNamespace}.Web/Menus/${shortProjectName}Menus.cs`,
-                        marker: 'ZenCode-Menus-Marker',
-                        content: `        public const string ${entity.name} = Prefix + ".${entity.name}";`
-                    },
-                    {
-                        file: `${projectNamespace}.Web/Menus/${shortProjectName}MenuContributor.cs`,
-                        marker: 'ZenCode-Menu-Marker',
-                        content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${entity.name}Permissions.Default));`
-                    },
-                    {
-                        file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
-                        marker: 'ZenCode-PermissionDefinition-Marker',
-                        content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
-                    },
-                    {
-                        file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
-                        marker: '<GEN-MAPPINGS>',
-                        content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
-                    }
-                ]);
-
-                // Add Angular route injection if Angular frontend is selected
-                if (selectedFrontends.has('angular')) {
-                    const angularRouteInstructions = selectedEntityList.map(entity => ({
-                        file: 'angular/src/app/app-routing.module.ts',
-                        marker: 'ZenCode-Routes-Marker',
-                        content: `  {
-    path: '${kebabCase(entity.pluralName)}',
-    loadComponent: () => import('./${kebabCase(entity.name)}/${kebabCase(entity.name)}.component').then(m => m.${entity.name}Component),
-    canActivate: [authGuard, permissionGuard],
-    data: {
-      requiredPolicy: '${projectNamespace}.${entity.name}',
-    },
-  },`
-                    }));
-
-                    // Also inject menu items into route.provider.ts
-                    const angularMenuInstructions = selectedEntityList.map((entity, index) => ({
-                        file: 'angular/src/app/route.provider.ts',
-                        marker: 'ZenCode-Menu-Marker',
-                        content: `      {
-        path: '/${kebabCase(entity.pluralName)}',
-        name: '::Menu:${entity.pluralName}',
-        iconClass: 'fas fa-list',
-        order: ${100 + index},
-        layout: eLayoutType.application,
-        requiredPolicy: '${projectNamespace}.${entity.name}',
-      },`
-                    }));
-
-                    injectInstructions.push(...angularRouteInstructions);
-                    injectInstructions.push(...angularMenuInstructions);
-                }
-
-                // Add React V2 route and menu injection if React V2 frontend is selected
-                if (selectedFrontends.has('react-v2')) {
-                    const reactV2Instructions = selectedEntityList.flatMap(entity => [
-                        {
-                            file: 'abp-react-v2/src/config/navigation.tsx',
-                            marker: 'GEN-IMPORTS',
-                            content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
-                        },
-                        {
-                            file: 'abp-react-v2/src/config/navigation.tsx',
-                            marker: 'GEN-ROUTES',
-                            content: `    { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
-                        },
-                        {
-                            file: 'abp-react-v2/src/config/navigation.tsx',
-                            marker: 'GEN-MENU',
-                            content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
-                        }
-                    ]);
-                    injectInstructions.push(...reactV2Instructions);
-                }
-
-                const injectResponse = await fetch('http://localhost:3005/api/inject-code', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        projectPath,
-                        instructions: injectInstructions
-                    })
-                });
-
-                if (!injectResponse.ok) {
-                    const data = await injectResponse.json();
-                    throw new Error(data.error || 'Failed to inject permissions/menus');
-                }
-
-                const injectData = await injectResponse.json();
-                const injectFailed = injectData.results.filter((r: any) => !r.success);
-                if (injectFailed.length > 0) {
-                    console.warn('Some injections failed:', injectFailed);
-                }
-            }
-
-            setApplyStatus({ success: true, message: `Successfully applied ${files.length} files and injected permissions/menus!` });
-        } catch (error: any) {
-            console.error('Apply error:', error);
-            setApplyStatus({ success: false, message: error.message || 'Failed to apply code' });
-        } finally {
-            setApplying(false);
         }
-    };
 
-    const handleInject = async () => {
-        if (!projectPath) return;
-        setInjecting(true);
-        setApplyStatus(null);
-        try {
-            // Define instructions for each entity
-            const instructions = entities.flatMap(entity => [
+        // 2. Send merge files to /api/inject-code as 'json-merge' type
+        if (mergeFiles.length > 0) {
+            const instructions = mergeFiles.map(f => ({
+                file: f.path.replace('.json-merge', '.json'),
+                content: f.content,
+                type: 'json-merge' as const
+            }));
+
+            const response = await fetch('http://localhost:3005/api/inject-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectPath,
+                    instructions
+                })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Failed to merge localization files');
+            }
+
+            const data = await response.json();
+            const failed = data.results.filter((r: any) => !r.success);
+            if (failed.length > 0) {
+                throw new Error(`Merge failed: ${failed[0].error}`);
+            }
+        }
+
+        // 3. Auto-inject permissions, menus, etc. (only for selected entities)
+        const selectedEntityList = entities.filter(e => selectedEntities.has(e.name));
+        if (selectedEntityList.length > 0) {
+            const injectInstructions = selectedEntityList.flatMap(entity => [
                 {
                     file: `${projectNamespace}.Web/Menus/${shortProjectName}Menus.cs`,
                     marker: 'ZenCode-Menus-Marker',
@@ -437,17 +324,45 @@ export default function GenerateCodeModal({
                     file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
                     marker: '<GEN-MAPPINGS>',
                     content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
-                },
-                {
-                    file: `${projectNamespace}.MongoDB/MongoDb/${shortProjectName}MongoDbContext.cs`,
-                    marker: 'GEN-MONGODB-COLLECTIONS',
-                    content: `        public IMongoCollection<${projectNamespace}.${entity.name}.${entity.name}> ${entity.pluralName} => Collection<${projectNamespace}.${entity.name}.${entity.name}>();`
                 }
             ]);
 
-            // Add React V2 route and menu injection
+            // Add Angular route injection if Angular frontend is selected
+            if (selectedFrontends.has('angular')) {
+                const angularRouteInstructions = selectedEntityList.map(entity => ({
+                    file: 'angular/src/app/app-routing.module.ts',
+                    marker: 'ZenCode-Routes-Marker',
+                    content: `  {
+    path: '${kebabCase(entity.pluralName)}',
+    loadComponent: () => import('./${kebabCase(entity.name)}/${kebabCase(entity.name)}.component').then(m => m.${entity.name}Component),
+    canActivate: [authGuard, permissionGuard],
+    data: {
+      requiredPolicy: '${projectNamespace}.${entity.name}',
+    },
+  },`
+                }));
+
+                // Also inject menu items into route.provider.ts
+                const angularMenuInstructions = selectedEntityList.map((entity, index) => ({
+                    file: 'angular/src/app/route.provider.ts',
+                    marker: 'ZenCode-Menu-Marker',
+                    content: `      {
+        path: '/${kebabCase(entity.pluralName)}',
+        name: '::Menu:${entity.pluralName}',
+        iconClass: 'fas fa-list',
+        order: ${100 + index},
+        layout: eLayoutType.application,
+        requiredPolicy: '${projectNamespace}.${entity.name}',
+      },`
+                }));
+
+                injectInstructions.push(...angularRouteInstructions);
+                injectInstructions.push(...angularMenuInstructions);
+            }
+
+            // Add React V2 route and menu injection if React V2 frontend is selected
             if (selectedFrontends.has('react-v2')) {
-                const reactV2Instructions = entities.flatMap(entity => [
+                const reactV2Instructions = selectedEntityList.flatMap(entity => [
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-IMPORTS',
@@ -464,448 +379,534 @@ export default function GenerateCodeModal({
                         content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
                     }
                 ]);
-                instructions.push(...reactV2Instructions);
+                injectInstructions.push(...reactV2Instructions);
             }
 
-            const response = await fetch('http://localhost:3005/api/inject-code', {
+            const injectResponse = await fetch('http://localhost:3005/api/inject-code', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     projectPath,
-                    instructions
+                    instructions: injectInstructions
                 })
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                const failed = data.results.filter((r: any) => !r.success);
-                if (failed.length === 0) {
-                    setApplyStatus({ success: true, message: 'Successfully injected all markers!' });
-                } else {
-                    setApplyStatus({ success: false, message: `Injected with errors: ${failed[0].error}` });
-                }
-            } else {
-                setApplyStatus({ success: false, message: 'Failed to inject code' });
+            if (!injectResponse.ok) {
+                const data = await injectResponse.json();
+                throw new Error(data.error || 'Failed to inject permissions/menus');
             }
-        } catch (error) {
-            setApplyStatus({ success: false, message: 'Bridge error' });
-        } finally {
-            setInjecting(false);
+
+            const injectData = await injectResponse.json();
+            const injectFailed = injectData.results.filter((r: any) => !r.success);
+            if (injectFailed.length > 0) {
+                console.warn('Some injections failed:', injectFailed);
+            }
         }
-    };
 
-    const toggleLayer = (layer: string) => {
-        setExpandedLayers(prev => {
-            const next = new Set(prev);
-            if (next.has(layer)) {
-                next.delete(layer);
-            } else {
-                next.add(layer);
+        setApplyStatus({ success: true, message: `Successfully applied ${files.length} files and injected permissions/menus!` });
+    } catch (error: any) {
+        console.error('Apply error:', error);
+        setApplyStatus({ success: false, message: error.message || 'Failed to apply code' });
+    } finally {
+        setApplying(false);
+    }
+};
+
+const handleInject = async () => {
+    if (!projectPath) return;
+    setInjecting(true);
+    setApplyStatus(null);
+    try {
+        // Define instructions for each entity
+        const instructions = entities.flatMap(entity => [
+            {
+                file: `${projectNamespace}.Web/Menus/${shortProjectName}Menus.cs`,
+                marker: 'ZenCode-Menus-Marker',
+                content: `        public const string ${entity.name} = Prefix + ".${entity.name}";`
+            },
+            {
+                file: `${projectNamespace}.Web/Menus/${shortProjectName}MenuContributor.cs`,
+                marker: 'ZenCode-Menu-Marker',
+                content: `            context.Menu.AddItem(new ApplicationMenuItem(${shortProjectName}Menus.${entity.name}, l["Menu:${entity.pluralName}"], "~/${entity.name}", icon: "fa fa-folder-open").RequirePermissions(${entity.name}Permissions.Default));`
+            },
+            {
+                file: `${projectNamespace}.Application.Contracts/Permissions/${shortProjectName}PermissionDefinitionProvider.cs`,
+                marker: 'ZenCode-PermissionDefinition-Marker',
+                content: `            var ${camelCase(entity.name)}Permission = myGroup.AddPermission(${entity.name}Permissions.Default, L("Permission:${entity.name}"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Create, L("Permission:Create"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Update, L("Permission:Update"));\n            ${camelCase(entity.name)}Permission.AddChild(${entity.name}Permissions.Delete, L("Permission:Delete"));`
+            },
+            {
+                file: `${projectNamespace}.Application/${shortProjectName}ApplicationAutoMapperProfile.cs`,
+                marker: '<GEN-MAPPINGS>',
+                content: `            CreateMap<${projectNamespace}.${entity.name}.${entity.name}, ${projectNamespace}.${entity.name}.Dtos.${entity.name}Dto>();\n            CreateMap<${projectNamespace}.${entity.name}.Dtos.CreateUpdate${entity.name}Dto, ${projectNamespace}.${entity.name}.${entity.name}>();`
+            },
+            {
+                file: `${projectNamespace}.MongoDB/MongoDb/${shortProjectName}MongoDbContext.cs`,
+                marker: 'GEN-MONGODB-COLLECTIONS',
+                content: `        public IMongoCollection<${projectNamespace}.${entity.name}.${entity.name}> ${entity.pluralName} => Collection<${projectNamespace}.${entity.name}.${entity.name}>();`
             }
-            return next;
+        ]);
+
+        // Add React V2 route and menu injection
+        if (selectedFrontends.has('react-v2')) {
+            const reactV2Instructions = entities.flatMap(entity => [
+                {
+                    file: 'abp-react-v2/src/config/navigation.tsx',
+                    marker: 'GEN-IMPORTS',
+                    content: `import ${entity.name}Page from "@/pages/admin/${kebabCase(entity.name)}";`
+                },
+                {
+                    file: 'abp-react-v2/src/config/navigation.tsx',
+                    marker: 'GEN-ROUTES',
+                    content: `    { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
+                },
+                {
+                    file: 'abp-react-v2/src/config/navigation.tsx',
+                    marker: 'GEN-MENU',
+                    content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
+                }
+            ]);
+            instructions.push(...reactV2Instructions);
+        }
+
+        const response = await fetch('http://localhost:3005/api/inject-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                projectPath,
+                instructions
+            })
         });
-    };
 
-    // Group files by layer
-    const filesByLayer = files.reduce((acc, file) => {
-        if (!acc[file.layer]) acc[file.layer] = [];
-        acc[file.layer].push(file);
-        return acc;
-    }, {} as Record<string, GeneratedFile[]>);
+        if (response.ok) {
+            const data = await response.json();
+            const failed = data.results.filter((r: any) => !r.success);
+            if (failed.length === 0) {
+                setApplyStatus({ success: true, message: 'Successfully injected all markers!' });
+            } else {
+                setApplyStatus({ success: false, message: `Injected with errors: ${failed[0].error}` });
+            }
+        } else {
+            setApplyStatus({ success: false, message: 'Failed to inject code' });
+        }
+    } catch (error) {
+        setApplyStatus({ success: false, message: 'Bridge error' });
+    } finally {
+        setInjecting(false);
+    }
+};
 
-    return (
-        <div className="ui-dialog-overlay" onClick={onClose}>
-            <div
-                className="ui-dialog"
-                style={{ width: '1200px', maxHeight: '90vh' }}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className="ui-dialog-header">
-                    <h2 className="ui-dialog-title">
-                        <FileCode size={20} />
-                        Generate Code
-                    </h2>
-                    <button className="btn-icon" onClick={onClose}>
-                        <X size={20} />
-                    </button>
-                </div>
+const toggleLayer = (layer: string) => {
+    setExpandedLayers(prev => {
+        const next = new Set(prev);
+        if (next.has(layer)) {
+            next.delete(layer);
+        } else {
+            next.add(layer);
+        }
+        return next;
+    });
+};
 
-                <div className="ui-dialog-content" style={{ padding: 0 }}>
-                    {files.length === 0 ? (
-                        <div style={{ padding: '32px' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                                <FileCode size={48} style={{ color: '#6366f1', marginBottom: '16px' }} />
-                                <h3 style={{ color: '#f8fafc', marginBottom: '8px' }}>Ready to Generate</h3>
-                                <p style={{ color: '#64748b', marginBottom: '16px' }}>
-                                    {entities.length} entities will be converted to ABP backend code
+// Group files by layer
+const filesByLayer = files.reduce((acc, file) => {
+    if (!acc[file.layer]) acc[file.layer] = [];
+    acc[file.layer].push(file);
+    return acc;
+}, {} as Record<string, GeneratedFile[]>);
+
+return (
+    <div className="ui-dialog-overlay" onClick={onClose}>
+        <div
+            className="ui-dialog"
+            style={{ width: '1200px', maxHeight: '90vh' }}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <div className="ui-dialog-header">
+                <h2 className="ui-dialog-title">
+                    <FileCode size={20} />
+                    Generate Code
+                </h2>
+                <button className="btn-icon" onClick={onClose}>
+                    <X size={20} />
+                </button>
+            </div>
+
+            <div className="ui-dialog-content" style={{ padding: 0 }}>
+                {files.length === 0 ? (
+                    <div style={{ padding: '32px' }}>
+                        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                            <FileCode size={48} style={{ color: '#6366f1', marginBottom: '16px' }} />
+                            <h3 style={{ color: '#f8fafc', marginBottom: '8px' }}>Ready to Generate</h3>
+                            <p style={{ color: '#64748b', marginBottom: '16px' }}>
+                                {entities.length} entities will be converted to ABP backend code
+                            </p>
+                            {generating && (
+                                <p style={{ color: '#6366f1', fontSize: '0.875rem' }}>
+                                    Generating: {currentEntityIndex + 1} of {entities.length} entities...
                                 </p>
-                                {generating && (
-                                    <p style={{ color: '#6366f1', fontSize: '0.875rem' }}>
-                                        Generating: {currentEntityIndex + 1} of {entities.length} entities...
-                                    </p>
-                                )}
-                            </div>
-
-                            <div style={{ marginBottom: '24px', maxWidth: '500px', margin: '0 auto 24px' }}>
-                                <div className="form-group">
-                                    <label>Project Name</label>
-                                    <input type="text" value={projectName} disabled className="ui-input" />
-                                </div>
-                                <div className="form-group" style={{ marginTop: '12px' }}>
-                                    <label>Namespace</label>
-                                    <input type="text" value={projectNamespace} disabled className="ui-input" />
-                                </div>
-                            </div>
-
-                            {/* Frontend Selection */}
-                            <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
-                                <label style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '12px', display: 'block' }}>
-                                    Frontend Target {frontendLocked && <span style={{ color: '#64748b', fontStyle: 'italic' }}>(locked)</span>}
-                                </label>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', opacity: frontendLocked ? 0.7 : 1 }}>
-                                    {/* Razor Card */}
-                                    <div
-                                        onClick={() => !frontendLocked && toggleFrontend('razor')}
-                                        style={{
-                                            padding: '16px',
-                                            background: selectedFrontends.has('razor') ? 'rgba(99, 102, 241, 0.15)' : '#0f172a',
-                                            border: selectedFrontends.has('razor') ? '2px solid #6366f1' : '1px solid #334155',
-                                            borderRadius: '8px',
-                                            cursor: frontendLocked ? 'default' : 'pointer',
-                                            textAlign: 'center',
-                                            transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        <Monitor size={24} style={{ color: selectedFrontends.has('razor') ? '#6366f1' : '#64748b', marginBottom: '8px' }} />
-                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Razor</div>
-                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>ASP.NET MVC</div>
-                                    </div>
-
-                                    {/* Angular Card */}
-                                    <div
-                                        onClick={() => !frontendLocked && toggleFrontend('angular')}
-                                        style={{
-                                            padding: '16px',
-                                            background: selectedFrontends.has('angular') ? 'rgba(220, 38, 38, 0.15)' : '#0f172a',
-                                            border: selectedFrontends.has('angular') ? '2px solid #dc2626' : '1px solid #334155',
-                                            borderRadius: '8px',
-                                            cursor: frontendLocked ? 'default' : 'pointer',
-                                            textAlign: 'center',
-                                            transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        <Globe size={24} style={{ color: selectedFrontends.has('angular') ? '#dc2626' : '#64748b', marginBottom: '8px' }} />
-                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Angular</div>
-                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Angular 17+</div>
-                                    </div>
-
-                                    {/* React Card */}
-                                    <div
-                                        onClick={() => !frontendLocked && toggleFrontend('react-v2')}
-                                        style={{
-                                            padding: '16px',
-                                            background: selectedFrontends.has('react-v2') ? 'rgba(6, 182, 212, 0.15)' : '#0f172a',
-                                            border: selectedFrontends.has('react-v2') ? '2px solid #06b6d4' : '1px solid #334155',
-                                            borderRadius: '8px',
-                                            cursor: frontendLocked ? 'default' : 'pointer',
-                                            textAlign: 'center',
-                                            transition: 'all 0.2s'
-                                        }}
-                                    >
-                                        <Atom size={24} style={{ color: selectedFrontends.has('react-v2') ? '#06b6d4' : '#64748b', marginBottom: '8px' }} />
-                                        <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>React</div>
-                                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Vite + Tailwind 4</div>
-                                    </div>
-                                </div>
-                                <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
-                                    {frontendLocked ? 'Frontend defined by project' : `${selectedFrontends.size} frontend(s) selected`} • Backend always included
-                                </div>
-                            </div>
-
-                            {/* Entity List with Status */}
-                            <div style={{
-                                maxWidth: '500px',
-                                margin: '0 auto 24px',
-                                background: '#0f172a',
-                                borderRadius: '8px',
-                                border: '1px solid #334155',
-                                overflow: 'hidden'
-                            }}>
-                                <div style={{
-                                    padding: '12px 16px',
-                                    background: '#1e293b',
-                                    borderBottom: '1px solid #334155',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedEntities.size === entities.length}
-                                            onChange={toggleSelectAll}
-                                            style={{ cursor: 'pointer' }}
-                                        />
-                                        <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
-                                            Entities ({selectedEntities.size} / {entities.length} selected)
-                                        </span>
-                                    </div>
-                                    <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
-                                        {Object.values(entityStatus).filter(s => s === 'done').length} done
-                                    </span>
-                                </div>
-                                <div style={{ maxHeight: '200px', overflow: 'auto' }}>
-                                    {entities.map((entity, idx) => {
-                                        const status = entityStatus[entity.name] || 'pending';
-                                        const isSelected = selectedEntities.has(entity.name);
-                                        const relatedEntities = getRelatedEntities(entity.name);
-                                        const hasRelationships = relatedEntities.length > 0;
-                                        return (
-                                            <div
-                                                key={entity.name}
-                                                style={{
-                                                    padding: '10px 16px',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                    borderBottom: idx < entities.length - 1 ? '1px solid #1e293b' : 'none',
-                                                    background: status === 'generating' ? 'rgba(99, 102, 241, 0.1)' :
-                                                        !isSelected ? 'rgba(100, 116, 139, 0.1)' : 'transparent',
-                                                    opacity: isSelected ? 1 : 0.6
-                                                }}
-                                            >
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={isSelected}
-                                                        onChange={(e) => toggleEntitySelection(entity.name, e.target.checked)}
-                                                        style={{ cursor: 'pointer' }}
-                                                    />
-                                                    {status === 'pending' && isSelected && <span style={{ color: '#64748b' }}>⏳</span>}
-                                                    {status === 'generating' && <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />}
-                                                    {status === 'done' && <span style={{ color: '#22c55e' }}>✅</span>}
-                                                    {status === 'error' && <span style={{ color: '#ef4444' }}>❌</span>}
-                                                    <span style={{ color: '#f8fafc', fontSize: '0.875rem' }}>{entity.name}</span>
-                                                    <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
-                                                        ({entity.fields.length} fields)
-                                                    </span>
-                                                    {hasRelationships && (
-                                                        <span
-                                                            title={`Related: ${relatedEntities.join(', ')}`}
-                                                            style={{
-                                                                color: '#6366f1',
-                                                                fontSize: '0.7rem',
-                                                                background: 'rgba(99, 102, 241, 0.15)',
-                                                                padding: '2px 6px',
-                                                                borderRadius: '4px'
-                                                            }}
-                                                        >
-                                                            🔗 {relatedEntities.length}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <button
-                                                    className="btn-icon-sm"
-                                                    onClick={() => handleGenerateSingle(entity)}
-                                                    disabled={generating}
-                                                    title={`Generate ${entity.name}`}
-                                                    style={{ opacity: generating ? 0.5 : 1 }}
-                                                >
-                                                    <FileCode size={14} />
-                                                </button>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {generationError && (
-                                <div style={{
-                                    maxWidth: '500px',
-                                    margin: '0 auto 16px',
-                                    padding: '12px',
-                                    background: 'rgba(239, 68, 68, 0.1)',
-                                    borderRadius: '6px',
-                                    color: '#f87171',
-                                    fontSize: '0.875rem'
-                                }}>
-                                    {generationError}
-                                </div>
                             )}
+                        </div>
 
-                            <div style={{ textAlign: 'center' }}>
-                                <button
-                                    className="ui-button ui-button-primary"
-                                    onClick={handleGenerate}
-                                    disabled={generating || selectedEntities.size === 0}
-                                    style={{ padding: '12px 32px' }}
-                                >
-                                    {generating ? (
-                                        <>
-                                            <Loader2 size={18} className="animate-spin" />
-                                            Generating {currentEntityIndex + 1}/{selectedEntities.size}...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <FileCode size={18} />
-                                            Generate Selected ({selectedEntities.size})
-                                        </>
-                                    )}
-                                </button>
+                        <div style={{ marginBottom: '24px', maxWidth: '500px', margin: '0 auto 24px' }}>
+                            <div className="form-group">
+                                <label>Project Name</label>
+                                <input type="text" value={projectName} disabled className="ui-input" />
+                            </div>
+                            <div className="form-group" style={{ marginTop: '12px' }}>
+                                <label>Namespace</label>
+                                <input type="text" value={projectNamespace} disabled className="ui-input" />
                             </div>
                         </div>
-                    ) : (
-                        <div style={{ display: 'flex', height: '500px' }}>
-                            {/* File tree */}
-                            <div style={{
-                                width: '300px',
-                                borderRight: '1px solid #334155',
-                                overflow: 'auto',
-                                background: '#0f172a'
-                            }}>
-                                <div style={{ padding: '12px', borderBottom: '1px solid #334155' }}>
-                                    <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
-                                        {files.length} files generated
-                                    </span>
+
+                        {/* Frontend Selection */}
+                        <div style={{ maxWidth: '600px', margin: '0 auto 24px' }}>
+                            <label style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '12px', display: 'block' }}>
+                                Frontend Target {frontendLocked && <span style={{ color: '#64748b', fontStyle: 'italic' }}>(locked)</span>}
+                            </label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', opacity: frontendLocked ? 0.7 : 1 }}>
+                                {/* Razor Card */}
+                                <div
+                                    onClick={() => !frontendLocked && toggleFrontend('razor')}
+                                    style={{
+                                        padding: '16px',
+                                        background: selectedFrontends.has('razor') ? 'rgba(99, 102, 241, 0.15)' : '#0f172a',
+                                        border: selectedFrontends.has('razor') ? '2px solid #6366f1' : '1px solid #334155',
+                                        borderRadius: '8px',
+                                        cursor: frontendLocked ? 'default' : 'pointer',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <Monitor size={24} style={{ color: selectedFrontends.has('razor') ? '#6366f1' : '#64748b', marginBottom: '8px' }} />
+                                    <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Razor</div>
+                                    <div style={{ color: '#64748b', fontSize: '0.75rem' }}>ASP.NET MVC</div>
                                 </div>
 
-                                {Object.entries(filesByLayer).map(([layer, layerFiles]) => (
-                                    <div key={layer}>
+                                {/* Angular Card */}
+                                <div
+                                    onClick={() => !frontendLocked && toggleFrontend('angular')}
+                                    style={{
+                                        padding: '16px',
+                                        background: selectedFrontends.has('angular') ? 'rgba(220, 38, 38, 0.15)' : '#0f172a',
+                                        border: selectedFrontends.has('angular') ? '2px solid #dc2626' : '1px solid #334155',
+                                        borderRadius: '8px',
+                                        cursor: frontendLocked ? 'default' : 'pointer',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <Globe size={24} style={{ color: selectedFrontends.has('angular') ? '#dc2626' : '#64748b', marginBottom: '8px' }} />
+                                    <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>Angular</div>
+                                    <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Angular 17+</div>
+                                </div>
+
+                                {/* React Card */}
+                                <div
+                                    onClick={() => !frontendLocked && toggleFrontend('react-v2')}
+                                    style={{
+                                        padding: '16px',
+                                        background: selectedFrontends.has('react-v2') ? 'rgba(6, 182, 212, 0.15)' : '#0f172a',
+                                        border: selectedFrontends.has('react-v2') ? '2px solid #06b6d4' : '1px solid #334155',
+                                        borderRadius: '8px',
+                                        cursor: frontendLocked ? 'default' : 'pointer',
+                                        textAlign: 'center',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <Atom size={24} style={{ color: selectedFrontends.has('react-v2') ? '#06b6d4' : '#64748b', marginBottom: '8px' }} />
+                                    <div style={{ color: '#f8fafc', fontWeight: 500, fontSize: '0.875rem' }}>React</div>
+                                    <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Vite + Tailwind 4</div>
+                                </div>
+                            </div>
+                            <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>
+                                {frontendLocked ? 'Frontend defined by project' : `${selectedFrontends.size} frontend(s) selected`} • Backend always included
+                            </div>
+                        </div>
+
+                        {/* Entity List with Status */}
+                        <div style={{
+                            maxWidth: '500px',
+                            margin: '0 auto 24px',
+                            background: '#0f172a',
+                            borderRadius: '8px',
+                            border: '1px solid #334155',
+                            overflow: 'hidden'
+                        }}>
+                            <div style={{
+                                padding: '12px 16px',
+                                background: '#1e293b',
+                                borderBottom: '1px solid #334155',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedEntities.size === entities.length}
+                                        onChange={toggleSelectAll}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                    <span style={{ color: '#94a3b8', fontSize: '0.875rem' }}>
+                                        Entities ({selectedEntities.size} / {entities.length} selected)
+                                    </span>
+                                </div>
+                                <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                    {Object.values(entityStatus).filter(s => s === 'done').length} done
+                                </span>
+                            </div>
+                            <div style={{ maxHeight: '200px', overflow: 'auto' }}>
+                                {entities.map((entity, idx) => {
+                                    const status = entityStatus[entity.name] || 'pending';
+                                    const isSelected = selectedEntities.has(entity.name);
+                                    const relatedEntities = getRelatedEntities(entity.name);
+                                    const hasRelationships = relatedEntities.length > 0;
+                                    return (
                                         <div
+                                            key={entity.name}
                                             style={{
-                                                padding: '8px 12px',
+                                                padding: '10px 16px',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: '8px',
-                                                cursor: 'pointer',
-                                                background: '#1e293b',
-                                                borderBottom: '1px solid #334155',
+                                                justifyContent: 'space-between',
+                                                borderBottom: idx < entities.length - 1 ? '1px solid #1e293b' : 'none',
+                                                background: status === 'generating' ? 'rgba(99, 102, 241, 0.1)' :
+                                                    !isSelected ? 'rgba(100, 116, 139, 0.1)' : 'transparent',
+                                                opacity: isSelected ? 1 : 0.6
                                             }}
-                                            onClick={() => toggleLayer(layer)}
                                         >
-                                            {expandedLayers.has(layer) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                                            <FolderOpen size={14} style={{ color: getLayerColor(layer as any) }} />
-                                            <span style={{ color: '#f8fafc', fontSize: '0.875rem' }}>{layer}</span>
-                                            <span style={{ color: '#64748b', fontSize: '0.75rem', marginLeft: 'auto' }}>
-                                                {layerFiles.length}
-                                            </span>
-                                        </div>
-
-                                        {expandedLayers.has(layer) && (
-                                            <div>
-                                                {layerFiles.map(file => {
-                                                    const fileName = file.path.split('/').pop();
-                                                    return (
-                                                        <div
-                                                            key={file.path}
-                                                            style={{
-                                                                padding: '6px 12px 6px 32px',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '8px',
-                                                                cursor: 'pointer',
-                                                                background: selectedFile?.path === file.path ? '#334155' : 'transparent',
-                                                            }}
-                                                            onClick={() => setSelectedFile(file)}
-                                                        >
-                                                            <span>{getFileIcon(file.path)}</span>
-                                                            <span style={{
-                                                                color: selectedFile?.path === file.path ? '#f8fafc' : '#94a3b8',
-                                                                fontSize: '0.8125rem',
-                                                                overflow: 'hidden',
-                                                                textOverflow: 'ellipsis',
-                                                                whiteSpace: 'nowrap',
-                                                            }}>
-                                                                {fileName}
-                                                            </span>
-                                                        </div>
-                                                    );
-                                                })}
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={isSelected}
+                                                    onChange={(e) => toggleEntitySelection(entity.name, e.target.checked)}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                                {status === 'pending' && isSelected && <span style={{ color: '#64748b' }}>⏳</span>}
+                                                {status === 'generating' && <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />}
+                                                {status === 'done' && <span style={{ color: '#22c55e' }}>✅</span>}
+                                                {status === 'error' && <span style={{ color: '#ef4444' }}>❌</span>}
+                                                <span style={{ color: '#f8fafc', fontSize: '0.875rem' }}>{entity.name}</span>
+                                                <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                                    ({entity.fields.length} fields)
+                                                </span>
+                                                {hasRelationships && (
+                                                    <span
+                                                        title={`Related: ${relatedEntities.join(', ')}`}
+                                                        style={{
+                                                            color: '#6366f1',
+                                                            fontSize: '0.7rem',
+                                                            background: 'rgba(99, 102, 241, 0.15)',
+                                                            padding: '2px 6px',
+                                                            borderRadius: '4px'
+                                                        }}
+                                                    >
+                                                        🔗 {relatedEntities.length}
+                                                    </span>
+                                                )}
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Code preview */}
-                            <div style={{ flex: 1, overflow: 'auto', background: '#0f172a' }}>
-                                {selectedFile && (
-                                    <>
-                                        <div style={{
-                                            padding: '8px 16px',
-                                            borderBottom: '1px solid #334155',
-                                            background: '#1e293b',
-                                        }}>
-                                            <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
-                                                {selectedFile.path}
-                                            </span>
+                                            <button
+                                                className="btn-icon-sm"
+                                                onClick={() => handleGenerateSingle(entity)}
+                                                disabled={generating}
+                                                title={`Generate ${entity.name}`}
+                                                style={{ opacity: generating ? 0.5 : 1 }}
+                                            >
+                                                <FileCode size={14} />
+                                            </button>
                                         </div>
-                                        <pre style={{
-                                            margin: 0,
-                                            padding: '16px',
-                                            color: '#e2e8f0',
-                                            fontSize: '0.8125rem',
-                                            lineHeight: '1.6',
-                                            fontFamily: 'JetBrains Mono, Consolas, monospace',
-                                        }}>
-                                            {selectedFile.content}
-                                        </pre>
-                                    </>
-                                )}
+                                    );
+                                })}
                             </div>
                         </div>
-                    )}
-                </div>
 
-                {files.length > 0 && (
-                    <div className="ui-dialog-footer">
-                        <button className="ui-button ui-button-secondary" onClick={() => setFiles([])}>
-                            Regenerate
-                        </button>
-                        {projectPath && (
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                                <button
-                                    className="ui-button ui-button-primary"
-                                    onClick={handleApply}
-                                    disabled={applying}
-                                    style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
-                                >
-                                    {applying ? <Loader2 size={18} className="animate-spin" /> : <FolderOpen size={18} />}
-                                    Write Files
-                                </button>
-                                <button
-                                    className="ui-button ui-button-primary"
-                                    onClick={handleInject}
-                                    disabled={injecting}
-                                    style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
-                                >
-                                    {injecting ? <Loader2 size={18} className="animate-spin" /> : <FileCode size={18} />}
-                                    Smart Inject
-                                </button>
+                        {generationError && (
+                            <div style={{
+                                maxWidth: '500px',
+                                margin: '0 auto 16px',
+                                padding: '12px',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                borderRadius: '6px',
+                                color: '#f87171',
+                                fontSize: '0.875rem'
+                            }}>
+                                {generationError}
                             </div>
                         )}
-                        <button className="ui-button ui-button-secondary" onClick={handleDownload} style={{ background: 'transparent', border: '1px solid #334155' }}>
-                            <Download size={18} />
-                            Download ZIP
-                        </button>
+
+                        <div style={{ textAlign: 'center' }}>
+                            <button
+                                className="ui-button ui-button-primary"
+                                onClick={handleGenerate}
+                                disabled={generating || selectedEntities.size === 0}
+                                style={{ padding: '12px 32px' }}
+                            >
+                                {generating ? (
+                                    <>
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Generating {currentEntityIndex + 1}/{selectedEntities.size}...
+                                    </>
+                                ) : (
+                                    <>
+                                        <FileCode size={18} />
+                                        Generate Selected ({selectedEntities.size})
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     </div>
-                )}
-                {applyStatus && (
-                    <div style={{
-                        padding: '10px 24px',
-                        background: applyStatus.success ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                        color: applyStatus.success ? '#4ade80' : '#f87171',
-                        fontSize: '0.8rem',
-                        borderTop: '1px solid #334155',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px'
-                    }}>
-                        {applyStatus.success ? <FolderOpen size={14} /> : <X size={14} />}
-                        {applyStatus.message}
+                ) : (
+                    <div style={{ display: 'flex', height: '500px' }}>
+                        {/* File tree */}
+                        <div style={{
+                            width: '300px',
+                            borderRight: '1px solid #334155',
+                            overflow: 'auto',
+                            background: '#0f172a'
+                        }}>
+                            <div style={{ padding: '12px', borderBottom: '1px solid #334155' }}>
+                                <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                    {files.length} files generated
+                                </span>
+                            </div>
+
+                            {Object.entries(filesByLayer).map(([layer, layerFiles]) => (
+                                <div key={layer}>
+                                    <div
+                                        style={{
+                                            padding: '8px 12px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            cursor: 'pointer',
+                                            background: '#1e293b',
+                                            borderBottom: '1px solid #334155',
+                                        }}
+                                        onClick={() => toggleLayer(layer)}
+                                    >
+                                        {expandedLayers.has(layer) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                                        <FolderOpen size={14} style={{ color: getLayerColor(layer as any) }} />
+                                        <span style={{ color: '#f8fafc', fontSize: '0.875rem' }}>{layer}</span>
+                                        <span style={{ color: '#64748b', fontSize: '0.75rem', marginLeft: 'auto' }}>
+                                            {layerFiles.length}
+                                        </span>
+                                    </div>
+
+                                    {expandedLayers.has(layer) && (
+                                        <div>
+                                            {layerFiles.map(file => {
+                                                const fileName = file.path.split('/').pop();
+                                                return (
+                                                    <div
+                                                        key={file.path}
+                                                        style={{
+                                                            padding: '6px 12px 6px 32px',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '8px',
+                                                            cursor: 'pointer',
+                                                            background: selectedFile?.path === file.path ? '#334155' : 'transparent',
+                                                        }}
+                                                        onClick={() => setSelectedFile(file)}
+                                                    >
+                                                        <span>{getFileIcon(file.path)}</span>
+                                                        <span style={{
+                                                            color: selectedFile?.path === file.path ? '#f8fafc' : '#94a3b8',
+                                                            fontSize: '0.8125rem',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            whiteSpace: 'nowrap',
+                                                        }}>
+                                                            {fileName}
+                                                        </span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Code preview */}
+                        <div style={{ flex: 1, overflow: 'auto', background: '#0f172a' }}>
+                            {selectedFile && (
+                                <>
+                                    <div style={{
+                                        padding: '8px 16px',
+                                        borderBottom: '1px solid #334155',
+                                        background: '#1e293b',
+                                    }}>
+                                        <span style={{ color: '#64748b', fontSize: '0.75rem' }}>
+                                            {selectedFile.path}
+                                        </span>
+                                    </div>
+                                    <pre style={{
+                                        margin: 0,
+                                        padding: '16px',
+                                        color: '#e2e8f0',
+                                        fontSize: '0.8125rem',
+                                        lineHeight: '1.6',
+                                        fontFamily: 'JetBrains Mono, Consolas, monospace',
+                                    }}>
+                                        {selectedFile.content}
+                                    </pre>
+                                </>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
-        </div >
-    );
+
+            {files.length > 0 && (
+                <div className="ui-dialog-footer">
+                    <button className="ui-button ui-button-secondary" onClick={() => setFiles([])}>
+                        Regenerate
+                    </button>
+                    {projectPath && (
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                                className="ui-button ui-button-primary"
+                                onClick={handleApply}
+                                disabled={applying}
+                                style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
+                            >
+                                {applying ? <Loader2 size={18} className="animate-spin" /> : <FolderOpen size={18} />}
+                                Write Files
+                            </button>
+                            <button
+                                className="ui-button ui-button-primary"
+                                onClick={handleInject}
+                                disabled={injecting}
+                                style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
+                            >
+                                {injecting ? <Loader2 size={18} className="animate-spin" /> : <FileCode size={18} />}
+                                Smart Inject
+                            </button>
+                        </div>
+                    )}
+                    <button className="ui-button ui-button-secondary" onClick={handleDownload} style={{ background: 'transparent', border: '1px solid #334155' }}>
+                        <Download size={18} />
+                        Download ZIP
+                    </button>
+                </div>
+            )}
+            {applyStatus && (
+                <div style={{
+                    padding: '10px 24px',
+                    background: applyStatus.success ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                    color: applyStatus.success ? '#4ade80' : '#f87171',
+                    fontSize: '0.8rem',
+                    borderTop: '1px solid #334155',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                }}>
+                    {applyStatus.success ? <FolderOpen size={14} /> : <X size={14} />}
+                    {applyStatus.message}
+                </div>
+            )}
+        </div>
+    </div >
+);
 }
