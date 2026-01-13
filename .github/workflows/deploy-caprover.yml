@@ -33,9 +33,10 @@ jobs:
         tags: ghcr.io/${{ github.repository }}/zencode-generator:latest
 
     - name: Deploy to CapRover
-      uses: caprover/deploy-from-image-action@v1
-      with:
-        server: '${{ secrets.CAPROVER_SERVER }}'
-        app: '${{ secrets.APP_NAME }}'
-        token: '${{ secrets.APP_TOKEN }}'
-        image: 'ghcr.io/${{ github.repository }}/zencode-generator:latest'
+      run: |
+        npm install -g caprover
+        caprover deploy \
+          --host '${{ secrets.CAPROVER_SERVER }}' \
+          --appToken '${{ secrets.APP_TOKEN }}' \
+          --appName '${{ secrets.APP_NAME }}' \
+          --imageName 'ghcr.io/${{ github.repository }}/zencode-generator:latest'
