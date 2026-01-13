@@ -28,7 +28,6 @@ export default function GenerateCodeModal({
     const [files, setFiles] = useState<GeneratedFile[]>([]);
     // Use local state for path to allow manual override
     const [localProjectPath, setLocalProjectPath] = useState(projectPath || '');
-    const [isEditingPath, setIsEditingPath] = useState(false);
     const [generating, setGenerating] = useState(false);
     const [selectedFile, setSelectedFile] = useState<GeneratedFile | null>(null);
     const [expandedLayers, setExpandedLayers] = useState<Set<string>>(new Set(['Application', 'Application.Contracts']));
