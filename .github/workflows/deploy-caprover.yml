@@ -7,6 +7,10 @@ on:
       - 'zencode-generator/**'
       - '.github/workflows/deploy-caprover.yml'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
