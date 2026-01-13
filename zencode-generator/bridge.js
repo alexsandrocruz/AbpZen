@@ -830,13 +830,13 @@ app.get('/health', (req, res) => {
 });
 
 if (fs.existsSync(distPath)) {
-    app.get('*', (req, res, next) => {
+    app.get(/.*/, (req, res, next) => {
         if (req.path.startsWith('/api/')) return next();
         res.sendFile(path.join(distPath, 'index.html'));
     });
 } else {
     // Fallback if frontend build is missing
-    app.get('/', (req, res) => {
+    app.get(/.*/, (req, res) => {
         res.send(`
             <h1>ZenCode Bridge is Running!</h1>
             <p>Frontend static files were not found at <code>${distPath}</code>.</p>
