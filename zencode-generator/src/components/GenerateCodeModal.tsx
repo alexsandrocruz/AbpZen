@@ -43,6 +43,7 @@ export default function GenerateCodeModal({
         () => new Set(entities.map(e => e.name))
     );
     const [scaffolding, setScaffolding] = useState(false);
+    const [showForceScaffold, setShowForceScaffold] = useState(false);
 
     // Frontend selection state - use defaultFrontends if provided, else React V2
     const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(
@@ -172,14 +173,15 @@ export default function GenerateCodeModal({
 
                 if (!response.ok) {
                     const data = await response.json();
-                    if (data.error && data.error.includes('already exists')) {
-                        if (confirm('Project folder already exists. Do you want to FORCE RE-INITIALIZE (overwrite boilerplate files)?')) {
-                            return doScaffold(true);
-                        }
+                    if (data.error && String(data.error).toLowerCase().includes('exist')) {
+                        setShowForceScaffold(true);
+                        setApplyStatus({ success: false, message: 'Folder exists. Confirm overwrite below.' });
+                        return; // Stop here, wait for user to click Force
                     }
                     throw new Error(data.error || 'Failed to scaffold project');
                 }
 
+                setShowForceScaffold(false);
                 setApplyStatus({ success: true, message: 'Boilerplate scaffolded successfully!' });
             } catch (error: any) {
                 console.error('Scaffold error:', error);
@@ -189,7 +191,11 @@ export default function GenerateCodeModal({
             }
         };
 
-        await doScaffold(false);
+        if (showForceScaffold) {
+            await doScaffold(true);
+        } else {
+            await doScaffold(false);
+        }
     };
 
     const handleGenerate = async () => {
@@ -950,11 +956,14 @@ export default function GenerateCodeModal({
                                         className="ui-button ui-button-primary"
                                         onClick={handleScaffold}
                                         disabled={scaffolding || applying || injecting}
-                                        title="Initialize or Repair Project Boilerplate (DbContext, .csproj, etc.)"
-                                        style={{ background: '#3b82f6', border: '1px solid #2563eb' }}
+                                        title={showForceScaffold ? "Overwrite existing project files" : "Initialize or Repair Project Boilerplate"}
+                                        style={{
+                                            background: showForceScaffold ? '#dc2626' : '#3b82f6',
+                                            border: showForceScaffold ? '1px solid #b91c1c' : '1px solid #2563eb'
+                                        }}
                                     >
                                         {scaffolding ? <Loader2 size={18} className="animate-spin" /> : <FolderPlus size={18} />}
-                                        Repair / Init
+                                        {showForceScaffold ? 'Confirm Overwrite' : 'Repair / Init'}
                                     </button>
                                     <button
                                         className="ui-button ui-button-primary"
