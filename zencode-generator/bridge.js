@@ -340,6 +340,12 @@ app.post('/api/create-project', (req, res) => {
         // Full path for the new project
         const projectPath = path.join(destinationPath, projectName);
 
+        // Create project directory
+        if (fs.existsSync(projectPath)) {
+            return res.status(400).json({ error: 'Project directory already exists' });
+        }
+        fs.mkdirSync(projectPath, { recursive: true });
+
         // [Production Fix] In container, zencode-template is at /zencode-template
         const defaultTemplate = fs.existsSync('/zencode-template')
             ? '/zencode-template'
