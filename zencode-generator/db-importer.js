@@ -1,8 +1,4 @@
-
-import pg from 'pg';
-import mssql from 'mssql';
-
-const { Client } = pg;
+// Imports removed in favor of dynamic imports
 
 // --- Node Conversion Logic ---
 
@@ -120,6 +116,8 @@ function mapDataType(dbType) {
 
 class PostgresProvider {
     async connect(config) {
+        const { default: pg } = await import('pg');
+        const { Client } = pg;
         this.client = new Client({
             host: config.host || 'localhost',
             port: parseInt(config.port) || 5432,
@@ -192,6 +190,7 @@ class PostgresProvider {
 
 class SqlServerProvider {
     async connect(config) {
+        const { default: mssql } = await import('mssql');
         this.pool = await mssql.connect({
             server: config.host || 'localhost',
             port: parseInt(config.port) || 1433,

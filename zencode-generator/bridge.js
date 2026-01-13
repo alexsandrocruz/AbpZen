@@ -12,6 +12,30 @@ import { importDatabase } from './db-importer.js';
 const app = express();
 const port = process.env.PORT || 3005;
 
+// === DEBUGGING STARTUP ===
+console.log('[Bridge] Starting up...');
+console.log(`[Bridge] Environment PORT: ${process.env.PORT}`);
+console.log(`[Bridge] Resolved Port: ${port}`);
+console.log(`[Bridge] Current Working Directory: ${process.cwd()}`);
+
+try {
+    const rootFiles = fs.readdirSync(process.cwd());
+    console.log('[Bridge] Files in CWD:', rootFiles.join(', '));
+} catch (e) {
+    console.error('[Bridge] Failed to list CWD:', e.message);
+}
+
+// Global Error Handlers
+process.on('uncaughtException', (err) => {
+    console.error('[Bridge] CRITICAL: Uncaught Exception:', err);
+    // process.exit(1); // Don't exit immediately to allow logs to flush? Actually, better to exit so Docker restarts it.
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[Bridge] CRITICAL: Unhandled Rejection at:', promise, 'reason:', reason);
+});
+// =========================
+
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 
