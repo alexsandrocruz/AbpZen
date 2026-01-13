@@ -26,6 +26,9 @@ export default function GenerateCodeModal({
     onClose
 }: GenerateCodeModalProps) {
     const [files, setFiles] = useState<GeneratedFile[]>([]);
+    // Use local state for path to allow manual override
+    const [localProjectPath, setLocalProjectPath] = useState(projectPath || '');
+    const [isEditingPath, setIsEditingPath] = useState(false);
     const [generating, setGenerating] = useState(false);
     const [selectedFile, setSelectedFile] = useState<GeneratedFile | null>(null);
     const [expandedLayers, setExpandedLayers] = useState<Set<string>>(new Set(['Application', 'Application.Contracts']));
@@ -237,7 +240,7 @@ export default function GenerateCodeModal({
     };
 
     const handleApply = async () => {
-        if (!projectPath) return;
+        if (!localProjectPath) return;
         setApplying(true);
         setApplyStatus(null);
         try {
@@ -255,7 +258,7 @@ export default function GenerateCodeModal({
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            projectPath,
+                            projectPath: localProjectPath,
                             files: normalFiles.map(f => ({ path: f.path, content: f.content }))
                         }),
                         signal: controller.signal
@@ -285,7 +288,7 @@ export default function GenerateCodeModal({
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        projectPath,
+                        projectPath: localProjectPath,
                         instructions
                     })
                 });
@@ -387,7 +390,7 @@ export default function GenerateCodeModal({
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        projectPath,
+                        projectPath: localProjectPath,
                         instructions: injectInstructions
                     })
                 });
@@ -414,7 +417,7 @@ export default function GenerateCodeModal({
     };
 
     const handleInject = async () => {
-        if (!projectPath) return;
+        if (!localProjectPath) return;
         setInjecting(true);
         setApplyStatus(null);
         try {
@@ -473,7 +476,7 @@ export default function GenerateCodeModal({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    projectPath,
+                    projectPath: localProjectPath,
                     instructions
                 })
             });
@@ -556,6 +559,22 @@ export default function GenerateCodeModal({
                                 <div className="form-group" style={{ marginTop: '12px' }}>
                                     <label>Namespace</label>
                                     <input type="text" value={projectNamespace} disabled className="ui-input" />
+                                </div>
+
+                                <div className="form-group" style={{ marginTop: '12px' }}>
+                                    <label>Target Path (for writing files)</label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <input
+                                            type="text"
+                                            value={localProjectPath}
+                                            onChange={(e) => setLocalProjectPath(e.target.value)}
+                                            placeholder="/app/projects/MyProject"
+                                            className="ui-input"
+                                        />
+                                    </div>
+                                    <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px' }}>
+                                        Required for "Write Files" and "Smart Inject"
+                                    </p>
                                 </div>
                             </div>
 
@@ -864,28 +883,47 @@ export default function GenerateCodeModal({
                         <button className="ui-button ui-button-secondary" onClick={() => setFiles([])}>
                             Regenerate
                         </button>
-                        {projectPath && (
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                                <button
-                                    className="ui-button ui-button-primary"
-                                    onClick={handleApply}
-                                    disabled={applying}
-                                    style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
-                                >
-                                    {applying ? <Loader2 size={18} className="animate-spin" /> : <FolderOpen size={18} />}
-                                    Write Files
-                                </button>
-                                <button
-                                    className="ui-button ui-button-primary"
-                                    onClick={handleInject}
-                                    disabled={injecting}
-                                    style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
-                                >
-                                    {injecting ? <Loader2 size={18} className="animate-spin" /> : <FileCode size={18} />}
-                                    Smart Inject
-                                </button>
-                            </div>
-                        )}
+
+                        {/* Always show Write/Inject buttons if we have a path, or show input to add one */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+                            {localProjectPath ? (
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button
+                                        className="ui-button ui-button-primary"
+                                        onClick={handleApply}
+                                        disabled={applying}
+                                        style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
+                                    >
+                                        {applying ? <Loader2 size={18} className="animate-spin" /> : <FolderOpen size={18} />}
+                                        Write Files
+                                        <span style={{ fontSize: '0.7em', opacity: 0.8, marginLeft: '4px' }}>
+                                            to {localProjectPath.split('/').pop()}
+                                        </span>
+                                    </button>
+                                    <button
+                                        className="ui-button ui-button-primary"
+                                        onClick={handleInject}
+                                        disabled={injecting}
+                                        style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
+                                    >
+                                        {injecting ? <Loader2 size={18} className="animate-spin" /> : <FileCode size={18} />}
+                                        Smart Inject
+                                    </button>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <input
+                                        type="text"
+                                        placeholder="/app/projects/MyProject"
+                                        className="ui-input"
+                                        style={{ width: '250px', height: '36px' }}
+                                        value={localProjectPath}
+                                        onChange={(e) => setLocalProjectPath(e.target.value)}
+                                    />
+                                    <span style={{ color: '#64748b', fontSize: '0.8rem' }}>Set path to enable writing</span>
+                                </div>
+                            )}
+                        </div>
                         <button className="ui-button ui-button-secondary" onClick={handleDownload} style={{ background: 'transparent', border: '1px solid #334155' }}>
                             <Download size={18} />
                             Download ZIP
