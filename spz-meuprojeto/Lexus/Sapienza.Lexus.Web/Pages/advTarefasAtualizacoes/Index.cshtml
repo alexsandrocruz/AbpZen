@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advTarefasAtualizacoes
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advTarefasAtualizacoeses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advTarefasAtualizacoes;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advTarefasAtualizacoes/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advTarefasAtualizacoes/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advTarefasAtualizacoes.Create))
+    {
+        <abp-button id="NewadvTarefasAtualizacoesButton"
+            text="@L["NewadvTarefasAtualizacoes"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advTarefasAtualizacoesCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advTarefasAtualizacoesFilter" id="advTarefasAtualizacoesFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advTarefasAtualizacoesCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advTarefasAtualizacoesTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

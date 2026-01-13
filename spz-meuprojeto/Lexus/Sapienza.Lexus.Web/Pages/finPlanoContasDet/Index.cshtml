@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.finPlanoContasDet
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["finPlanoContasDets"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.finPlanoContasDet;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/finPlanoContasDet/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/finPlanoContasDet/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.finPlanoContasDet.Create))
+    {
+        <abp-button id="NewfinPlanoContasDetButton"
+            text="@L["NewfinPlanoContasDet"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="finPlanoContasDetCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="finPlanoContasDetFilter" id="finPlanoContasDetFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="finPlanoContasDetCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="finPlanoContasDetTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

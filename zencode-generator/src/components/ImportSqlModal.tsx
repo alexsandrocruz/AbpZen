@@ -1,10 +1,12 @@
 import { X, Upload, FileText } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { parseSqlToEntities } from '../utils/sqlParser';
-import type { EntityData } from '../types';
+import type { EntityData, RelationshipData } from '../types';
+import type { Node, Edge } from 'reactflow';
+import { pluralize } from '../utils/pluralize';
 
 interface ImportSqlModalProps {
-    onImport: (entities: EntityData[]) => void;
+    onImport: (nodes: Node<EntityData>[], edges: Edge[]) => void;
     onClose: () => void;
 }
 
@@ -14,9 +16,78 @@ export default function ImportSqlModal({ onImport, onClose }: ImportSqlModalProp
 
     const handleProcess = () => {
         if (!sqlText.trim()) return;
-        const entities = parseSqlToEntities(sqlText);
+
+        const result = parseSqlToEntities(sqlText);
+        const { entities, relationships } = result;
+
         if (entities.length > 0) {
-            onImport(entities);
+            // 1. Create Nodes
+            const newNodes: Node<EntityData>[] = entities.map((entity, index) => {
+                const id = `entity_${Date.now()}_${index}`;
+                return {
+                    id,
+                    type: 'entity',
+                    data: entity,
+                    position: { x: 100 + index * 220, y: 100 + (index % 3) * 50 },
+                };
+            });
+
+            // 2. Create Map: TableName (plural) -> NodeID
+            const tableToNodeId = new Map<string, string>();
+            newNodes.forEach(node => {
+                // Map both name and plural/table name to handle variations
+                tableToNodeId.set(node.data.name.toLowerCase(), node.id);
+                tableToNodeId.set(node.data.tableName.toLowerCase(), node.id);
+            });
+
+            // 3. Create Edges
+            const newEdges: Edge[] = [];
+            relationships.forEach((rel, index) => {
+                // Resolve Source/Target Node IDs
+                // Note: The parser returns table names from SQL. We compare loosely.
+                const sourceId = tableToNodeId.get(rel.sourceTable.toLowerCase());
+                const targetId = tableToNodeId.get(rel.targetTable.toLowerCase());
+
+                if (sourceId && targetId) {
+                    // Update: In SQL FK, Source Table holds the FK column.
+                    // e.g. Order table has CustomerId.
+                    // Source: Order, Target: Customer.
+                    // Relation: Customer (1) -> Order (N).
+                    // In ReactFlow logic here: Source usually means "One" side, Target "Many"?
+                    // Check OnConnect: addEdge({ source, target })
+                    // Typically Source -> Target is the direction of the arrow.
+                    // If Source=Customer, Target=Order. Edge: 1:N.
+
+                    // But SQL FK is detected on "Order".
+                    // Order has FK to Customer.
+                    // So Order is the "Many" side. Customer is "One".
+                    // If we want Arrow from One -> Many (Customer -> Order),
+                    // Then ReactFlow Source = Customer (targetId), ReactFlow Target = Order (sourceId).
+
+                    const rfSourceId = targetId; // Reference Table (1)
+                    const rfTargetId = sourceId; // Table with FK (N)
+
+                    // Verify if edge already exists?
+
+                    newEdges.push({
+                        id: `edge_sql_${Date.now()}_${index}`,
+                        source: rfSourceId,
+                        target: rfTargetId,
+                        type: 'relation',
+                        data: {
+                            type: 'one-to-many',
+                            // If Source=Customer, Target=Order.
+                            // Name on Source (Customer): "Orders" (plural of Order table)
+                            // Name on Target (Order): "Customer" (singular of Customer table)
+                            sourceNavigationName: pluralize(rel.sourceTable), // "Orders"
+                            targetNavigationName: rel.targetTable,            // "Customer"
+                            isRequired: !rel.isCascade // Approximation
+                        } as RelationshipData
+                    });
+                }
+            });
+
+            onImport(newNodes, newEdges);
             onClose();
         } else {
             alert('Nenhuma instrução CREATE TABLE válida encontrada.');

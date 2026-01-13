@@ -1,4 +1,4 @@
-#nullable enable
+// Generated with Fixed Generator
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;

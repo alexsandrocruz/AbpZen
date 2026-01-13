@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.fabRegioes
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["fabRegioeses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.fabRegioes;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/fabRegioes/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/fabRegioes/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.fabRegioes.Create))
+    {
+        <abp-button id="NewfabRegioesButton"
+            text="@L["NewfabRegioes"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="fabRegioesCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="fabRegioesFilter" id="fabRegioesFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="fabRegioesCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="fabRegioesTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

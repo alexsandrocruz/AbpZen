@@ -15,6 +15,7 @@ import {
   Plus, Database, Save, Undo2, Redo2, Settings, Upload, Download, Sparkles, FolderPlus, Play, FolderOpen, FileJson
 } from 'lucide-react';
 import { ProjectRunner } from './components/ProjectRunner';
+import { getLayoutedElements, getRadialLayout } from './utils/layout';
 
 
 import EntityNode from './components/EntityNode';
@@ -27,6 +28,7 @@ import GenerateCodeModal from './components/GenerateCodeModal';
 import SettingsModal from './components/SettingsModal';
 import AISettingsModal from './components/AISettingsModal';
 import ImportFromAIModal from './components/ImportFromAIModal';
+import { ImportDbModal } from './components/ImportDbModal';
 import NewProjectModal from './components/NewProjectModal';
 import type { EntityData, RelationshipData, ZenMetadata, FrontendTarget } from './types';
 import type { AIExtractionResult } from './lib/gemini/types';
@@ -68,6 +70,7 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialState.edges);
   const [showPreview, setShowPreview] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showImportDbModal, setShowImportDbModal] = useState(false);
   const [showCrudPreview, setShowCrudPreview] = useState(false);
   const [showGenerateCode, setShowGenerateCode] = useState(false);
   const [previewEntityId, setPreviewEntityId] = useState<string | null>(null);
@@ -427,18 +430,7 @@ function App() {
     setShowPreview(true);
   }, [nodes, edges]);
 
-  const handleImportSql = useCallback((newEntities: EntityData[]) => {
-    const newNodes: Node<EntityData>[] = newEntities.map((entity, index) => {
-      const id = `entity_${Date.now()}_${index}`;
-      return {
-        id,
-        type: 'entity',
-        data: entity,
-        position: { x: 100 + index * 220, y: 100 + (index % 3) * 50 },
-      };
-    });
-    setNodes((nds) => nds.concat(newNodes));
-  }, [setNodes]);
+
 
   // Undo handler
   const handleUndo = useCallback(() => {
@@ -586,12 +578,41 @@ function App() {
       }
     });
 
-    // Add nodes and edges to canvas
+    // Add nodes and edges to    });
     setNodes((nds) => nds.concat(newNodes));
     setEdges((eds) => eds.concat(newEdges));
 
     console.log(`AI Import: ${newNodes.length} entities, ${newEdges.length} relationships`);
   }, [setNodes, setEdges]);
+
+  // Handle DB Import
+  const handleImportDb = useCallback((newNodes: Node[], newEdges: Edge[]) => {
+    // Calculate positions if they overlap significantly (simple logical shift)
+    // For now, accept positions from the importer
+    setNodes((nds) => nds.concat(newNodes));
+    setEdges((eds) => eds.concat(newEdges));
+  }, [setNodes, setEdges]);
+
+  const onLayout = useCallback(
+    (direction: 'TB' | 'LR' | 'RADIAL') => {
+      if (direction === 'RADIAL') {
+        const { nodes: layoutedNodes, edges: layoutedEdges } = getRadialLayout(nodes, edges);
+        setNodes([...layoutedNodes]);
+        setEdges([...layoutedEdges]);
+        return;
+      }
+
+      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        nodes,
+        edges,
+        direction
+      );
+
+      setNodes([...layoutedNodes]);
+      setEdges([...layoutedEdges]);
+    },
+    [nodes, edges, setNodes, setEdges]
+  );
 
   return (
     <div className="app-container">
@@ -633,142 +654,167 @@ function App() {
         </div>
       </div>
 
-      {activeTab === 'designer' ? (
-        <div className="designer-layout">
-          <div className="controls-panel">
-            <div className="controls-row">
-              <button className="btn-icon-sm" onClick={handleUndo} disabled={!canUndo} title="Undo">
-                <Undo2 size={18} />
+      {
+        activeTab === 'designer' ? (
+          <div className="designer-layout">
+            <div className="controls-panel">
+              <div className="controls-row">
+                <button className="btn-icon-sm" onClick={handleUndo} disabled={!canUndo} title="Undo">
+                  <Undo2 size={18} />
+                </button>
+                <button className="btn-icon-sm" onClick={handleRedo} disabled={!canRedo} title="Redo">
+                  <Redo2 size={18} />
+                </button>
+                <div className="controls-divider" />
+                <button className="btn-icon-sm" onClick={() => setShowSettings(true)} title="Settings">
+                  <Settings size={18} />
+                </button>
+              </div>
+
+              <div className="controls-row" style={{ marginTop: '8px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
+                <span className="text-xs text-slate-400 mr-2 whitespace-nowrap">Layout:</span>
+                <div className="relative w-full">
+                  <select
+                    className="bg-slate-800 text-white text-xs border border-slate-700 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 cursor-pointer"
+                    onChange={(e) => onLayout(e.target.value as any)}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Select Layout</option>
+                    <option value="TB">Vertical</option>
+                    <option value="LR">Horizontal</option>
+                    <option value="RADIAL">Radial</option>
+                  </select>
+                </div>
+              </div>
+
+              <button
+                className="btn-primary"
+                onClick={() => setShowNewProject(true)}
+                style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
+              >
+                <FolderPlus size={18} />
+                New Project
               </button>
-              <button className="btn-icon-sm" onClick={handleRedo} disabled={!canRedo} title="Redo">
-                <Redo2 size={18} />
+              <button className="btn-primary" onClick={addEntity}>
+                <Plus size={18} />
+                Add Entity
               </button>
-              <div className="controls-divider" />
-              <button className="btn-icon-sm" onClick={() => setShowSettings(true)} title="Settings">
-                <Settings size={18} />
+              <button className="btn-secondary" onClick={() => { console.log('Import DB Clicked'); setShowImportDbModal(true); }}>
+                <Database size={18} />
+                Import DB
+              </button>
+              <button className="btn-secondary" onClick={() => setShowImportModal(true)}>
+                <Upload size={18} />
+                Import SQL
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => setShowAIImport(true)}
+                style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%)', borderColor: '#8b5cf6' }}
+              >
+                <Sparkles size={18} style={{ color: '#a855f7' }} />
+                Import from AI
+              </button>
+              <button className="btn-secondary" onClick={handleSave}>
+                <Save size={18} />
+                Save Project
+              </button>
+              <button className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
+                <FolderOpen size={18} />
+                Load Project
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept=".zen,.json"
+                onChange={handleLoad}
+                style={{ display: 'none' }}
+              />
+              <hr className="controls-divider" />
+              <button className="btn-secondary" onClick={handlePreview}>
+                <FileJson size={18} />
+                Preview
+              </button>
+              <button className="btn-secondary" onClick={handleExport}>
+                <Download size={18} />
+                Export JSON
+              </button>
+              <button className="btn-primary" onClick={() => setShowGenerateCode(true)}>
+                <Download size={18} />
+                Generate Code
               </button>
             </div>
-            <button
-              className="btn-primary"
-              onClick={() => setShowNewProject(true)}
-              style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}
-            >
-              <FolderPlus size={18} />
-              New Project
-            </button>
-            <button className="btn-primary" onClick={addEntity}>
-              <Plus size={18} />
-              Add Entity
-            </button>
-            <button className="btn-secondary" onClick={() => setShowImportModal(true)}>
-              <Upload size={18} />
-              Import SQL
-            </button>
-            <button
-              className="btn-secondary"
-              onClick={() => setShowAIImport(true)}
-              style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%)', borderColor: '#8b5cf6' }}
-            >
-              <Sparkles size={18} style={{ color: '#a855f7' }} />
-              Import from AI
-            </button>
-            <button className="btn-secondary" onClick={handleSave}>
-              <Save size={18} />
-              Save Project
-            </button>
-            <button className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
-              <FolderOpen size={18} />
-              Load Project
-            </button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept=".zen,.json"
-              onChange={handleLoad}
-              style={{ display: 'none' }}
+
+            <div className="canvas-container">
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                fitView
+              >
+                <Background color="#334155" gap={20} />
+                <Controls />
+                <MiniMap
+                  style={{ backgroundColor: '#0f172a' }}
+                  maskColor="rgba(15, 23, 42, 0.6)"
+                  nodeColor="#334155"
+                />
+              </ReactFlow>
+            </div>
+
+            <Sidebar
+              selectedEntity={selectedNode}
+              selectedEdge={selectedEdge}
+              allEntities={nodes.map(n => n.data)}
+              onUpdateEntity={updateEntity}
+              onUpdateEdge={updateEdge}
+              onChangeRelationType={handleRelationshipTypeChange}
+              onDeleteEntity={deleteEntity}
+              onDeleteEdge={deleteEdge}
+              onDuplicateEntity={duplicateEntity}
+              onPreviewEntity={(id) => { setPreviewEntityId(id); setShowCrudPreview(true); }}
+              onClose={clearSelection}
             />
-            <hr className="controls-divider" />
-            <button className="btn-secondary" onClick={handlePreview}>
-              <FileJson size={18} />
-              Preview
-            </button>
-            <button className="btn-secondary" onClick={handleExport}>
-              <Download size={18} />
-              Export JSON
-            </button>
-            <button className="btn-primary" onClick={() => setShowGenerateCode(true)}>
-              <Download size={18} />
-              Generate Code
-            </button>
           </div>
+        ) : (
+          <div className="dashboard-layout">
+            <ProjectRunner
+              projectPath={projectPath || ''}
+              projectName={projectName}
+              projectNamespace={projectNamespace}
+              frontends={projectFrontends}
+              onClose={() => setActiveTab('designer')}
+            />
+          </div>
+        )
+      }
 
-          <div className="canvas-container">
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              nodeTypes={nodeTypes}
-              edgeTypes={edgeTypes}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              fitView
+      {
+        activeTab === 'designer' && (
+          <div className="status-bar">
+            <div className="status-item">
+              <span className="status-label">Project:</span>
+              <span className="status-value">{projectName}</span>
+            </div>
+            <div className="status-item">
+              <span className="status-label">Entities:</span>
+              <span className="status-value">{nodes.length}</span>
+            </div>
+            <div className="status-spacer" />
+            <button
+              className="btn-runner-toggle"
+              onClick={() => setActiveTab('dashboard')}
             >
-              <Background color="#334155" gap={20} />
-              <Controls />
-              <MiniMap
-                style={{ backgroundColor: '#0f172a' }}
-                maskColor="rgba(15, 23, 42, 0.6)"
-                nodeColor="#334155"
-              />
-            </ReactFlow>
+              <Play size={16} fill="none" />
+              Launch Dashboard
+            </button>
           </div>
-
-          <Sidebar
-            selectedEntity={selectedNode}
-            selectedEdge={selectedEdge}
-            allEntities={nodes.map(n => n.data)}
-            onUpdateEntity={updateEntity}
-            onUpdateEdge={updateEdge}
-            onChangeRelationType={handleRelationshipTypeChange}
-            onDeleteEntity={deleteEntity}
-            onDeleteEdge={deleteEdge}
-            onDuplicateEntity={duplicateEntity}
-            onPreviewEntity={(id) => { setPreviewEntityId(id); setShowCrudPreview(true); }}
-            onClose={clearSelection}
-          />
-        </div>
-      ) : (
-        <div className="dashboard-layout">
-          <ProjectRunner
-            projectPath={projectPath || ''}
-            projectName={projectName}
-            projectNamespace={projectNamespace}
-            frontends={projectFrontends}
-            onClose={() => setActiveTab('designer')}
-          />
-        </div>
-      )}
-
-      {activeTab === 'designer' && (
-        <div className="status-bar">
-          <div className="status-item">
-            <span className="status-label">Project:</span>
-            <span className="status-value">{projectName}</span>
-          </div>
-          <div className="status-item">
-            <span className="status-label">Entities:</span>
-            <span className="status-value">{nodes.length}</span>
-          </div>
-          <div className="status-spacer" />
-          <button
-            className="btn-runner-toggle"
-            onClick={() => setActiveTab('dashboard')}
-          >
-            <Play size={16} fill="none" />
-            Launch Dashboard
-          </button>
-        </div>
-      )}
+        )
+      }
 
       {
         showPreview && generatedMetadata && (
@@ -779,137 +825,155 @@ function App() {
         )
       }
 
+      <ImportDbModal
+        isOpen={showImportDbModal}
+        onClose={() => setShowImportDbModal(false)}
+        onImport={handleImportDb}
+      />
+
       {
         showImportModal && (
           <ImportSqlModal
-            onImport={handleImportSql}
+            onImport={handleImportDb}
             onClose={() => setShowImportModal(false)}
           />
         )
       }
 
-      {showCrudPreview && previewEntityId && (() => {
-        const previewNode = nodes.find(n => n.id === previewEntityId);
-        if (!previewNode) return null;
+      {
+        showCrudPreview && previewEntityId && (() => {
+          const previewNode = nodes.find(n => n.id === previewEntityId);
+          if (!previewNode) return null;
 
-        // Find child relations where this entity is the SOURCE (parent) and isChildGrid is true
-        // In the relationship Proposta -> ItensProposta, Proposta is source and ItensProposta is target
-        const childRelations = edges
-          .filter(edge => edge.source === previewEntityId && edge.data?.isChildGrid)
-          .map(edge => {
-            const childNode = nodes.find(n => n.id === edge.target);
-            if (!childNode) return null;
-            return {
-              childEntity: childNode.data,
-              config: edge.data!,
-            };
-          })
-          .filter(Boolean) as { childEntity: typeof previewNode.data; config: typeof edges[0]['data'] }[];
+          // Find child relations where this entity is the SOURCE (parent) and isChildGrid is true
+          // In the relationship Proposta -> ItensProposta, Proposta is source and ItensProposta is target
+          const childRelations = edges
+            .filter(edge => edge.source === previewEntityId && edge.data?.isChildGrid)
+            .map(edge => {
+              const childNode = nodes.find(n => n.id === edge.target);
+              if (!childNode) return null;
+              return {
+                childEntity: childNode.data,
+                config: edge.data!,
+              };
+            })
+            .filter(Boolean) as { childEntity: typeof previewNode.data; config: typeof edges[0]['data'] }[];
 
-        return (
-          <CrudPreview
-            entity={previewNode.data}
-            allEntities={nodes.map(n => n.data)}
-            childRelations={childRelations}
-            onClose={() => { setShowCrudPreview(false); setPreviewEntityId(null); }}
+          return (
+            <CrudPreview
+              entity={previewNode.data}
+              allEntities={nodes.map(n => n.data)}
+              childRelations={childRelations}
+              onClose={() => { setShowCrudPreview(false); setPreviewEntityId(null); }}
+            />
+          );
+        })()
+      }
+
+      {
+        showGenerateCode && (
+          <GenerateCodeModal
+            entities={nodes.map(n => n.data)}
+            relationships={edges.map(e => {
+              // Convert node IDs to entity names
+              const sourceNode = nodes.find(n => n.id === e.source);
+              const targetNode = nodes.find(n => n.id === e.target);
+              return {
+                id: e.id,
+                source: sourceNode?.data.name || e.source,
+                target: targetNode?.data.name || e.target,
+                data: e.data as RelationshipData,
+              };
+            })}
+            projectName={projectName || generatedMetadata?.projectName || 'ZenGenerated'}
+            projectNamespace={projectNamespace || generatedMetadata?.namespace || 'ZenApp'}
+            projectPath={projectPath || ''}
+            defaultFrontends={projectFrontends}
+            onClose={() => setShowGenerateCode(false)}
           />
-        );
-      })()}
-
-      {showGenerateCode && (
-        <GenerateCodeModal
-          entities={nodes.map(n => n.data)}
-          relationships={edges.map(e => {
-            // Convert node IDs to entity names
-            const sourceNode = nodes.find(n => n.id === e.source);
-            const targetNode = nodes.find(n => n.id === e.target);
-            return {
-              id: e.id,
-              source: sourceNode?.data.name || e.source,
-              target: targetNode?.data.name || e.target,
-              data: e.data as RelationshipData,
-            };
-          })}
-          projectName={projectName || generatedMetadata?.projectName || 'ZenGenerated'}
-          projectNamespace={projectNamespace || generatedMetadata?.namespace || 'ZenApp'}
-          projectPath={projectPath || ''}
-          defaultFrontends={projectFrontends}
-          onClose={() => setShowGenerateCode(false)}
-        />
-      )}
+        )
+      }
 
 
-      {showSettings && (
-        <SettingsModal
-          projectPath={projectPath || ''}
-          projectName={projectName}
-          projectNamespace={projectNamespace}
-          onSave={(config) => {
-            setProjectPath(config.path ?? '');
-            setProjectName(config.projectName);
-            setProjectNamespace(config.namespace);
-            localStorage.setItem('zen_project_path', config.path ?? '');
-            localStorage.setItem('zen_project_name', config.projectName);
-            localStorage.setItem('zen_project_namespace', config.namespace);
-            setShowSettings(false);
-          }}
-          onClose={() => setShowSettings(false)}
-        />
-      )}
+      {
+        showSettings && (
+          <SettingsModal
+            projectPath={projectPath || ''}
+            projectName={projectName}
+            projectNamespace={projectNamespace}
+            onSave={(config) => {
+              setProjectPath(config.path ?? '');
+              setProjectName(config.projectName);
+              setProjectNamespace(config.namespace);
+              localStorage.setItem('zen_project_path', config.path ?? '');
+              localStorage.setItem('zen_project_name', config.projectName);
+              localStorage.setItem('zen_project_namespace', config.namespace);
+              setShowSettings(false);
+            }}
+            onClose={() => setShowSettings(false)}
+          />
+        )
+      }
 
-      {showAISettings && (
-        <AISettingsModal
-          onClose={() => setShowAISettings(false)}
-        />
-      )}
+      {
+        showAISettings && (
+          <AISettingsModal
+            onClose={() => setShowAISettings(false)}
+          />
+        )
+      }
 
-      {showAIImport && (
-        <ImportFromAIModal
-          onClose={() => setShowAIImport(false)}
-          onImport={handleAIImport}
-          onOpenSettings={() => setShowAISettings(true)}
-        />
-      )}
+      {
+        showAIImport && (
+          <ImportFromAIModal
+            onClose={() => setShowAIImport(false)}
+            onImport={handleAIImport}
+            onOpenSettings={() => setShowAISettings(true)}
+          />
+        )
+      }
 
-      {showNewProject && (
-        <NewProjectModal
-          onClose={() => setShowNewProject(false)}
-          onCreate={(config, mode, createdPath) => {
-            // Save project config
-            setProjectName(config.name);
-            setProjectNamespace(config.namespace);
-            setProjectFrontends(config.frontends);
-            localStorage.setItem('zen_project_name', config.name);
-            localStorage.setItem('zen_project_namespace', config.namespace);
-            localStorage.setItem('zen_project_frontends', JSON.stringify(config.frontends));
+      {
+        showNewProject && (
+          <NewProjectModal
+            onClose={() => setShowNewProject(false)}
+            onCreate={(config, mode, createdPath) => {
+              // Save project config
+              setProjectName(config.name);
+              setProjectNamespace(config.namespace);
+              setProjectFrontends(config.frontends);
+              localStorage.setItem('zen_project_name', config.name);
+              localStorage.setItem('zen_project_namespace', config.namespace);
+              localStorage.setItem('zen_project_frontends', JSON.stringify(config.frontends));
 
-            // Set project path if local
-            if (mode === 'local' && createdPath) {
-              setProjectPath(createdPath);
-              localStorage.setItem('zen_project_path', createdPath);
-            } else {
-              setProjectPath(null);
-              localStorage.removeItem('zen_project_path');
-            }
+              // Set project path if local
+              if (mode === 'local' && createdPath) {
+                setProjectPath(createdPath);
+                localStorage.setItem('zen_project_path', createdPath);
+              } else {
+                setProjectPath(null);
+                localStorage.removeItem('zen_project_path');
+              }
 
-            // Clear canvas for new project
-            setNodes([]);
-            setEdges([]);
+              // Clear canvas for new project
+              setNodes([]);
+              setEdges([]);
 
-            // Add to recent projects
-            addRecentProject({
-              name: config.name,
-              path: createdPath || 'download',
-              lastOpened: new Date().toISOString(),
-              frontends: config.frontends,
-            });
+              // Add to recent projects
+              addRecentProject({
+                name: config.name,
+                path: createdPath || 'download',
+                lastOpened: new Date().toISOString(),
+                frontends: config.frontends,
+              });
 
-            setShowNewProject(false);
-          }}
-        />
-      )}
+              setShowNewProject(false);
+            }}
+          />
+        )
+      }
 
-    </div>
+    </div >
   );
 }
 

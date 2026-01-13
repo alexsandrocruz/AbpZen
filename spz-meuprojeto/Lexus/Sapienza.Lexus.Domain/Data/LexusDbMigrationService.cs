@@ -13,6 +13,8 @@ using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
 using Volo.Saas.Tenants;
 
+#nullable enable
+
 namespace Sapienza.Lexus.Data
 {
     public class LexusDbMigrationService : ITransientDependency

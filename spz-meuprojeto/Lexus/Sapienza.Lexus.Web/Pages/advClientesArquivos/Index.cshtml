@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advClientesArquivos
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advClientesArquivoses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advClientesArquivos;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advClientesArquivos/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advClientesArquivos/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advClientesArquivos.Create))
+    {
+        <abp-button id="NewadvClientesArquivosButton"
+            text="@L["NewadvClientesArquivos"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advClientesArquivosCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advClientesArquivosFilter" id="advClientesArquivosFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advClientesArquivosCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advClientesArquivosTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

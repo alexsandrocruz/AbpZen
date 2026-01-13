@@ -5,6 +5,8 @@ using Volo.Abp.MultiTenancy;
 using Volo.Abp.Uow;
 using Volo.Saas.Editions;
 
+#nullable enable
+
 namespace Sapienza.Lexus.Saas
 {
     public class SaasDataSeedContributor : IDataSeedContributor, ITransientDependency

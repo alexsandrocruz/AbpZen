@@ -14,6 +14,8 @@ using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Uow;
 
+#nullable enable
+
 namespace Sapienza.Lexus.OpenIddict;
 
 /* Creates initial data that is needed to property run the application

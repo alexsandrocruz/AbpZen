@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advClientes
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advClienteses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advClientes;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advClientes/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advClientes/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advClientes.Create))
+    {
+        <abp-button id="NewadvClientesButton"
+            text="@L["NewadvClientes"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advClientesCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advClientesFilter" id="advClientesFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advClientesCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advClientesTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

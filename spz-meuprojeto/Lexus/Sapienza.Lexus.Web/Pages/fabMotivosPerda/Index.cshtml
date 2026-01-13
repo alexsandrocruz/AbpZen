@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.fabMotivosPerda
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["fabMotivosPerdas"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.fabMotivosPerda;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/fabMotivosPerda/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/fabMotivosPerda/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.fabMotivosPerda.Create))
+    {
+        <abp-button id="NewfabMotivosPerdaButton"
+            text="@L["NewfabMotivosPerda"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="fabMotivosPerdaCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="fabMotivosPerdaFilter" id="fabMotivosPerdaFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="fabMotivosPerdaCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="fabMotivosPerdaTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

@@ -2,22 +2,37 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetLawyersInput {
-  filter?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
+  }
 
 export function useLawyers(input: GetLawyersInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["lawyers", filter, skipCount, maxResultCount],
+    queryKey: ["lawyers", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/lawyer", {
         params: {
           filter,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllLawyers() {
+  return useQuery({
+    queryKey: ["lawyers", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/lawyer", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -71,20 +86,6 @@ export function useDeleteLawyer() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["lawyers"] });
-    },
-  });
-}
-
-export function useAllLawyers() {
-  return useQuery({
-    queryKey: ["lawyers", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/lawyer", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
     },
   });
 }

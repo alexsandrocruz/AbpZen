@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.finPlanoContasGrupos
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["finPlanoContasGruposes"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.finPlanoContasGrupos;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/finPlanoContasGrupos/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/finPlanoContasGrupos/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.finPlanoContasGrupos.Create))
+    {
+        <abp-button id="NewfinPlanoContasGruposButton"
+            text="@L["NewfinPlanoContasGrupos"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="finPlanoContasGruposCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="finPlanoContasGruposFilter" id="finPlanoContasGruposFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="finPlanoContasGruposCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="finPlanoContasGruposTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

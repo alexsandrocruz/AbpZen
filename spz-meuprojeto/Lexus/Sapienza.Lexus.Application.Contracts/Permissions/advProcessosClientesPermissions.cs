@@ -1,0 +1,11 @@
+namespace Sapienza.Lexus.Permissions;
+
+public static class advProcessosClientesPermissions
+{
+    public const string GroupName = "Sapienza.Lexus";
+    
+    public const string Default = GroupName + ".advProcessosClientes";
+    public const string Create = Default + ".Create";
+    public const string Update = Default + ".Update";
+    public const string Delete = Default + ".Delete";
+}

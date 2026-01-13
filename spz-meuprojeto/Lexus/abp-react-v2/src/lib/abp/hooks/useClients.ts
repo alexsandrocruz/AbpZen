@@ -2,22 +2,37 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetClientsInput {
-  filter?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
+  }
 
 export function useClients(input: GetClientsInput = {}) {
-  const { filter, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["clients", filter, skipCount, maxResultCount],
+    queryKey: ["clients", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/client", {
         params: {
           filter,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllClients() {
+  return useQuery({
+    queryKey: ["clients", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/client", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -71,20 +86,6 @@ export function useDeleteClient() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clients"] });
-    },
-  });
-}
-
-export function useAllClients() {
-  return useQuery({
-    queryKey: ["clients", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/client", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
     },
   });
 }

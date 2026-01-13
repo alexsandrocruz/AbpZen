@@ -1,11 +1,9 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sapienza.Lexus.Permissions;
 using Sapienza.Lexus.Proposal.Dtos;
-using Sapienza.Lexus.PropostalItem.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -103,15 +101,6 @@ public class ProposalAppService :
     public virtual async Task<ProposalDto> CreateAsync(CreateUpdateProposalDto input)
     {
         var entity = ObjectMapper.Map<CreateUpdateProposalDto, Sapienza.Lexus.Proposal.Proposal>(input);
-        // Master-Detail: PropostalItem
-        if (input.PropostalItems != null && input.PropostalItems.Any())
-        {
-            foreach (var itemDto in input.PropostalItems)
-            {
-                var item = ObjectMapper.Map<CreateUpdatePropostalItemDto, Sapienza.Lexus.PropostalItem.PropostalItem>(itemDto);
-                entity.PropostalItems.Add(item);
-            }
-        }
 
         await _repository.InsertAsync(entity, autoSave: true);
 
@@ -124,46 +113,13 @@ public class ProposalAppService :
     [Authorize(ProposalPermissions.Update)]
     public virtual async Task<ProposalDto> UpdateAsync(Guid id, CreateUpdateProposalDto input)
     {
-        // Fetch with details for Master-Detail update
-        var query = await _repository.WithDetailsAsync(x => x.PropostalItems);
-        var entity = await AsyncExecuter.FirstOrDefaultAsync(query, x => x.Id == id);
+        var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
              throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Lexus.Proposal.Proposal), id);
         }
 
         ObjectMapper.Map(input, entity);
-        // Master-Detail Reconciliation: PropostalItem
-        if (input.PropostalItems != null)
-        {
-            // 1. Remove deleted items
-            var inputIds = input.PropostalItems.Select(x => x.Id).Where(x => x != Guid.Empty).ToList();
-            var itemsToRemove = entity.PropostalItems.Where(x => !inputIds.Contains(x.Id)).ToList();
-            foreach (var item in itemsToRemove)
-            {
-                entity.PropostalItems.Remove(item);
-            }
-
-            // 2. Add or Update
-            foreach (var itemDto in input.PropostalItems)
-            {
-                if (itemDto.Id == Guid.Empty)
-                {
-                    // Add new
-                    var newItem = ObjectMapper.Map<CreateUpdatePropostalItemDto, Sapienza.Lexus.PropostalItem.PropostalItem>(itemDto);
-                    entity.PropostalItems.Add(newItem);
-                }
-                else
-                {
-                    // Update existing
-                    var existingItem = entity.PropostalItems.FirstOrDefault(x => x.Id == itemDto.Id);
-                    if (existingItem != null)
-                    {
-                        ObjectMapper.Map(itemDto, existingItem);
-                    }
-                }
-            }
-        }
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
@@ -196,11 +152,11 @@ public class ProposalAppService :
     protected virtual IQueryable<Sapienza.Lexus.Proposal.Proposal> ApplyFilters(IQueryable<Sapienza.Lexus.Proposal.Proposal> queryable, ProposalGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.Number != null && x.Number.Contains(input.Filter)) || (x.Obs != null && x.Obs.Contains(input.Filter)))
-            .WhereIf(!input.Number.IsNullOrWhiteSpace(), x => x.Number != null && x.Number.Contains(input.Number))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.Number.Contains(input.Filter) || x.Obs.Contains(input.Filter))
+            .WhereIf(!input.Number.IsNullOrWhiteSpace(), x => x.Number.Contains(input.Number))
             .WhereIf(input.Date != null, x => x.Date == input.Date)
             .WhereIf(input.Validate != null, x => x.Validate == input.Validate)
-            .WhereIf(!input.Obs.IsNullOrWhiteSpace(), x => x.Obs != null && x.Obs.Contains(input.Obs))
+            .WhereIf(!input.Obs.IsNullOrWhiteSpace(), x => x.Obs.Contains(input.Obs))
             .WhereIf(input.ClientId != null, x => x.ClientId == input.ClientId)
             // ========== FK Filters ==========
             .WhereIf(input.ClientId != null, x => x.ClientId == input.ClientId)

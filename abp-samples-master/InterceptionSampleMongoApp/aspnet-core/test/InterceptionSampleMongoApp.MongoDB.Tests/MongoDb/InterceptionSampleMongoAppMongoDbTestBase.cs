@@ -1,6 +1,0 @@
-﻿namespace InterceptionSampleMongoApp.MongoDB;
-
-public abstract class InterceptionSampleMongoAppMongoDbTestBase : InterceptionSampleMongoAppTestBase<InterceptionSampleMongoAppMongoDbTestModule>
-{
-
-}

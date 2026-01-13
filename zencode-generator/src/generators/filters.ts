@@ -96,12 +96,14 @@ export function toCSharpType(type: string, isNullable: boolean = false): string 
         'bool': 'bool',
         'datetime': 'DateTime',
         'guid': 'Guid',
+        'short': 'short',
+        'byte': 'byte',
     };
 
     const csharpType = typeMap[type] || type;
 
     // Add nullable marker for value types
-    if (isNullable && ['int', 'long', 'float', 'double', 'decimal', 'bool', 'DateTime', 'Guid'].includes(csharpType)) {
+    if (isNullable && ['int', 'long', 'float', 'double', 'decimal', 'bool', 'DateTime', 'Guid', 'short', 'byte'].includes(csharpType)) {
         return csharpType + '?';
     }
 

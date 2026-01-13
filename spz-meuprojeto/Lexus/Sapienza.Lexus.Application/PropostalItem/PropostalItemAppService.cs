@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,8 +152,8 @@ public class PropostalItemAppService :
     protected virtual IQueryable<Sapienza.Lexus.PropostalItem.PropostalItem> ApplyFilters(IQueryable<Sapienza.Lexus.PropostalItem.PropostalItem> queryable, PropostalItemGetListInput input)
     {
         return queryable
-            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>(x.Desc != null && x.Desc.Contains(input.Filter)))
-            .WhereIf(!input.Desc.IsNullOrWhiteSpace(), x => x.Desc != null && x.Desc.Contains(input.Desc))
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.Desc.Contains(input.Filter))
+            .WhereIf(!input.Desc.IsNullOrWhiteSpace(), x => x.Desc.Contains(input.Desc))
             .WhereIf(input.Quant != null, x => x.Quant == input.Quant)
             .WhereIf(input.UnitPrice != null, x => x.UnitPrice == input.UnitPrice)
             .WhereIf(input.Total != null, x => x.Total == input.Total)

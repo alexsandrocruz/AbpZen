@@ -48,7 +48,7 @@ export default function GenerateCodeModal({
     const frontendLocked = defaultFrontends && defaultFrontends.length > 0;
 
     const camelCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
-    const kebabCase = (str: string) => str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    const kebabCase = (str: string) => str.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/[\s_]+/g, '-').toLowerCase();
 
     // Extract short project name from namespace for ABP class naming
     // ABP uses the last segment of the namespace (e.g., 'Cursos' from 'Sapienza.Cursos')
@@ -68,132 +68,7 @@ export default function GenerateCodeModal({
 
     const shortProjectName = getShortProjectName(projectName, projectNamespace);
 
-    // Helper: compute relationship context for an entity
-    // CONVENTION: In 1:N relationship edge:
-    //   - Source = child entity (the "Many" side, has the FK)
-    //   - Target = parent entity (the "One" side, has the collection)
-    // Example: Product → Category means Product has CategoryId (Product is child of Category)
-    const getRelationshipContext = (entityName: string) => {
-        const asParent: ParentRelationshipContext[] = [];
-        const asChild: ChildRelationshipContext[] = [];
 
-        // Build entity lookup by name
-        const entityMap = new Map(entities.map(e => [e.name, e]));
-
-        for (const rel of relationships) {
-            if (rel.data.type === 'one-to-many') {
-                const sourceEntity = entityMap.get(rel.source); // Child (has FK)
-                const targetEntity = entityMap.get(rel.target); // Parent (has collection)
-
-                if (sourceEntity && targetEntity) {
-                    // If this entity is the TARGET (parent - the "One" side)
-                    if (rel.target === entityName) {
-                        asParent.push({
-                            childEntityName: sourceEntity.name,
-                            childPluralName: sourceEntity.pluralName,
-                            navigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
-                            childNavigationName: rel.data.targetNavigationName || targetEntity.name,
-                            childFkFieldName: `${targetEntity.name}Id`,
-                        });
-                    }
-
-                    // If this entity is the SOURCE (child - the "Many" side, has FK)
-                    if (rel.source === entityName) {
-                        const fkField = sourceEntity.fields.find(f =>
-                            f.isLookup && f.lookupConfig?.targetEntity === targetEntity.name
-                        );
-
-                        const displayFieldField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
-                            || targetEntity.fields.find(f => f.name === 'Title' || f.name === 'title')
-                            || targetEntity.fields.find(f => f.type === 'string')
-                            || { name: 'Id' };
-
-                        asChild.push({
-                            parentEntityName: targetEntity.name,
-                            parentPluralName: targetEntity.pluralName,
-                            fkFieldName: fkField?.name || `${targetEntity.name}Id`,
-                            navigationName: rel.data.targetNavigationName || targetEntity.name,
-                            parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
-                            isRequired: rel.data.isRequired,
-                            lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
-                            displayField: displayFieldField.name
-                        });
-                    }
-                }
-            } else if (rel.data.type === 'many-to-many') {
-                const sourceEntity = entityMap.get(rel.source);
-                const targetEntity = entityMap.get(rel.target);
-
-                if (sourceEntity && targetEntity && rel.data.junctionConfig) {
-                    const junctionName = rel.data.junctionConfig.junctionEntityId || rel.data.junctionConfig.tableName;
-                    const junctionEntity = entities.find(e => e.name === junctionName);
-
-                    if (junctionEntity) {
-                        // If this entity is the source and showInSource is true
-                        if (sourceEntity.name === entityName && rel.data.junctionConfig.showInSource) {
-                            asParent.push({
-                                childEntityName: junctionEntity.name,
-                                childPluralName: junctionEntity.pluralName,
-                                navigationName: rel.data.sourceNavigationName || junctionEntity.pluralName,
-                                childNavigationName: sourceEntity.name,
-                                childFkFieldName: `${sourceEntity.name}Id`,
-                            });
-                        }
-
-                        // If this entity is the target and showInTarget is true
-                        if (targetEntity.name === entityName && rel.data.junctionConfig.showInTarget) {
-                            asParent.push({
-                                childEntityName: junctionEntity.name,
-                                childPluralName: junctionEntity.pluralName,
-                                navigationName: rel.data.targetNavigationName || junctionEntity.pluralName,
-                                childNavigationName: targetEntity.name,
-                                childFkFieldName: `${targetEntity.name}Id`,
-                            });
-                        }
-
-                        // If this entity IS the junction entity - add both source and target as parents
-                        if (junctionEntity.name === entityName) {
-                            // Source entity as parent
-                            const sourceDisplayField = sourceEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
-                                || sourceEntity.fields.find(f => f.name === 'Nome')
-                                || sourceEntity.fields.find(f => f.type === 'string')
-                                || { name: 'Id' };
-
-                            asChild.push({
-                                parentEntityName: sourceEntity.name,
-                                parentPluralName: sourceEntity.pluralName,
-                                fkFieldName: rel.data.junctionConfig.sourceForeignKey || `${sourceEntity.name}Id`,
-                                navigationName: sourceEntity.name,
-                                parentNavigationName: junctionEntity.pluralName,
-                                isRequired: true,
-                                lookupMode: 'dropdown',
-                                displayField: sourceDisplayField.name
-                            });
-
-                            // Target entity as parent
-                            const targetDisplayField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
-                                || targetEntity.fields.find(f => f.name === 'Nome')
-                                || targetEntity.fields.find(f => f.type === 'string')
-                                || { name: 'Id' };
-
-                            asChild.push({
-                                parentEntityName: targetEntity.name,
-                                parentPluralName: targetEntity.pluralName,
-                                fkFieldName: rel.data.junctionConfig.targetForeignKey || `${targetEntity.name}Id`,
-                                navigationName: targetEntity.name,
-                                parentNavigationName: junctionEntity.pluralName,
-                                isRequired: true,
-                                lookupMode: 'dropdown',
-                                displayField: targetDisplayField.name
-                            });
-                        }
-                    }
-                }
-            }
-        }
-
-        return { asParent, asChild };
-    };
 
     // Get all related entities (both parents and children) for a given entity
     // With convention: source=child, target=parent
@@ -274,20 +149,21 @@ export default function GenerateCodeModal({
         entitiesToGenerate.forEach(e => { initialStatus[e.name] = 'pending'; });
         setEntityStatus(initialStatus);
 
-        // DEBUG: Log entities to be generated
-        console.log('[DEBUG] Entities to generate:', entitiesToGenerate.map(e => e.name));
-        console.log('[DEBUG] Relationships:', relationships.map(r => ({ id: r.id, source: r.source, target: r.target, type: r.data.type })));
-
         try {
+            // Get global relationship contexts once
+            const contexts = codeGenerator.getGlobalRelationshipContexts(entities, relationships);
+            const contextMap = new Map(contexts.map(c => [c.entityName, c]));
+
             for (let i = 0; i < entitiesToGenerate.length; i++) {
                 const entity = entitiesToGenerate[i];
                 setCurrentEntityIndex(i);
                 setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
 
                 try {
-                    console.log(`[DEBUG] Generating entity ${i + 1}/${entitiesToGenerate.length}: ${entity.name}`);
-                    const { asParent, asChild } = getRelationshipContext(entity.name);
-                    console.log(`[DEBUG] ${entity.name} - asParent:`, asParent.length, 'asChild:', asChild.length);
+                    const ctx = contextMap.get(entity.name);
+                    const asParent = ctx?.asParent || [];
+                    const asChild = ctx?.asChild || [];
+
                     const entityFiles = await codeGenerator.generateEntityWithFrontends(
                         entity,
                         projectName,
@@ -296,7 +172,6 @@ export default function GenerateCodeModal({
                         asChild,
                         Array.from(selectedFrontends)
                     );
-                    console.log(`[DEBUG] ${entity.name} generated ${entityFiles.length} files`);
                     allFiles.push(...entityFiles);
                     setEntityStatus(prev => ({ ...prev, [entity.name]: 'done' }));
                 } catch (err) {
@@ -323,7 +198,11 @@ export default function GenerateCodeModal({
         setEntityStatus(prev => ({ ...prev, [entity.name]: 'generating' }));
 
         try {
-            const { asParent, asChild } = getRelationshipContext(entity.name);
+            const contexts = codeGenerator.getGlobalRelationshipContexts(entities, relationships);
+            const ctx = contexts.find(c => c.entityName === entity.name);
+            const asParent = ctx?.asParent || [];
+            const asChild = ctx?.asChild || [];
+
             const entityFiles = await codeGenerator.generateEntityWithFrontends(
                 entity,
                 projectName,
@@ -491,12 +370,12 @@ export default function GenerateCodeModal({
                         {
                             file: 'abp-react-v2/src/config/navigation.tsx',
                             marker: 'GEN-ROUTES',
-                            content: `  { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
+                            content: `    { path: "/admin/${kebabCase(entity.name)}", component: ${entity.name}Page },`
                         },
                         {
                             file: 'abp-react-v2/src/config/navigation.tsx',
                             marker: 'GEN-MENU',
-                            content: `  { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
+                            content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
                         }
                     ]);
                     injectInstructions.push(...reactV2Instructions);
@@ -582,7 +461,7 @@ export default function GenerateCodeModal({
                     {
                         file: 'abp-react-v2/src/config/navigation.tsx',
                         marker: 'GEN-MENU',
-                        content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: Box, section: "entities" },`
+                        content: `    { label: "${entity.pluralName}", href: "/admin/${kebabCase(entity.name)}", icon: LayoutDashboard, section: "entities" },`
                     }
                 ]);
                 instructions.push(...reactV2Instructions);

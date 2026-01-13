@@ -1,5 +1,0 @@
-{
-	"keychain-access-groups" = (
-		"$(AppIdentifierPrefix)com.companyname.acme.bookstore.mauiclient",
-	);
-}

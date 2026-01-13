@@ -2,7 +2,7 @@ namespace Sapienza.Lexus.Permissions;
 
 public static class LegalProcessPermissions
 {
-    public const string GroupName = "Lexus";
+    public const string GroupName = "Sapienza.Lexus";
     
     public const string Default = GroupName + ".LegalProcess";
     public const string Create = Default + ".Create";

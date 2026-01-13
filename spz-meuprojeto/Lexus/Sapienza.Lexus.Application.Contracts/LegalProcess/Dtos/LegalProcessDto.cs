@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
@@ -10,7 +9,7 @@ public class LegalProcessDto : FullAuditedEntityDto<Guid>
 {
     public string ProcessNumber { get; set; }
     public string Title { get; set; }
-    public string? Description { get; set; }
+    public string Description { get; set; }
     public DateTime DateOpened { get; set; }
 
     // ========== Foreign Key Fields (1:N Relationships) ==========

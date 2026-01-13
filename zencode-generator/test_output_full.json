@@ -1,0 +1,201 @@
+LegalProcess asChild: [
+  {
+    "parentEntityName": "Lawyer",
+    "parentPluralName": "Lawyers",
+    "fkFieldName": "LawyerId",
+    "navigationName": "Lawyer",
+    "parentNavigationName": "Processes",
+    "isRequired": true,
+    "lookupMode": "dropdown",
+    "displayField": "FullName"
+  },
+  {
+    "parentEntityName": "Client",
+    "parentPluralName": "Clients",
+    "fkFieldName": "ClientId",
+    "navigationName": "Client",
+    "parentNavigationName": "Processes",
+    "isRequired": true,
+    "lookupMode": "dropdown",
+    "displayField": "Name"
+  }
+]
+Lawyer asParent: [
+  {
+    "childEntityName": "LegalProcess",
+    "childPluralName": "LegalProcesses",
+    "navigationName": "Processes",
+    "childNavigationName": "Lawyer",
+    "childFkFieldName": "LawyerId",
+    "targetEntityName": "LegalProcess",
+    "targetPluralName": "LegalProcesses",
+    "targetFields": [
+      {
+        "id": "processNumber",
+        "name": "ProcessNumber",
+        "type": "string",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "maxLength": 32
+      },
+      {
+        "id": "title",
+        "name": "Title",
+        "type": "string",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "maxLength": 128
+      },
+      {
+        "id": "description",
+        "name": "Description",
+        "type": "string",
+        "isRequired": false,
+        "isNullable": true,
+        "isFilterable": false,
+        "isTextArea": true,
+        "maxLength": 2048
+      },
+      {
+        "id": "dateOpened",
+        "name": "DateOpened",
+        "type": "datetime",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false
+      },
+      {
+        "id": "lawyerId",
+        "name": "LawyerId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Lawyer",
+          "displayField": "FullName"
+        }
+      },
+      {
+        "id": "clientId",
+        "name": "ClientId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Client",
+          "displayField": "Name"
+        }
+      }
+    ]
+  },
+  {
+    "childEntityName": "LawyerSpecialization",
+    "childPluralName": "LawyerSpecializations",
+    "navigationName": "Specializations",
+    "childNavigationName": "Lawyer",
+    "childFkFieldName": "LawyerId",
+    "targetEntityName": "LawyerSpecialization",
+    "targetPluralName": "LawyerSpecializations",
+    "isChildGrid": true,
+    "isManyToMany": true,
+    "junctionConfig": {
+      "tableName": "LawyerSpecializations",
+      "junctionEntityId": "lawyerspecialization",
+      "showInSource": true,
+      "showInTarget": true
+    },
+    "childGridConfig": {
+      "title": "Specializations",
+      "allowAdd": true,
+      "allowRemove": true,
+      "allowEdit": false,
+      "renderMode": "tab"
+    },
+    "targetFields": [
+      {
+        "id": "lawyerId",
+        "name": "LawyerId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Lawyer",
+          "displayField": "FullName"
+        }
+      },
+      {
+        "id": "specializationId",
+        "name": "SpecializationId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Specialization",
+          "displayField": "Name"
+        }
+      }
+    ]
+  },
+  {
+    "childEntityName": "LawyerSpecialization",
+    "childPluralName": "LawyerSpecializations",
+    "navigationName": "LawyerSpecializations",
+    "childNavigationName": "Lawyer",
+    "childFkFieldName": "LawyerId",
+    "targetEntityName": "LawyerSpecialization",
+    "targetPluralName": "LawyerSpecializations",
+    "targetFields": [
+      {
+        "id": "lawyerId",
+        "name": "LawyerId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Lawyer",
+          "displayField": "FullName"
+        }
+      },
+      {
+        "id": "specializationId",
+        "name": "SpecializationId",
+        "type": "guid",
+        "isRequired": true,
+        "isNullable": false,
+        "isFilterable": true,
+        "isTextArea": false,
+        "isLookup": true,
+        "lookupConfig": {
+          "mode": "dropdown",
+          "targetEntity": "Specialization",
+          "displayField": "Name"
+        }
+      }
+    ]
+  }
+]

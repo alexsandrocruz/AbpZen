@@ -2,26 +2,39 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 interface GetLawyerSpecializationsInput {
-  filter?: string;
+  filter ?: string;
+  skipCount ?: number;
+  maxResultCount ?: number;
   lawyerId?: string;
   specializationId?: string;
-  skipCount?: number;
-  maxResultCount?: number;
-}
+  }
 
 export function useLawyerSpecializations(input: GetLawyerSpecializationsInput = {}) {
-  const { filter, lawyerId, specializationId, skipCount = 0, maxResultCount = 10 } = input;
+  const { filter, skipCount = 0, maxResultCount = 10, ...rest } = input;
 
   return useQuery({
-    queryKey: ["lawyerSpecializations", filter, lawyerId, specializationId, skipCount, maxResultCount],
+    queryKey: ["lawyerSpecializations", filter, skipCount, maxResultCount, rest],
     queryFn: async () => {
       const response = await apiClient.get("/api/app/lawyer-specialization", {
         params: {
           filter,
-          lawyerId,
-          specializationId,
           skipCount,
           maxResultCount,
+          ...rest,
+        },
+      });
+      return response.data;
+    },
+  });
+}
+
+export function useAllLawyerSpecializations() {
+  return useQuery({
+    queryKey: ["lawyerSpecializations", "all"],
+    queryFn: async () => {
+      const response = await apiClient.get("/api/app/lawyer-specialization", {
+        params: {
+          maxResultCount: 1000,
         },
       });
       return response.data;
@@ -79,45 +92,33 @@ export function useDeleteLawyerSpecialization() {
   });
 }
 
-export function useAllLawyerSpecializations() {
-  return useQuery({
-    queryKey: ["lawyerSpecializations", "all"],
-    queryFn: async () => {
-      const response = await apiClient.get("/api/app/lawyer-specialization", {
-        params: {
-          maxResultCount: 1000,
-        },
-      });
-      return response.data;
-    },
-  });
-}
 
 
 
 
-
-
-
+/**
+ * Toggle hook for many-to-many relationship: Lawyer <-> Specialization
+ * Given a Lawyer, toggle a Specialization
+ */
 export function useToggleSpecialization(lawyerId: string) {
   const queryClient = useQueryClient();
+  const createMutation = useCreateLawyerSpecialization();
+  const deleteMutation = useDeleteLawyerSpecialization();
+  const { data: existing } = useLawyerSpecializations({ lawyerId: lawyerId, maxResultCount: 1000 });
+
   return useMutation({
     mutationFn: async ({ specializationId, isChecked }: { specializationId: string; isChecked: boolean }) => {
       if (isChecked) {
-        const response = await apiClient.get("/api/app/lawyer-specialization", {
-          params: {
-            lawyerId,
-            specializationId,
-          },
-        });
-        const items = response.data.items;
-        if (items && items.length > 0) {
-          await apiClient.delete(`/api/app/lawyer-specialization/${items[0].id}`);
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.specializationId === specializationId);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
         }
       } else {
-        await apiClient.post("/api/app/lawyer-specialization", {
-          lawyerId,
-          specializationId,
+        // Add relationship
+        await createMutation.mutateAsync({
+          lawyerId: lawyerId,
+          specializationId: specializationId,
         });
       }
     },
@@ -127,29 +128,29 @@ export function useToggleSpecialization(lawyerId: string) {
   });
 }
 
-
-
-
-
+/**
+ * Toggle hook for many-to-many relationship: Lawyer <-> Specialization
+ * Given a Specialization, toggle a Lawyer
+ */
 export function useToggleLawyer(specializationId: string) {
   const queryClient = useQueryClient();
+  const createMutation = useCreateLawyerSpecialization();
+  const deleteMutation = useDeleteLawyerSpecialization();
+  const { data: existing } = useLawyerSpecializations({ specializationId: specializationId, maxResultCount: 1000 });
+
   return useMutation({
     mutationFn: async ({ lawyerId, isChecked }: { lawyerId: string; isChecked: boolean }) => {
       if (isChecked) {
-        const response = await apiClient.get("/api/app/lawyer-specialization", {
-          params: {
-            specializationId,
-            lawyerId,
-          },
-        });
-        const items = response.data.items;
-        if (items && items.length > 0) {
-          await apiClient.delete(`/api/app/lawyer-specialization/${items[0].id}`);
+        // Remove relationship
+        const record = existing?.items?.find((i: any) => i.lawyerId === lawyerId);
+        if (record) {
+          await deleteMutation.mutateAsync(record.id);
         }
       } else {
-        await apiClient.post("/api/app/lawyer-specialization", {
-          specializationId,
-          lawyerId,
+        // Add relationship
+        await createMutation.mutateAsync({
+          lawyerId: lawyerId,
+          specializationId: specializationId,
         });
       }
     },
@@ -158,9 +159,4 @@ export function useToggleLawyer(specializationId: string) {
     },
   });
 }
-
-
-
-
-
 

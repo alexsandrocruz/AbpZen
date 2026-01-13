@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.finLancamentos_BKP
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["finLancamentos_BKPs"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.finLancamentos_BKP;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/finLancamentos_BKP/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/finLancamentos_BKP/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.finLancamentos_BKP.Create))
+    {
+        <abp-button id="NewfinLancamentos_BKPButton"
+            text="@L["NewfinLancamentos_BKP"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="finLancamentos_BKPCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="finLancamentos_BKPFilter" id="finLancamentos_BKPFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="finLancamentos_BKPCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="finLancamentos_BKPTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +13,12 @@ public class CreateUpdateLegalProcessDto
     public Guid Id { get; set; }
     [Required]
     [StringLength(32)]
-    public string ProcessNumber { get; set; }
+    public string ProcessNumber { get; set; } = string.Empty;
     [Required]
     [StringLength(128)]
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     [StringLength(2048)]
-    public string? Description { get; set; }
+    public string Description { get; set; }
     [Required]
     public DateTime DateOpened { get; set; }
 

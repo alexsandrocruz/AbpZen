@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advProFases
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advProFaseses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advProFases;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advProFases/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advProFases/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advProFases.Create))
+    {
+        <abp-button id="NewadvProFasesButton"
+            text="@L["NewadvProFases"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advProFasesCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advProFasesFilter" id="advProFasesFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advProFasesCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advProFasesTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

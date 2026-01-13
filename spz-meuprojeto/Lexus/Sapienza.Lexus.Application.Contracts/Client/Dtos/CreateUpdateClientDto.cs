@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,15 +13,15 @@ public class CreateUpdateClientDto
     public Guid Id { get; set; }
     [Required]
     [StringLength(128)]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     [Required]
     [StringLength(128)]
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     [StringLength(20)]
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
     [Required]
     [StringLength(20)]
-    public string CpfCnpj { get; set; }
+    public string CpfCnpj { get; set; } = string.Empty;
 
     // ========== Foreign Key Fields (1:N Relationships) ==========
 

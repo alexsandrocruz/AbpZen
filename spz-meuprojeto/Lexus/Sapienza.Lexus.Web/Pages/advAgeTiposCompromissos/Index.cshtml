@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.advAgeTiposCompromissos
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["advAgeTiposCompromissoses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.advAgeTiposCompromissos;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/advAgeTiposCompromissos/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/advAgeTiposCompromissos/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.advAgeTiposCompromissos.Create))
+    {
+        <abp-button id="NewadvAgeTiposCompromissosButton"
+            text="@L["NewadvAgeTiposCompromissos"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="advAgeTiposCompromissosCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="advAgeTiposCompromissosFilter" id="advAgeTiposCompromissosFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="advAgeTiposCompromissosCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="advAgeTiposCompromissosTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

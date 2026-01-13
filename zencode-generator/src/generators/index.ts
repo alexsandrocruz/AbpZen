@@ -177,6 +177,46 @@ export class CodeGenerator {
         asParent: ParentRelationshipContext[] = [],
         asChild: ChildRelationshipContext[] = []
     ): GeneratorContext {
+        // Track occupied names to avoid CS0102 and CS0542
+        const occupiedNames = new Set<string>();
+        occupiedNames.add(entity.name);
+        entity.fields.forEach(f => occupiedNames.add(f.name));
+
+        // Standard ABP properties
+        ['Id', 'ExtraProperties', 'ConcurrencyStamp', 'CreationTime', 'CreatorId',
+            'LastModificationTime', 'LastModifierId', 'IsDeleted', 'DeleterId', 'DeletionTime']
+            .forEach(name => occupiedNames.add(name));
+
+        // Refine asParent names
+        const uniqueAsParent = asParent.map(rel => {
+            let uniqueNavName = rel.navigationName;
+            if (occupiedNames.has(uniqueNavName)) {
+                uniqueNavName = `${rel.navigationName}Collection`;
+            }
+            let counter = 1;
+            while (occupiedNames.has(uniqueNavName)) {
+                uniqueNavName = `${rel.navigationName}Collection${counter}`;
+                counter++;
+            }
+            occupiedNames.add(uniqueNavName);
+            return { ...rel, navigationName: uniqueNavName };
+        });
+
+        // Refine asChild names
+        const uniqueAsChild = asChild.map(rel => {
+            let uniqueNavName = rel.navigationName;
+            if (occupiedNames.has(uniqueNavName)) {
+                uniqueNavName = `${rel.navigationName}Nav`;
+            }
+            let counter = 1;
+            while (occupiedNames.has(uniqueNavName)) {
+                uniqueNavName = `${rel.navigationName}Nav${counter}`;
+                counter++;
+            }
+            occupiedNames.add(uniqueNavName);
+            return { ...rel, navigationName: uniqueNavName };
+        });
+
         // Extract short name from projectName or namespace (last segment)
         const shortName = projectName.includes('.')
             ? projectName.split('.').pop() || projectName
@@ -204,10 +244,10 @@ export class CodeGenerator {
                 updateTypeName: `CreateUpdate${entity.name}Dto`,
             },
             relationships: {
-                asParent,
-                asChild,
+                asParent: uniqueAsParent,
+                asChild: uniqueAsChild,
             },
-            isMasterDetail: asParent.some(r => r.isChildGrid)
+            isMasterDetail: uniqueAsParent.some(r => r.isChildGrid)
         };
     }
 
@@ -499,7 +539,7 @@ export class CodeGenerator {
     ): Promise<GeneratedFile[]> {
         const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
         const files: GeneratedFile[] = [];
-        const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        const kebabName = kebabCase(entity.name);
 
         // Determine if this entity should use full-page layout
         const hasChildGrid = asParent.some(r => r.isChildGrid);
@@ -562,14 +602,14 @@ export class CodeGenerator {
 
             // List component
             files.push({
-                path: `abp-react-v2/src/components/${kebabName}/${entity.name}List.tsx`,
+                path: `abp-react-v2/src/components/${kebabName}/${pascalCase(entity.name)}List.tsx`,
                 content: await this.engine.parseAndRender(getReactV2ListComponentTemplate(), ctx),
                 layer: 'React',
             });
 
             // Form component (modal)
             files.push({
-                path: `abp-react-v2/src/components/${kebabName}/${entity.name}Form.tsx`,
+                path: `abp-react-v2/src/components/${kebabName}/${pascalCase(entity.name)}Form.tsx`,
                 content: await this.engine.parseAndRender(getReactV2FormComponentTemplate(), ctx),
                 layer: 'React',
             });
@@ -577,7 +617,7 @@ export class CodeGenerator {
 
         // Hook (always generated)
         files.push({
-            path: `abp-react-v2/src/lib/abp/hooks/use${entity.pluralName}.ts`,
+            path: `abp-react-v2/src/lib/abp/hooks/use${pascalCase(entity.pluralName)}.ts`,
             content: await this.engine.parseAndRender(getReactV2HookTemplate(), ctx),
             layer: 'React',
         });
@@ -597,7 +637,7 @@ export class CodeGenerator {
     ): Promise<GeneratedFile[]> {
         const ctx = this.createContext(entity, projectName, projectNamespace, asParent, asChild);
         const files: GeneratedFile[] = [];
-        const kebabName = entity.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        const kebabName = kebabCase(entity.name);
 
         // Module
         files.push({
@@ -702,44 +742,45 @@ export class CodeGenerator {
     }
 
     /**
-     * Generate all files for multiple entities with relationship support
+     * Get global relationship contexts for all entities
      */
-    public async generateAll(
+    public getGlobalRelationshipContexts(
         entities: EntityData[],
         relationships: RelationshipInfo[],
-        projectName: string,
-        projectNamespace: string,
-        frontends: FrontendTarget[] = ['razor'],
-        entityIdMap?: Map<string, string> // Optional: maps entity ID to entity name
-    ): Promise<GeneratedFile[]> {
-        const allFiles: GeneratedFile[] = [];
-
-        // Generate global Angular files if selected
-        if (frontends.includes('angular')) {
-            const globalAngularFiles = await this.generateAngularGlobalFiles(entities, projectName, projectNamespace);
-            allFiles.push(...globalAngularFiles);
-        }
-
+        entityIdMap?: Map<string, string>
+    ): Array<{ entityName: string, asParent: ParentRelationshipContext[], asChild: ChildRelationshipContext[] }> {
         const entityMapByName = new Map<string, EntityData>(entities.map(e => [e.name, e]));
 
-        // If entityIdMap is provided, use it; otherwise try to extract from relationship source/target
-        // by matching against entity names (fallback for when IDs are entity names)
         const resolveEntityName = (idOrName: string): string | undefined => {
-            // First, check if it's an entity name directly
-            if (entityMapByName.has(idOrName)) {
-                return idOrName;
+            if (entityMapByName.has(idOrName)) return idOrName;
+
+            // Try ID map
+            if (entityIdMap) {
+                if (entityIdMap.has(idOrName)) return entityIdMap.get(idOrName);
+                // Also check if idOrName IS an entity name in the map (reverse lookup or direct hit)
+                for (const [id, name] of entityIdMap.entries()) {
+                    if (name === idOrName) return name;
+                }
             }
-            // Then, check if we have an ID map
-            if (entityIdMap && entityIdMap.has(idOrName)) {
-                return entityIdMap.get(idOrName);
+
+            // Case-insensitive fallback
+            for (const name of entityMapByName.keys()) {
+                if (name.toLowerCase() === idOrName.toLowerCase()) return name;
             }
-            // Fallback: check if any entity's lookupConfig.targetEntity matches
             return undefined;
         };
 
-        for (const entity of entities) {
+        return entities.map(entity => {
             const asParent: ParentRelationshipContext[] = [];
             const asChild: ChildRelationshipContext[] = [];
+
+            // Tracking set for all member names in this entity to avoid CS0102 and CS0542
+            const occupiedNames = new Set<string>();
+            occupiedNames.add(entity.name);
+            entity.fields.forEach(f => occupiedNames.add(f.name));
+            ['Id', 'ExtraProperties', 'ConcurrencyStamp', 'CreationTime', 'CreatorId',
+                'LastModificationTime', 'LastModifierId', 'IsDeleted', 'DeleterId', 'DeletionTime']
+                .forEach(name => occupiedNames.add(name));
 
             for (const rel of relationships) {
                 if (rel.data.type === 'one-to-many') {
@@ -752,19 +793,34 @@ export class CodeGenerator {
                     if (sourceEntity && targetEntity) {
                         // If this entity is the parent (target)
                         if (targetEntity.name === entity.name) {
-                            asParent.push({
-                                childEntityName: sourceEntity.name,
-                                childPluralName: sourceEntity.pluralName,
-                                navigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
-                                childNavigationName: rel.data.targetNavigationName || targetEntity.name,
-                                childFkFieldName: `${targetEntity.name}Id`,
-                                // New fields for Master-Detail (mapped to ParentRelationshipContext)
-                                targetEntityName: sourceEntity.name,
-                                targetPluralName: sourceEntity.pluralName,
-                                isChildGrid: rel.data.isChildGrid,
-                                childGridConfig: rel.data.childGridConfig,
-                                targetFields: sourceEntity.fields
-                            });
+                            let navName = rel.data.sourceNavigationName || sourceEntity.pluralName;
+
+                            // Collision resolution
+                            let uniqueNavName = navName;
+                            if (occupiedNames.has(uniqueNavName)) uniqueNavName = `${navName}Collection`;
+                            let counter = 1;
+                            while (occupiedNames.has(uniqueNavName)) {
+                                uniqueNavName = `${navName}Collection${counter}`;
+                                counter++;
+                            }
+                            occupiedNames.add(uniqueNavName);
+
+                            // Avoid duplicates
+                            if (!asParent.some(p => p.navigationName === uniqueNavName && p.childEntityName === sourceEntity.name)) {
+                                asParent.push({
+                                    childEntityName: sourceEntity.name,
+                                    childPluralName: sourceEntity.pluralName,
+                                    navigationName: uniqueNavName,
+                                    childNavigationName: rel.data.targetNavigationName || targetEntity.name,
+                                    childFkFieldName: `${targetEntity.name}Id`,
+                                    // Fields for Master-Detail
+                                    targetEntityName: sourceEntity.name,
+                                    targetPluralName: sourceEntity.pluralName,
+                                    isChildGrid: rel.data.isChildGrid,
+                                    childGridConfig: rel.data.childGridConfig,
+                                    targetFields: sourceEntity.fields
+                                });
+                            }
                         }
 
                         // If this entity is the child (source)
@@ -778,16 +834,32 @@ export class CodeGenerator {
                                 || targetEntity.fields.find(f => f.type === 'string')
                                 || { name: 'Id' };
 
-                            asChild.push({
-                                parentEntityName: targetEntity.name,
-                                parentPluralName: targetEntity.pluralName,
-                                fkFieldName: fkField?.name || `${targetEntity.name}Id`,
-                                navigationName: rel.data.targetNavigationName || targetEntity.name,
-                                parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
-                                isRequired: rel.data.isRequired,
-                                lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
-                                displayField: displayFieldField.name
-                            });
+                            let navName = rel.data.targetNavigationName || targetEntity.name;
+
+                            // Collision resolution
+                            let uniqueNavName = navName;
+                            if (occupiedNames.has(uniqueNavName)) uniqueNavName = `${navName}Nav`;
+                            let counter = 1;
+                            while (occupiedNames.has(uniqueNavName)) {
+                                uniqueNavName = `${navName}Nav${counter}`;
+                                counter++;
+                            }
+                            occupiedNames.add(uniqueNavName);
+
+                            // Avoid duplicates
+                            const fkName = fkField?.name || `${targetEntity.name}Id`;
+                            if (!asChild.some(c => c.fkFieldName === fkName && c.parentEntityName === targetEntity.name)) {
+                                asChild.push({
+                                    parentEntityName: targetEntity.name,
+                                    parentPluralName: targetEntity.pluralName,
+                                    fkFieldName: fkName,
+                                    navigationName: uniqueNavName,
+                                    parentNavigationName: rel.data.sourceNavigationName || sourceEntity.pluralName,
+                                    isRequired: rel.data.isRequired,
+                                    lookupMode: fkField?.lookupConfig?.mode || 'dropdown',
+                                    displayField: displayFieldField.name
+                                });
+                            }
                         }
                     }
                 } else if (rel.data.type === 'many-to-many') {
@@ -803,92 +875,197 @@ export class CodeGenerator {
                         const junctionEntity = entities.find(e => e.name === junctionName);
 
                         if (junctionEntity) {
+                            // If this entity is the source
                             if (sourceEntity.name === entity.name && rel.data.junctionConfig.showInSource) {
-                                asParent.push({
-                                    childEntityName: junctionEntity.name,
-                                    childPluralName: junctionEntity.pluralName,
-                                    navigationName: rel.data.sourceNavigationName || junctionEntity.pluralName,
-                                    childNavigationName: sourceEntity.name,
-                                    childFkFieldName: `${sourceEntity.name}Id`,
-                                    targetEntityName: junctionEntity.name,
-                                    targetPluralName: junctionEntity.pluralName,
-                                    isChildGrid: true,
-                                    isManyToMany: true,
-                                    junctionConfig: rel.data.junctionConfig,
-                                    childGridConfig: {
-                                        title: targetEntity.pluralName,
-                                        allowAdd: true,
-                                        allowRemove: true,
-                                        allowEdit: false,
-                                        renderMode: 'tab'
-                                    },
-                                    targetFields: junctionEntity.fields
-                                });
+                                let navName = rel.data.sourceNavigationName || junctionEntity.pluralName;
+                                let uniqueNavName = navName;
+                                if (occupiedNames.has(uniqueNavName)) uniqueNavName = `${navName}Collection`;
+                                let counter = 1;
+                                while (occupiedNames.has(uniqueNavName)) {
+                                    uniqueNavName = `${navName}Collection${counter}`;
+                                    counter++;
+                                }
+                                occupiedNames.add(uniqueNavName);
+
+                                if (!asParent.some(p => p.navigationName === uniqueNavName && p.childEntityName === junctionEntity.name)) {
+                                    asParent.push({
+                                        childEntityName: junctionEntity.name,
+                                        childPluralName: junctionEntity.pluralName,
+                                        navigationName: uniqueNavName,
+                                        childNavigationName: sourceEntity.name,
+                                        childFkFieldName: `${sourceEntity.name}Id`,
+                                        targetEntityName: junctionEntity.name,
+                                        targetPluralName: junctionEntity.pluralName,
+                                        isChildGrid: true,
+                                        isManyToMany: true,
+                                        junctionConfig: rel.data.junctionConfig,
+                                        childGridConfig: {
+                                            title: targetEntity.pluralName,
+                                            allowAdd: true,
+                                            allowRemove: true,
+                                            allowEdit: false,
+                                            renderMode: 'tab'
+                                        },
+                                        targetFields: junctionEntity.fields
+                                    });
+                                }
                             }
+                            // If this entity is the target
                             if (targetEntity.name === entity.name && rel.data.junctionConfig.showInTarget) {
-                                asParent.push({
-                                    childEntityName: junctionEntity.name,
-                                    childPluralName: junctionEntity.pluralName,
-                                    navigationName: rel.data.targetNavigationName || junctionEntity.pluralName,
-                                    childNavigationName: targetEntity.name,
-                                    childFkFieldName: `${targetEntity.name}Id`,
-                                    targetEntityName: junctionEntity.name,
-                                    targetPluralName: junctionEntity.pluralName,
-                                    isChildGrid: true,
-                                    isManyToMany: true,
-                                    junctionConfig: rel.data.junctionConfig,
-                                    childGridConfig: {
-                                        title: sourceEntity.pluralName,
-                                        allowAdd: true,
-                                        allowRemove: true,
-                                        allowEdit: false,
-                                        renderMode: 'tab'
-                                    },
-                                    targetFields: junctionEntity.fields
-                                });
+                                let navName = rel.data.targetNavigationName || junctionEntity.pluralName;
+                                let uniqueNavName = navName;
+                                if (occupiedNames.has(uniqueNavName)) uniqueNavName = `${navName}Collection`;
+                                let counter = 1;
+                                while (occupiedNames.has(uniqueNavName)) {
+                                    uniqueNavName = `${navName}Collection${counter}`;
+                                    counter++;
+                                }
+                                occupiedNames.add(uniqueNavName);
+
+                                if (!asParent.some(p => p.navigationName === uniqueNavName && p.childEntityName === junctionEntity.name)) {
+                                    asParent.push({
+                                        childEntityName: junctionEntity.name,
+                                        childPluralName: junctionEntity.pluralName,
+                                        navigationName: uniqueNavName,
+                                        childNavigationName: targetEntity.name,
+                                        childFkFieldName: `${targetEntity.name}Id`,
+                                        targetEntityName: junctionEntity.name,
+                                        targetPluralName: junctionEntity.pluralName,
+                                        isChildGrid: true,
+                                        isManyToMany: true,
+                                        junctionConfig: rel.data.junctionConfig,
+                                        childGridConfig: {
+                                            title: sourceEntity.pluralName,
+                                            allowAdd: true,
+                                            allowRemove: true,
+                                            allowEdit: false,
+                                            renderMode: 'tab'
+                                        },
+                                        targetFields: junctionEntity.fields
+                                    });
+                                }
                             }
 
-                            // If this entity IS the junction entity, add both source and target as asChild
-                            // so that the junction entity gets the FK properties (AlunoId, TurmaId, etc.)
+                            // If this entity IS the junction entity
                             if (junctionEntity.name === entity.name) {
-                                // Add source entity as parent (e.g., Aluno)
                                 const sourceDisplayField = sourceEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
                                     || sourceEntity.fields.find(f => f.name === 'Nome')
                                     || sourceEntity.fields.find(f => f.type === 'string')
                                     || { name: 'Id' };
 
-                                asChild.push({
-                                    parentEntityName: sourceEntity.name,
-                                    parentPluralName: sourceEntity.pluralName,
-                                    fkFieldName: rel.data.junctionConfig.sourceForeignKey || `${sourceEntity.name}Id`,
-                                    navigationName: sourceEntity.name,
-                                    parentNavigationName: junctionEntity.pluralName,
-                                    isRequired: true,
-                                    lookupMode: 'dropdown',
-                                    displayField: sourceDisplayField.name
-                                });
+                                let sourceNavName = sourceEntity.name;
+                                if (occupiedNames.has(sourceNavName)) sourceNavName = `${sourceEntity.name}Nav`;
+                                occupiedNames.add(sourceNavName);
 
-                                // Add target entity as parent (e.g., Turma)
+                                if (!asChild.some(c => c.fkFieldName === (rel.data.junctionConfig!.sourceForeignKey || `${sourceEntity.name}Id`))) {
+                                    asChild.push({
+                                        parentEntityName: sourceEntity.name,
+                                        parentPluralName: sourceEntity.pluralName,
+                                        fkFieldName: rel.data.junctionConfig.sourceForeignKey || `${sourceEntity.name}Id`,
+                                        navigationName: sourceNavName,
+                                        parentNavigationName: junctionEntity.pluralName,
+                                        isRequired: true,
+                                        lookupMode: 'dropdown',
+                                        displayField: sourceDisplayField.name
+                                    });
+                                }
+
                                 const targetDisplayField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
                                     || targetEntity.fields.find(f => f.name === 'Nome')
                                     || targetEntity.fields.find(f => f.type === 'string')
                                     || { name: 'Id' };
 
-                                asChild.push({
-                                    parentEntityName: targetEntity.name,
-                                    parentPluralName: targetEntity.pluralName,
-                                    fkFieldName: rel.data.junctionConfig.targetForeignKey || `${targetEntity.name}Id`,
-                                    navigationName: targetEntity.name,
-                                    parentNavigationName: junctionEntity.pluralName,
-                                    isRequired: true,
-                                    lookupMode: 'dropdown',
-                                    displayField: targetDisplayField.name
-                                });
+                                let targetNavName = targetEntity.name;
+                                if (occupiedNames.has(targetNavName)) targetNavName = `${targetEntity.name}Nav`;
+                                occupiedNames.add(targetNavName);
+
+                                if (!asChild.some(c => c.fkFieldName === (rel.data.junctionConfig!.targetForeignKey || `${targetEntity.name}Id`))) {
+                                    asChild.push({
+                                        parentEntityName: targetEntity.name,
+                                        parentPluralName: targetEntity.pluralName,
+                                        fkFieldName: rel.data.junctionConfig.targetForeignKey || `${targetEntity.name}Id`,
+                                        navigationName: targetNavName,
+                                        parentNavigationName: junctionEntity.pluralName,
+                                        isRequired: true,
+                                        lookupMode: 'dropdown',
+                                        displayField: targetDisplayField.name
+                                    });
+                                }
                             }
                         }
                     }
                 }
             }
+
+            // AFTER processing all edges, check for any fields marked as isLookup 
+            // that don't have a corresponding relationship in asChild yet.
+            for (const field of entity.fields) {
+                if (field.isLookup && field.lookupConfig?.targetEntity) {
+                    const targetEntityName = resolveEntityName(field.lookupConfig.targetEntity);
+                    const targetEntity = targetEntityName ? entityMapByName.get(targetEntityName) : undefined;
+
+                    if (targetEntity) {
+                        const alreadyAdded = asChild.some(c => c.parentEntityName === targetEntity.name || c.fkFieldName === field.name);
+
+                        if (!alreadyAdded) {
+                            let navName = targetEntity.name;
+                            let uniqueNavName = navName;
+                            if (occupiedNames.has(uniqueNavName)) uniqueNavName = `${navName}Nav`;
+                            let counter = 1;
+                            while (occupiedNames.has(uniqueNavName)) {
+                                uniqueNavName = `${navName}Nav${counter}`;
+                                counter++;
+                            }
+                            occupiedNames.add(uniqueNavName);
+
+                            const displayFieldField = targetEntity.fields.find(f => f.name === 'Name' || f.name === 'name')
+                                || targetEntity.fields.find(f => f.name === 'Title' || f.name === 'title')
+                                || targetEntity.fields.find(f => f.name === 'Nome' || f.name === 'nome')
+                                || targetEntity.fields.find(f => f.type === 'string')
+                                || { name: 'Id' };
+
+                            asChild.push({
+                                parentEntityName: targetEntity.name,
+                                parentPluralName: targetEntity.pluralName,
+                                fkFieldName: field.name,
+                                navigationName: uniqueNavName,
+                                parentNavigationName: entity.pluralName,
+                                isRequired: field.isRequired || false,
+                                lookupMode: field.lookupConfig.mode || 'dropdown',
+                                displayField: displayFieldField.name
+                            });
+                        }
+                    }
+                }
+            }
+
+            return { entityName: entity.name, asParent, asChild };
+        });
+    }
+
+    public async generateAll(
+        entities: EntityData[],
+        relationships: RelationshipInfo[],
+        projectName: string,
+        projectNamespace: string,
+        frontends: FrontendTarget[] = ['razor'],
+        entityIdMap?: Map<string, string>
+    ): Promise<GeneratedFile[]> {
+        const allFiles: GeneratedFile[] = [];
+
+        // Generate global Angular files if selected
+        if (frontends.includes('angular')) {
+            const globalAngularFiles = await this.generateAngularGlobalFiles(entities, projectName, projectNamespace);
+            allFiles.push(...globalAngularFiles);
+        }
+
+        const contexts = this.getGlobalRelationshipContexts(entities, relationships, entityIdMap);
+        const contextMap = new Map(contexts.map(c => [c.entityName, c]));
+
+        for (const entity of entities) {
+            const ctx = contextMap.get(entity.name);
+            const asParent = ctx?.asParent || [];
+            const asChild = ctx?.asChild || [];
 
             const entityFiles = await this.generateEntityWithFrontends(
                 entity,

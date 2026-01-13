@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.PropostalItem
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["PropostalItems"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.PropostalItem;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/PropostalItem/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/PropostalItem/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.PropostalItem.Create))
+    {
+        <abp-button id="NewPropostalItemButton"
+            text="@L["NewPropostalItem"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="PropostalItemCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="PropostalItemFilter" id="PropostalItemFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="PropostalItemCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="PropostalItemTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

@@ -1,73 +1,67 @@
-
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useLocation, useRoute } from "wouter";
+import { useLocation, useParams } from "wouter";
 import { Shell } from "@/components/layout/shell";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save, Loader2, Plus, Trash2, Search } from "lucide-react";
-import { toast } from "sonner";
 import {
-  useProposal,
-  useCreateProposal,
-  useUpdateProposal
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { 
+  useProposal, 
+  useCreateProposal, 
+  useUpdateProposal 
 } from "@/lib/abp/hooks/useProposals";
-import { ClientPickerDialog } from "@/components/client/ClientPickerDialog";
-import { useClient } from "@/lib/abp/hooks/useClients"; // Import useClient
+
+
+import { useClients } from "@/lib/abp/hooks/useClients";
+
 
 const formSchema = z.object({
-
-  number: z.string().optional(),
-
-  date: z.string().optional(),
-
-  validate: z.string().optional(),
-
-  obs: z.string().optional(),
-
-  clientId: z.string().optional(),
-
+  
+  number: z.any(),
+  
+  date: z.any(),
+  
+  validate: z.any(),
+  
+  obs: z.any(),
+  
+  clientId: z.any(),
+  
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 
-interface PropostalItemItem {
-  id?: string;
-  desc?: string;
-  quant?: number;
-  unitPrice?: number;
-  total?: number;
-  proposalId?: string;
-}
-
 
 export default function ProposalFormPage() {
   const [, setLocation] = useLocation();
-  const [match, params] = useRoute("/admin/proposal/:id/edit");
-  const id = match ? params?.id : undefined;
+  const { id } = useParams<{ id: string }>();
   const isEditing = !!id;
 
   const { data: existing, isLoading: loadingExisting } = useProposal(id || "");
   const createMutation = useCreateProposal();
   const updateMutation = useUpdateProposal();
 
+  
+  
+  const { data: clients } = useClients({ maxResultCount: 1000 });
+  
 
-  const [propostalItemItems, setPropostalItemItems] = useState<PropostalItemItem[]>([]);
-
+  
 
   const {
     register,
@@ -81,59 +75,20 @@ export default function ProposalFormPage() {
     defaultValues: {},
   });
 
-  // Watch clientId to fetch client details for display
-  const watchedClientId = watch("clientId");
-  const { data: selectedClientData } = useClient(watchedClientId || "");
-
   useEffect(() => {
     if (existing) {
       reset(existing);
-
-      if (existing.propostalItems) {
-        setPropostalItemItems(existing.propostalItems);
-      }
-
+      
     }
   }, [existing, reset]);
 
-
-  const addPropostalItem = () => {
-    setPropostalItemItems([...propostalItemItems, {
-
-      desc: "",
-
-      quant: 0,
-
-      unitPrice: 0,
-
-      total: 0,
-
-      proposalId: "",
-
-    }]);
-  };
-
-  const removePropostalItem = (index: number) => {
-    setPropostalItemItems(propostalItemItems.filter((_, i) => i !== index));
-  };
-
-  const updatePropostalItem = (index: number, field: keyof PropostalItemItem, value: any) => {
-    const updated = [...propostalItemItems];
-    updated[index] = { ...updated[index], [field]: value };
-    setPropostalItemItems(updated);
-  };
-
+  
 
   const onSubmit = async (data: FormValues) => {
     try {
       const payload = {
         ...data,
-
-        propostalItems: propostalItemItems.filter(item =>
-
-          true
-        ),
-
+        
       };
 
       if (isEditing) {
@@ -154,7 +109,7 @@ export default function ProposalFormPage() {
   if (loadingExisting && isEditing) {
     return (
       <Shell>
-        <div className="flex items-center justify-center p-12">
+        <div className="flex items-center justify-center h-64">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       </Shell>
@@ -167,8 +122,8 @@ export default function ProposalFormPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
+            <Button 
+              variant="ghost" 
               size="icon"
               onClick={() => setLocation("/admin/proposal")}
             >
@@ -196,162 +151,87 @@ export default function ProposalFormPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
+                    
+                    
                     <div className="space-y-2">
                       <Label htmlFor="number">
                         Number
                       </Label>
-
-                      <Input
-                        id="number"
+                      
+                      <Input 
+                        id="number" 
                         placeholder=""
-                        {...register("number")}
+                        {...register("number")} 
                       />
-
+                      
                     </div>
-
+                    
+                    
                     <div className="space-y-2">
                       <Label htmlFor="date">
                         Date
                       </Label>
-
+                      
                       <Input id="date" type="date" {...register("date")} />
-
+                      
                     </div>
-
+                    
+                    
                     <div className="space-y-2">
                       <Label htmlFor="validate">
                         Validate
                       </Label>
-
+                      
                       <Input id="validate" type="date" {...register("validate")} />
-
+                      
                     </div>
-
+                    
+                    
                     <div className="space-y-2">
                       <Label htmlFor="obs">
                         Obs
                       </Label>
-
-                      <Textarea
-                        id="obs"
+                      
+                      <Textarea 
+                        id="obs" 
                         rows={4}
                         placeholder=""
-                        {...register("obs")}
+                        {...register("obs")} 
                       />
-
+                      
                     </div>
-
+                    
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="clientId">Client</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          id="clientName"
-                          value={selectedClientData?.name || watchedClientId || ""}
-                          readOnly
-                          className="bg-muted cursor-default"
-                          placeholder="No client selected"
-                        />
-                        <Input
-                          type="hidden"
-                          {...register("clientId")}
-                        />
-                        <ClientPickerDialog
-                          onSelect={(client) => setValue("clientId", client.id)}
-                        />
-                      </div>
+                      <Label htmlFor="clientId">
+                        Client
+                      </Label>
+                      
+                      <Select
+                        value={watch("clientId")?.toString()}
+                        onValueChange={(val) => setValue("clientId", val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Name" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          { (clients as any)?.items?.map((item: any) => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.Name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      
                     </div>
-
+                    
                   </div>
                 </CardContent>
               </Card>
 
+              
 
-              {/* Child Entity Card */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>PropostalItem Items</CardTitle>
-                  <Button type="button" variant="outline" size="sm" onClick={addPropostalItem}>
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Item
-                  </Button>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {propostalItemItems.map((item, index) => (
-                      <div key={index} className="p-4 border rounded-lg space-y-3 bg-muted/30">
-                        <div className="flex gap-3 items-start">
-                          <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-3">
-
-                            <div>
-                              <Label className="text-xs text-muted-foreground">Desc</Label>
-
-                              <Input
-                                value={item.desc || ""}
-                                onChange={(e) => updatePropostalItem(index, "desc", e.target.value)}
-                              />
-
-                            </div>
-
-                            <div>
-                              <Label className="text-xs text-muted-foreground">Quant</Label>
-
-                              <Input
-                                type="number"
-                                step="any"
-                                value={item.quant || ""}
-                                onChange={(e) => updatePropostalItem(index, "quant", e.target.value)}
-                              />
-
-                            </div>
-
-                            <div>
-                              <Label className="text-xs text-muted-foreground">UnitPrice</Label>
-
-                              <Input
-                                type="number"
-                                step="any"
-                                value={item.unitPrice || ""}
-                                onChange={(e) => updatePropostalItem(index, "unitPrice", e.target.value)}
-                              />
-
-                            </div>
-
-                            <div>
-                              <Label className="text-xs text-muted-foreground">Total</Label>
-
-                              <Input
-                                type="number"
-                                step="any"
-                                value={item.total || ""}
-                                onChange={(e) => updatePropostalItem(index, "total", e.target.value)}
-                              />
-
-                            </div>
-
-                          </div>
-                          {propostalItemItems.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => removePropostalItem(index)}
-                            >
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    {propostalItemItems.length === 0 && (
-                      <div className="text-center py-8 text-muted-foreground">
-                        No items yet. Click "Add Item" to start.
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
+              
             </div>
 
             {/* Sidebar - 1 column */}
@@ -366,9 +246,9 @@ export default function ProposalFormPage() {
                     <Save className="mr-2 h-4 w-4" />
                     {isEditing ? "Save Changes" : "Create Proposal"}
                   </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
+                  <Button 
+                    type="button" 
+                    variant="outline" 
                     className="w-full"
                     onClick={() => setLocation("/admin/proposal")}
                   >

@@ -1,0 +1,51 @@
+@page
+@using Sapienza.Lexus.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Sapienza.Lexus.Web.Pages.fabLembretes
+@using Sapienza.Lexus.Localization
+@using Sapienza.Lexus.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<Sapienza.LexusResource> L
+@inject IAuthorizationService Authorization
+
+@{
+    PageLayout.Content.Title = L["fabLembreteses"].Value;
+    PageLayout.Content.MenuItemName = Sapienza.LexusMenus.fabLembretes;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/fabLembretes/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/fabLembretes/index.css"/>
+}
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(Sapienza.LexusPermissions.fabLembretes.Create))
+    {
+        <abp-button id="NewfabLembretesButton"
+            text="@L["NewfabLembretes"].Value"
+            icon="plus" size="Small"
+            button-type="Primary" />
+    }
+}
+
+<abp-card>
+    <abp-card-body>
+        <abp-row class="mb-3">
+            <a abp-collapse-id="fabLembretesCollapse" class="text-secondary">@L["TableFilter"]</a>
+        </abp-row>
+        <abp-dynamic-form abp-model="fabLembretesFilter" id="fabLembretesFilter" required-symbols="false" column-size="_3">
+            <abp-collapse-body id="fabLembretesCollapse">
+                <abp-form-content />
+            </abp-collapse-body>
+        </abp-dynamic-form>
+        <hr />
+        <abp-table striped-rows="true" id="fabLembretesTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

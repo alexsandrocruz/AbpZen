@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using Volo.Abp.Application.Dtos;
 

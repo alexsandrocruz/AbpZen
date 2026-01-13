@@ -1,4 +1,3 @@
-#nullable enable
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
@@ -10,7 +9,7 @@ public static class LawyerDbContextModelCreatingExtensions
     {
         builder.Entity<Lawyer>(b =>
         {
-            b.ToTable(LexusConsts.DbTablePrefix + "Lawyers", LexusConsts.DbSchema);
+            b.ToTable(Sapienza.LexusConsts.DbTablePrefix + "Lawyers", Sapienza.LexusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.FullName).HasMaxLength(128);
             b.Property(x => x.FullName).IsRequired();
