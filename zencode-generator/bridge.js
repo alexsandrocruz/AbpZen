@@ -845,6 +845,10 @@ if (fs.existsSync(distPath)) {
     });
 }
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`ZenCode Bridge running at http://localhost:${port}`);
+});
+
+server.on('error', (err) => {
+    console.error('[Bridge] Server failed to start:', err);
 });

@@ -21,7 +21,7 @@ RUN npm ci --omit=dev
 COPY bridge.js injector.js db-importer.js ./
 COPY --from=frontend-builder /app/dist ./dist
 
-ENV PORT=80
-EXPOSE 80
+ENV PORT=3000
+EXPOSE 3000
 
 CMD ["node", "bridge.js"]
