@@ -1,6 +1,0 @@
-{
-  "Enum:MessageTypeEnum": "MessageTypeEnum",
-  "Enum:MessageTypeEnum.Email": "Email",
-  "Enum:MessageTypeEnum.WhatsApp": "WhatsApp",
-  "Enum:MessageTypeEnum.SMS": "SMS"
-}
