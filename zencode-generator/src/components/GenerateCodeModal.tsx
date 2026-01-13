@@ -42,6 +42,7 @@ export default function GenerateCodeModal({
     const [selectedEntities, setSelectedEntities] = useState<Set<string>>(
         () => new Set(entities.map(e => e.name))
     );
+    const [scaffolding, setScaffolding] = useState(false);
 
     // Frontend selection state - use defaultFrontends if provided, else React V2
     const [selectedFrontends, setSelectedFrontends] = useState<Set<FrontendTarget>>(
@@ -887,6 +888,16 @@ export default function GenerateCodeModal({
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
                             {localProjectPath ? (
                                 <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button
+                                        className="ui-button ui-button-primary"
+                                        onClick={handleScaffold}
+                                        disabled={scaffolding || applying || injecting}
+                                        title="Copy base ABP framework files (DbContext, .csproj, etc.) to this folder"
+                                        style={{ background: '#3b82f6', border: '1px solid #2563eb' }}
+                                    >
+                                        {scaffolding ? <Loader2 size={18} className="animate-spin" /> : <FolderPlus size={18} />}
+                                        Initialize
+                                    </button>
                                     <button
                                         className="ui-button ui-button-primary"
                                         onClick={handleApply}
