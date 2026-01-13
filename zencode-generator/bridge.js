@@ -10,10 +10,17 @@ import { injectCode } from './injector.js';
 import { importDatabase } from './db-importer.js';
 
 const app = express();
-const port = 3005;
+const port = process.env.PORT || 3005;
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
+
+// Serve static files from 'dist' (Vite build) if available
+const distPath = path.join(process.cwd(), 'dist');
+if (fs.existsSync(distPath)) {
+    console.log(`[Bridge] Serving static files from ${distPath}`);
+    app.use(express.static(distPath));
+}
 
 // Global Constants
 const SKIP_FOLDERS = new Set([
@@ -788,6 +795,14 @@ app.get('/api/terminal/status', (req, res) => {
     }
     res.json(status);
 });
+
+// SPA Catch-all: If not an API request and file exists, serve index.html
+if (fs.existsSync(distPath)) {
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api/')) return next();
+        res.sendFile(path.join(distPath, 'index.html'));
+    });
+}
 
 app.listen(port, () => {
     console.log(`ZenCode Bridge running at http://localhost:${port}`);

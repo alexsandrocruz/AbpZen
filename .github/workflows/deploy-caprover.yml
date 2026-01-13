@@ -1,0 +1,41 @@
+name: Deploy ZenCode Generator
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'zencode-generator/**'
+      - '.github/workflows/deploy-caprover.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./zencode-generator
+        push: true
+        tags: ghcr.io/${{ github.repository }}/zencode-generator:latest
+
+    - name: Deploy to CapRover
+      uses: caprover/deploy-from-image-action@v1
+      with:
+        server: '${{ secrets.CAPROVER_SERVER }}'
+        app: '${{ secrets.APP_NAME }}'
+        token: '${{ secrets.APP_TOKEN }}'
+        image: 'ghcr.io/${{ github.repository }}/zencode-generator:latest'
