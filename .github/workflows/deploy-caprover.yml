@@ -25,12 +25,17 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Lowercase Repository Name
+      id: repo_name
+      run: |
+        echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         context: ./zencode-generator
         push: true
-        tags: ghcr.io/${{ github.repository }}/zencode-generator:latest
+        tags: ghcr.io/${{ env.REPO_LOWER }}/zencode-generator:latest
 
     - name: Deploy to CapRover
       run: |
@@ -39,4 +44,4 @@ jobs:
           --host '${{ secrets.CAPROVER_SERVER }}' \
           --appToken '${{ secrets.APP_TOKEN }}' \
           --appName '${{ secrets.APP_NAME }}' \
-          --imageName 'ghcr.io/${{ github.repository }}/zencode-generator:latest'
+          --imageName 'ghcr.io/${{ env.REPO_LOWER }}/zencode-generator:latest'
