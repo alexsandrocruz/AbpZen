@@ -89,7 +89,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<'designer' | 'dashboard'>('designer');
 
   // Undo/Redo history
-  const { pushState, undo, redo, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialState.nodes, initialState.edges);
+  const { pushState, undo, redo, reset, canUndo, canRedo } = useHistory<Node<EntityData>, Edge>(initialState.nodes, initialState.edges);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Save canvas state to localStorage on changes (debounced)
@@ -474,7 +474,13 @@ function App() {
     if (!file) return;
 
     try {
+      console.log(`[App] Starting to load project from file: ${file.name}`);
       const project = await loadProjectFromFile(file);
+      console.log('[App] Project loaded successfully. Data:', {
+        projectName: project.name,
+        nodes: project.nodes?.length,
+        edges: project.edges?.length
+      });
       setNodes(project.nodes);
       setEdges(project.edges);
 
@@ -958,6 +964,7 @@ function App() {
               // Clear canvas for new project
               setNodes([]);
               setEdges([]);
+              reset([], []);
 
               // Add to recent projects
               addRecentProject({
@@ -967,6 +974,20 @@ function App() {
                 frontends: config.frontends,
               });
 
+              setShowNewProject(false);
+            }}
+            onScaffoldComplete={(result) => {
+              console.log('[App] Scaffold complete. Result:', {
+                success: result.success,
+                projectPath: result.projectPath,
+                entityCount: result.entities?.length,
+                relationshipCount: result.relationships?.length
+              });
+
+              // Clear canvas for scaffolded project
+              setNodes([]);
+              setEdges([]);
+              reset([], []);
               setShowNewProject(false);
             }}
           />

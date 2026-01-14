@@ -56,19 +56,37 @@ export const loadProjectFromFile = (file: File): Promise<ProjectFile> => {
         reader.onload = (e) => {
             try {
                 const content = e.target?.result as string;
+                console.log(`[Frontend] Read file "${file.name}" content length: ${content.length}`);
+
                 const project = JSON.parse(content) as ProjectFile;
+                console.log('[Frontend] Parsed project structure:', {
+                    version: project.version,
+                    name: project.name,
+                    nodeCount: project.nodes?.length,
+                    edgeCount: project.edges?.length,
+                    hasConfig: !!project.config
+                });
 
                 // Basic validation
                 if (!project.version || !project.nodes || !project.edges) {
+                    console.error('[Frontend] Validation failed: project structure is incomplete', {
+                        hasVersion: !!project.version,
+                        hasNodes: !!project.nodes,
+                        hasEdges: !!project.edges
+                    });
                     throw new Error('Invalid project file format');
                 }
 
                 resolve(project);
             } catch (error) {
+                console.error('[Frontend] Load Error:', error);
                 reject(new Error('Failed to parse project file'));
             }
         };
-        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.onerror = () => {
+            console.error('[Frontend] FileReader Error');
+            reject(new Error('Failed to read file'));
+        };
         reader.readAsText(file);
     });
 };

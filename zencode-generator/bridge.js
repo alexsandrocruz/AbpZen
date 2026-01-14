@@ -632,10 +632,14 @@ app.post('/api/scaffold-from-zen', (req, res) => {
         }
 
         const zenContent = fs.readFileSync(zenFilePath, 'utf8');
+        console.log(`[Bridge] Read .zen file content length: ${zenContent.length}`);
+
         let zenData;
         try {
             zenData = JSON.parse(zenContent);
+            console.log(`[Bridge] Successfully parsed JSON. Keys: ${Object.keys(zenData).join(', ')}`);
         } catch (parseErr) {
+            console.error(`[Bridge] JSON Parse Error: ${parseErr.message}`);
             return res.status(400).json({ error: `Invalid JSON in .zen file: ${parseErr.message}` });
         }
 
@@ -645,7 +649,11 @@ app.post('/api/scaffold-from-zen', (req, res) => {
         const entities = zenData.nodes?.filter(n => n.type === 'entity') || [];
         const relationships = zenData.edges?.filter(e => e.type === 'relation') || [];
 
-        console.log(`[Bridge] Project: ${projectName}, Namespace: ${namespace}, Entities: ${entities.length}`);
+        console.log(`[Bridge] Scaffolding Strategy:`);
+        console.log(`  - Project Name: ${projectName}`);
+        console.log(`  - Namespace: ${namespace}`);
+        console.log(`  - Entities found: ${entities.length}`);
+        console.log(`  - Relationships found: ${relationships.length}`);
 
         // 2. Create project directory
         const projectPath = path.join(destinationPath, projectName);

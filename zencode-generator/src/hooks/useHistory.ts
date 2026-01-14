@@ -63,10 +63,17 @@ export function useHistory<T, E>(
         return history[newIndex];
     }, [canRedo, currentIndex, history]);
 
+    const reset = useCallback((nodes: T[], edges: E[]) => {
+        setHistory([{ nodes: [...nodes], edges: [...edges] }]);
+        setCurrentIndex(0);
+        isUndoRedoAction.current = false;
+    }, []);
+
     return {
         pushState,
         undo,
         redo,
+        reset,
         canUndo,
         canRedo,
     };

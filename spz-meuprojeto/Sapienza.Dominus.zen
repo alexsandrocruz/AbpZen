@@ -1,0 +1,3095 @@
+{
+  "version": "1.0",
+  "name": "Sapienza.Dominus",
+  "createdAt": "2026-01-14T23:41:22.805Z",
+  "updatedAt": "2026-01-14T23:44:57.708Z",
+  "nodes": [
+    {
+      "id": "client",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "name": "Client",
+        "pluralName": "Clients",
+        "tableName": "Clients",
+        "namespace": "Sapienza.Dominus.Clients",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string",
+            "isRequired": true,
+            "emailValidation": true
+          },
+          {
+            "id": "phone",
+            "name": "Phone",
+            "type": "string"
+          },
+          {
+            "id": "clientType",
+            "name": "ClientType",
+            "type": "string",
+            "defaultValue": "PERSON"
+          },
+          {
+            "id": "companyName",
+            "name": "CompanyName",
+            "type": "string"
+          },
+          {
+            "id": "cnpj",
+            "name": "CNPJ",
+            "type": "string"
+          },
+          {
+            "id": "cpf",
+            "name": "CPF",
+            "type": "string"
+          },
+          {
+            "id": "birthDate",
+            "name": "BirthDate",
+            "type": "datetime"
+          },
+          {
+            "id": "address",
+            "name": "Address",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "city",
+            "name": "City",
+            "type": "string"
+          },
+          {
+            "id": "state",
+            "name": "State",
+            "type": "string"
+          },
+          {
+            "id": "zipCode",
+            "name": "ZipCode",
+            "type": "string"
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "ACTIVE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "clientcontact",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 0
+      },
+      "data": {
+        "name": "ClientContact",
+        "pluralName": "ClientContacts",
+        "tableName": "ClientContacts",
+        "namespace": "Sapienza.Dominus.Clients",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "role",
+            "name": "Role",
+            "type": "string"
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string"
+          },
+          {
+            "id": "phone",
+            "name": "Phone",
+            "type": "string"
+          },
+          {
+            "id": "isPrimary",
+            "name": "IsPrimary",
+            "type": "bool",
+            "defaultValue": "false"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "clientmessage",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 0
+      },
+      "data": {
+        "name": "ClientMessage",
+        "pluralName": "ClientMessages",
+        "tableName": "ClientMessages",
+        "namespace": "Sapienza.Dominus.Clients",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "channel",
+            "name": "Channel",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "direction",
+            "name": "Direction",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "subject",
+            "name": "Subject",
+            "type": "string"
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isRequired": true,
+            "isTextArea": true
+          },
+          {
+            "id": "sentAt",
+            "name": "SentAt",
+            "type": "datetime"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "project",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 0
+      },
+      "data": {
+        "name": "Project",
+        "pluralName": "Projects",
+        "tableName": "Projects",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "PENDING"
+          },
+          {
+            "id": "budget",
+            "name": "Budget",
+            "type": "double"
+          },
+          {
+            "id": "dueDate",
+            "name": "DueDate",
+            "type": "datetime"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "task",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 0
+      },
+      "data": {
+        "name": "Task",
+        "pluralName": "Tasks",
+        "tableName": "Tasks",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "isCompleted",
+            "name": "IsCompleted",
+            "type": "bool",
+            "defaultValue": "false"
+          },
+          {
+            "id": "dueDate",
+            "name": "DueDate",
+            "type": "datetime"
+          },
+          {
+            "id": "projectId",
+            "name": "ProjectId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "project",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "taskcomment",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 400
+      },
+      "data": {
+        "name": "TaskComment",
+        "pluralName": "TaskComments",
+        "tableName": "TaskComments",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "AuditedEntity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isRequired": true,
+            "isTextArea": true
+          },
+          {
+            "id": "taskId",
+            "name": "TaskId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "task",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "timeentry",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 400
+      },
+      "data": {
+        "name": "TimeEntry",
+        "pluralName": "TimeEntries",
+        "tableName": "TimeEntries",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "hours",
+            "name": "Hours",
+            "type": "double",
+            "isRequired": true
+          },
+          {
+            "id": "date",
+            "name": "Date",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "projectId",
+            "name": "ProjectId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "project",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "financialcategory",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 400
+      },
+      "data": {
+        "name": "FinancialCategory",
+        "pluralName": "FinancialCategories",
+        "tableName": "FinancialCategories",
+        "namespace": "Sapienza.Dominus.Finance",
+        "baseClass": "AuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "type",
+            "name": "Type",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "color",
+            "name": "Color",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "transaction",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 400
+      },
+      "data": {
+        "name": "Transaction",
+        "pluralName": "Transactions",
+        "tableName": "Transactions",
+        "namespace": "Sapienza.Dominus.Finance",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "amount",
+            "name": "Amount",
+            "type": "double",
+            "isRequired": true
+          },
+          {
+            "id": "type",
+            "name": "Type",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "PENDING"
+          },
+          {
+            "id": "dueDate",
+            "name": "DueDate",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "paymentDate",
+            "name": "PaymentDate",
+            "type": "datetime"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          },
+          {
+            "id": "categoryId",
+            "name": "CategoryId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "financialcategory",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "transactionattachment",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 400
+      },
+      "data": {
+        "name": "TransactionAttachment",
+        "pluralName": "TransactionAttachments",
+        "tableName": "TransactionAttachments",
+        "namespace": "Sapienza.Dominus.Finance",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "fileName",
+            "name": "FileName",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "fileUrl",
+            "name": "FileUrl",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "transactionId",
+            "name": "TransactionId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "transaction",
+              "displayField": "Description"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "budget",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 800
+      },
+      "data": {
+        "name": "Budget",
+        "pluralName": "Budgets",
+        "tableName": "Budgets",
+        "namespace": "Sapienza.Dominus.Finance",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "year",
+            "name": "Year",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "month",
+            "name": "Month",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "amount",
+            "name": "Amount",
+            "type": "double",
+            "isRequired": true
+          },
+          {
+            "id": "categoryId",
+            "name": "CategoryId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "financialcategory",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "product",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 800
+      },
+      "data": {
+        "name": "Product",
+        "pluralName": "Products",
+        "tableName": "Products",
+        "namespace": "Sapienza.Dominus.Products",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "sku",
+            "name": "SKU",
+            "type": "string"
+          },
+          {
+            "id": "price",
+            "name": "Price",
+            "type": "double",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "proposal",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 800
+      },
+      "data": {
+        "name": "Proposal",
+        "pluralName": "Proposals",
+        "tableName": "Proposals",
+        "namespace": "Sapienza.Dominus.Sales",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "DRAFT"
+          },
+          {
+            "id": "validUntil",
+            "name": "ValidUntil",
+            "type": "datetime"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "proposalitem",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 800
+      },
+      "data": {
+        "name": "ProposalItem",
+        "pluralName": "ProposalItems",
+        "tableName": "ProposalItems",
+        "namespace": "Sapienza.Dominus.Sales",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "description",
+            "name": "Description",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "quantity",
+            "name": "Quantity",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "price",
+            "name": "Price",
+            "type": "double",
+            "isRequired": true
+          },
+          {
+            "id": "proposalId",
+            "name": "ProposalId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "proposal",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "contract",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 800
+      },
+      "data": {
+        "name": "Contract",
+        "pluralName": "Contracts",
+        "tableName": "Contracts",
+        "namespace": "Sapienza.Dominus.Sales",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "DRAFT"
+          },
+          {
+            "id": "totalValue",
+            "name": "TotalValue",
+            "type": "double"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadworkflow",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 1200
+      },
+      "data": {
+        "name": "LeadWorkflow",
+        "pluralName": "LeadWorkflows",
+        "tableName": "LeadWorkflows",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "isActive",
+            "name": "IsActive",
+            "type": "bool",
+            "defaultValue": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadworkflowstage",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 1200
+      },
+      "data": {
+        "name": "LeadWorkflowStage",
+        "pluralName": "LeadWorkflowStages",
+        "tableName": "LeadWorkflowStages",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "position",
+            "name": "Position",
+            "type": "int",
+            "defaultValue": "0"
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "lead",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 1200
+      },
+      "data": {
+        "name": "Lead",
+        "pluralName": "Leads",
+        "tableName": "Leads",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string"
+          },
+          {
+            "id": "phone",
+            "name": "Phone",
+            "type": "string"
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "NEW"
+          },
+          {
+            "id": "source",
+            "name": "Source",
+            "type": "string",
+            "defaultValue": "DIRECT"
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          },
+          {
+            "id": "stageId",
+            "name": "StageId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflowstage",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadtag",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 1200
+      },
+      "data": {
+        "name": "LeadTag",
+        "pluralName": "LeadTags",
+        "tableName": "LeadTags",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "AuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "color",
+            "name": "Color",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadform",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 1200
+      },
+      "data": {
+        "name": "LeadForm",
+        "pluralName": "LeadForms",
+        "tableName": "LeadForms",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadlandingpage",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 1600
+      },
+      "data": {
+        "name": "LeadLandingPage",
+        "pluralName": "LeadLandingPages",
+        "tableName": "LeadLandingPages",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "slug",
+            "name": "Slug",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "customfield",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 1600
+      },
+      "data": {
+        "name": "CustomField",
+        "pluralName": "CustomFields",
+        "tableName": "CustomFields",
+        "namespace": "Sapienza.Dominus.CustomFields",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "entityType",
+            "name": "EntityType",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "label",
+            "name": "Label",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "fieldType",
+            "name": "FieldType",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "fieldKey",
+            "name": "FieldKey",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "customfieldvalue",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 1600
+      },
+      "data": {
+        "name": "CustomFieldValue",
+        "pluralName": "CustomFieldValues",
+        "tableName": "CustomFieldValues",
+        "namespace": "Sapienza.Dominus.CustomFields",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "entityId",
+            "name": "EntityId",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "valueText",
+            "name": "ValueText",
+            "type": "string"
+          },
+          {
+            "id": "fieldId",
+            "name": "FieldId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "customfield",
+              "displayField": "Label"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "schedulertype",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 1600
+      },
+      "data": {
+        "name": "SchedulerType",
+        "pluralName": "SchedulerTypes",
+        "tableName": "SchedulerTypes",
+        "namespace": "Sapienza.Dominus.Scheduler",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "durationMinutes",
+            "name": "DurationMinutes",
+            "type": "int",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "booking",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 1600
+      },
+      "data": {
+        "name": "Booking",
+        "pluralName": "Bookings",
+        "tableName": "Bookings",
+        "namespace": "Sapienza.Dominus.Scheduler",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "clientName",
+            "name": "ClientName",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "clientEmail",
+            "name": "ClientEmail",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "startTime",
+            "name": "StartTime",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "endTime",
+            "name": "EndTime",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "PENDING"
+          },
+          {
+            "id": "typeId",
+            "name": "TypeId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "schedulertype",
+              "displayField": "Name"
+            }
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "site",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 2000
+      },
+      "data": {
+        "name": "Site",
+        "pluralName": "Sites",
+        "tableName": "Sites",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "slug",
+            "name": "Slug",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "DRAFT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sitepage",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 2000
+      },
+      "data": {
+        "name": "SitePage",
+        "pluralName": "SitePages",
+        "tableName": "SitePages",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": false,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "slug",
+            "name": "Slug",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "siteId",
+            "name": "SiteId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "site",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "blogpost",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 2000
+      },
+      "data": {
+        "name": "BlogPost",
+        "pluralName": "BlogPosts",
+        "tableName": "BlogPosts",
+        "namespace": "Sapienza.Dominus.Blog",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "slug",
+            "name": "Slug",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "DRAFT"
+          },
+          {
+            "id": "siteId",
+            "name": "SiteId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "site",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "conversation",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 2000
+      },
+      "data": {
+        "name": "Conversation",
+        "pluralName": "Conversations",
+        "tableName": "Conversations",
+        "namespace": "Sapienza.Dominus.Collaboration",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "type",
+            "name": "Type",
+            "type": "string",
+            "defaultValue": "DIRECT"
+          },
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "id": "clientId",
+            "name": "ClientId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "client",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "chatmessage",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 2000
+      },
+      "data": {
+        "name": "ChatMessage",
+        "pluralName": "ChatMessages",
+        "tableName": "ChatMessages",
+        "namespace": "Sapienza.Dominus.Collaboration",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isRequired": true,
+            "isTextArea": true
+          },
+          {
+            "id": "conversationId",
+            "name": "ConversationId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "conversation",
+              "displayField": "Id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 2400
+      },
+      "data": {
+        "name": "Workflow",
+        "pluralName": "Workflows",
+        "tableName": "Workflows",
+        "namespace": "Sapienza.Dominus.Automation",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "triggerType",
+            "name": "TriggerType",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "DRAFT"
+          },
+          {
+            "id": "actions",
+            "name": "Actions",
+            "type": "string",
+            "isTextArea": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "aichatsession",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 2400
+      },
+      "data": {
+        "name": "AiChatSession",
+        "pluralName": "AiChatSessions",
+        "tableName": "AiChatSessions",
+        "namespace": "Sapienza.Dominus.AI",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": true,
+        "renderType": "page",
+        "fields": [
+          {
+            "id": "title",
+            "name": "Title",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "contextType",
+            "name": "ContextType",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "aichatmessage",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 2400
+      },
+      "data": {
+        "name": "AiChatMessage",
+        "pluralName": "AiChatMessages",
+        "tableName": "AiChatMessages",
+        "namespace": "Sapienza.Dominus.AI",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "role",
+            "name": "Role",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isRequired": true,
+            "isTextArea": true
+          },
+          {
+            "id": "sessionId",
+            "name": "SessionId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "aichatsession",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "workspaceinvite",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 2400
+      },
+      "data": {
+        "name": "WorkspaceInvite",
+        "pluralName": "WorkspaceInvites",
+        "tableName": "WorkspaceInvites",
+        "namespace": "Sapienza.Dominus.Identity",
+        "baseClass": "Entity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "defaultValue": "PENDING"
+          }
+        ]
+      }
+    },
+    {
+      "id": "workspaceusagemetric",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 2400
+      },
+      "data": {
+        "name": "WorkspaceUsageMetric",
+        "pluralName": "WorkspaceUsageMetrics",
+        "tableName": "WorkspaceUsageMetrics",
+        "namespace": "Sapienza.Dominus.Admin",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "date",
+            "name": "Date",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "totalSessions",
+            "name": "TotalSessions",
+            "type": "int",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "emaillog",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 2800
+      },
+      "data": {
+        "name": "EmailLog",
+        "pluralName": "EmailLogs",
+        "tableName": "EmailLogs",
+        "namespace": "Sapienza.Dominus.Communication",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "toEmail",
+            "name": "ToEmail",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "subject",
+            "name": "Subject",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "smslog",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 2800
+      },
+      "data": {
+        "name": "SmsLog",
+        "pluralName": "SmsLogs",
+        "tableName": "SmsLogs",
+        "namespace": "Sapienza.Dominus.Communication",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "toPhone",
+            "name": "ToPhone",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "whatsapplog",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 2800
+      },
+      "data": {
+        "name": "WhatsappLog",
+        "pluralName": "WhatsappLogs",
+        "tableName": "WhatsappLogs",
+        "namespace": "Sapienza.Dominus.Communication",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "toPhone",
+            "name": "ToPhone",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadformfield",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 2800
+      },
+      "data": {
+        "name": "LeadFormField",
+        "pluralName": "LeadFormFields",
+        "tableName": "LeadFormFields",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "label",
+            "name": "Label",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "formId",
+            "name": "FormId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadform",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadformsubmission",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 2800
+      },
+      "data": {
+        "name": "LeadFormSubmission",
+        "pluralName": "LeadFormSubmissions",
+        "tableName": "LeadFormSubmissions",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "ipAddress",
+            "name": "IpAddress",
+            "type": "string"
+          },
+          {
+            "id": "formId",
+            "name": "FormId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadform",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadstagehistory",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 3200
+      },
+      "data": {
+        "name": "LeadStageHistory",
+        "pluralName": "LeadStageHistories",
+        "tableName": "LeadStageHistories",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "notes",
+            "name": "Notes",
+            "type": "string"
+          },
+          {
+            "id": "leadId",
+            "name": "LeadId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "lead",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadmessagetemplate",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 3200
+      },
+      "data": {
+        "name": "LeadMessageTemplate",
+        "pluralName": "LeadMessageTemplates",
+        "tableName": "LeadMessageTemplates",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadautomation",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 3200
+      },
+      "data": {
+        "name": "LeadAutomation",
+        "pluralName": "LeadAutomations",
+        "tableName": "LeadAutomations",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadworkflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadscheduledmessage",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 3200
+      },
+      "data": {
+        "name": "LeadScheduledMessage",
+        "pluralName": "LeadScheduledMessages",
+        "tableName": "LeadScheduledMessages",
+        "namespace": "Sapienza.Dominus.Leads",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "scheduledFor",
+            "name": "ScheduledFor",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "automationId",
+            "name": "AutomationId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "leadautomation",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "scheduleravailability",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 3200
+      },
+      "data": {
+        "name": "SchedulerAvailability",
+        "pluralName": "SchedulerAvailabilities",
+        "tableName": "SchedulerAvailabilities",
+        "namespace": "Sapienza.Dominus.Scheduler",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "dayOfWeek",
+            "name": "DayOfWeek",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "startTime",
+            "name": "StartTime",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "typeId",
+            "name": "TypeId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "schedulertype",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "schedulerexception",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 3600
+      },
+      "data": {
+        "name": "SchedulerException",
+        "pluralName": "SchedulerExceptions",
+        "tableName": "SchedulerExceptions",
+        "namespace": "Sapienza.Dominus.Scheduler",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "date",
+            "name": "Date",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "typeId",
+            "name": "TypeId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "schedulertype",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sitepageversion",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 3600
+      },
+      "data": {
+        "name": "SitePageVersion",
+        "pluralName": "SitePageVersions",
+        "tableName": "SitePageVersions",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "versionNumber",
+            "name": "VersionNumber",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "pageId",
+            "name": "PageId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "sitepage",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "blogcategory",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 3600
+      },
+      "data": {
+        "name": "BlogCategory",
+        "pluralName": "BlogCategories",
+        "tableName": "BlogCategories",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "AuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "blogpostversion",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 3600
+      },
+      "data": {
+        "name": "BlogPostVersion",
+        "pluralName": "BlogPostVersions",
+        "tableName": "BlogPostVersions",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "versionNumber",
+            "name": "VersionNumber",
+            "type": "int",
+            "isRequired": true
+          },
+          {
+            "id": "postId",
+            "name": "PostId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "blogpost",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sitevisitevent",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 3600
+      },
+      "data": {
+        "name": "SiteVisitEvent",
+        "pluralName": "SiteVisitEvents",
+        "tableName": "SiteVisitEvents",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "visitorId",
+            "name": "VisitorId",
+            "type": "string"
+          },
+          {
+            "id": "siteId",
+            "name": "SiteId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "site",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sitevisitdailystat",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 4000
+      },
+      "data": {
+        "name": "SiteVisitDailyStat",
+        "pluralName": "SiteVisitDailyStats",
+        "tableName": "SiteVisitDailyStats",
+        "namespace": "Sapienza.Dominus.SiteBuilder",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "date",
+            "name": "Date",
+            "type": "datetime",
+            "isRequired": true
+          },
+          {
+            "id": "siteId",
+            "name": "SiteId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "site",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "messageattachment",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 4000
+      },
+      "data": {
+        "name": "MessageAttachment",
+        "pluralName": "MessageAttachments",
+        "tableName": "MessageAttachments",
+        "namespace": "Sapienza.Dominus.Collaboration",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "fileName",
+            "name": "FileName",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "messageId",
+            "name": "MessageId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "chatmessage",
+              "displayField": "Id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "comment",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 4000
+      },
+      "data": {
+        "name": "Comment",
+        "pluralName": "Comments",
+        "tableName": "Comments",
+        "namespace": "Sapienza.Dominus.Collaboration",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "entityType",
+            "name": "EntityType",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isRequired": true,
+            "isTextArea": true
+          },
+          {
+            "id": "entityId",
+            "name": "EntityId",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "file",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 4000
+      },
+      "data": {
+        "name": "File",
+        "pluralName": "Files",
+        "tableName": "Files",
+        "namespace": "Sapienza.Dominus.Collaboration",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "fileName",
+            "name": "FileName",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflowexecution",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 4000
+      },
+      "data": {
+        "name": "WorkflowExecution",
+        "pluralName": "WorkflowExecutions",
+        "tableName": "WorkflowExecutions",
+        "namespace": "Sapienza.Dominus.Automation",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "status",
+            "name": "Status",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "workflowId",
+            "name": "WorkflowId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "workflow",
+              "displayField": "Name"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "workspaceaccessevent",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 4400
+      },
+      "data": {
+        "name": "WorkspaceAccessEvent",
+        "pluralName": "WorkspaceAccessEvents",
+        "tableName": "WorkspaceAccessEvents",
+        "namespace": "Sapienza.Dominus.Admin",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "eventType",
+            "name": "EventType",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "landinglead",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 4400
+      },
+      "data": {
+        "name": "LandingLead",
+        "pluralName": "LandingLeads",
+        "tableName": "LandingLeads",
+        "namespace": "Sapienza.Dominus.Admin",
+        "baseClass": "FullAuditedEntity",
+        "isMaster": true,
+        "renderType": "modal",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "proposalblockinstance",
+      "type": "entity",
+      "position": {
+        "x": 700,
+        "y": 4400
+      },
+      "data": {
+        "name": "ProposalBlockInstance",
+        "pluralName": "ProposalBlockInstances",
+        "tableName": "ProposalBlockInstances",
+        "namespace": "Sapienza.Dominus.Sales",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "blockType",
+            "name": "BlockType",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "proposalId",
+            "name": "ProposalId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "proposal",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "proposaltemplateblock",
+      "type": "entity",
+      "position": {
+        "x": 1050,
+        "y": 4400
+      },
+      "data": {
+        "name": "ProposalTemplateBlock",
+        "pluralName": "ProposalTemplateBlocks",
+        "tableName": "ProposalTemplateBlocks",
+        "namespace": "Sapienza.Dominus.Sales",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "blockType",
+            "name": "BlockType",
+            "type": "string",
+            "isRequired": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "projectresponsible",
+      "type": "entity",
+      "position": {
+        "x": 1400,
+        "y": 4400
+      },
+      "data": {
+        "name": "ProjectResponsible",
+        "pluralName": "ProjectResponsibles",
+        "tableName": "ProjectResponsibles",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "projectId",
+            "name": "ProjectId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "project",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "projectfollower",
+      "type": "entity",
+      "position": {
+        "x": 0,
+        "y": 4800
+      },
+      "data": {
+        "name": "ProjectFollower",
+        "pluralName": "ProjectFollowers",
+        "tableName": "ProjectFollowers",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "Entity",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "projectId",
+            "name": "ProjectId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "project",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "projectcomm",
+      "type": "entity",
+      "position": {
+        "x": 350,
+        "y": 4800
+      },
+      "data": {
+        "name": "ProjectCommunication",
+        "pluralName": "ProjectCommunications",
+        "tableName": "ProjectCommunications",
+        "namespace": "Sapienza.Dominus.Projects",
+        "baseClass": "FullAuditedAggregateRoot",
+        "isMaster": false,
+        "renderType": "list",
+        "fields": [
+          {
+            "id": "channel",
+            "name": "Channel",
+            "type": "string",
+            "isRequired": true
+          },
+          {
+            "id": "subject",
+            "name": "Subject",
+            "type": "string"
+          },
+          {
+            "id": "content",
+            "name": "Content",
+            "type": "string",
+            "isTextArea": true
+          },
+          {
+            "id": "projectId",
+            "name": "ProjectId",
+            "type": "guid",
+            "isLookup": true,
+            "lookupConfig": {
+              "targetEntity": "project",
+              "displayField": "Title"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_clientcontact_to_client_0",
+      "source": "clientcontact",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ClientContacts",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "ClientContact references Client"
+      }
+    },
+    {
+      "id": "edge_clientmessage_to_client_1",
+      "source": "clientmessage",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ClientMessages",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "ClientMessage references Client"
+      }
+    },
+    {
+      "id": "edge_project_to_client_2",
+      "source": "project",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Projects",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Project references Client"
+      }
+    },
+    {
+      "id": "edge_task_to_project_3",
+      "source": "task",
+      "target": "project",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Tasks",
+        "targetNavigationName": "Project",
+        "isRequired": false,
+        "description": "Task references Project"
+      }
+    },
+    {
+      "id": "edge_taskcomment_to_task_4",
+      "source": "taskcomment",
+      "target": "task",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "TaskComments",
+        "targetNavigationName": "Task",
+        "isRequired": false,
+        "description": "TaskComment references Task"
+      }
+    },
+    {
+      "id": "edge_timeentry_to_project_5",
+      "source": "timeentry",
+      "target": "project",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "TimeEntries",
+        "targetNavigationName": "Project",
+        "isRequired": false,
+        "description": "TimeEntry references Project"
+      }
+    },
+    {
+      "id": "edge_transaction_to_client_6",
+      "source": "transaction",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Transactions",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Transaction references Client"
+      }
+    },
+    {
+      "id": "edge_transaction_to_financialcategory_7",
+      "source": "transaction",
+      "target": "financialcategory",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Transactions",
+        "targetNavigationName": "FinancialCategory",
+        "isRequired": false,
+        "description": "Transaction references FinancialCategory"
+      }
+    },
+    {
+      "id": "edge_transactionattachment_to_transaction_8",
+      "source": "transactionattachment",
+      "target": "transaction",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "TransactionAttachments",
+        "targetNavigationName": "Transaction",
+        "isRequired": false,
+        "description": "TransactionAttachment references Transaction"
+      }
+    },
+    {
+      "id": "edge_budget_to_financialcategory_9",
+      "source": "budget",
+      "target": "financialcategory",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Budgets",
+        "targetNavigationName": "FinancialCategory",
+        "isRequired": false,
+        "description": "Budget references FinancialCategory"
+      }
+    },
+    {
+      "id": "edge_proposal_to_client_10",
+      "source": "proposal",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Proposals",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Proposal references Client"
+      }
+    },
+    {
+      "id": "edge_proposalitem_to_proposal_11",
+      "source": "proposalitem",
+      "target": "proposal",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ProposalItems",
+        "targetNavigationName": "Proposal",
+        "isRequired": false,
+        "description": "ProposalItem references Proposal"
+      }
+    },
+    {
+      "id": "edge_contract_to_client_12",
+      "source": "contract",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Contracts",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Contract references Client"
+      }
+    },
+    {
+      "id": "edge_leadworkflowstage_to_leadworkflow_13",
+      "source": "leadworkflowstage",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadWorkflowStages",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "LeadWorkflowStage references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_lead_to_leadworkflow_14",
+      "source": "lead",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Leads",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "Lead references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_lead_to_leadworkflowstage_15",
+      "source": "lead",
+      "target": "leadworkflowstage",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Leads",
+        "targetNavigationName": "LeadWorkflowStage",
+        "isRequired": false,
+        "description": "Lead references LeadWorkflowStage"
+      }
+    },
+    {
+      "id": "edge_leadform_to_leadworkflow_16",
+      "source": "leadform",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadForms",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "LeadForm references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_leadlandingpage_to_leadworkflow_17",
+      "source": "leadlandingpage",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadLandingPages",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "LeadLandingPage references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_customfieldvalue_to_customfield_18",
+      "source": "customfieldvalue",
+      "target": "customfield",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "CustomFieldValues",
+        "targetNavigationName": "CustomField",
+        "isRequired": false,
+        "description": "CustomFieldValue references CustomField"
+      }
+    },
+    {
+      "id": "edge_booking_to_schedulertype_19",
+      "source": "booking",
+      "target": "schedulertype",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Bookings",
+        "targetNavigationName": "SchedulerType",
+        "isRequired": false,
+        "description": "Booking references SchedulerType"
+      }
+    },
+    {
+      "id": "edge_booking_to_client_20",
+      "source": "booking",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Bookings",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Booking references Client"
+      }
+    },
+    {
+      "id": "edge_sitepage_to_site_21",
+      "source": "sitepage",
+      "target": "site",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SitePages",
+        "targetNavigationName": "Site",
+        "isRequired": false,
+        "description": "SitePage references Site"
+      }
+    },
+    {
+      "id": "edge_blogpost_to_site_22",
+      "source": "blogpost",
+      "target": "site",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "BlogPosts",
+        "targetNavigationName": "Site",
+        "isRequired": false,
+        "description": "BlogPost references Site"
+      }
+    },
+    {
+      "id": "edge_conversation_to_client_23",
+      "source": "conversation",
+      "target": "client",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "Conversations",
+        "targetNavigationName": "Client",
+        "isRequired": false,
+        "description": "Conversation references Client"
+      }
+    },
+    {
+      "id": "edge_chatmessage_to_conversation_24",
+      "source": "chatmessage",
+      "target": "conversation",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ChatMessages",
+        "targetNavigationName": "Conversation",
+        "isRequired": false,
+        "description": "ChatMessage references Conversation"
+      }
+    },
+    {
+      "id": "edge_aichatmessage_to_aichatsession_25",
+      "source": "aichatmessage",
+      "target": "aichatsession",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "AiChatMessages",
+        "targetNavigationName": "AiChatSession",
+        "isRequired": false,
+        "description": "AiChatMessage references AiChatSession"
+      }
+    },
+    {
+      "id": "edge_leadformfield_to_leadform_26",
+      "source": "leadformfield",
+      "target": "leadform",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadFormFields",
+        "targetNavigationName": "LeadForm",
+        "isRequired": false,
+        "description": "LeadFormField references LeadForm"
+      }
+    },
+    {
+      "id": "edge_leadformsubmission_to_leadform_27",
+      "source": "leadformsubmission",
+      "target": "leadform",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadFormSubmissions",
+        "targetNavigationName": "LeadForm",
+        "isRequired": false,
+        "description": "LeadFormSubmission references LeadForm"
+      }
+    },
+    {
+      "id": "edge_leadstagehistory_to_lead_28",
+      "source": "leadstagehistory",
+      "target": "lead",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadStageHistories",
+        "targetNavigationName": "Lead",
+        "isRequired": false,
+        "description": "LeadStageHistory references Lead"
+      }
+    },
+    {
+      "id": "edge_leadmessagetemplate_to_leadworkflow_29",
+      "source": "leadmessagetemplate",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadMessageTemplates",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "LeadMessageTemplate references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_leadautomation_to_leadworkflow_30",
+      "source": "leadautomation",
+      "target": "leadworkflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadAutomations",
+        "targetNavigationName": "LeadWorkflow",
+        "isRequired": false,
+        "description": "LeadAutomation references LeadWorkflow"
+      }
+    },
+    {
+      "id": "edge_leadscheduledmessage_to_leadautomation_31",
+      "source": "leadscheduledmessage",
+      "target": "leadautomation",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "LeadScheduledMessages",
+        "targetNavigationName": "LeadAutomation",
+        "isRequired": false,
+        "description": "LeadScheduledMessage references LeadAutomation"
+      }
+    },
+    {
+      "id": "edge_scheduleravailability_to_schedulertype_32",
+      "source": "scheduleravailability",
+      "target": "schedulertype",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SchedulerAvailabilities",
+        "targetNavigationName": "SchedulerType",
+        "isRequired": false,
+        "description": "SchedulerAvailability references SchedulerType"
+      }
+    },
+    {
+      "id": "edge_schedulerexception_to_schedulertype_33",
+      "source": "schedulerexception",
+      "target": "schedulertype",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SchedulerExceptions",
+        "targetNavigationName": "SchedulerType",
+        "isRequired": false,
+        "description": "SchedulerException references SchedulerType"
+      }
+    },
+    {
+      "id": "edge_sitepageversion_to_sitepage_34",
+      "source": "sitepageversion",
+      "target": "sitepage",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SitePageVersions",
+        "targetNavigationName": "SitePage",
+        "isRequired": false,
+        "description": "SitePageVersion references SitePage"
+      }
+    },
+    {
+      "id": "edge_blogpostversion_to_blogpost_35",
+      "source": "blogpostversion",
+      "target": "blogpost",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "BlogPostVersions",
+        "targetNavigationName": "BlogPost",
+        "isRequired": false,
+        "description": "BlogPostVersion references BlogPost"
+      }
+    },
+    {
+      "id": "edge_sitevisitevent_to_site_36",
+      "source": "sitevisitevent",
+      "target": "site",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SiteVisitEvents",
+        "targetNavigationName": "Site",
+        "isRequired": false,
+        "description": "SiteVisitEvent references Site"
+      }
+    },
+    {
+      "id": "edge_sitevisitdailystat_to_site_37",
+      "source": "sitevisitdailystat",
+      "target": "site",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "SiteVisitDailyStats",
+        "targetNavigationName": "Site",
+        "isRequired": false,
+        "description": "SiteVisitDailyStat references Site"
+      }
+    },
+    {
+      "id": "edge_messageattachment_to_chatmessage_38",
+      "source": "messageattachment",
+      "target": "chatmessage",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "MessageAttachments",
+        "targetNavigationName": "ChatMessage",
+        "isRequired": false,
+        "description": "MessageAttachment references ChatMessage"
+      }
+    },
+    {
+      "id": "edge_workflowexecution_to_workflow_39",
+      "source": "workflowexecution",
+      "target": "workflow",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "WorkflowExecutions",
+        "targetNavigationName": "Workflow",
+        "isRequired": false,
+        "description": "WorkflowExecution references Workflow"
+      }
+    },
+    {
+      "id": "edge_proposalblockinstance_to_proposal_40",
+      "source": "proposalblockinstance",
+      "target": "proposal",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ProposalBlockInstances",
+        "targetNavigationName": "Proposal",
+        "isRequired": false,
+        "description": "ProposalBlockInstance references Proposal"
+      }
+    },
+    {
+      "id": "edge_projectresponsible_to_project_41",
+      "source": "projectresponsible",
+      "target": "project",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ProjectResponsibles",
+        "targetNavigationName": "Project",
+        "isRequired": false,
+        "description": "ProjectResponsible references Project"
+      }
+    },
+    {
+      "id": "edge_projectfollower_to_project_42",
+      "source": "projectfollower",
+      "target": "project",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ProjectFollowers",
+        "targetNavigationName": "Project",
+        "isRequired": false,
+        "description": "ProjectFollower references Project"
+      }
+    },
+    {
+      "id": "edge_projectcomm_to_project_43",
+      "source": "projectcomm",
+      "target": "project",
+      "type": "relation",
+      "data": {
+        "type": "one-to-many",
+        "sourceNavigationName": "ProjectCommunications",
+        "targetNavigationName": "Project",
+        "isRequired": false,
+        "description": "ProjectCommunication references Project"
+      }
+    }
+  ],
+  "config": {
+    "projectName": "Sapienza.Dominus",
+    "namespace": "Sapienza.Dominus",
+    "projectPath": "",
+    "frontends": [
+      "react-v2"
+    ]
+  }
+}
