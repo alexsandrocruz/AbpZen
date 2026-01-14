@@ -1,11 +1,23 @@
 import { Shell } from "@/components/layout/shell";
 import { AvailabilityList } from "@/components/availability/AvailabilityList";
+import { AvailabilityForm } from "@/components/availability/AvailabilityForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function AvailabilitiesPage() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -20,13 +32,19 @@ export default function AvailabilitiesPage() {
               <p className="text-muted-foreground">Manage your availabilities</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/availability/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
             New Availability
           </Button>
         </div>
 
-        <AvailabilityList onEdit={(item) => setLocation(`/admin/availability/${item.id}/edit`)} />
+        <AvailabilityList onEdit={handleEdit} />
+
+        <AvailabilityForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );

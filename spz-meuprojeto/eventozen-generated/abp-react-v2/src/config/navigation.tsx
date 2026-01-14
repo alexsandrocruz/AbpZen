@@ -38,13 +38,14 @@ import LgpdPage from "@/pages/profile/lgpd";
 import TermsPage from "@/pages/legal/terms";
 import PrivacyPage from "@/pages/legal/privacy";
 import ArtistPage from "@/pages/admin/artist";
-      import ArtistSpecialtyPage from "@/pages/admin/artist-specialty";
-      import AvailabilityPage from "@/pages/admin/availability";
-      import ClientPage from "@/pages/admin/client";
-      import EventPage from "@/pages/admin/event";
-      import LocationPage from "@/pages/admin/location";
-      import EventCommissionPage from "@/pages/admin/event-commission";
-      // <GEN-IMPORTS>
+import ArtistSpecialtyPage from "@/pages/admin/artist-specialty";
+import AvailabilityPage from "@/pages/admin/availability";
+import ClientPage from "@/pages/admin/client";
+import EventPage from "@/pages/admin/event";
+import LocationPage from "@/pages/admin/location";
+import EventCommissionPage from "@/pages/admin/event-commission";
+import EventFormPage from "@/pages/admin/event/EventFormPage";
+// <GEN-IMPORTS>
 
 export interface NavItem {
     label: string;
@@ -84,14 +85,16 @@ export const routes: RouteConfig[] = [
     { path: "/profile/lgpd", component: LgpdPage },
     { path: "/legal/terms", component: TermsPage },
     { path: "/legal/privacy", component: PrivacyPage },
-        { path: "/admin/artist", component: ArtistPage },
-          { path: "/admin/artist-specialty", component: ArtistSpecialtyPage },
-          { path: "/admin/availability", component: AvailabilityPage },
-          { path: "/admin/client", component: ClientPage },
-          { path: "/admin/event", component: EventPage },
-          { path: "/admin/location", component: LocationPage },
-          { path: "/admin/event-commission", component: EventCommissionPage },
-      // <GEN-ROUTES>
+    { path: "/admin/artist", component: ArtistPage },
+    { path: "/admin/artist-specialty", component: ArtistSpecialtyPage },
+    { path: "/admin/availability", component: AvailabilityPage },
+    { path: "/admin/client", component: ClientPage },
+    { path: "/admin/event", component: EventPage },
+    { path: "/admin/event/create", component: EventFormPage },
+    { path: "/admin/event/:id/edit", component: EventFormPage },
+    { path: "/admin/location", component: LocationPage },
+    { path: "/admin/event-commission", component: EventCommissionPage },
+    // <GEN-ROUTES>
 ];
 
 export const menuItems: NavItem[] = [
@@ -118,12 +121,12 @@ export const menuItems: NavItem[] = [
     { label: "Settings", href: "/host/settings", icon: Settings, section: "admin" },
     { label: "Audit Logs", href: "/host/audit-logs", icon: FileText, section: "admin" },
     { label: "Invitations", href: "/host/invitations", icon: UserPlus, section: "admin" },
-        { label: "Artists", href: "/admin/artist", icon: LayoutDashboard, section: "entities" },
-          { label: "ArtistSpecialties", href: "/admin/artist-specialty", icon: LayoutDashboard, section: "entities" },
-          { label: "Availabilities", href: "/admin/availability", icon: LayoutDashboard, section: "entities" },
-          { label: "Clients", href: "/admin/client", icon: LayoutDashboard, section: "entities" },
-          { label: "Events", href: "/admin/event", icon: LayoutDashboard, section: "entities" },
-          { label: "Locations", href: "/admin/location", icon: LayoutDashboard, section: "entities" },
-          { label: "EventCommissions", href: "/admin/event-commission", icon: LayoutDashboard, section: "entities" },
-      // <GEN-MENU>
+    { label: "Artists", href: "/admin/artist", icon: LayoutDashboard, section: "entities" },
+    { label: "ArtistSpecialties", href: "/admin/artist-specialty", icon: LayoutDashboard, section: "entities" },
+    { label: "Availabilities", href: "/admin/availability", icon: LayoutDashboard, section: "entities" },
+    { label: "Clients", href: "/admin/client", icon: LayoutDashboard, section: "entities" },
+    { label: "Events", href: "/admin/event", icon: LayoutDashboard, section: "entities" },
+    { label: "Locations", href: "/admin/location", icon: LayoutDashboard, section: "entities" },
+    { label: "EventCommissions", href: "/admin/event-commission", icon: LayoutDashboard, section: "entities" },
+    // <GEN-MENU>
 ];

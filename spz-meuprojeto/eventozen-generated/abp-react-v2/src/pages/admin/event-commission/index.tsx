@@ -1,11 +1,23 @@
 import { Shell } from "@/components/layout/shell";
 import { EventCommissionList } from "@/components/event-commission/EventCommissionList";
+import { EventCommissionForm } from "@/components/event-commission/EventCommissionForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function EventCommissionsPage() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -17,16 +29,22 @@ export default function EventCommissionsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">EventCommissions</h1>
-              <p className="text-muted-foreground">Manage your eventcommissions</p>
+              <p className="text-muted-foreground">Manage your event commissions</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/event-commission/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
-            New EventCommission
+            New Event Commission
           </Button>
         </div>
 
-        <EventCommissionList onEdit={(item) => setLocation(`/admin/event-commission/${item.id}/edit`)} />
+        <EventCommissionList onEdit={handleEdit} />
+
+        <EventCommissionForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );

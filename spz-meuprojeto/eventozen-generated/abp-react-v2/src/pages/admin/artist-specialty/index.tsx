@@ -1,11 +1,23 @@
 import { Shell } from "@/components/layout/shell";
 import { ArtistSpecialtyList } from "@/components/artist-specialty/ArtistSpecialtyList";
+import { ArtistSpecialtyForm } from "@/components/artist-specialty/ArtistSpecialtyForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function ArtistSpecialtiesPage() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -17,16 +29,22 @@ export default function ArtistSpecialtiesPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight">ArtistSpecialties</h1>
-              <p className="text-muted-foreground">Manage your artistspecialties</p>
+              <p className="text-muted-foreground">Manage your artist specialties</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/artist-specialty/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
-            New ArtistSpecialty
+            New Artist Specialty
           </Button>
         </div>
 
-        <ArtistSpecialtyList onEdit={(item) => setLocation(`/admin/artist-specialty/${item.id}/edit`)} />
+        <ArtistSpecialtyList onEdit={handleEdit} />
+
+        <ArtistSpecialtyForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );

@@ -1,11 +1,23 @@
 import { Shell } from "@/components/layout/shell";
 import { ArtistList } from "@/components/artist/ArtistList";
+import { ArtistForm } from "@/components/artist/ArtistForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function ArtistsPage() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -20,13 +32,19 @@ export default function ArtistsPage() {
               <p className="text-muted-foreground">Manage your artists</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/artist/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
             New Artist
           </Button>
         </div>
 
-        <ArtistList onEdit={(item) => setLocation(`/admin/artist/${item.id}/edit`)} />
+        <ArtistList onEdit={handleEdit} />
+
+        <ArtistForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );

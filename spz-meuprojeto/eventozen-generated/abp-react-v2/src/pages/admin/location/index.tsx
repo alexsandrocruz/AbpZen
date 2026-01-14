@@ -1,11 +1,23 @@
 import { Shell } from "@/components/layout/shell";
 import { LocationList } from "@/components/location/LocationList";
+import { LocationForm } from "@/components/location/LocationForm";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function LocationsPage() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -20,13 +32,19 @@ export default function LocationsPage() {
               <p className="text-muted-foreground">Manage your locations</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/location/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
             New Location
           </Button>
         </div>
 
-        <LocationList onEdit={(item) => setLocation(`/admin/location/${item.id}/edit`)} />
+        <LocationList onEdit={handleEdit} />
+
+        <LocationForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );
