@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Sapienza.Sapienza.Dominus.Web.Components.Toolbar.Impersonation
+namespace Sapienza.Dominus.Web.Components.Toolbar.Impersonation
 {
     public class ImpersonationViewComponent : AbpViewComponent
     {

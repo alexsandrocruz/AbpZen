@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ProposalTemplateBlock;
 
 public class EfProposalTemplateBlockRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid>, 
       IProposalTemplateBlockRepository
 {
-    public EfProposalTemplateBlockRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfProposalTemplateBlockRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     public class Program
     {
@@ -28,7 +28,7 @@ namespace Sapienza.Sapienza.Dominus
 
             try
             {
-                Log.Information("Starting Sapienza.Sapienza.Dominus.HttpApi.Host.");
+                Log.Information("Starting Dominus.HttpApi.Host.");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }

@@ -2,24 +2,24 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using Sapienza.Sapienza.Dominus.Localization
-@using Sapienza.Sapienza.Dominus.Web.Menus
+@using Sapienza.Dominus.Localization
+@using Sapienza.Dominus.Web.Menus
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @using Volo.Abp.AspNetCore.Mvc.UI.Widgets
 @using Volo.Abp.AuditLogging.Web.Pages.Shared.Components.AverageExecutionDurationPerDayWidget
 @using Volo.Abp.AuditLogging.Web.Pages.Shared.Components.ErrorRateWidget
 @using Volo.Saas.Host.Pages.Shared.Components.SaasEditionPercentageWidget
 @using Volo.Saas.Host.Pages.Shared.Components.SaasLatestTenantsWidget
-@inject IHtmlLocalizer<Sapienza.DominusResource> L
+@inject IHtmlLocalizer<Sapienza.Dominus.Localization.DominusResource> L
 @inject IWidgetManager WidgetManager
-@model Sapienza.Sapienza.Dominus.Web.Pages.HostDashboardModel
+@model Sapienza.Dominus.Web.Pages.HostDashboardModel
 @{
     ViewBag.PageTitle = "Dashboard";
 }
 @inject IPageLayout PageLayout
 @{
     PageLayout.Content.Title = L["Dashboard"].Value;
-    PageLayout.Content.MenuItemName = Sapienza.DominusMenus.HostDashboard;
+    PageLayout.Content.MenuItemName = DominusMenus.HostDashboard;
 }
 
 @section scripts {

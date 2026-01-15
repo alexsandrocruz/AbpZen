@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.SiteVisitEvent;
 
 public class EfSiteVisitEventRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.SiteVisitEvent.SiteVisitEvent, Guid>, 
       ISiteVisitEventRepository
 {
-    public EfSiteVisitEventRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfSiteVisitEventRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

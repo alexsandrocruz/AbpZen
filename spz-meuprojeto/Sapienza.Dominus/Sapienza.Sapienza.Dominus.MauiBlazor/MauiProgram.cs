@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Volo.Abp;
 using Volo.Abp.Autofac;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -21,7 +21,7 @@ public static class MauiProgram
 
         ConfigureConfiguration(builder);
 
-        builder.Services.AddApplication<Sapienza.DominusMauiBlazorModule>(options =>
+        builder.Services.AddApplication<DominusMauiBlazorModule>(options =>
         {
             options.Services.ReplaceConfiguration(builder.Configuration);
         });

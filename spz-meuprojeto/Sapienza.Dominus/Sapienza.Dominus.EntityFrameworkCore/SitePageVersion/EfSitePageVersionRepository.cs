@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.SitePageVersion;
 
 public class EfSitePageVersionRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.SitePageVersion.SitePageVersion, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.SitePageVersion.SitePageVersion, Guid>, 
       ISitePageVersionRepository
 {
-    public EfSitePageVersionRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfSitePageVersionRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

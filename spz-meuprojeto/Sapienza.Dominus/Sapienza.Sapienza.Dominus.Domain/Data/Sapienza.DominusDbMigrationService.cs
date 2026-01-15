@@ -13,29 +13,29 @@ using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
 using Volo.Saas.Tenants;
 
-namespace Sapienza.Sapienza.Dominus.Data
+namespace Sapienza.Dominus.Data
 {
-    public class Sapienza.DominusDbMigrationService : ITransientDependency
+    public class DominusDbMigrationService : ITransientDependency
     {
-        public ILogger<Sapienza.DominusDbMigrationService> Logger { get; set; }
+        public ILogger<DominusDbMigrationService> Logger { get; set; }
 
         private readonly IDataSeeder _dataSeeder;
-        private readonly IEnumerable<ISapienza.DominusDbSchemaMigrator> _dbSchemaMigrators;
+        private readonly IEnumerable<IDominusDbSchemaMigrator> _dbSchemaMigrators;
         private readonly ITenantRepository _tenantRepository;
         private readonly ICurrentTenant _currentTenant;
 
-        public Sapienza.DominusDbMigrationService(
+        public DominusDbMigrationService(
             IDataSeeder dataSeeder,
             ITenantRepository tenantRepository,
             ICurrentTenant currentTenant,
-            IEnumerable<ISapienza.DominusDbSchemaMigrator> dbSchemaMigrators)
+            IEnumerable<IDominusDbSchemaMigrator> dbSchemaMigrators)
         {
             _dataSeeder = dataSeeder;
             _tenantRepository = tenantRepository;
             _currentTenant = currentTenant;
             _dbSchemaMigrators = dbSchemaMigrators;
 
-            Logger = NullLogger<Sapienza.DominusDbMigrationService>.Instance;
+            Logger = NullLogger<DominusDbMigrationService>.Instance;
         }
 
         public async Task MigrateAsync()
@@ -96,9 +96,9 @@ namespace Sapienza.Sapienza.Dominus.Data
 
             await _dataSeeder.SeedAsync(new DataSeedContext(tenant?.Id)
                 .WithProperty(IdentityDataSeedContributor.AdminEmailPropertyName,
-                    Sapienza.DominusConsts.AdminEmailDefaultValue)
+                    DominusConsts.AdminEmailDefaultValue)
                 .WithProperty(IdentityDataSeedContributor.AdminPasswordPropertyName,
-                    Sapienza.DominusConsts.AdminPasswordDefaultValue)
+                    DominusConsts.AdminPasswordDefaultValue)
             );
         }
 

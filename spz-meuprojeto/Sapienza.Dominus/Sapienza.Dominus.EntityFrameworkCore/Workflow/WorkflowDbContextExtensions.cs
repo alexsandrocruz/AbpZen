@@ -9,7 +9,7 @@ public static class WorkflowDbContextModelCreatingExtensions
     {
         builder.Entity<Workflow>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Workflows", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Workflows", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
             b.Property(x => x.TriggerType).IsRequired();

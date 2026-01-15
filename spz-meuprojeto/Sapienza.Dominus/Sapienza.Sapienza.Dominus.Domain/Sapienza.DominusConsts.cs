@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.Identity;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
-    public static class Sapienza.DominusConsts
+    public static class DominusConsts
     {
         public const string DbTablePrefix = "App";
         public const string DbSchema = null;

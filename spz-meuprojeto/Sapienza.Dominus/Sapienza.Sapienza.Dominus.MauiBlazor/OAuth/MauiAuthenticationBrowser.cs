@@ -2,7 +2,7 @@
 using Volo.Abp.DependencyInjection;
 using IBrowser = IdentityModel.OidcClient.Browser.IBrowser;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public class MauiAuthenticationBrowser : IBrowser, ITransientDependency
 {

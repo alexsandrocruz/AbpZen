@@ -1,16 +1,16 @@
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using IdentityModel;
-using Sapienza.Sapienza.Dominus.Blazor.Navigation;
+using Sapienza.Dominus.Blazor.Navigation;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using Volo.Abp.Account.Pro.Admin.Blazor.WebAssembly;
-using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components;
+using Volo.Abp.AspNetCore.Components.Web.BasicTheme;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
-using Volo.Abp.AspNetCore.Components.WebAssembly.LeptonXTheme;
+using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme;
 using Volo.Abp.AuditLogging.Blazor.WebAssembly;
 using Volo.Abp.Autofac.WebAssembly;
 using Volo.Abp.AutoMapper;
@@ -22,18 +22,18 @@ using Volo.Abp.TextTemplateManagement.Blazor.WebAssembly;
 using Volo.Abp.UI.Navigation;
 using Volo.Saas.Host.Blazor.WebAssembly;
 using Volo.FileManagement.Blazor.WebAssembly;
-using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme;
+using Volo.Abp.AspNetCore.Components.Web.BasicTheme;
 using Volo.Abp.Gdpr.Blazor;
 using Volo.Abp.Gdpr.Blazor.WebAssembly;
 using Volo.CmsKit.Pro.Admin.Blazor.WebAssembly;
 using Volo.Abp.OpenIddict.Pro.Blazor.WebAssembly;
 using Volo.Chat.Blazor.WebAssembly;
 
-namespace Sapienza.Sapienza.Dominus.Blazor;
+namespace Sapienza.Dominus.Blazor;
 
 [DependsOn(
     typeof(AbpAutofacWebAssemblyModule),
-    typeof(Sapienza.DominusHttpApiClientModule),
+    typeof(DominusHttpApiClientModule),
     typeof(AbpIdentityProBlazorWebAssemblyModule),
     typeof(SaasHostBlazorWebAssemblyModule),
     typeof(AbpSettingManagementBlazorWebAssemblyModule),
@@ -42,25 +42,27 @@ namespace Sapienza.Sapienza.Dominus.Blazor;
     typeof(TextTemplateManagementBlazorWebAssemblyModule),
     typeof(LanguageManagementBlazorWebAssemblyModule),
     typeof(AbpOpenIddictProBlazorWebAssemblyModule),
-    typeof(AbpAspNetCoreComponentsWebAssemblyLeptonXThemeModule)
+    typeof(AbpAspNetCoreComponentsWebAssemblyBasicThemeModule)
 )]
     [DependsOn(typeof(FileManagementBlazorWebAssemblyModule))]
     [DependsOn(typeof(AbpGdprBlazorModule))]
     [DependsOn(typeof(AbpGdprBlazorWebAssemblyModule))]
     [DependsOn(typeof(CmsKitProAdminBlazorWebAssemblyModule))]
     [DependsOn(typeof(ChatBlazorWebAssemblyModule))]
-    public class Sapienza.DominusBlazorModule : AbpModule
+    public class DominusBlazorModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var environment = context.Services.GetSingletonInstance<IWebAssemblyHostEnvironment>();
         var builder = context.Services.GetSingletonInstance<WebAssemblyHostBuilder>();
 
-        Configure<LeptonXThemeBlazorOptions>(options =>
+        /*
+        Configure<BasicThemeBlazorOptions>(options =>
         {
-            // Also 'LeptonXTheme.Layout' parameter with value 'top-menu' should be added into appsettings.json
-            options.Layout = LeptonXBlazorLayouts.SideMenu;
+            // Also 'BasicTheme.Layout' parameter with value 'top-menu' should be added into appsettings.json
+            options.Layout = BasicBlazorLayouts.SideMenu;
         });
+        */
 
         ConfigureAuthentication(builder);
         ConfigureHttpClient(context, environment);
@@ -75,7 +77,7 @@ namespace Sapienza.Sapienza.Dominus.Blazor;
     {
         Configure<AbpRouterOptions>(options =>
         {
-            options.AppAssembly = typeof(Sapienza.DominusBlazorModule).Assembly;
+            options.AppAssembly = typeof(DominusBlazorModule).Assembly;
         });
     }
 
@@ -83,7 +85,7 @@ namespace Sapienza.Sapienza.Dominus.Blazor;
     {
         Configure<AbpNavigationOptions>(options =>
         {
-            options.MenuContributors.Add(new Sapienza.DominusMenuContributor(context.Services.GetConfiguration()));
+            options.MenuContributors.Add(new DominusMenuContributor(context.Services.GetConfiguration()));
         });
     }
 
@@ -100,7 +102,7 @@ namespace Sapienza.Sapienza.Dominus.Blazor;
         {
             builder.Configuration.Bind("AuthServer", options.ProviderOptions);
             options.UserOptions.RoleClaim = JwtClaimTypes.Role;
-            options.ProviderOptions.DefaultScopes.Add("Sapienza.Sapienza.Dominus");
+            options.ProviderOptions.DefaultScopes.Add("Dominus");
             options.ProviderOptions.DefaultScopes.Add("roles");
             options.ProviderOptions.DefaultScopes.Add("email");
             options.ProviderOptions.DefaultScopes.Add("phone");
@@ -124,7 +126,7 @@ namespace Sapienza.Sapienza.Dominus.Blazor;
     {
         Configure<AbpAutoMapperOptions>(options =>
         {
-            options.AddMaps<Sapienza.DominusBlazorModule>();
+            options.AddMaps<DominusBlazorModule>();
         });
     }
 }

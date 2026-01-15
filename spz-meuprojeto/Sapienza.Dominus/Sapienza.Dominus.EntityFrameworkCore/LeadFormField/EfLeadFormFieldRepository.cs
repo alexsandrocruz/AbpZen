@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadFormField;
 
 public class EfLeadFormFieldRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadFormField.LeadFormField, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadFormField.LeadFormField, Guid>, 
       ILeadFormFieldRepository
 {
-    public EfLeadFormFieldRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadFormFieldRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

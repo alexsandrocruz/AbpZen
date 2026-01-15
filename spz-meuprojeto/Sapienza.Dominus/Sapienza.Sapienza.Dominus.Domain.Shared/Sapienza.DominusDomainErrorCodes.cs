@@ -1,6 +1,6 @@
-﻿namespace Sapienza.Sapienza.Dominus
+﻿namespace Sapienza.Dominus
 {
-    public static class Sapienza.DominusDomainErrorCodes
+    public static class DominusDomainErrorCodes
     {
         /* You can add your business exception error codes here, as constants */
     }

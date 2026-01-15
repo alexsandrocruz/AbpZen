@@ -1,15 +1,15 @@
-﻿using Sapienza.Sapienza.Dominus.Localization;
+﻿using Sapienza.Dominus.Localization;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Sapienza.Sapienza.Dominus.Controllers
+namespace Sapienza.Dominus.Controllers
 {
     /* Inherit your controllers from this class.
      */
-    public abstract class Sapienza.DominusController : AbpControllerBase
+    public abstract class DominusController : AbpControllerBase
     {
-        protected Sapienza.DominusController()
+        protected DominusController()
         {
-            LocalizationResource = typeof(Sapienza.DominusResource);
+            LocalizationResource = typeof(DominusResource);
         }
     }
 }

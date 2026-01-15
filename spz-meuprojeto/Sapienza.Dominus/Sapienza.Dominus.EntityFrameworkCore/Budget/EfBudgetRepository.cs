@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Budget;
 
 public class EfBudgetRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Budget.Budget, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Budget.Budget, Guid>, 
       IBudgetRepository
 {
-    public EfBudgetRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfBudgetRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

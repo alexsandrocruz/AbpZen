@@ -20,14 +20,14 @@ public class Project : FullAuditedAggregateRoot<Guid>
     public Guid? ClientId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Client.Client? Client { get; set; }
+    public virtual Dominus.Client.Client? Client { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.Task.Task> Tasks { get; set; } = new List<Sapienza.Dominus.Task.Task>();
-    public virtual ICollection<Sapienza.Dominus.TimeEntry.TimeEntry> TimeEntries { get; set; } = new List<Sapienza.Dominus.TimeEntry.TimeEntry>();
-    public virtual ICollection<Sapienza.Dominus.ProjectResponsible.ProjectResponsible> ProjectResponsibles { get; set; } = new List<Sapienza.Dominus.ProjectResponsible.ProjectResponsible>();
-    public virtual ICollection<Sapienza.Dominus.ProjectFollower.ProjectFollower> ProjectFollowers { get; set; } = new List<Sapienza.Dominus.ProjectFollower.ProjectFollower>();
-    public virtual ICollection<Sapienza.Dominus.ProjectCommunication.ProjectCommunication> ProjectCommunications { get; set; } = new List<Sapienza.Dominus.ProjectCommunication.ProjectCommunication>();
+    public virtual ICollection<Dominus.Task.Task> Tasks { get; set; } = new List<Dominus.Task.Task>();
+    public virtual ICollection<Dominus.TimeEntry.TimeEntry> TimeEntries { get; set; } = new List<Dominus.TimeEntry.TimeEntry>();
+    public virtual ICollection<Dominus.ProjectResponsible.ProjectResponsible> ProjectResponsibles { get; set; } = new List<Dominus.ProjectResponsible.ProjectResponsible>();
+    public virtual ICollection<Dominus.ProjectFollower.ProjectFollower> ProjectFollowers { get; set; } = new List<Dominus.ProjectFollower.ProjectFollower>();
+    public virtual ICollection<Dominus.ProjectCommunication.ProjectCommunication> ProjectCommunications { get; set; } = new List<Dominus.ProjectCommunication.ProjectCommunication>();
 
     protected Project()
     {

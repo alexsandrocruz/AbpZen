@@ -9,7 +9,7 @@ public static class AiChatSessionDbContextModelCreatingExtensions
     {
         builder.Entity<AiChatSession>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "AiChatSessions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "AiChatSessions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Title).IsRequired();
 

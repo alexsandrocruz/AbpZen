@@ -9,7 +9,7 @@ public static class LeadFormDbContextModelCreatingExtensions
     {
         builder.Entity<LeadForm>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadForms", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadForms", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

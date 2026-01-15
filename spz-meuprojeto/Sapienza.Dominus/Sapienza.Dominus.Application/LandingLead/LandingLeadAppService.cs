@@ -19,10 +19,10 @@ public class LandingLeadAppService :
     DominusAppService,
     ILandingLeadAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LandingLead.LandingLead, Guid> _repository;
+    private readonly IRepository<Dominus.LandingLead.LandingLead, Guid> _repository;
 
     public LandingLeadAppService(
-        IRepository<Sapienza.Dominus.LandingLead.LandingLead, Guid> repository
+        IRepository<Dominus.LandingLead.LandingLead, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class LandingLeadAppService :
     public virtual async Task<LandingLeadDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class LandingLeadAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LandingLead.LandingLead>, List<LandingLeadDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LandingLead.LandingLead>, List<LandingLeadDto>>(entities);
 
         return new PagedResultDto<LandingLeadDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class LandingLeadAppService :
     [Authorize(LandingLeadPermissions.Create)]
     public virtual async Task<LandingLeadDto> CreateAsync(CreateUpdateLandingLeadDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLandingLeadDto, Sapienza.Dominus.LandingLead.LandingLead>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLandingLeadDto, Dominus.LandingLead.LandingLead>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
+        return ObjectMapper.Map<Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class LandingLeadAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LandingLead.LandingLead), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LandingLead.LandingLead), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
+        return ObjectMapper.Map<Dominus.LandingLead.LandingLead, LandingLeadDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class LandingLeadAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LandingLead.LandingLead> ApplyFilters(IQueryable<Sapienza.Dominus.LandingLead.LandingLead> queryable, LandingLeadGetListInput input)
+    protected virtual IQueryable<Dominus.LandingLead.LandingLead> ApplyFilters(IQueryable<Dominus.LandingLead.LandingLead> queryable, LandingLeadGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

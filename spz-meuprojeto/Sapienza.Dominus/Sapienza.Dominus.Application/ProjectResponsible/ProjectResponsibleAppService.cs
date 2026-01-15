@@ -19,12 +19,12 @@ public class ProjectResponsibleAppService :
     DominusAppService,
     IProjectResponsibleAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProjectResponsible.ProjectResponsible, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Project.Project, Guid> _projectRepository;
+    private readonly IRepository<Dominus.ProjectResponsible.ProjectResponsible, Guid> _repository;
+    private readonly IRepository<Dominus.Project.Project, Guid> _projectRepository;
 
     public ProjectResponsibleAppService(
-        IRepository<Sapienza.Dominus.ProjectResponsible.ProjectResponsible, Guid> repository,
-        IRepository<Sapienza.Dominus.Project.Project, Guid> projectRepository
+        IRepository<Dominus.ProjectResponsible.ProjectResponsible, Guid> repository,
+        IRepository<Dominus.Project.Project, Guid> projectRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ProjectResponsibleAppService :
     public virtual async Task<ProjectResponsibleDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
         if (entity.ProjectId != null)
         {
             var parent = await _projectRepository.FindAsync(entity.ProjectId.Value);
@@ -67,7 +67,7 @@ public class ProjectResponsibleAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProjectResponsible.ProjectResponsible>, List<ProjectResponsibleDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProjectResponsible.ProjectResponsible>, List<ProjectResponsibleDto>>(entities);
         var projectIds = entities
             .Where(x => x.ProjectId != null)
             .Select(x => x.ProjectId.Value)
@@ -100,11 +100,11 @@ public class ProjectResponsibleAppService :
     [Authorize(ProjectResponsiblePermissions.Create)]
     public virtual async Task<ProjectResponsibleDto> CreateAsync(CreateUpdateProjectResponsibleDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProjectResponsibleDto, Sapienza.Dominus.ProjectResponsible.ProjectResponsible>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProjectResponsibleDto, Dominus.ProjectResponsible.ProjectResponsible>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ProjectResponsibleAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProjectResponsible.ProjectResponsible), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProjectResponsible.ProjectResponsible), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectResponsible.ProjectResponsible, ProjectResponsibleDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ProjectResponsibleAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProjectResponsible.ProjectResponsible> ApplyFilters(IQueryable<Sapienza.Dominus.ProjectResponsible.ProjectResponsible> queryable, ProjectResponsibleGetListInput input)
+    protected virtual IQueryable<Dominus.ProjectResponsible.ProjectResponsible> ApplyFilters(IQueryable<Dominus.ProjectResponsible.ProjectResponsible> queryable, ProjectResponsibleGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

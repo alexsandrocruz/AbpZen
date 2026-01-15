@@ -19,12 +19,12 @@ public class TimeEntryAppService :
     DominusAppService,
     ITimeEntryAppService
 {
-    private readonly IRepository<Sapienza.Dominus.TimeEntry.TimeEntry, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Project.Project, Guid> _projectRepository;
+    private readonly IRepository<Dominus.TimeEntry.TimeEntry, Guid> _repository;
+    private readonly IRepository<Dominus.Project.Project, Guid> _projectRepository;
 
     public TimeEntryAppService(
-        IRepository<Sapienza.Dominus.TimeEntry.TimeEntry, Guid> repository,
-        IRepository<Sapienza.Dominus.Project.Project, Guid> projectRepository
+        IRepository<Dominus.TimeEntry.TimeEntry, Guid> repository,
+        IRepository<Dominus.Project.Project, Guid> projectRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class TimeEntryAppService :
     public virtual async Task<TimeEntryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
         if (entity.ProjectId != null)
         {
             var parent = await _projectRepository.FindAsync(entity.ProjectId.Value);
@@ -67,7 +67,7 @@ public class TimeEntryAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.TimeEntry.TimeEntry>, List<TimeEntryDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.TimeEntry.TimeEntry>, List<TimeEntryDto>>(entities);
         var projectIds = entities
             .Where(x => x.ProjectId != null)
             .Select(x => x.ProjectId.Value)
@@ -100,11 +100,11 @@ public class TimeEntryAppService :
     [Authorize(TimeEntryPermissions.Create)]
     public virtual async Task<TimeEntryDto> CreateAsync(CreateUpdateTimeEntryDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateTimeEntryDto, Sapienza.Dominus.TimeEntry.TimeEntry>(input);
+        var entity = ObjectMapper.Map<CreateUpdateTimeEntryDto, Dominus.TimeEntry.TimeEntry>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
+        return ObjectMapper.Map<Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class TimeEntryAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.TimeEntry.TimeEntry), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.TimeEntry.TimeEntry), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
+        return ObjectMapper.Map<Dominus.TimeEntry.TimeEntry, TimeEntryDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class TimeEntryAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.TimeEntry.TimeEntry> ApplyFilters(IQueryable<Sapienza.Dominus.TimeEntry.TimeEntry> queryable, TimeEntryGetListInput input)
+    protected virtual IQueryable<Dominus.TimeEntry.TimeEntry> ApplyFilters(IQueryable<Dominus.TimeEntry.TimeEntry> queryable, TimeEntryGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadLandingPage;
 
 public class EfLeadLandingPageRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadLandingPage.LeadLandingPage, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadLandingPage.LeadLandingPage, Guid>, 
       ILeadLandingPageRepository
 {
-    public EfLeadLandingPageRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadLandingPageRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

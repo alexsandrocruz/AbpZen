@@ -9,7 +9,7 @@ public static class WorkspaceAccessEventDbContextModelCreatingExtensions
     {
         builder.Entity<WorkspaceAccessEvent>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "WorkspaceAccessEvents", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "WorkspaceAccessEvents", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.EventType).IsRequired();
 

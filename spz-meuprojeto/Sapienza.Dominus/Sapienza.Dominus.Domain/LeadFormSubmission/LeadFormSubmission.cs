@@ -16,7 +16,7 @@ public class LeadFormSubmission : Entity<Guid>
     public Guid? LeadFormId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.LeadForm.LeadForm? LeadForm { get; set; }
+    public virtual Dominus.LeadForm.LeadForm? LeadForm { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

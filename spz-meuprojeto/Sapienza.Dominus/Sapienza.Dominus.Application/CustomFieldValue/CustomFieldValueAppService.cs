@@ -19,12 +19,12 @@ public class CustomFieldValueAppService :
     DominusAppService,
     ICustomFieldValueAppService
 {
-    private readonly IRepository<Sapienza.Dominus.CustomFieldValue.CustomFieldValue, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.CustomField.CustomField, Guid> _customFieldRepository;
+    private readonly IRepository<Dominus.CustomFieldValue.CustomFieldValue, Guid> _repository;
+    private readonly IRepository<Dominus.CustomField.CustomField, Guid> _customFieldRepository;
 
     public CustomFieldValueAppService(
-        IRepository<Sapienza.Dominus.CustomFieldValue.CustomFieldValue, Guid> repository,
-        IRepository<Sapienza.Dominus.CustomField.CustomField, Guid> customFieldRepository
+        IRepository<Dominus.CustomFieldValue.CustomFieldValue, Guid> repository,
+        IRepository<Dominus.CustomField.CustomField, Guid> customFieldRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class CustomFieldValueAppService :
     public virtual async Task<CustomFieldValueDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
         if (entity.CustomFieldId != null)
         {
             var parent = await _customFieldRepository.FindAsync(entity.CustomFieldId.Value);
@@ -67,7 +67,7 @@ public class CustomFieldValueAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.CustomFieldValue.CustomFieldValue>, List<CustomFieldValueDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.CustomFieldValue.CustomFieldValue>, List<CustomFieldValueDto>>(entities);
         var customFieldIds = entities
             .Where(x => x.CustomFieldId != null)
             .Select(x => x.CustomFieldId.Value)
@@ -100,11 +100,11 @@ public class CustomFieldValueAppService :
     [Authorize(CustomFieldValuePermissions.Create)]
     public virtual async Task<CustomFieldValueDto> CreateAsync(CreateUpdateCustomFieldValueDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateCustomFieldValueDto, Sapienza.Dominus.CustomFieldValue.CustomFieldValue>(input);
+        var entity = ObjectMapper.Map<CreateUpdateCustomFieldValueDto, Dominus.CustomFieldValue.CustomFieldValue>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
+        return ObjectMapper.Map<Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class CustomFieldValueAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.CustomFieldValue.CustomFieldValue), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.CustomFieldValue.CustomFieldValue), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
+        return ObjectMapper.Map<Dominus.CustomFieldValue.CustomFieldValue, CustomFieldValueDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class CustomFieldValueAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.CustomFieldValue.CustomFieldValue> ApplyFilters(IQueryable<Sapienza.Dominus.CustomFieldValue.CustomFieldValue> queryable, CustomFieldValueGetListInput input)
+    protected virtual IQueryable<Dominus.CustomFieldValue.CustomFieldValue> ApplyFilters(IQueryable<Dominus.CustomFieldValue.CustomFieldValue> queryable, CustomFieldValueGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

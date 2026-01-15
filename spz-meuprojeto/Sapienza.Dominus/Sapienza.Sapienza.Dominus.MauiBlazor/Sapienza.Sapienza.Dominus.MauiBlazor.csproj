@@ -59,7 +59,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.HttpApi.Client\Sapienza.Sapienza.Dominus.HttpApi.Client.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.MauiBlazor.BasicTheme" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

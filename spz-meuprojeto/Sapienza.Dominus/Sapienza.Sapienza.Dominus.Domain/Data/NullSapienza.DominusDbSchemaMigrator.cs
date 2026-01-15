@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
-namespace Sapienza.Sapienza.Dominus.Data
+namespace Sapienza.Dominus.Data
 {
     /* This is used if database provider does't define
-     * ISapienza.DominusDbSchemaMigrator implementation.
+     * IDominusDbSchemaMigrator implementation.
      */
-    public class NullSapienza.DominusDbSchemaMigrator : ISapienza.DominusDbSchemaMigrator, ITransientDependency
+    public class NullDominusDbSchemaMigrator : IDominusDbSchemaMigrator, ITransientDependency
     {
         public Task MigrateAsync()
         {

@@ -9,7 +9,7 @@ public static class SiteVisitDailyStatDbContextModelCreatingExtensions
     {
         builder.Entity<SiteVisitDailyStat>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "SiteVisitDailyStats", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "SiteVisitDailyStats", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

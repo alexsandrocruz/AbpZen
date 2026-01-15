@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.ProjectCommunication;
 
-public interface IProjectCommunicationRepository : IRepository<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, Guid>
+public interface IProjectCommunicationRepository : IRepository<Dominus.ProjectCommunication.ProjectCommunication, Guid>
 {
 }

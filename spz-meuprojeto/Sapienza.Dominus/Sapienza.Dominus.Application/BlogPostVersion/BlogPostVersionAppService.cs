@@ -19,12 +19,12 @@ public class BlogPostVersionAppService :
     DominusAppService,
     IBlogPostVersionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.BlogPostVersion.BlogPostVersion, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.BlogPost.BlogPost, Guid> _blogPostRepository;
+    private readonly IRepository<Dominus.BlogPostVersion.BlogPostVersion, Guid> _repository;
+    private readonly IRepository<Dominus.BlogPost.BlogPost, Guid> _blogPostRepository;
 
     public BlogPostVersionAppService(
-        IRepository<Sapienza.Dominus.BlogPostVersion.BlogPostVersion, Guid> repository,
-        IRepository<Sapienza.Dominus.BlogPost.BlogPost, Guid> blogPostRepository
+        IRepository<Dominus.BlogPostVersion.BlogPostVersion, Guid> repository,
+        IRepository<Dominus.BlogPost.BlogPost, Guid> blogPostRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class BlogPostVersionAppService :
     public virtual async Task<BlogPostVersionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
         if (entity.BlogPostId != null)
         {
             var parent = await _blogPostRepository.FindAsync(entity.BlogPostId.Value);
@@ -67,7 +67,7 @@ public class BlogPostVersionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.BlogPostVersion.BlogPostVersion>, List<BlogPostVersionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.BlogPostVersion.BlogPostVersion>, List<BlogPostVersionDto>>(entities);
         var blogPostIds = entities
             .Where(x => x.BlogPostId != null)
             .Select(x => x.BlogPostId.Value)
@@ -100,11 +100,11 @@ public class BlogPostVersionAppService :
     [Authorize(BlogPostVersionPermissions.Create)]
     public virtual async Task<BlogPostVersionDto> CreateAsync(CreateUpdateBlogPostVersionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateBlogPostVersionDto, Sapienza.Dominus.BlogPostVersion.BlogPostVersion>(input);
+        var entity = ObjectMapper.Map<CreateUpdateBlogPostVersionDto, Dominus.BlogPostVersion.BlogPostVersion>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class BlogPostVersionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.BlogPostVersion.BlogPostVersion), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.BlogPostVersion.BlogPostVersion), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogPostVersion.BlogPostVersion, BlogPostVersionDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class BlogPostVersionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.BlogPostVersion.BlogPostVersion> ApplyFilters(IQueryable<Sapienza.Dominus.BlogPostVersion.BlogPostVersion> queryable, BlogPostVersionGetListInput input)
+    protected virtual IQueryable<Dominus.BlogPostVersion.BlogPostVersion> ApplyFilters(IQueryable<Dominus.BlogPostVersion.BlogPostVersion> queryable, BlogPostVersionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

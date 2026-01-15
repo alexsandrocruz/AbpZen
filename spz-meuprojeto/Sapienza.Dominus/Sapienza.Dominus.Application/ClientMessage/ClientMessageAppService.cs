@@ -19,12 +19,12 @@ public class ClientMessageAppService :
     DominusAppService,
     IClientMessageAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ClientMessage.ClientMessage, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _clientRepository;
+    private readonly IRepository<Dominus.ClientMessage.ClientMessage, Guid> _repository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _clientRepository;
 
     public ClientMessageAppService(
-        IRepository<Sapienza.Dominus.ClientMessage.ClientMessage, Guid> repository,
-        IRepository<Sapienza.Dominus.Client.Client, Guid> clientRepository
+        IRepository<Dominus.ClientMessage.ClientMessage, Guid> repository,
+        IRepository<Dominus.Client.Client, Guid> clientRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ClientMessageAppService :
     public virtual async Task<ClientMessageDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
         if (entity.ClientId != null)
         {
             var parent = await _clientRepository.FindAsync(entity.ClientId.Value);
@@ -67,7 +67,7 @@ public class ClientMessageAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ClientMessage.ClientMessage>, List<ClientMessageDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ClientMessage.ClientMessage>, List<ClientMessageDto>>(entities);
         var clientIds = entities
             .Where(x => x.ClientId != null)
             .Select(x => x.ClientId.Value)
@@ -100,11 +100,11 @@ public class ClientMessageAppService :
     [Authorize(ClientMessagePermissions.Create)]
     public virtual async Task<ClientMessageDto> CreateAsync(CreateUpdateClientMessageDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateClientMessageDto, Sapienza.Dominus.ClientMessage.ClientMessage>(input);
+        var entity = ObjectMapper.Map<CreateUpdateClientMessageDto, Dominus.ClientMessage.ClientMessage>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ClientMessageAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ClientMessage.ClientMessage), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ClientMessage.ClientMessage), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.ClientMessage.ClientMessage, ClientMessageDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ClientMessageAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ClientMessage.ClientMessage> ApplyFilters(IQueryable<Sapienza.Dominus.ClientMessage.ClientMessage> queryable, ClientMessageGetListInput input)
+    protected virtual IQueryable<Dominus.ClientMessage.ClientMessage> ApplyFilters(IQueryable<Dominus.ClientMessage.ClientMessage> queryable, ClientMessageGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

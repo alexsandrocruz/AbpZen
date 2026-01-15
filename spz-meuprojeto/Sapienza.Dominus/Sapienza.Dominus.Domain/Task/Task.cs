@@ -19,10 +19,10 @@ public class Task : FullAuditedEntity<Guid>
     public Guid? ProjectId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Project.Project? Project { get; set; }
+    public virtual Dominus.Project.Project? Project { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.TaskComment.TaskComment> TaskComments { get; set; } = new List<Sapienza.Dominus.TaskComment.TaskComment>();
+    public virtual ICollection<Dominus.TaskComment.TaskComment> TaskComments { get; set; } = new List<Dominus.TaskComment.TaskComment>();
 
     protected Task()
     {

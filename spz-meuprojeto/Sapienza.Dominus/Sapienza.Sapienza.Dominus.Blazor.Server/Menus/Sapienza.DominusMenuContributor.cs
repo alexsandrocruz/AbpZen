@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Localization.Resources.AbpUi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sapienza.Sapienza.Dominus.Localization;
+using Sapienza.Dominus.Localization;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.AuditLogging.Blazor.Menus;
 using Volo.Abp.Identity.Pro.Blazor.Navigation;
@@ -16,13 +16,13 @@ using Volo.Abp.Users;
 using Volo.Saas.Host.Blazor.Navigation;
 using Volo.Abp.OpenIddict.Pro.Blazor.Menus;
 
-namespace Sapienza.Sapienza.Dominus.Blazor.Menus
+namespace Sapienza.Dominus.Blazor.Menus
 {
-    public class Sapienza.DominusMenuContributor : IMenuContributor
+    public class DominusMenuContributor : IMenuContributor
     {
         private readonly IConfiguration _configuration;
 
-        public Sapienza.DominusMenuContributor(IConfiguration configuration)
+        public DominusMenuContributor(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -41,12 +41,12 @@ namespace Sapienza.Sapienza.Dominus.Blazor.Menus
 
         private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
         {
-            var l = context.GetLocalizer<Sapienza.DominusResource>();
+            var l = context.GetLocalizer<DominusResource>();
 
             context.Menu.Items.Insert(
                 0,
                 new ApplicationMenuItem(
-                    Sapienza.DominusMenus.Home,
+                    DominusMenus.Home,
                     l["Menu:Home"],
                     "/",
                     icon: "fas fa-home",

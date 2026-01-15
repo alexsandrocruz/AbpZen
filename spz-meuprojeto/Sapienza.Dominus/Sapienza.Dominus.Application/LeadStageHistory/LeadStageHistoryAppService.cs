@@ -19,12 +19,12 @@ public class LeadStageHistoryAppService :
     DominusAppService,
     ILeadStageHistoryAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadStageHistory.LeadStageHistory, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Lead.Lead, Guid> _leadRepository;
+    private readonly IRepository<Dominus.LeadStageHistory.LeadStageHistory, Guid> _repository;
+    private readonly IRepository<Dominus.Lead.Lead, Guid> _leadRepository;
 
     public LeadStageHistoryAppService(
-        IRepository<Sapienza.Dominus.LeadStageHistory.LeadStageHistory, Guid> repository,
-        IRepository<Sapienza.Dominus.Lead.Lead, Guid> leadRepository
+        IRepository<Dominus.LeadStageHistory.LeadStageHistory, Guid> repository,
+        IRepository<Dominus.Lead.Lead, Guid> leadRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadStageHistoryAppService :
     public virtual async Task<LeadStageHistoryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
         if (entity.LeadId != null)
         {
             var parent = await _leadRepository.FindAsync(entity.LeadId.Value);
@@ -67,7 +67,7 @@ public class LeadStageHistoryAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadStageHistory.LeadStageHistory>, List<LeadStageHistoryDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadStageHistory.LeadStageHistory>, List<LeadStageHistoryDto>>(entities);
         var leadIds = entities
             .Where(x => x.LeadId != null)
             .Select(x => x.LeadId.Value)
@@ -100,11 +100,11 @@ public class LeadStageHistoryAppService :
     [Authorize(LeadStageHistoryPermissions.Create)]
     public virtual async Task<LeadStageHistoryDto> CreateAsync(CreateUpdateLeadStageHistoryDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadStageHistoryDto, Sapienza.Dominus.LeadStageHistory.LeadStageHistory>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadStageHistoryDto, Dominus.LeadStageHistory.LeadStageHistory>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadStageHistoryAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadStageHistory.LeadStageHistory), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadStageHistory.LeadStageHistory), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadStageHistory.LeadStageHistory, LeadStageHistoryDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadStageHistoryAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadStageHistory.LeadStageHistory> ApplyFilters(IQueryable<Sapienza.Dominus.LeadStageHistory.LeadStageHistory> queryable, LeadStageHistoryGetListInput input)
+    protected virtual IQueryable<Dominus.LeadStageHistory.LeadStageHistory> ApplyFilters(IQueryable<Dominus.LeadStageHistory.LeadStageHistory> queryable, LeadStageHistoryGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -18,10 +18,10 @@ using Volo.Forms;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
-        typeof(Sapienza.DominusApplicationContractsModule),
+        typeof(DominusApplicationContractsModule),
         typeof(AbpIdentityHttpApiClientModule),
         typeof(AbpPermissionManagementHttpApiClientModule),
         typeof(AbpFeatureManagementHttpApiClientModule),
@@ -41,20 +41,20 @@ namespace Sapienza.Sapienza.Dominus
     [DependsOn(typeof(CmsKitProAdminHttpApiClientModule))]
     [DependsOn(typeof(CmsKitProHttpApiClientModule))]
     [DependsOn(typeof(AbpGdprHttpApiClientModule))]
-    public class Sapienza.DominusHttpApiClientModule : AbpModule
+    public class DominusHttpApiClientModule : AbpModule
     {
         public const string RemoteServiceName = "Default";
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddHttpClientProxies(
-                typeof(Sapienza.DominusApplicationContractsModule).Assembly,
+                typeof(DominusApplicationContractsModule).Assembly,
                 RemoteServiceName
             );
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<Sapienza.DominusHttpApiClientModule>();
+                options.FileSets.AddEmbedded<DominusHttpApiClientModule>();
             });
         }
     }

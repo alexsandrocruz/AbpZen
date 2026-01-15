@@ -1,13 +1,13 @@
-﻿using Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+﻿using Sapienza.Dominus.MauiBlazor.OAuth;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
-using Sapienza.Sapienza.Dominus.MauiBlazor.Navigation;
-using Sapienza.Sapienza.Dominus.MultiTenancy;
+using Sapienza.Dominus.MauiBlazor.Navigation;
+using Sapienza.Dominus.MultiTenancy;
 using Volo.Abp.Account.Pro.Admin.Blazor;
-using Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme;
+using Volo.Abp.AspNetCore.Components.MauiBlazor.BasicTheme;
 using Volo.Abp.AspNetCore.Components.Web;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
 using Volo.Abp.AspNetCore.Mvc.Client;
@@ -29,15 +29,15 @@ using Volo.Abp.Account.Localization;
 using Volo.Abp.Gdpr.Blazor;
 using IdentityModel.OidcClient;
 using Microsoft.Extensions.Options;
-using Volo.Abp.AspNetCore.Components.MauiBlazor.LeptonXTheme.Components.AccountLayout;
+using Volo.Abp.AspNetCore.Components.MauiBlazor.BasicTheme.Components.AccountLayout;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.LeptonX.Shared;
+using Volo.Abp.Basic.Shared;
 using Volo.Abp.Localization;
 
 
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 
 public  class LayoutManager : ITransientDependency
 {
@@ -54,7 +54,7 @@ public  class LayoutManager : ITransientDependency
         typeof(AbpAccountAdminBlazorModule),
         typeof(AbpAutofacModule),
         typeof(AbpAutoMapperModule),
-        typeof(AbpAspNetCoreComponentsMauiBlazorLeptonXThemeModule),
+        typeof(AbpAspNetCoreComponentsMauiBlazorBasicThemeModule),
         typeof(AbpAuditLoggingBlazorModule),
         typeof(AbpIdentityProBlazorModule),
         typeof(AbpOpenIddictProBlazorModule),
@@ -62,10 +62,10 @@ public  class LayoutManager : ITransientDependency
         typeof(LanguageManagementBlazorModule),
         typeof(SaasHostBlazorModule),
         typeof(TextTemplateManagementBlazorModule),
-        typeof(Sapienza.DominusHttpApiClientModule),
+        typeof(DominusHttpApiClientModule),
         typeof(AbpGdprBlazorModule)
         )]
-public class Sapienza.DominusMauiBlazorModule : AbpModule
+public class DominusMauiBlazorModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -109,9 +109,9 @@ public class Sapienza.DominusMauiBlazorModule : AbpModule
 
     private void ConfigureTheme()
     {
-        Configure<LeptonXThemeOptions>(options =>
+        Configure<BasicThemeOptions>(options =>
         {
-            options.DefaultStyle = LeptonXStyleNames.System;
+            options.DefaultStyle = BasicStyleNames.System;
         });
     }
 
@@ -119,13 +119,13 @@ public class Sapienza.DominusMauiBlazorModule : AbpModule
     {
         Configure<AbpNavigationOptions>(options =>
         {
-            options.MenuContributors.Add(new Sapienza.DominusMenuContributor(context.Services.GetConfiguration()));
+            options.MenuContributors.Add(new DominusMenuContributor(context.Services.GetConfiguration()));
         });
     }
 
     private void ConfigureRouter(ServiceConfigurationContext context)
     {
-        Configure<AbpRouterOptions>(options => { options.AppAssembly = typeof(Sapienza.DominusMauiBlazorModule).Assembly; });
+        Configure<AbpRouterOptions>(options => { options.AppAssembly = typeof(DominusMauiBlazorModule).Assembly; });
     }
 
     private void ConfigureBlazorise(ServiceConfigurationContext context)
@@ -183,7 +183,7 @@ public class Sapienza.DominusMauiBlazorModule : AbpModule
     {
         Configure<AbpAutoMapperOptions>(options =>
         {
-            options.AddMaps<Sapienza.DominusMauiBlazorModule>();
+            options.AddMaps<DominusMauiBlazorModule>();
         });
     }
 

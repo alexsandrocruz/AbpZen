@@ -18,10 +18,10 @@ using Volo.Forms.MongoDB;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict.MongoDB;
 
-namespace Sapienza.Sapienza.Dominus.MongoDB
+namespace Sapienza.Dominus.MongoDB
 {
     [DependsOn(
-        typeof(Sapienza.DominusDomainModule),
+        typeof(DominusDomainModule),
         typeof(AbpPermissionManagementMongoDbModule),
         typeof(AbpSettingManagementMongoDbModule),
         typeof(AbpIdentityProMongoDbModule),
@@ -39,11 +39,11 @@ namespace Sapienza.Sapienza.Dominus.MongoDB
     [DependsOn(typeof(FormsMongoDbModule))]
     [DependsOn(typeof(CmsKitProMongoDbModule))]
     [DependsOn(typeof(AbpGdprMongoDbModule))]
-    public class Sapienza.DominusMongoDbModule : AbpModule
+    public class DominusMongoDbModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddMongoDbContext<Sapienza.DominusMongoDbContext>(options =>
+            context.Services.AddMongoDbContext<DominusMongoDbContext>(options =>
             {
                 options.AddDefaultRepositories();
             });

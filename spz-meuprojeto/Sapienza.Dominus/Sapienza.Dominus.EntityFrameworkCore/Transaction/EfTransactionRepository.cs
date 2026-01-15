@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Transaction;
 
 public class EfTransactionRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Transaction.Transaction, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Transaction.Transaction, Guid>, 
       ITransactionRepository
 {
-    public EfTransactionRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfTransactionRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

@@ -16,7 +16,7 @@ public class SitePageVersion : Entity<Guid>
     public Guid? SitePageId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.SitePage.SitePage? SitePage { get; set; }
+    public virtual Dominus.SitePage.SitePage? SitePage { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

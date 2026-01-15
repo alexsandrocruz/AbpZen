@@ -38,7 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sapienza.Zen.HttpApi.Client\Sapienza.Zen.HttpApi.Client.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.LeptonXTheme" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.Web.BasicTheme" Version="$(AbpVersion)" />
   </ItemGroup>
 
 </Project>

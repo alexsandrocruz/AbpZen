@@ -19,14 +19,14 @@ public class BookingAppService :
     DominusAppService,
     IBookingAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Booking.Booking, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _clientRepository;
+    private readonly IRepository<Dominus.Booking.Booking, Guid> _repository;
+    private readonly IRepository<Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _clientRepository;
 
     public BookingAppService(
-        IRepository<Sapienza.Dominus.Booking.Booking, Guid> repository,
-        IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository,
-        IRepository<Sapienza.Dominus.Client.Client, Guid> clientRepository
+        IRepository<Dominus.Booking.Booking, Guid> repository,
+        IRepository<Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository,
+        IRepository<Dominus.Client.Client, Guid> clientRepository
     )
     {
         _repository = repository;
@@ -40,7 +40,7 @@ public class BookingAppService :
     public virtual async Task<BookingDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Booking.Booking, BookingDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Booking.Booking, BookingDto>(entity);
         if (entity.SchedulerTypeId != null)
         {
             var parent = await _schedulerTypeRepository.FindAsync(entity.SchedulerTypeId.Value);
@@ -75,7 +75,7 @@ public class BookingAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Booking.Booking>, List<BookingDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Booking.Booking>, List<BookingDto>>(entities);
         var schedulerTypeIds = entities
             .Where(x => x.SchedulerTypeId != null)
             .Select(x => x.SchedulerTypeId.Value)
@@ -127,11 +127,11 @@ public class BookingAppService :
     [Authorize(BookingPermissions.Create)]
     public virtual async Task<BookingDto> CreateAsync(CreateUpdateBookingDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateBookingDto, Sapienza.Dominus.Booking.Booking>(input);
+        var entity = ObjectMapper.Map<CreateUpdateBookingDto, Dominus.Booking.Booking>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Booking.Booking, BookingDto>(entity);
+        return ObjectMapper.Map<Dominus.Booking.Booking, BookingDto>(entity);
     }
 
     /// <summary>
@@ -143,14 +143,14 @@ public class BookingAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Booking.Booking), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Booking.Booking), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Booking.Booking, BookingDto>(entity);
+        return ObjectMapper.Map<Dominus.Booking.Booking, BookingDto>(entity);
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public class BookingAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Booking.Booking> ApplyFilters(IQueryable<Sapienza.Dominus.Booking.Booking> queryable, BookingGetListInput input)
+    protected virtual IQueryable<Dominus.Booking.Booking> ApplyFilters(IQueryable<Dominus.Booking.Booking> queryable, BookingGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

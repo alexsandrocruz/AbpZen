@@ -9,7 +9,7 @@ public static class BookingDbContextModelCreatingExtensions
     {
         builder.Entity<Booking>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Bookings", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Bookings", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.ClientName).IsRequired();
             b.Property(x => x.ClientEmail).IsRequired();

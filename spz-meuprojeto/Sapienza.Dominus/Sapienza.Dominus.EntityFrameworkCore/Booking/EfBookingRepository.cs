@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Booking;
 
 public class EfBookingRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Booking.Booking, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Booking.Booking, Guid>, 
       IBookingRepository
 {
-    public EfBookingRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfBookingRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

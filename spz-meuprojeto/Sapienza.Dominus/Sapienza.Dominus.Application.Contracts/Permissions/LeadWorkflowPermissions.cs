@@ -2,7 +2,7 @@ namespace Sapienza.Dominus.Permissions;
 
 public static class LeadWorkflowPermissions
 {
-    public const string GroupName = "Sapienza.Dominus";
+    public const string GroupName = "Dominus";
     
     public const string Default = GroupName + ".LeadWorkflow";
     public const string Create = Default + ".Create";

@@ -9,7 +9,7 @@ public static class SchedulerAvailabilityDbContextModelCreatingExtensions
     {
         builder.Entity<SchedulerAvailability>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "SchedulerAvailabilities", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "SchedulerAvailabilities", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.StartTime).IsRequired();
 

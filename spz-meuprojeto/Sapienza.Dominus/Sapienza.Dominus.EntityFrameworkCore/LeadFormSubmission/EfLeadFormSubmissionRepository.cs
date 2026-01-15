@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadFormSubmission;
 
 public class EfLeadFormSubmissionRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadFormSubmission.LeadFormSubmission, Guid>, 
       ILeadFormSubmissionRepository
 {
-    public EfLeadFormSubmissionRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadFormSubmissionRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

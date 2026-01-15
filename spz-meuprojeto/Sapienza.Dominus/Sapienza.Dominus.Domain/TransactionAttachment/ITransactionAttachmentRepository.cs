@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.TransactionAttachment;
 
-public interface ITransactionAttachmentRepository : IRepository<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, Guid>
+public interface ITransactionAttachmentRepository : IRepository<Dominus.TransactionAttachment.TransactionAttachment, Guid>
 {
 }

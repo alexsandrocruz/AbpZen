@@ -19,10 +19,10 @@ public class ProposalTemplateBlockAppService :
     DominusAppService,
     IProposalTemplateBlockAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid> _repository;
+    private readonly IRepository<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid> _repository;
 
     public ProposalTemplateBlockAppService(
-        IRepository<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid> repository
+        IRepository<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class ProposalTemplateBlockAppService :
     public virtual async Task<ProposalTemplateBlockDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class ProposalTemplateBlockAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock>, List<ProposalTemplateBlockDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProposalTemplateBlock.ProposalTemplateBlock>, List<ProposalTemplateBlockDto>>(entities);
 
         return new PagedResultDto<ProposalTemplateBlockDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class ProposalTemplateBlockAppService :
     [Authorize(ProposalTemplateBlockPermissions.Create)]
     public virtual async Task<ProposalTemplateBlockDto> CreateAsync(CreateUpdateProposalTemplateBlockDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProposalTemplateBlockDto, Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProposalTemplateBlockDto, Dominus.ProposalTemplateBlock.ProposalTemplateBlock>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class ProposalTemplateBlockAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProposalTemplateBlock.ProposalTemplateBlock), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, ProposalTemplateBlockDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class ProposalTemplateBlockAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock> ApplyFilters(IQueryable<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock> queryable, ProposalTemplateBlockGetListInput input)
+    protected virtual IQueryable<Dominus.ProposalTemplateBlock.ProposalTemplateBlock> ApplyFilters(IQueryable<Dominus.ProposalTemplateBlock.ProposalTemplateBlock> queryable, ProposalTemplateBlockGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

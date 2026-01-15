@@ -18,7 +18,7 @@ public class AiChatSession : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.AiChatMessage.AiChatMessage> AiChatMessages { get; set; } = new List<Sapienza.Dominus.AiChatMessage.AiChatMessage>();
+    public virtual ICollection<Dominus.AiChatMessage.AiChatMessage> AiChatMessages { get; set; } = new List<Dominus.AiChatMessage.AiChatMessage>();
 
     protected AiChatSession()
     {

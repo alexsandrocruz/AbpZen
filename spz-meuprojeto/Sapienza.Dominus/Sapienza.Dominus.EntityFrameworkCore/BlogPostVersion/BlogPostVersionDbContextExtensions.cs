@@ -9,7 +9,7 @@ public static class BlogPostVersionDbContextModelCreatingExtensions
     {
         builder.Entity<BlogPostVersion>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "BlogPostVersions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "BlogPostVersions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+using Sapienza.Dominus.MauiBlazor.Settings;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public abstract class ExternalAuthServiceBase : IExternalAuthService
 {
@@ -11,11 +11,11 @@ public abstract class ExternalAuthServiceBase : IExternalAuthService
     public event Action<ClaimsPrincipal> UserChanged;
 
     protected ClaimsPrincipal CurrentUser { get; set; }
-    protected  ISapienza.DominusApplicationSettingService Sapienza.DominusApplicationSettingService { get;}
+    protected  IDominusApplicationSettingService DominusApplicationSettingService { get;}
 
-    protected ExternalAuthServiceBase(ISapienza.DominusApplicationSettingService leptonXDemoAppApplicationSettingService)
+    protected ExternalAuthServiceBase(IDominusApplicationSettingService leptonXDemoAppApplicationSettingService)
     {
-        Sapienza.DominusApplicationSettingService = leptonXDemoAppApplicationSettingService;
+        DominusApplicationSettingService = leptonXDemoAppApplicationSettingService;
     }
 
     public abstract Task<LoginResult> LoginAsync(LoginInput loginInput);
@@ -24,7 +24,7 @@ public abstract class ExternalAuthServiceBase : IExternalAuthService
 
     public async Task<ClaimsPrincipal> GetCurrentUser()
     {
-        var accessToken = await Sapienza.DominusApplicationSettingService.GetAccessTokenAsync();
+        var accessToken = await DominusApplicationSettingService.GetAccessTokenAsync();
         if (!accessToken.IsNullOrWhiteSpace())
         {
             var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);

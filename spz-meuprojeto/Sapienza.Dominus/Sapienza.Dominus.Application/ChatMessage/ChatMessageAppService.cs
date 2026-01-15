@@ -19,12 +19,12 @@ public class ChatMessageAppService :
     DominusAppService,
     IChatMessageAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ChatMessage.ChatMessage, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Conversation.Conversation, Guid> _conversationRepository;
+    private readonly IRepository<Dominus.ChatMessage.ChatMessage, Guid> _repository;
+    private readonly IRepository<Dominus.Conversation.Conversation, Guid> _conversationRepository;
 
     public ChatMessageAppService(
-        IRepository<Sapienza.Dominus.ChatMessage.ChatMessage, Guid> repository,
-        IRepository<Sapienza.Dominus.Conversation.Conversation, Guid> conversationRepository
+        IRepository<Dominus.ChatMessage.ChatMessage, Guid> repository,
+        IRepository<Dominus.Conversation.Conversation, Guid> conversationRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ChatMessageAppService :
     public virtual async Task<ChatMessageDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
         if (entity.ConversationId != null)
         {
             var parent = await _conversationRepository.FindAsync(entity.ConversationId.Value);
@@ -67,7 +67,7 @@ public class ChatMessageAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ChatMessage.ChatMessage>, List<ChatMessageDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ChatMessage.ChatMessage>, List<ChatMessageDto>>(entities);
         var conversationIds = entities
             .Where(x => x.ConversationId != null)
             .Select(x => x.ConversationId.Value)
@@ -100,11 +100,11 @@ public class ChatMessageAppService :
     [Authorize(ChatMessagePermissions.Create)]
     public virtual async Task<ChatMessageDto> CreateAsync(CreateUpdateChatMessageDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateChatMessageDto, Sapienza.Dominus.ChatMessage.ChatMessage>(input);
+        var entity = ObjectMapper.Map<CreateUpdateChatMessageDto, Dominus.ChatMessage.ChatMessage>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ChatMessageAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ChatMessage.ChatMessage), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ChatMessage.ChatMessage), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.ChatMessage.ChatMessage, ChatMessageDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ChatMessageAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ChatMessage.ChatMessage> ApplyFilters(IQueryable<Sapienza.Dominus.ChatMessage.ChatMessage> queryable, ChatMessageGetListInput input)
+    protected virtual IQueryable<Dominus.ChatMessage.ChatMessage> ApplyFilters(IQueryable<Dominus.ChatMessage.ChatMessage> queryable, ChatMessageGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -17,7 +17,7 @@ public class TransactionAttachment : Entity<Guid>
     public Guid? TransactionId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Transaction.Transaction? Transaction { get; set; }
+    public virtual Dominus.Transaction.Transaction? Transaction { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

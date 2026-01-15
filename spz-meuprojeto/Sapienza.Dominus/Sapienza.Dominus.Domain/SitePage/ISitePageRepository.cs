@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.SitePage;
 
-public interface ISitePageRepository : IRepository<Sapienza.Dominus.SitePage.SitePage, Guid>
+public interface ISitePageRepository : IRepository<Dominus.SitePage.SitePage, Guid>
 {
 }

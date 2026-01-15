@@ -16,7 +16,7 @@ public class TaskComment : AuditedEntity<Guid>
     public Guid? TaskId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Task.Task? Task { get; set; }
+    public virtual Dominus.Task.Task? Task { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

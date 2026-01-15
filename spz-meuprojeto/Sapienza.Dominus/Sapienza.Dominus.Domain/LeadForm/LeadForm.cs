@@ -16,11 +16,11 @@ public class LeadForm : FullAuditedEntity<Guid>
     public Guid? LeadWorkflowId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
+    public virtual Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.LeadFormField.LeadFormField> LeadFormFields { get; set; } = new List<Sapienza.Dominus.LeadFormField.LeadFormField>();
-    public virtual ICollection<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission> LeadFormSubmissions { get; set; } = new List<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission>();
+    public virtual ICollection<Dominus.LeadFormField.LeadFormField> LeadFormFields { get; set; } = new List<Dominus.LeadFormField.LeadFormField>();
+    public virtual ICollection<Dominus.LeadFormSubmission.LeadFormSubmission> LeadFormSubmissions { get; set; } = new List<Dominus.LeadFormSubmission.LeadFormSubmission>();
 
     protected LeadForm()
     {

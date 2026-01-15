@@ -19,10 +19,10 @@ public class ProductAppService :
     DominusAppService,
     IProductAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Product.Product, Guid> _repository;
+    private readonly IRepository<Dominus.Product.Product, Guid> _repository;
 
     public ProductAppService(
-        IRepository<Sapienza.Dominus.Product.Product, Guid> repository
+        IRepository<Dominus.Product.Product, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class ProductAppService :
     public virtual async Task<ProductDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Product.Product, ProductDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Product.Product, ProductDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class ProductAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Product.Product>, List<ProductDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Product.Product>, List<ProductDto>>(entities);
 
         return new PagedResultDto<ProductDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class ProductAppService :
     [Authorize(ProductPermissions.Create)]
     public virtual async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProductDto, Sapienza.Dominus.Product.Product>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProductDto, Dominus.Product.Product>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Product.Product, ProductDto>(entity);
+        return ObjectMapper.Map<Dominus.Product.Product, ProductDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class ProductAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Product.Product), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Product.Product), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Product.Product, ProductDto>(entity);
+        return ObjectMapper.Map<Dominus.Product.Product, ProductDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class ProductAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Product.Product> ApplyFilters(IQueryable<Sapienza.Dominus.Product.Product> queryable, ProductGetListInput input)
+    protected virtual IQueryable<Dominus.Product.Product> ApplyFilters(IQueryable<Dominus.Product.Product> queryable, ProductGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

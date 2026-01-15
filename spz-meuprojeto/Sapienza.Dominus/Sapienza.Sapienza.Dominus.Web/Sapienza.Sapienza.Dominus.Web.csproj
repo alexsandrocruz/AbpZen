@@ -5,7 +5,7 @@
   <PropertyGroup><LangVersion>latest</LangVersion>
     <TargetFramework>net9.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>Sapienza.Sapienza.Dominus.Web</RootNamespace>
+    <RootNamespace>Sapienza.Dominus.Web</RootNamespace>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -48,7 +48,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.HttpApi.Client\Sapienza.Sapienza.Dominus.HttpApi.Client.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

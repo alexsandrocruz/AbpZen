@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.FinancialCategory;
 
 public class EfFinancialCategoryRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.FinancialCategory.FinancialCategory, Guid>, 
       IFinancialCategoryRepository
 {
-    public EfFinancialCategoryRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfFinancialCategoryRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

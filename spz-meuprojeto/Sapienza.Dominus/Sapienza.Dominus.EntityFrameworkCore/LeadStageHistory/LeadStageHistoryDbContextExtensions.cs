@@ -9,7 +9,7 @@ public static class LeadStageHistoryDbContextModelCreatingExtensions
     {
         builder.Entity<LeadStageHistory>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadStageHistories", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadStageHistories", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

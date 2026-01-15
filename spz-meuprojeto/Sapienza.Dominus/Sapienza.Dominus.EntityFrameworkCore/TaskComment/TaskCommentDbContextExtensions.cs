@@ -9,7 +9,7 @@ public static class TaskCommentDbContextModelCreatingExtensions
     {
         builder.Entity<TaskComment>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "TaskComments", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "TaskComments", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Content).IsRequired();
 

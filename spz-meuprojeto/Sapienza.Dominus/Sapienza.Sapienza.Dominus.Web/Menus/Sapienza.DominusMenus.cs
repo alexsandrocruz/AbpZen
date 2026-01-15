@@ -1,8 +1,8 @@
-﻿namespace Sapienza.Sapienza.Dominus.Web.Menus
+﻿namespace Sapienza.Dominus.Web.Menus
 {
-    public class Sapienza.DominusMenus
+    public class DominusMenus
     {
-        private const string Prefix = "Sapienza.Sapienza.Dominus";
+        private const string Prefix = "Dominus";
 
         public const string Home = Prefix + ".Home";
 

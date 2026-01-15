@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+using Sapienza.Dominus.MauiBlazor.OAuth;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.Pages.Account;
+namespace Sapienza.Dominus.MauiBlazor.Pages.Account;
 
 public partial class RedirectToLogout
 {

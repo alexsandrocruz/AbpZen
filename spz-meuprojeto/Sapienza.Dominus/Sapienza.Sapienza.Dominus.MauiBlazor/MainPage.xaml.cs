@@ -1,4 +1,4 @@
-﻿namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+﻿namespace Sapienza.Dominus.MauiBlazor;
 
 public partial class MainPage : ContentPage
 {

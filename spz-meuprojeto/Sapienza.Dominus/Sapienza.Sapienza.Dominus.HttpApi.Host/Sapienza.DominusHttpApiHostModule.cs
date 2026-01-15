@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sapienza.Sapienza.Dominus.MongoDB;
-using Sapienza.Sapienza.Dominus.MultiTenancy;
+using Sapienza.Dominus.MongoDB;
+using Sapienza.Dominus.MultiTenancy;
 using Microsoft.OpenApi.Models;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
@@ -30,34 +30,34 @@ using Volo.Abp.Account.Public.Web.ExternalProviders;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Microsoft.AspNetCore.Hosting;
-using Sapienza.Sapienza.Dominus.HealthChecks;
+using Sapienza.Dominus.HealthChecks;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Identity;
 using Volo.Abp.Swashbuckle;
 using Volo.Saas.Host;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.Data;
 using Volo.Abp.Threading;
 using OpenIddict.Server.AspNetCore;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using OpenIddict.Validation.AspNetCore;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
-        typeof(Sapienza.DominusHttpApiModule),
+        typeof(DominusHttpApiModule),
         typeof(AbpAutofacModule),
         typeof(AbpAspNetCoreMultiTenancyModule),
-        typeof(Sapienza.DominusApplicationModule),
-        typeof(Sapienza.DominusMongoDbModule),
-        typeof(AbpAspNetCoreMvcUiLeptonXThemeModule),
+        typeof(DominusApplicationModule),
+        typeof(DominusMongoDbModule),
+        typeof(AbpAspNetCoreMvcUiBasicThemeModule),
         typeof(AbpAccountPublicWebImpersonationModule),
         typeof(AbpAccountPublicWebOpenIddictModule),
         typeof(AbpSwashbuckleModule),
         typeof(AbpAspNetCoreSerilogModule)
         )]
-    public class Sapienza.DominusHttpApiHostModule : AbpModule
+    public class DominusHttpApiHostModule : AbpModule
     {
          public override void PreConfigureServices(ServiceConfigurationContext context)
         {
@@ -65,7 +65,7 @@ namespace Sapienza.Sapienza.Dominus
             {
                 builder.AddValidation(options =>
                 {
-                    options.AddAudiences("Sapienza.Sapienza.Dominus");
+                    options.AddAudiences("Dominus");
                     options.UseLocalServer();
                     options.UseAspNetCore();
                 });
@@ -105,7 +105,7 @@ namespace Sapienza.Sapienza.Dominus
 
         private void ConfigureHealthChecks(ServiceConfigurationContext context)
         {
-            context.Services.AddSapienza.DominusHealthChecks();
+            context.Services.AddDominusHealthChecks();
         }
 
         private void ConfigureUrls(IConfiguration configuration)
@@ -130,7 +130,7 @@ namespace Sapienza.Sapienza.Dominus
             Configure<AbpBundlingOptions>(options =>
             {
                 options.StyleBundles.Configure(
-                    LeptonXThemeBundles.Styles.Global,
+                    BasicThemeBundles.Styles.Global,
                     bundle =>
                     {
                         bundle.AddFiles("/global-styles.css");
@@ -148,11 +148,11 @@ namespace Sapienza.Sapienza.Dominus
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
                 {
-                    options.FileSets.ReplaceEmbeddedByPhysical<Sapienza.DominusDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Domain.Shared"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<Sapienza.DominusDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Domain"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<Sapienza.DominusApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Application.Contracts"));
-                    options.FileSets.ReplaceEmbeddedByPhysical<Sapienza.DominusApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Application"));
-                    // options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiLeptonXThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<DominusDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Domain.Shared"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<DominusDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Domain"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<DominusApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Application.Contracts"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<DominusApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}Sapienza.Sapienza.Dominus.Application"));
+                    // options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiBasicThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}..{0}src{0}Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic", Path.DirectorySeparatorChar)));
                 });
             }
         }
@@ -161,7 +161,7 @@ namespace Sapienza.Sapienza.Dominus
         {
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
-                options.ConventionalControllers.Create(typeof(Sapienza.DominusApplicationModule).Assembly);
+                options.ConventionalControllers.Create(typeof(DominusApplicationModule).Assembly);
             });
         }
 
@@ -172,7 +172,7 @@ namespace Sapienza.Sapienza.Dominus
                 {
                     options.Authority = configuration["AuthServer:Authority"];
                     options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]); ;
-                    options.Audience = "Sapienza.Sapienza.Dominus";
+                    options.Audience = "Dominus";
                     options.BackchannelHttpHandler = new HttpClientHandler()
                     {
                         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -186,11 +186,11 @@ namespace Sapienza.Sapienza.Dominus
                 configuration["AuthServer:Authority"],
                 new Dictionary<string, string>
                 {
-                    {"Sapienza.Sapienza.Dominus", "Sapienza.Sapienza.Dominus API"}
+                    {"Dominus", "Dominus API"}
                 },
                 options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "Sapienza.Sapienza.Dominus API", Version = "v1"});
+                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "Dominus API", Version = "v1"});
                     options.DocInclusionPredicate((docName, description) => true);
                     options.CustomSchemaIds(type => type.FullName);
                 });
@@ -298,7 +298,7 @@ namespace Sapienza.Sapienza.Dominus
             app.UseSwagger();
             app.UseAbpSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Sapienza.Sapienza.Dominus API");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Dominus API");
 
                 var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
                 options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);

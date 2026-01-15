@@ -19,10 +19,10 @@ public class SchedulerTypeAppService :
     DominusAppService,
     ISchedulerTypeAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> _repository;
+    private readonly IRepository<Dominus.SchedulerType.SchedulerType, Guid> _repository;
 
     public SchedulerTypeAppService(
-        IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> repository
+        IRepository<Dominus.SchedulerType.SchedulerType, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class SchedulerTypeAppService :
     public virtual async Task<SchedulerTypeDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class SchedulerTypeAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SchedulerType.SchedulerType>, List<SchedulerTypeDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SchedulerType.SchedulerType>, List<SchedulerTypeDto>>(entities);
 
         return new PagedResultDto<SchedulerTypeDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class SchedulerTypeAppService :
     [Authorize(SchedulerTypePermissions.Create)]
     public virtual async Task<SchedulerTypeDto> CreateAsync(CreateUpdateSchedulerTypeDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSchedulerTypeDto, Sapienza.Dominus.SchedulerType.SchedulerType>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSchedulerTypeDto, Dominus.SchedulerType.SchedulerType>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class SchedulerTypeAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SchedulerType.SchedulerType), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SchedulerType.SchedulerType), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerType.SchedulerType, SchedulerTypeDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class SchedulerTypeAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SchedulerType.SchedulerType> ApplyFilters(IQueryable<Sapienza.Dominus.SchedulerType.SchedulerType> queryable, SchedulerTypeGetListInput input)
+    protected virtual IQueryable<Dominus.SchedulerType.SchedulerType> ApplyFilters(IQueryable<Dominus.SchedulerType.SchedulerType> queryable, SchedulerTypeGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

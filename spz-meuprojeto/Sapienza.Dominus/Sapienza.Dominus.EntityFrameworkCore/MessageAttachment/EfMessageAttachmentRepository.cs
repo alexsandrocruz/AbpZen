@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.MessageAttachment;
 
 public class EfMessageAttachmentRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.MessageAttachment.MessageAttachment, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.MessageAttachment.MessageAttachment, Guid>, 
       IMessageAttachmentRepository
 {
-    public EfMessageAttachmentRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfMessageAttachmentRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

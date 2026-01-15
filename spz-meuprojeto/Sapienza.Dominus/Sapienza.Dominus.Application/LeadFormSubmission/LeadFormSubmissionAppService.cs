@@ -19,12 +19,12 @@ public class LeadFormSubmissionAppService :
     DominusAppService,
     ILeadFormSubmissionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadForm.LeadForm, Guid> _leadFormRepository;
+    private readonly IRepository<Dominus.LeadFormSubmission.LeadFormSubmission, Guid> _repository;
+    private readonly IRepository<Dominus.LeadForm.LeadForm, Guid> _leadFormRepository;
 
     public LeadFormSubmissionAppService(
-        IRepository<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadForm.LeadForm, Guid> leadFormRepository
+        IRepository<Dominus.LeadFormSubmission.LeadFormSubmission, Guid> repository,
+        IRepository<Dominus.LeadForm.LeadForm, Guid> leadFormRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadFormSubmissionAppService :
     public virtual async Task<LeadFormSubmissionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
         if (entity.LeadFormId != null)
         {
             var parent = await _leadFormRepository.FindAsync(entity.LeadFormId.Value);
@@ -67,7 +67,7 @@ public class LeadFormSubmissionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission>, List<LeadFormSubmissionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadFormSubmission.LeadFormSubmission>, List<LeadFormSubmissionDto>>(entities);
         var leadFormIds = entities
             .Where(x => x.LeadFormId != null)
             .Select(x => x.LeadFormId.Value)
@@ -100,11 +100,11 @@ public class LeadFormSubmissionAppService :
     [Authorize(LeadFormSubmissionPermissions.Create)]
     public virtual async Task<LeadFormSubmissionDto> CreateAsync(CreateUpdateLeadFormSubmissionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadFormSubmissionDto, Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadFormSubmissionDto, Dominus.LeadFormSubmission.LeadFormSubmission>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadFormSubmissionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadFormSubmission.LeadFormSubmission), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadFormSubmission.LeadFormSubmission, LeadFormSubmissionDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadFormSubmissionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission> ApplyFilters(IQueryable<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission> queryable, LeadFormSubmissionGetListInput input)
+    protected virtual IQueryable<Dominus.LeadFormSubmission.LeadFormSubmission> ApplyFilters(IQueryable<Dominus.LeadFormSubmission.LeadFormSubmission> queryable, LeadFormSubmissionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

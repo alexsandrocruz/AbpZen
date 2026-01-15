@@ -8,9 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using Volo.Abp.Account.Pro.Admin.Blazor.WebAssembly;
-using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components;
+using Volo.Abp.AspNetCore.Components.Web.BasicTheme;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
-using Volo.Abp.AspNetCore.Components.WebAssembly.LeptonXTheme;
 using Volo.Abp.AuditLogging.Blazor.WebAssembly;
 using Volo.Abp.Autofac.WebAssembly;
 using Volo.Abp.AutoMapper;
@@ -22,7 +21,6 @@ using Volo.Abp.TextTemplateManagement.Blazor.WebAssembly;
 using Volo.Abp.UI.Navigation;
 using Volo.Saas.Host.Blazor.WebAssembly;
 using Volo.FileManagement.Blazor.WebAssembly;
-using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme;
 using Volo.Abp.Gdpr.Blazor;
 using Volo.Abp.Gdpr.Blazor.WebAssembly;
 using Volo.CmsKit.Pro.Admin.Blazor.WebAssembly;
@@ -42,7 +40,7 @@ namespace Sapienza.Zen.Blazor;
     typeof(TextTemplateManagementBlazorWebAssemblyModule),
     typeof(LanguageManagementBlazorWebAssemblyModule),
     typeof(AbpOpenIddictProBlazorWebAssemblyModule),
-    typeof(AbpAspNetCoreComponentsWebAssemblyLeptonXThemeModule)
+    typeof(AbpAspNetCoreComponentsWebBasicThemeModule)
 )]
     [DependsOn(typeof(FileManagementBlazorWebAssemblyModule))]
     [DependsOn(typeof(AbpGdprBlazorModule))]
@@ -56,10 +54,9 @@ namespace Sapienza.Zen.Blazor;
         var environment = context.Services.GetSingletonInstance<IWebAssemblyHostEnvironment>();
         var builder = context.Services.GetSingletonInstance<WebAssemblyHostBuilder>();
 
-        Configure<LeptonXThemeBlazorOptions>(options =>
+        Configure<AbpAspNetCoreMvcUiBasicThemeOptions>(options =>
         {
-            // Also 'LeptonXTheme.Layout' parameter with value 'top-menu' should be added into appsettings.json
-            options.Layout = LeptonXBlazorLayouts.SideMenu;
+            //options.StyleBundles.Add(BasicThemeBundles.Styles.Global);
         });
 
         ConfigureAuthentication(builder);

@@ -1,9 +1,9 @@
 ﻿using Volo.Abp.Localization;
 
-namespace Sapienza.Sapienza.Dominus.Localization
+namespace Sapienza.Dominus.Localization
 {
-    [LocalizationResourceName("Sapienza.Sapienza.Dominus")]
-    public class Sapienza.DominusResource
+    [LocalizationResourceName("Dominus")]
+    public class DominusResource
     {
 
     }

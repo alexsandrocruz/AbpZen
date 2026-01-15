@@ -9,7 +9,7 @@ public static class LeadLandingPageDbContextModelCreatingExtensions
     {
         builder.Entity<LeadLandingPage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadLandingPages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadLandingPages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Title).IsRequired();
             b.Property(x => x.Slug).IsRequired();

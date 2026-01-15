@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.Booking;
 
-public interface IBookingRepository : IRepository<Sapienza.Dominus.Booking.Booking, Guid>
+public interface IBookingRepository : IRepository<Dominus.Booking.Booking, Guid>
 {
 }

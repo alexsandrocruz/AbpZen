@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ProjectCommunication;
 
 public class EfProjectCommunicationRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ProjectCommunication.ProjectCommunication, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ProjectCommunication.ProjectCommunication, Guid>, 
       IProjectCommunicationRepository
 {
-    public EfProjectCommunicationRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfProjectCommunicationRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

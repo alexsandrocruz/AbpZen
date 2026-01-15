@@ -1,4 +1,4 @@
-﻿namespace Sapienza.Sapienza.Dominus.MultiTenancy
+﻿namespace Sapienza.Dominus.MultiTenancy
 {
     public static class MultiTenancyConsts
     {

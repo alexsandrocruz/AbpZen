@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Site;
 
 public class EfSiteRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Site.Site, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Site.Site, Guid>, 
       ISiteRepository
 {
-    public EfSiteRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfSiteRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

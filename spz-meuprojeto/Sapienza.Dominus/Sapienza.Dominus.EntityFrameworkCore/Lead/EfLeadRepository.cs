@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Lead;
 
 public class EfLeadRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Lead.Lead, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Lead.Lead, Guid>, 
       ILeadRepository
 {
-    public EfLeadRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

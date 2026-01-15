@@ -9,7 +9,7 @@ public static class WorkflowExecutionDbContextModelCreatingExtensions
     {
         builder.Entity<WorkflowExecution>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "WorkflowExecutions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "WorkflowExecutions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Status).IsRequired();
 

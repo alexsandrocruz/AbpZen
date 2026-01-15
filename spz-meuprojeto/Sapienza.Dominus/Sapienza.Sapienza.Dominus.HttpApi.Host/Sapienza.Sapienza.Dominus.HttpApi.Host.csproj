@@ -5,7 +5,7 @@
   <PropertyGroup><LangVersion>latest</LangVersion>
     <TargetFramework>net9.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>Sapienza.Sapienza.Dominus</RootNamespace>
+    <RootNamespace>Sapienza.Dominus</RootNamespace>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -31,7 +31,7 @@
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.Application\Sapienza.Sapienza.Dominus.Application.csproj" />
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.MongoDB\Sapienza.Sapienza.Dominus.MongoDB.csproj" />
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.HttpApi\Sapienza.Sapienza.Dominus.HttpApi.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="$(AbpVersion)" />
   </ItemGroup>
 
   <ItemGroup>

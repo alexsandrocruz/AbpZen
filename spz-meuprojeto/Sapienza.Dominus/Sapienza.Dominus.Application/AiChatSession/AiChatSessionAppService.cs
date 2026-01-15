@@ -19,10 +19,10 @@ public class AiChatSessionAppService :
     DominusAppService,
     IAiChatSessionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.AiChatSession.AiChatSession, Guid> _repository;
+    private readonly IRepository<Dominus.AiChatSession.AiChatSession, Guid> _repository;
 
     public AiChatSessionAppService(
-        IRepository<Sapienza.Dominus.AiChatSession.AiChatSession, Guid> repository
+        IRepository<Dominus.AiChatSession.AiChatSession, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class AiChatSessionAppService :
     public virtual async Task<AiChatSessionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class AiChatSessionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.AiChatSession.AiChatSession>, List<AiChatSessionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.AiChatSession.AiChatSession>, List<AiChatSessionDto>>(entities);
 
         return new PagedResultDto<AiChatSessionDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class AiChatSessionAppService :
     [Authorize(AiChatSessionPermissions.Create)]
     public virtual async Task<AiChatSessionDto> CreateAsync(CreateUpdateAiChatSessionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateAiChatSessionDto, Sapienza.Dominus.AiChatSession.AiChatSession>(input);
+        var entity = ObjectMapper.Map<CreateUpdateAiChatSessionDto, Dominus.AiChatSession.AiChatSession>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
+        return ObjectMapper.Map<Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class AiChatSessionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.AiChatSession.AiChatSession), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.AiChatSession.AiChatSession), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
+        return ObjectMapper.Map<Dominus.AiChatSession.AiChatSession, AiChatSessionDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class AiChatSessionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.AiChatSession.AiChatSession> ApplyFilters(IQueryable<Sapienza.Dominus.AiChatSession.AiChatSession> queryable, AiChatSessionGetListInput input)
+    protected virtual IQueryable<Dominus.AiChatSession.AiChatSession> ApplyFilters(IQueryable<Dominus.AiChatSession.AiChatSession> queryable, AiChatSessionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

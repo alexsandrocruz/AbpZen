@@ -19,10 +19,10 @@ public class LeadTagAppService :
     DominusAppService,
     ILeadTagAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadTag.LeadTag, Guid> _repository;
+    private readonly IRepository<Dominus.LeadTag.LeadTag, Guid> _repository;
 
     public LeadTagAppService(
-        IRepository<Sapienza.Dominus.LeadTag.LeadTag, Guid> repository
+        IRepository<Dominus.LeadTag.LeadTag, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class LeadTagAppService :
     public virtual async Task<LeadTagDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class LeadTagAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadTag.LeadTag>, List<LeadTagDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadTag.LeadTag>, List<LeadTagDto>>(entities);
 
         return new PagedResultDto<LeadTagDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class LeadTagAppService :
     [Authorize(LeadTagPermissions.Create)]
     public virtual async Task<LeadTagDto> CreateAsync(CreateUpdateLeadTagDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadTagDto, Sapienza.Dominus.LeadTag.LeadTag>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadTagDto, Dominus.LeadTag.LeadTag>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class LeadTagAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadTag.LeadTag), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadTag.LeadTag), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadTag.LeadTag, LeadTagDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class LeadTagAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadTag.LeadTag> ApplyFilters(IQueryable<Sapienza.Dominus.LeadTag.LeadTag> queryable, LeadTagGetListInput input)
+    protected virtual IQueryable<Dominus.LeadTag.LeadTag> ApplyFilters(IQueryable<Dominus.LeadTag.LeadTag> queryable, LeadTagGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

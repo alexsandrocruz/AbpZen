@@ -9,7 +9,7 @@ public static class LandingLeadDbContextModelCreatingExtensions
     {
         builder.Entity<LandingLead>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LandingLeads", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LandingLeads", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
             b.Property(x => x.Email).IsRequired();

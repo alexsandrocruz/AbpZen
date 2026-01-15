@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.Comment;
 
-public interface ICommentRepository : IRepository<Sapienza.Dominus.Comment.Comment, Guid>
+public interface ICommentRepository : IRepository<Dominus.Comment.Comment, Guid>
 {
 }

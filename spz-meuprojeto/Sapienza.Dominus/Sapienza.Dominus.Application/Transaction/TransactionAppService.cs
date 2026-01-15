@@ -19,14 +19,14 @@ public class TransactionAppService :
     DominusAppService,
     ITransactionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Transaction.Transaction, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _clientRepository;
-    private readonly IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> _financialCategoryRepository;
+    private readonly IRepository<Dominus.Transaction.Transaction, Guid> _repository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _clientRepository;
+    private readonly IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> _financialCategoryRepository;
 
     public TransactionAppService(
-        IRepository<Sapienza.Dominus.Transaction.Transaction, Guid> repository,
-        IRepository<Sapienza.Dominus.Client.Client, Guid> clientRepository,
-        IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> financialCategoryRepository
+        IRepository<Dominus.Transaction.Transaction, Guid> repository,
+        IRepository<Dominus.Client.Client, Guid> clientRepository,
+        IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> financialCategoryRepository
     )
     {
         _repository = repository;
@@ -40,7 +40,7 @@ public class TransactionAppService :
     public virtual async Task<TransactionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Transaction.Transaction, TransactionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Transaction.Transaction, TransactionDto>(entity);
         if (entity.ClientId != null)
         {
             var parent = await _clientRepository.FindAsync(entity.ClientId.Value);
@@ -75,7 +75,7 @@ public class TransactionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Transaction.Transaction>, List<TransactionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Transaction.Transaction>, List<TransactionDto>>(entities);
         var clientIds = entities
             .Where(x => x.ClientId != null)
             .Select(x => x.ClientId.Value)
@@ -127,11 +127,11 @@ public class TransactionAppService :
     [Authorize(TransactionPermissions.Create)]
     public virtual async Task<TransactionDto> CreateAsync(CreateUpdateTransactionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateTransactionDto, Sapienza.Dominus.Transaction.Transaction>(input);
+        var entity = ObjectMapper.Map<CreateUpdateTransactionDto, Dominus.Transaction.Transaction>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Transaction.Transaction, TransactionDto>(entity);
+        return ObjectMapper.Map<Dominus.Transaction.Transaction, TransactionDto>(entity);
     }
 
     /// <summary>
@@ -143,14 +143,14 @@ public class TransactionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Transaction.Transaction), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Transaction.Transaction), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Transaction.Transaction, TransactionDto>(entity);
+        return ObjectMapper.Map<Dominus.Transaction.Transaction, TransactionDto>(entity);
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public class TransactionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Transaction.Transaction> ApplyFilters(IQueryable<Sapienza.Dominus.Transaction.Transaction> queryable, TransactionGetListInput input)
+    protected virtual IQueryable<Dominus.Transaction.Transaction> ApplyFilters(IQueryable<Dominus.Transaction.Transaction> queryable, TransactionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

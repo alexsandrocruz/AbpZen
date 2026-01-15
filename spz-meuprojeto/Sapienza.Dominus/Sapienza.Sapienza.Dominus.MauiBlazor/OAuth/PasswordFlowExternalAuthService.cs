@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using IdentityModel.Client;
-using Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+using Sapienza.Dominus.MauiBlazor.Settings;
 using Microsoft.Extensions.Options;
 using Volo.Abp.MultiTenancy;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public class PasswordFlowExternalAuthService : ExternalAuthServiceBase
 {
@@ -21,7 +21,7 @@ public class PasswordFlowExternalAuthService : ExternalAuthServiceBase
         IOptions<OAuthConfigOptions> options,
         ICurrentTenant currentTenant,
         ICurrentTenantAccessor currentTenantAccessor,
-        ISapienza.DominusApplicationSettingService leptonXDemoAppApplicationSettingService) : base(leptonXDemoAppApplicationSettingService)
+        IDominusApplicationSettingService leptonXDemoAppApplicationSettingService) : base(leptonXDemoAppApplicationSettingService)
     {
         _httpClientFactory = httpClientFactory;
         _oAuthConfigOptions = options.Value;
@@ -63,7 +63,7 @@ public class PasswordFlowExternalAuthService : ExternalAuthServiceBase
             return LoginResult.Failed(tokenResponse.Error, tokenResponse.ErrorDescription);
         }
 
-        await Sapienza.DominusApplicationSettingService.SetAccessTokenAsync(tokenResponse.AccessToken);
+        await DominusApplicationSettingService.SetAccessTokenAsync(tokenResponse.AccessToken);
         CurrentUser = new ClaimsPrincipal(new ClaimsIdentity(new JwtSecurityTokenHandler().ReadJwtToken(tokenResponse.AccessToken).Claims, AuthenticationType));
         TriggerUserChanged();
 
@@ -72,7 +72,7 @@ public class PasswordFlowExternalAuthService : ExternalAuthServiceBase
 
     public override async Task SignOutAsync()
     {
-        await Sapienza.DominusApplicationSettingService.SetAccessTokenAsync(null);
+        await DominusApplicationSettingService.SetAccessTokenAsync(null);
 
         CurrentUser = new ClaimsPrincipal(new ClaimsIdentity());
         _currentTenantAccessor.Current = new BasicTenantInfo(null);

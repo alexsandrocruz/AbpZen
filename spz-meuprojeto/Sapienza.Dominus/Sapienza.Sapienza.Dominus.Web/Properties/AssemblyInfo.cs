@@ -1,2 +1,2 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleToAttribute("Sapienza.Sapienza.Dominus.Web.Tests")]
+[assembly:InternalsVisibleToAttribute("Dominus.Web.Tests")]

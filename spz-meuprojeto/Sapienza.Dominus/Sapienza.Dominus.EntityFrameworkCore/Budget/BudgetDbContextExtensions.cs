@@ -9,7 +9,7 @@ public static class BudgetDbContextModelCreatingExtensions
     {
         builder.Entity<Budget>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Budgets", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Budgets", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

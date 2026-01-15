@@ -9,7 +9,7 @@ public static class TaskDbContextModelCreatingExtensions
     {
         builder.Entity<Task>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Tasks", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Tasks", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Title).IsRequired();
 

@@ -9,7 +9,7 @@ public static class TransactionAttachmentDbContextModelCreatingExtensions
     {
         builder.Entity<TransactionAttachment>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "TransactionAttachments", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "TransactionAttachments", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.FileName).IsRequired();
             b.Property(x => x.FileUrl).IsRequired();

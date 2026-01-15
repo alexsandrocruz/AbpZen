@@ -19,12 +19,12 @@ public class ProposalBlockInstanceAppService :
     DominusAppService,
     IProposalBlockInstanceAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Proposal.Proposal, Guid> _proposalRepository;
+    private readonly IRepository<Dominus.ProposalBlockInstance.ProposalBlockInstance, Guid> _repository;
+    private readonly IRepository<Dominus.Proposal.Proposal, Guid> _proposalRepository;
 
     public ProposalBlockInstanceAppService(
-        IRepository<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance, Guid> repository,
-        IRepository<Sapienza.Dominus.Proposal.Proposal, Guid> proposalRepository
+        IRepository<Dominus.ProposalBlockInstance.ProposalBlockInstance, Guid> repository,
+        IRepository<Dominus.Proposal.Proposal, Guid> proposalRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ProposalBlockInstanceAppService :
     public virtual async Task<ProposalBlockInstanceDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
         if (entity.ProposalId != null)
         {
             var parent = await _proposalRepository.FindAsync(entity.ProposalId.Value);
@@ -67,7 +67,7 @@ public class ProposalBlockInstanceAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance>, List<ProposalBlockInstanceDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProposalBlockInstance.ProposalBlockInstance>, List<ProposalBlockInstanceDto>>(entities);
         var proposalIds = entities
             .Where(x => x.ProposalId != null)
             .Select(x => x.ProposalId.Value)
@@ -100,11 +100,11 @@ public class ProposalBlockInstanceAppService :
     [Authorize(ProposalBlockInstancePermissions.Create)]
     public virtual async Task<ProposalBlockInstanceDto> CreateAsync(CreateUpdateProposalBlockInstanceDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProposalBlockInstanceDto, Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProposalBlockInstanceDto, Dominus.ProposalBlockInstance.ProposalBlockInstance>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ProposalBlockInstanceAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProposalBlockInstance.ProposalBlockInstance), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalBlockInstance.ProposalBlockInstance, ProposalBlockInstanceDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ProposalBlockInstanceAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance> ApplyFilters(IQueryable<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance> queryable, ProposalBlockInstanceGetListInput input)
+    protected virtual IQueryable<Dominus.ProposalBlockInstance.ProposalBlockInstance> ApplyFilters(IQueryable<Dominus.ProposalBlockInstance.ProposalBlockInstance> queryable, ProposalBlockInstanceGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -1,4 +1,4 @@
-﻿namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+﻿namespace Sapienza.Dominus.MauiBlazor;
 using Application = Microsoft.Maui.Controls.Application;
 
 public partial class App : Application

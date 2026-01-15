@@ -16,7 +16,7 @@ public class MessageAttachment : Entity<Guid>
     public Guid? ChatMessageId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.ChatMessage.ChatMessage? ChatMessage { get; set; }
+    public virtual Dominus.ChatMessage.ChatMessage? ChatMessage { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

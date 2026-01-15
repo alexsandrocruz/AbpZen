@@ -9,7 +9,7 @@ public static class EmailLogDbContextModelCreatingExtensions
     {
         builder.Entity<EmailLog>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "EmailLogs", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "EmailLogs", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.ToEmail).IsRequired();
             b.Property(x => x.Subject).IsRequired();

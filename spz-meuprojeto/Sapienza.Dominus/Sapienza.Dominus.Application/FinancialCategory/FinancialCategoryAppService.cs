@@ -19,10 +19,10 @@ public class FinancialCategoryAppService :
     DominusAppService,
     IFinancialCategoryAppService
 {
-    private readonly IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> _repository;
+    private readonly IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> _repository;
 
     public FinancialCategoryAppService(
-        IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> repository
+        IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class FinancialCategoryAppService :
     public virtual async Task<FinancialCategoryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class FinancialCategoryAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.FinancialCategory.FinancialCategory>, List<FinancialCategoryDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.FinancialCategory.FinancialCategory>, List<FinancialCategoryDto>>(entities);
 
         return new PagedResultDto<FinancialCategoryDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class FinancialCategoryAppService :
     [Authorize(FinancialCategoryPermissions.Create)]
     public virtual async Task<FinancialCategoryDto> CreateAsync(CreateUpdateFinancialCategoryDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateFinancialCategoryDto, Sapienza.Dominus.FinancialCategory.FinancialCategory>(input);
+        var entity = ObjectMapper.Map<CreateUpdateFinancialCategoryDto, Dominus.FinancialCategory.FinancialCategory>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
+        return ObjectMapper.Map<Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class FinancialCategoryAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.FinancialCategory.FinancialCategory), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.FinancialCategory.FinancialCategory), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
+        return ObjectMapper.Map<Dominus.FinancialCategory.FinancialCategory, FinancialCategoryDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class FinancialCategoryAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.FinancialCategory.FinancialCategory> ApplyFilters(IQueryable<Sapienza.Dominus.FinancialCategory.FinancialCategory> queryable, FinancialCategoryGetListInput input)
+    protected virtual IQueryable<Dominus.FinancialCategory.FinancialCategory> ApplyFilters(IQueryable<Dominus.FinancialCategory.FinancialCategory> queryable, FinancialCategoryGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

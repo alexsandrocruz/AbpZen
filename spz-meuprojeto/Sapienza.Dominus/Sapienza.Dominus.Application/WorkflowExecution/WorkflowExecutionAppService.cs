@@ -19,12 +19,12 @@ public class WorkflowExecutionAppService :
     DominusAppService,
     IWorkflowExecutionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.WorkflowExecution.WorkflowExecution, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Workflow.Workflow, Guid> _workflowRepository;
+    private readonly IRepository<Dominus.WorkflowExecution.WorkflowExecution, Guid> _repository;
+    private readonly IRepository<Dominus.Workflow.Workflow, Guid> _workflowRepository;
 
     public WorkflowExecutionAppService(
-        IRepository<Sapienza.Dominus.WorkflowExecution.WorkflowExecution, Guid> repository,
-        IRepository<Sapienza.Dominus.Workflow.Workflow, Guid> workflowRepository
+        IRepository<Dominus.WorkflowExecution.WorkflowExecution, Guid> repository,
+        IRepository<Dominus.Workflow.Workflow, Guid> workflowRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class WorkflowExecutionAppService :
     public virtual async Task<WorkflowExecutionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
         if (entity.WorkflowId != null)
         {
             var parent = await _workflowRepository.FindAsync(entity.WorkflowId.Value);
@@ -67,7 +67,7 @@ public class WorkflowExecutionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.WorkflowExecution.WorkflowExecution>, List<WorkflowExecutionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.WorkflowExecution.WorkflowExecution>, List<WorkflowExecutionDto>>(entities);
         var workflowIds = entities
             .Where(x => x.WorkflowId != null)
             .Select(x => x.WorkflowId.Value)
@@ -100,11 +100,11 @@ public class WorkflowExecutionAppService :
     [Authorize(WorkflowExecutionPermissions.Create)]
     public virtual async Task<WorkflowExecutionDto> CreateAsync(CreateUpdateWorkflowExecutionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWorkflowExecutionDto, Sapienza.Dominus.WorkflowExecution.WorkflowExecution>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWorkflowExecutionDto, Dominus.WorkflowExecution.WorkflowExecution>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class WorkflowExecutionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.WorkflowExecution.WorkflowExecution), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.WorkflowExecution.WorkflowExecution), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkflowExecution.WorkflowExecution, WorkflowExecutionDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class WorkflowExecutionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.WorkflowExecution.WorkflowExecution> ApplyFilters(IQueryable<Sapienza.Dominus.WorkflowExecution.WorkflowExecution> queryable, WorkflowExecutionGetListInput input)
+    protected virtual IQueryable<Dominus.WorkflowExecution.WorkflowExecution> ApplyFilters(IQueryable<Dominus.WorkflowExecution.WorkflowExecution> queryable, WorkflowExecutionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

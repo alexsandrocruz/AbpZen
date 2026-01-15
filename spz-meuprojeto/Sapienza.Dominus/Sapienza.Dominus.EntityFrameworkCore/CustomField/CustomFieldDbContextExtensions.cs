@@ -9,7 +9,7 @@ public static class CustomFieldDbContextModelCreatingExtensions
     {
         builder.Entity<CustomField>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "CustomFields", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "CustomFields", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.EntityType).IsRequired();
             b.Property(x => x.Label).IsRequired();

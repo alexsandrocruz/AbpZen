@@ -2,9 +2,9 @@ using Volo.Abp.Identity;
 using Volo.Abp.ObjectExtending;
 using Volo.Abp.Threading;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
-    public static class Sapienza.DominusDtoExtensions
+    public static class DominusDtoExtensions
     {
         private static readonly OneTimeRunner OneTimeRunner = new OneTimeRunner();
 

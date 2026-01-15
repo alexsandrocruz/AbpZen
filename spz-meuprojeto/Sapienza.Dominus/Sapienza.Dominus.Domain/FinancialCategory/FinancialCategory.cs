@@ -19,8 +19,8 @@ public class FinancialCategory : AuditedEntity<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.Transaction.Transaction> Transactions { get; set; } = new List<Sapienza.Dominus.Transaction.Transaction>();
-    public virtual ICollection<Sapienza.Dominus.Budget.Budget> Budgets { get; set; } = new List<Sapienza.Dominus.Budget.Budget>();
+    public virtual ICollection<Dominus.Transaction.Transaction> Transactions { get; set; } = new List<Dominus.Transaction.Transaction>();
+    public virtual ICollection<Dominus.Budget.Budget> Budgets { get; set; } = new List<Dominus.Budget.Budget>();
 
     protected FinancialCategory()
     {

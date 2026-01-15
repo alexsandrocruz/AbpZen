@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.SchedulerAvailability;
 
 public class EfSchedulerAvailabilityRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.SchedulerAvailability.SchedulerAvailability, Guid>, 
       ISchedulerAvailabilityRepository
 {
-    public EfSchedulerAvailabilityRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfSchedulerAvailabilityRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

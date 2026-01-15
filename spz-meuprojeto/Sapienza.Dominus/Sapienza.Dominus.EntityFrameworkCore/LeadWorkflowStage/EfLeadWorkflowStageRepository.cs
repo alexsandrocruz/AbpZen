@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadWorkflowStage;
 
 public class EfLeadWorkflowStageRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid>, 
       ILeadWorkflowStageRepository
 {
-    public EfLeadWorkflowStageRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadWorkflowStageRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

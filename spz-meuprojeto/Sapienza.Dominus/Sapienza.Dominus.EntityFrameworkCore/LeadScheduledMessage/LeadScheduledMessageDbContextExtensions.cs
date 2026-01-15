@@ -9,7 +9,7 @@ public static class LeadScheduledMessageDbContextModelCreatingExtensions
     {
         builder.Entity<LeadScheduledMessage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadScheduledMessages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadScheduledMessages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Status).IsRequired();
 

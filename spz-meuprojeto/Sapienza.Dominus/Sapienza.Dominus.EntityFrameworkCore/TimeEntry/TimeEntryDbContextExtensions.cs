@@ -9,7 +9,7 @@ public static class TimeEntryDbContextModelCreatingExtensions
     {
         builder.Entity<TimeEntry>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "TimeEntries", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "TimeEntries", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Description).IsRequired();
 

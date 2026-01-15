@@ -3,10 +3,10 @@ using Volo.Abp.MongoDB;
 using Volo.Chat.MongoDB;
 using Volo.FileManagement.MongoDB;
 
-namespace Sapienza.Sapienza.Dominus.MongoDB
+namespace Sapienza.Dominus.MongoDB
 {
     [ConnectionStringName("Default")]
-    public class Sapienza.DominusMongoDbContext : AbpMongoDbContext
+    public class DominusMongoDbContext : AbpMongoDbContext
     {
 
         /* Add mongo collections here. Example:

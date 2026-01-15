@@ -4,7 +4,7 @@
 
   <PropertyGroup><LangVersion>latest</LangVersion>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>Sapienza.Sapienza.Dominus</RootNamespace>
+    <RootNamespace>Sapienza.Dominus</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

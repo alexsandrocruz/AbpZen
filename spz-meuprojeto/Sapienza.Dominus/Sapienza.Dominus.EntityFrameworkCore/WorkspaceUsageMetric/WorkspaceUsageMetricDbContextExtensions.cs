@@ -9,7 +9,7 @@ public static class WorkspaceUsageMetricDbContextModelCreatingExtensions
     {
         builder.Entity<WorkspaceUsageMetric>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "WorkspaceUsageMetrics", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "WorkspaceUsageMetrics", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

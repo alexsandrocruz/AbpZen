@@ -19,12 +19,12 @@ public class ProjectCommunicationAppService :
     DominusAppService,
     IProjectCommunicationAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Project.Project, Guid> _projectRepository;
+    private readonly IRepository<Dominus.ProjectCommunication.ProjectCommunication, Guid> _repository;
+    private readonly IRepository<Dominus.Project.Project, Guid> _projectRepository;
 
     public ProjectCommunicationAppService(
-        IRepository<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, Guid> repository,
-        IRepository<Sapienza.Dominus.Project.Project, Guid> projectRepository
+        IRepository<Dominus.ProjectCommunication.ProjectCommunication, Guid> repository,
+        IRepository<Dominus.Project.Project, Guid> projectRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ProjectCommunicationAppService :
     public virtual async Task<ProjectCommunicationDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
         if (entity.ProjectId != null)
         {
             var parent = await _projectRepository.FindAsync(entity.ProjectId.Value);
@@ -67,7 +67,7 @@ public class ProjectCommunicationAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProjectCommunication.ProjectCommunication>, List<ProjectCommunicationDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProjectCommunication.ProjectCommunication>, List<ProjectCommunicationDto>>(entities);
         var projectIds = entities
             .Where(x => x.ProjectId != null)
             .Select(x => x.ProjectId.Value)
@@ -100,11 +100,11 @@ public class ProjectCommunicationAppService :
     [Authorize(ProjectCommunicationPermissions.Create)]
     public virtual async Task<ProjectCommunicationDto> CreateAsync(CreateUpdateProjectCommunicationDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProjectCommunicationDto, Sapienza.Dominus.ProjectCommunication.ProjectCommunication>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProjectCommunicationDto, Dominus.ProjectCommunication.ProjectCommunication>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ProjectCommunicationAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProjectCommunication.ProjectCommunication), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProjectCommunication.ProjectCommunication), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectCommunication.ProjectCommunication, ProjectCommunicationDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ProjectCommunicationAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProjectCommunication.ProjectCommunication> ApplyFilters(IQueryable<Sapienza.Dominus.ProjectCommunication.ProjectCommunication> queryable, ProjectCommunicationGetListInput input)
+    protected virtual IQueryable<Dominus.ProjectCommunication.ProjectCommunication> ApplyFilters(IQueryable<Dominus.ProjectCommunication.ProjectCommunication> queryable, ProjectCommunicationGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

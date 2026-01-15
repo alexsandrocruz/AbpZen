@@ -2,7 +2,7 @@ namespace Sapienza.Dominus.Permissions;
 
 public static class CommentPermissions
 {
-    public const string GroupName = "Sapienza.Dominus";
+    public const string GroupName = "Dominus";
     
     public const string Default = GroupName + ".Comment";
     public const string Create = Default + ".Create";

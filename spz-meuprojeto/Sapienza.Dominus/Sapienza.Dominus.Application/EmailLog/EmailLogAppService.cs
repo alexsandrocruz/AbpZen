@@ -19,10 +19,10 @@ public class EmailLogAppService :
     DominusAppService,
     IEmailLogAppService
 {
-    private readonly IRepository<Sapienza.Dominus.EmailLog.EmailLog, Guid> _repository;
+    private readonly IRepository<Dominus.EmailLog.EmailLog, Guid> _repository;
 
     public EmailLogAppService(
-        IRepository<Sapienza.Dominus.EmailLog.EmailLog, Guid> repository
+        IRepository<Dominus.EmailLog.EmailLog, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class EmailLogAppService :
     public virtual async Task<EmailLogDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class EmailLogAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.EmailLog.EmailLog>, List<EmailLogDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.EmailLog.EmailLog>, List<EmailLogDto>>(entities);
 
         return new PagedResultDto<EmailLogDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class EmailLogAppService :
     [Authorize(EmailLogPermissions.Create)]
     public virtual async Task<EmailLogDto> CreateAsync(CreateUpdateEmailLogDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateEmailLogDto, Sapienza.Dominus.EmailLog.EmailLog>(input);
+        var entity = ObjectMapper.Map<CreateUpdateEmailLogDto, Dominus.EmailLog.EmailLog>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
+        return ObjectMapper.Map<Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class EmailLogAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.EmailLog.EmailLog), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.EmailLog.EmailLog), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
+        return ObjectMapper.Map<Dominus.EmailLog.EmailLog, EmailLogDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class EmailLogAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.EmailLog.EmailLog> ApplyFilters(IQueryable<Sapienza.Dominus.EmailLog.EmailLog> queryable, EmailLogGetListInput input)
+    protected virtual IQueryable<Dominus.EmailLog.EmailLog> ApplyFilters(IQueryable<Dominus.EmailLog.EmailLog> queryable, EmailLogGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

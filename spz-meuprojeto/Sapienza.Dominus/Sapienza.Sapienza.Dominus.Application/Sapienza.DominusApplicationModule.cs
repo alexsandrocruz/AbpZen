@@ -20,11 +20,11 @@ using Volo.Forms;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
-        typeof(Sapienza.DominusDomainModule),
-        typeof(Sapienza.DominusApplicationContractsModule),
+        typeof(DominusDomainModule),
+        typeof(DominusApplicationContractsModule),
         typeof(AbpIdentityApplicationModule),
         typeof(AbpPermissionManagementApplicationModule),
         typeof(AbpFeatureManagementApplicationModule),
@@ -43,13 +43,13 @@ namespace Sapienza.Sapienza.Dominus
     [DependsOn(typeof(FormsApplicationModule))]
     [DependsOn(typeof(CmsKitProApplicationModule))]
     [DependsOn(typeof(AbpGdprApplicationModule))]
-    public class Sapienza.DominusApplicationModule : AbpModule
+    public class DominusApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AbpAutoMapperOptions>(options =>
             {
-                options.AddMaps<Sapienza.DominusApplicationModule>();
+                options.AddMaps<DominusApplicationModule>();
             });
         }
     }

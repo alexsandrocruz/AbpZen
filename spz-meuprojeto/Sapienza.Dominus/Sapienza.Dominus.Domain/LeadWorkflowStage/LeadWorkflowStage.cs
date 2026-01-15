@@ -17,10 +17,10 @@ public class LeadWorkflowStage : Entity<Guid>
     public Guid? LeadWorkflowId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
+    public virtual Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.Lead.Lead> Leads { get; set; } = new List<Sapienza.Dominus.Lead.Lead>();
+    public virtual ICollection<Dominus.Lead.Lead> Leads { get; set; } = new List<Dominus.Lead.Lead>();
 
     protected LeadWorkflowStage()
     {

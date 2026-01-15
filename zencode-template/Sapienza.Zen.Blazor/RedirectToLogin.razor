@@ -1,0 +1,12 @@
+@using Microsoft.AspNetCore.Components
+@using Microsoft.Extensions.Configuration
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
+
+@code {
+    protected override void OnInitialized()
+    {
+        var authority = Configuration["AuthServer:Authority"];
+        Navigation.NavigateTo($"{authority}/Account/Login?ReturnUrl={Uri.EscapeDataString(Navigation.Uri)}", forceLoad: true);
+    }
+}

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Sapienza.Sapienza.Dominus.Web
+namespace Sapienza.Dominus.Web
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication<Sapienza.DominusWebModule>();
+            services.AddApplication<DominusWebModule>();
         }
 
         public void Configure(IApplicationBuilder app)

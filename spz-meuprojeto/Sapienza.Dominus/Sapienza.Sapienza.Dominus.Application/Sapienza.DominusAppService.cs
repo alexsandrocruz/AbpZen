@@ -1,15 +1,15 @@
-﻿using Sapienza.Sapienza.Dominus.Localization;
+﻿using Sapienza.Dominus.Localization;
 using Volo.Abp.Application.Services;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     /* Inherit your application services from this class.
      */
-    public abstract class Sapienza.DominusAppService : ApplicationService
+    public abstract class DominusAppService : ApplicationService
     {
-        protected Sapienza.DominusAppService()
+        protected DominusAppService()
         {
-            LocalizationResource = typeof(Sapienza.DominusResource);
+            LocalizationResource = typeof(DominusResource);
         }
     }
 }

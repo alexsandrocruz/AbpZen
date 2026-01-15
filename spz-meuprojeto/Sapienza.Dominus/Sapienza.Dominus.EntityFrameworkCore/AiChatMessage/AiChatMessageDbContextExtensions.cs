@@ -9,7 +9,7 @@ public static class AiChatMessageDbContextModelCreatingExtensions
     {
         builder.Entity<AiChatMessage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "AiChatMessages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "AiChatMessages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Role).IsRequired();
             b.Property(x => x.Content).IsRequired();

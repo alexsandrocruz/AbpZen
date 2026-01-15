@@ -9,7 +9,7 @@ public static class LeadDbContextModelCreatingExtensions
     {
         builder.Entity<Lead>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Leads", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Leads", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

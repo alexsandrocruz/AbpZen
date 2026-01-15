@@ -1,4 +1,4 @@
-using Sapienza.Sapienza.Dominus.Localization;
+using Sapienza.Dominus.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.FeatureManagement;
@@ -23,7 +23,7 @@ using Volo.Forms;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
         typeof(AbpAuditLoggingDomainSharedModule),
@@ -45,34 +45,34 @@ namespace Sapienza.Sapienza.Dominus
     [DependsOn(typeof(FormsDomainSharedModule))]
     [DependsOn(typeof(CmsKitProDomainSharedModule))]
     [DependsOn(typeof(AbpGdprDomainSharedModule))]
-    public class Sapienza.DominusDomainSharedModule : AbpModule
+    public class DominusDomainSharedModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
-            Sapienza.DominusGlobalFeatureConfigurator.Configure();
-            Sapienza.DominusModuleExtensionConfigurator.Configure();
+            DominusGlobalFeatureConfigurator.Configure();
+            DominusModuleExtensionConfigurator.Configure();
         }
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<Sapienza.DominusDomainSharedModule>();
+                options.FileSets.AddEmbedded<DominusDomainSharedModule>();
             });
 
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Resources
-                    .Add<Sapienza.DominusResource>("en")
+                    .Add<DominusResource>("en")
                     .AddBaseTypes(typeof(AbpValidationResource))
-                    .AddVirtualJson("/Localization/Sapienza.Sapienza.Dominus");
+                    .AddVirtualJson("/Localization/Dominus");
 
-                options.DefaultResourceType = typeof(Sapienza.DominusResource);
+                options.DefaultResourceType = typeof(DominusResource);
             });
 
             Configure<AbpExceptionLocalizationOptions>(options =>
             {
-                options.MapCodeNamespace("Sapienza.Sapienza.Dominus", typeof(Sapienza.DominusResource));
+                options.MapCodeNamespace("Dominus", typeof(DominusResource));
             });
         }
     }

@@ -19,10 +19,10 @@ public class SmsLogAppService :
     DominusAppService,
     ISmsLogAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SmsLog.SmsLog, Guid> _repository;
+    private readonly IRepository<Dominus.SmsLog.SmsLog, Guid> _repository;
 
     public SmsLogAppService(
-        IRepository<Sapienza.Dominus.SmsLog.SmsLog, Guid> repository
+        IRepository<Dominus.SmsLog.SmsLog, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class SmsLogAppService :
     public virtual async Task<SmsLogDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class SmsLogAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SmsLog.SmsLog>, List<SmsLogDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SmsLog.SmsLog>, List<SmsLogDto>>(entities);
 
         return new PagedResultDto<SmsLogDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class SmsLogAppService :
     [Authorize(SmsLogPermissions.Create)]
     public virtual async Task<SmsLogDto> CreateAsync(CreateUpdateSmsLogDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSmsLogDto, Sapienza.Dominus.SmsLog.SmsLog>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSmsLogDto, Dominus.SmsLog.SmsLog>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
+        return ObjectMapper.Map<Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class SmsLogAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SmsLog.SmsLog), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SmsLog.SmsLog), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
+        return ObjectMapper.Map<Dominus.SmsLog.SmsLog, SmsLogDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class SmsLogAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SmsLog.SmsLog> ApplyFilters(IQueryable<Sapienza.Dominus.SmsLog.SmsLog> queryable, SmsLogGetListInput input)
+    protected virtual IQueryable<Dominus.SmsLog.SmsLog> ApplyFilters(IQueryable<Dominus.SmsLog.SmsLog> queryable, SmsLogGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

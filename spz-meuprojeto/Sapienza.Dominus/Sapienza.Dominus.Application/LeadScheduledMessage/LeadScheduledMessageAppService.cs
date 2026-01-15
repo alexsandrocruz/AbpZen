@@ -19,12 +19,12 @@ public class LeadScheduledMessageAppService :
     DominusAppService,
     ILeadScheduledMessageAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadAutomation.LeadAutomation, Guid> _leadAutomationRepository;
+    private readonly IRepository<Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid> _repository;
+    private readonly IRepository<Dominus.LeadAutomation.LeadAutomation, Guid> _leadAutomationRepository;
 
     public LeadScheduledMessageAppService(
-        IRepository<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadAutomation.LeadAutomation, Guid> leadAutomationRepository
+        IRepository<Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid> repository,
+        IRepository<Dominus.LeadAutomation.LeadAutomation, Guid> leadAutomationRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadScheduledMessageAppService :
     public virtual async Task<LeadScheduledMessageDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
         if (entity.LeadAutomationId != null)
         {
             var parent = await _leadAutomationRepository.FindAsync(entity.LeadAutomationId.Value);
@@ -67,7 +67,7 @@ public class LeadScheduledMessageAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage>, List<LeadScheduledMessageDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadScheduledMessage.LeadScheduledMessage>, List<LeadScheduledMessageDto>>(entities);
         var leadAutomationIds = entities
             .Where(x => x.LeadAutomationId != null)
             .Select(x => x.LeadAutomationId.Value)
@@ -100,11 +100,11 @@ public class LeadScheduledMessageAppService :
     [Authorize(LeadScheduledMessagePermissions.Create)]
     public virtual async Task<LeadScheduledMessageDto> CreateAsync(CreateUpdateLeadScheduledMessageDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadScheduledMessageDto, Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadScheduledMessageDto, Dominus.LeadScheduledMessage.LeadScheduledMessage>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadScheduledMessageAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadScheduledMessage.LeadScheduledMessage), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadScheduledMessage.LeadScheduledMessage, LeadScheduledMessageDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadScheduledMessageAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage> ApplyFilters(IQueryable<Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage> queryable, LeadScheduledMessageGetListInput input)
+    protected virtual IQueryable<Dominus.LeadScheduledMessage.LeadScheduledMessage> ApplyFilters(IQueryable<Dominus.LeadScheduledMessage.LeadScheduledMessage> queryable, LeadScheduledMessageGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

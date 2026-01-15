@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Product;
 
 public class EfProductRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Product.Product, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Product.Product, Guid>, 
       IProductRepository
 {
-    public EfProductRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfProductRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

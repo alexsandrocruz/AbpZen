@@ -9,7 +9,7 @@ public static class WhatsappLogDbContextModelCreatingExtensions
     {
         builder.Entity<WhatsappLog>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "WhatsappLogs", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "WhatsappLogs", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.ToPhone).IsRequired();
             b.Property(x => x.Status).IsRequired();

@@ -9,7 +9,7 @@ public static class ClientMessageDbContextModelCreatingExtensions
     {
         builder.Entity<ClientMessage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ClientMessages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ClientMessages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Channel).IsRequired();
             b.Property(x => x.Direction).IsRequired();

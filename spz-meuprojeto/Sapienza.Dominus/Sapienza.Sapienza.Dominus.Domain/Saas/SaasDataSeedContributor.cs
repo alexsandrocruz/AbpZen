@@ -5,7 +5,7 @@ using Volo.Abp.MultiTenancy;
 using Volo.Abp.Uow;
 using Volo.Saas.Editions;
 
-namespace Sapienza.Sapienza.Dominus.Saas
+namespace Sapienza.Dominus.Saas
 {
     public class SaasDataSeedContributor : IDataSeedContributor, ITransientDependency
     {

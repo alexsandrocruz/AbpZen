@@ -19,10 +19,10 @@ public class WorkspaceAccessEventAppService :
     DominusAppService,
     IWorkspaceAccessEventAppService
 {
-    private readonly IRepository<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid> _repository;
+    private readonly IRepository<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid> _repository;
 
     public WorkspaceAccessEventAppService(
-        IRepository<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid> repository
+        IRepository<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class WorkspaceAccessEventAppService :
     public virtual async Task<WorkspaceAccessEventDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class WorkspaceAccessEventAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent>, List<WorkspaceAccessEventDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent>, List<WorkspaceAccessEventDto>>(entities);
 
         return new PagedResultDto<WorkspaceAccessEventDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class WorkspaceAccessEventAppService :
     [Authorize(WorkspaceAccessEventPermissions.Create)]
     public virtual async Task<WorkspaceAccessEventDto> CreateAsync(CreateUpdateWorkspaceAccessEventDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWorkspaceAccessEventDto, Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWorkspaceAccessEventDto, Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class WorkspaceAccessEventAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, WorkspaceAccessEventDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class WorkspaceAccessEventAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent> ApplyFilters(IQueryable<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent> queryable, WorkspaceAccessEventGetListInput input)
+    protected virtual IQueryable<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent> ApplyFilters(IQueryable<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent> queryable, WorkspaceAccessEventGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

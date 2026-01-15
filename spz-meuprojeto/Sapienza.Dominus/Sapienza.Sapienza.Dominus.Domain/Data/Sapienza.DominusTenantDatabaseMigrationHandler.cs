@@ -10,28 +10,28 @@ using Volo.Abp.Identity;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.Uow;
 
-namespace Sapienza.Sapienza.Dominus.Data
+namespace Sapienza.Dominus.Data
 {
-    public class Sapienza.DominusTenantDatabaseMigrationHandler :
+    public class DominusTenantDatabaseMigrationHandler :
         IDistributedEventHandler<TenantCreatedEto>,
         IDistributedEventHandler<TenantConnectionStringUpdatedEto>,
         IDistributedEventHandler<ApplyDatabaseMigrationsEto>,
         ITransientDependency
     {
-        private readonly IEnumerable<ISapienza.DominusDbSchemaMigrator> _dbSchemaMigrators;
+        private readonly IEnumerable<IDominusDbSchemaMigrator> _dbSchemaMigrators;
         private readonly ICurrentTenant _currentTenant;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IDataSeeder _dataSeeder;
         private readonly ITenantStore _tenantStore;
-        private readonly ILogger<Sapienza.DominusTenantDatabaseMigrationHandler> _logger;
+        private readonly ILogger<DominusTenantDatabaseMigrationHandler> _logger;
 
-        public Sapienza.DominusTenantDatabaseMigrationHandler(
-            IEnumerable<ISapienza.DominusDbSchemaMigrator> dbSchemaMigrators,
+        public DominusTenantDatabaseMigrationHandler(
+            IEnumerable<IDominusDbSchemaMigrator> dbSchemaMigrators,
             ICurrentTenant currentTenant,
             IUnitOfWorkManager unitOfWorkManager,
             IDataSeeder dataSeeder,
             ITenantStore tenantStore,
-            ILogger<Sapienza.DominusTenantDatabaseMigrationHandler> logger)
+            ILogger<DominusTenantDatabaseMigrationHandler> logger)
         {
             _dbSchemaMigrators = dbSchemaMigrators;
             _currentTenant = currentTenant;
@@ -45,8 +45,8 @@ namespace Sapienza.Sapienza.Dominus.Data
         {
             await MigrateAndSeedForTenantAsync(
                 eventData.Id,
-                eventData.Properties.GetOrDefault("AdminEmail") ?? Sapienza.DominusConsts.AdminEmailDefaultValue,
-                eventData.Properties.GetOrDefault("AdminPassword") ?? Sapienza.DominusConsts.AdminPasswordDefaultValue
+                eventData.Properties.GetOrDefault("AdminEmail") ?? DominusConsts.AdminEmailDefaultValue,
+                eventData.Properties.GetOrDefault("AdminPassword") ?? DominusConsts.AdminPasswordDefaultValue
             );
         }
 
@@ -60,8 +60,8 @@ namespace Sapienza.Sapienza.Dominus.Data
 
             await MigrateAndSeedForTenantAsync(
                 eventData.Id,
-                Sapienza.DominusConsts.AdminEmailDefaultValue,
-                Sapienza.DominusConsts.AdminPasswordDefaultValue
+                DominusConsts.AdminEmailDefaultValue,
+                DominusConsts.AdminPasswordDefaultValue
             );
 
             /* You may want to move your data from the old database to the new database!
@@ -79,8 +79,8 @@ namespace Sapienza.Sapienza.Dominus.Data
 
             await MigrateAndSeedForTenantAsync(
                 eventData.TenantId.Value,
-                Sapienza.DominusConsts.AdminEmailDefaultValue,
-                Sapienza.DominusConsts.AdminPasswordDefaultValue
+                DominusConsts.AdminEmailDefaultValue,
+                DominusConsts.AdminPasswordDefaultValue
             );
         }
 

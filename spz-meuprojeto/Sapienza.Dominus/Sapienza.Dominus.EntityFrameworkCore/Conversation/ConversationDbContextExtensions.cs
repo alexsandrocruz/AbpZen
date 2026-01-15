@@ -9,7 +9,7 @@ public static class ConversationDbContextModelCreatingExtensions
     {
         builder.Entity<Conversation>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Conversations", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Conversations", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

@@ -19,10 +19,10 @@ public class BlogPost : FullAuditedAggregateRoot<Guid>
     public Guid? SiteId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Site.Site? Site { get; set; }
+    public virtual Dominus.Site.Site? Site { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.BlogPostVersion.BlogPostVersion> BlogPostVersions { get; set; } = new List<Sapienza.Dominus.BlogPostVersion.BlogPostVersion>();
+    public virtual ICollection<Dominus.BlogPostVersion.BlogPostVersion> BlogPostVersions { get; set; } = new List<Dominus.BlogPostVersion.BlogPostVersion>();
 
     protected BlogPost()
     {

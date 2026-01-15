@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.SchedulerException;
 
-public interface ISchedulerExceptionRepository : IRepository<Sapienza.Dominus.SchedulerException.SchedulerException, Guid>
+public interface ISchedulerExceptionRepository : IRepository<Dominus.SchedulerException.SchedulerException, Guid>
 {
 }

@@ -19,11 +19,11 @@ public class Proposal : FullAuditedAggregateRoot<Guid>
     public Guid? ClientId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Client.Client? Client { get; set; }
+    public virtual Dominus.Client.Client? Client { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.ProposalItem.ProposalItem> ProposalItems { get; set; } = new List<Sapienza.Dominus.ProposalItem.ProposalItem>();
-    public virtual ICollection<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance> ProposalBlockInstances { get; set; } = new List<Sapienza.Dominus.ProposalBlockInstance.ProposalBlockInstance>();
+    public virtual ICollection<Dominus.ProposalItem.ProposalItem> ProposalItems { get; set; } = new List<Dominus.ProposalItem.ProposalItem>();
+    public virtual ICollection<Dominus.ProposalBlockInstance.ProposalBlockInstance> ProposalBlockInstances { get; set; } = new List<Dominus.ProposalBlockInstance.ProposalBlockInstance>();
 
     protected Proposal()
     {

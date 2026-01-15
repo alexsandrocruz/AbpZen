@@ -10,7 +10,7 @@ using System.Xml;
 using Windows.ApplicationModel.Activation;
 using System.Xml.XPath;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.Platforms.Windows;
+namespace Sapienza.Dominus.MauiBlazor.Platforms.Windows;
 
 /// <summary>
 /// https://github.com/microsoft/WindowsAppSDK/issues/441

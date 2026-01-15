@@ -1,10 +1,10 @@
 using AutoMapper;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
-    public class Sapienza.DominusApplicationAutoMapperProfile : Profile
+    public class DominusApplicationAutoMapperProfile : Profile
     {
-        public Sapienza.DominusApplicationAutoMapperProfile()
+        public DominusApplicationAutoMapperProfile()
         {
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations

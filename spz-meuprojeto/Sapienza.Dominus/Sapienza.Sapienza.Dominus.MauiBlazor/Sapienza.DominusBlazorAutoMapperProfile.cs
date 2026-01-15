@@ -1,10 +1,10 @@
 using AutoMapper;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 
-public class Sapienza.DominusBlazorAutoMapperProfile : Profile
+public class DominusBlazorAutoMapperProfile : Profile
 {
-    public Sapienza.DominusBlazorAutoMapperProfile()
+    public DominusBlazorAutoMapperProfile()
     {
         //Define your AutoMapper configuration here for the Blazor project.
     }

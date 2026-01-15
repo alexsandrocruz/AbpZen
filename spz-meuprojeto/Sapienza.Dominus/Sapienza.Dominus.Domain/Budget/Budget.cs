@@ -18,7 +18,7 @@ public class Budget : FullAuditedEntity<Guid>
     public Guid? FinancialCategoryId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.FinancialCategory.FinancialCategory? FinancialCategory { get; set; }
+    public virtual Dominus.FinancialCategory.FinancialCategory? FinancialCategory { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

@@ -16,7 +16,7 @@ public class SchedulerException : Entity<Guid>
     public Guid? SchedulerTypeId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.SchedulerType.SchedulerType? SchedulerType { get; set; }
+    public virtual Dominus.SchedulerType.SchedulerType? SchedulerType { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

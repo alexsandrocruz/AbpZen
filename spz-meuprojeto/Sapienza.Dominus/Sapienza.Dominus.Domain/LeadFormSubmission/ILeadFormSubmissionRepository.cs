@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.LeadFormSubmission;
 
-public interface ILeadFormSubmissionRepository : IRepository<Sapienza.Dominus.LeadFormSubmission.LeadFormSubmission, Guid>
+public interface ILeadFormSubmissionRepository : IRepository<Dominus.LeadFormSubmission.LeadFormSubmission, Guid>
 {
 }

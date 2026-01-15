@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.BlogPost;
 
 public class EfBlogPostRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.BlogPost.BlogPost, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.BlogPost.BlogPost, Guid>, 
       IBlogPostRepository
 {
-    public EfBlogPostRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfBlogPostRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

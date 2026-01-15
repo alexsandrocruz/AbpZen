@@ -1,12 +1,12 @@
-﻿using Sapienza.Sapienza.Dominus.Localization;
+﻿using Sapienza.Dominus.Localization;
 using Volo.Abp.AspNetCore.Components;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 
-public abstract class Sapienza.DominusComponentBase : AbpComponentBase
+public abstract class DominusComponentBase : AbpComponentBase
 {
-    protected Sapienza.DominusComponentBase()
+    protected DominusComponentBase()
     {
-        LocalizationResource = typeof(Sapienza.DominusResource);
+        LocalizationResource = typeof(DominusResource);
     }
 }

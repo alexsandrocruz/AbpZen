@@ -1,15 +1,15 @@
-using Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+using Sapienza.Dominus.MauiBlazor.Settings;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Http.Client.Authentication;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 
 [Volo.Abp.DependencyInjection.Dependency(ReplaceServices = true)]
 public class MauiBlazorAccessTokenProvider : IAbpAccessTokenProvider, ITransientDependency
 {
-    private readonly ISapienza.DominusApplicationSettingService _leptonXDemoAppApplicationSettingService;
+    private readonly IDominusApplicationSettingService _leptonXDemoAppApplicationSettingService;
 
-    public MauiBlazorAccessTokenProvider(ISapienza.DominusApplicationSettingService leptonXDemoAppApplicationSettingService)
+    public MauiBlazorAccessTokenProvider(IDominusApplicationSettingService leptonXDemoAppApplicationSettingService)
     {
         _leptonXDemoAppApplicationSettingService = leptonXDemoAppApplicationSettingService;
     }

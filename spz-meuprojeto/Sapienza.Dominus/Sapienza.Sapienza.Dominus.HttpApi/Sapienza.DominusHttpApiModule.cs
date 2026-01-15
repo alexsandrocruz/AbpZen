@@ -1,5 +1,5 @@
 using Localization.Resources.AbpUi;
-using Sapienza.Sapienza.Dominus.Localization;
+using Sapienza.Dominus.Localization;
 using Volo.Abp.Account;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.FeatureManagement;
@@ -19,10 +19,10 @@ using Volo.Forms;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
-        typeof(Sapienza.DominusApplicationContractsModule),
+        typeof(DominusApplicationContractsModule),
         typeof(AbpIdentityHttpApiModule),
         typeof(AbpPermissionManagementHttpApiModule),
         typeof(AbpFeatureManagementHttpApiModule),
@@ -41,7 +41,7 @@ namespace Sapienza.Sapienza.Dominus
     [DependsOn(typeof(FormsHttpApiModule))]
     [DependsOn(typeof(CmsKitProHttpApiModule))]
     [DependsOn(typeof(AbpGdprHttpApiModule))]
-    public class Sapienza.DominusHttpApiModule : AbpModule
+    public class DominusHttpApiModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -53,7 +53,7 @@ namespace Sapienza.Sapienza.Dominus
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Resources
-                    .Get<Sapienza.DominusResource>()
+                    .Get<DominusResource>()
                     .AddBaseTypes(
                         typeof(AbpUiResource)
                     );

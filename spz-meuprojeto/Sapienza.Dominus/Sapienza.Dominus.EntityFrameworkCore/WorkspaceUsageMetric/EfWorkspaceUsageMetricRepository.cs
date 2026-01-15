@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.WorkspaceUsageMetric;
 
 public class EfWorkspaceUsageMetricRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid>, 
       IWorkspaceUsageMetricRepository
 {
-    public EfWorkspaceUsageMetricRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfWorkspaceUsageMetricRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

@@ -19,12 +19,12 @@ public class SiteVisitEventAppService :
     DominusAppService,
     ISiteVisitEventAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Site.Site, Guid> _siteRepository;
+    private readonly IRepository<Dominus.SiteVisitEvent.SiteVisitEvent, Guid> _repository;
+    private readonly IRepository<Dominus.Site.Site, Guid> _siteRepository;
 
     public SiteVisitEventAppService(
-        IRepository<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, Guid> repository,
-        IRepository<Sapienza.Dominus.Site.Site, Guid> siteRepository
+        IRepository<Dominus.SiteVisitEvent.SiteVisitEvent, Guid> repository,
+        IRepository<Dominus.Site.Site, Guid> siteRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class SiteVisitEventAppService :
     public virtual async Task<SiteVisitEventDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
         if (entity.SiteId != null)
         {
             var parent = await _siteRepository.FindAsync(entity.SiteId.Value);
@@ -67,7 +67,7 @@ public class SiteVisitEventAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent>, List<SiteVisitEventDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SiteVisitEvent.SiteVisitEvent>, List<SiteVisitEventDto>>(entities);
         var siteIds = entities
             .Where(x => x.SiteId != null)
             .Select(x => x.SiteId.Value)
@@ -100,11 +100,11 @@ public class SiteVisitEventAppService :
     [Authorize(SiteVisitEventPermissions.Create)]
     public virtual async Task<SiteVisitEventDto> CreateAsync(CreateUpdateSiteVisitEventDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSiteVisitEventDto, Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSiteVisitEventDto, Dominus.SiteVisitEvent.SiteVisitEvent>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
+        return ObjectMapper.Map<Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class SiteVisitEventAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SiteVisitEvent.SiteVisitEvent), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
+        return ObjectMapper.Map<Dominus.SiteVisitEvent.SiteVisitEvent, SiteVisitEventDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SiteVisitEventAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent> ApplyFilters(IQueryable<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent> queryable, SiteVisitEventGetListInput input)
+    protected virtual IQueryable<Dominus.SiteVisitEvent.SiteVisitEvent> ApplyFilters(IQueryable<Dominus.SiteVisitEvent.SiteVisitEvent> queryable, SiteVisitEventGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

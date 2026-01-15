@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.File;
 
 public class EfFileRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.File.File, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.File.File, Guid>, 
       IFileRepository
 {
-    public EfFileRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfFileRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

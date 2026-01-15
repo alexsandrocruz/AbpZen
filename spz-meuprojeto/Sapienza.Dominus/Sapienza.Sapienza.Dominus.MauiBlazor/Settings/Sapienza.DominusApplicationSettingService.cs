@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.DependencyInjection;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+namespace Sapienza.Dominus.MauiBlazor.Settings;
 
-public class Sapienza.DominusApplicationSettingService : ISapienza.DominusApplicationSettingService, ITransientDependency
+public class DominusApplicationSettingService : IDominusApplicationSettingService, ITransientDependency
 {
     private const string AccessTokenKey = "access_token";
 

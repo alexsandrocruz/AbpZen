@@ -2,13 +2,13 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using System.Globalization
-@using Sapienza.Sapienza.Dominus.Localization
+@using Sapienza.Dominus.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Widgets
 @using Volo.Abp.AuditLogging.Web.Pages.Shared.Components.AverageExecutionDurationPerDayWidget
 @using Volo.Abp.AuditLogging.Web.Pages.Shared.Components.ErrorRateWidget
-@inject IHtmlLocalizer<Sapienza.DominusResource> L
+@inject IHtmlLocalizer<Sapienza.Dominus.Localization.DominusResource> L
 @inject IWidgetManager WidgetManager
-@model Sapienza.Sapienza.Dominus.Web.Pages.TenantDashboardModel
+@model Sapienza.Dominus.Web.Pages.TenantDashboardModel
 
 @section scripts {
     <abp-script src="/Pages/TenantDashboard.js" />

@@ -19,12 +19,12 @@ public class LeadLandingPageAppService :
     DominusAppService,
     ILeadLandingPageAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadLandingPage.LeadLandingPage, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
+    private readonly IRepository<Dominus.LeadLandingPage.LeadLandingPage, Guid> _repository;
+    private readonly IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
 
     public LeadLandingPageAppService(
-        IRepository<Sapienza.Dominus.LeadLandingPage.LeadLandingPage, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
+        IRepository<Dominus.LeadLandingPage.LeadLandingPage, Guid> repository,
+        IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadLandingPageAppService :
     public virtual async Task<LeadLandingPageDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
         if (entity.LeadWorkflowId != null)
         {
             var parent = await _leadWorkflowRepository.FindAsync(entity.LeadWorkflowId.Value);
@@ -67,7 +67,7 @@ public class LeadLandingPageAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadLandingPage.LeadLandingPage>, List<LeadLandingPageDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadLandingPage.LeadLandingPage>, List<LeadLandingPageDto>>(entities);
         var leadWorkflowIds = entities
             .Where(x => x.LeadWorkflowId != null)
             .Select(x => x.LeadWorkflowId.Value)
@@ -100,11 +100,11 @@ public class LeadLandingPageAppService :
     [Authorize(LeadLandingPagePermissions.Create)]
     public virtual async Task<LeadLandingPageDto> CreateAsync(CreateUpdateLeadLandingPageDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadLandingPageDto, Sapienza.Dominus.LeadLandingPage.LeadLandingPage>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadLandingPageDto, Dominus.LeadLandingPage.LeadLandingPage>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadLandingPageAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadLandingPage.LeadLandingPage), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadLandingPage.LeadLandingPage), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadLandingPage.LeadLandingPage, LeadLandingPageDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadLandingPageAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadLandingPage.LeadLandingPage> ApplyFilters(IQueryable<Sapienza.Dominus.LeadLandingPage.LeadLandingPage> queryable, LeadLandingPageGetListInput input)
+    protected virtual IQueryable<Dominus.LeadLandingPage.LeadLandingPage> ApplyFilters(IQueryable<Dominus.LeadLandingPage.LeadLandingPage> queryable, LeadLandingPageGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

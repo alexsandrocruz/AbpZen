@@ -19,14 +19,14 @@ public class LeadAppService :
     DominusAppService,
     ILeadAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Lead.Lead, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
-    private readonly IRepository<Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid> _leadWorkflowStageRepository;
+    private readonly IRepository<Dominus.Lead.Lead, Guid> _repository;
+    private readonly IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
+    private readonly IRepository<Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid> _leadWorkflowStageRepository;
 
     public LeadAppService(
-        IRepository<Sapienza.Dominus.Lead.Lead, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository,
-        IRepository<Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid> leadWorkflowStageRepository
+        IRepository<Dominus.Lead.Lead, Guid> repository,
+        IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository,
+        IRepository<Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid> leadWorkflowStageRepository
     )
     {
         _repository = repository;
@@ -40,7 +40,7 @@ public class LeadAppService :
     public virtual async Task<LeadDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Lead.Lead, LeadDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Lead.Lead, LeadDto>(entity);
         if (entity.LeadWorkflowId != null)
         {
             var parent = await _leadWorkflowRepository.FindAsync(entity.LeadWorkflowId.Value);
@@ -75,7 +75,7 @@ public class LeadAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Lead.Lead>, List<LeadDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Lead.Lead>, List<LeadDto>>(entities);
         var leadWorkflowIds = entities
             .Where(x => x.LeadWorkflowId != null)
             .Select(x => x.LeadWorkflowId.Value)
@@ -127,11 +127,11 @@ public class LeadAppService :
     [Authorize(LeadPermissions.Create)]
     public virtual async Task<LeadDto> CreateAsync(CreateUpdateLeadDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadDto, Sapienza.Dominus.Lead.Lead>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadDto, Dominus.Lead.Lead>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Lead.Lead, LeadDto>(entity);
+        return ObjectMapper.Map<Dominus.Lead.Lead, LeadDto>(entity);
     }
 
     /// <summary>
@@ -143,14 +143,14 @@ public class LeadAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Lead.Lead), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Lead.Lead), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Lead.Lead, LeadDto>(entity);
+        return ObjectMapper.Map<Dominus.Lead.Lead, LeadDto>(entity);
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public class LeadAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Lead.Lead> ApplyFilters(IQueryable<Sapienza.Dominus.Lead.Lead> queryable, LeadGetListInput input)
+    protected virtual IQueryable<Dominus.Lead.Lead> ApplyFilters(IQueryable<Dominus.Lead.Lead> queryable, LeadGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

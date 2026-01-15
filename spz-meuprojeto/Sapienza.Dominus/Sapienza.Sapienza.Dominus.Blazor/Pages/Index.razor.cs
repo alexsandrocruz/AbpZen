@@ -1,4 +1,4 @@
-﻿namespace Sapienza.Sapienza.Dominus.Blazor.Pages;
+﻿namespace Sapienza.Dominus.Blazor.Pages;
 
 public partial class Index
 {

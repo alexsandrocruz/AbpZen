@@ -9,7 +9,7 @@ public static class LeadFormSubmissionDbContextModelCreatingExtensions
     {
         builder.Entity<LeadFormSubmission>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadFormSubmissions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadFormSubmissions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

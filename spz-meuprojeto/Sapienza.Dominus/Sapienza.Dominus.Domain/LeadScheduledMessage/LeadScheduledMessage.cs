@@ -17,7 +17,7 @@ public class LeadScheduledMessage : Entity<Guid>
     public Guid? LeadAutomationId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.LeadAutomation.LeadAutomation? LeadAutomation { get; set; }
+    public virtual Dominus.LeadAutomation.LeadAutomation? LeadAutomation { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

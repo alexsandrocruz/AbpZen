@@ -9,7 +9,7 @@ public static class LeadWorkflowStageDbContextModelCreatingExtensions
     {
         builder.Entity<LeadWorkflowStage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadWorkflowStages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadWorkflowStages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

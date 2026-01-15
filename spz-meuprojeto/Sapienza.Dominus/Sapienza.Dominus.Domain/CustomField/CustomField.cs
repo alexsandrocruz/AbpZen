@@ -20,7 +20,7 @@ public class CustomField : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.CustomFieldValue.CustomFieldValue> CustomFieldValues { get; set; } = new List<Sapienza.Dominus.CustomFieldValue.CustomFieldValue>();
+    public virtual ICollection<Dominus.CustomFieldValue.CustomFieldValue> CustomFieldValues { get; set; } = new List<Dominus.CustomFieldValue.CustomFieldValue>();
 
     protected CustomField()
     {

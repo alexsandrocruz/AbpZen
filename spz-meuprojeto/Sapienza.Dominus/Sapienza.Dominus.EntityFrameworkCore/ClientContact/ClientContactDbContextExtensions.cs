@@ -9,7 +9,7 @@ public static class ClientContactDbContextModelCreatingExtensions
     {
         builder.Entity<ClientContact>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ClientContacts", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ClientContacts", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

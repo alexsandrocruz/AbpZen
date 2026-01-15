@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.LeadWorkflowStage;
 
-public interface ILeadWorkflowStageRepository : IRepository<Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid>
+public interface ILeadWorkflowStageRepository : IRepository<Dominus.LeadWorkflowStage.LeadWorkflowStage, Guid>
 {
 }

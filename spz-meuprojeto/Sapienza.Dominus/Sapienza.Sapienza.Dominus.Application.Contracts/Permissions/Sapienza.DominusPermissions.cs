@@ -1,8 +1,8 @@
-namespace Sapienza.Sapienza.Dominus.Permissions
+namespace Sapienza.Dominus.Permissions
 {
-    public static class Sapienza.DominusPermissions
+    public static class DominusPermissions
     {
-        public const string GroupName = "Sapienza.Sapienza.Dominus";
+        public const string GroupName = "Dominus";
 
         public static class Dashboard
         {

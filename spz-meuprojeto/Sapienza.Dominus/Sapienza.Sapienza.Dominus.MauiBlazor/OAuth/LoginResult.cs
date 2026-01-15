@@ -1,4 +1,4 @@
-﻿namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+﻿namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public class LoginResult
 {

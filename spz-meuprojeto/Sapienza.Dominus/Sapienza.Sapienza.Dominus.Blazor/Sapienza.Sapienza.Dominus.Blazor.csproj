@@ -6,6 +6,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Sapienza.Dominus.Blazor</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sapienza.Sapienza.Dominus.HttpApi.Client\Sapienza.Sapienza.Dominus.HttpApi.Client.csproj" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.LeptonXTheme" Version="$(AbpVersion)" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme" Version="$(AbpVersion)" />
   </ItemGroup>
 
 </Project>

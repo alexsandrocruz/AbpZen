@@ -17,10 +17,10 @@ public class Conversation : FullAuditedAggregateRoot<Guid>
     public Guid? ClientId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Client.Client? Client { get; set; }
+    public virtual Dominus.Client.Client? Client { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.ChatMessage.ChatMessage> ChatMessages { get; set; } = new List<Sapienza.Dominus.ChatMessage.ChatMessage>();
+    public virtual ICollection<Dominus.ChatMessage.ChatMessage> ChatMessages { get; set; } = new List<Dominus.ChatMessage.ChatMessage>();
 
     protected Conversation()
     {

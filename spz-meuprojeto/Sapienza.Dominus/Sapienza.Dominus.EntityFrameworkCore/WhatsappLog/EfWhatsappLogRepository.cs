@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.WhatsappLog;
 
 public class EfWhatsappLogRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.WhatsappLog.WhatsappLog, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.WhatsappLog.WhatsappLog, Guid>, 
       IWhatsappLogRepository
 {
-    public EfWhatsappLogRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfWhatsappLogRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

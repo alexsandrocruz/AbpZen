@@ -21,11 +21,11 @@ public class Lead : FullAuditedAggregateRoot<Guid>
     public Guid? LeadWorkflowStageId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
-    public virtual Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage? LeadWorkflowStage { get; set; }
+    public virtual Dominus.LeadWorkflow.LeadWorkflow? LeadWorkflow { get; set; }
+    public virtual Dominus.LeadWorkflowStage.LeadWorkflowStage? LeadWorkflowStage { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.LeadStageHistory.LeadStageHistory> LeadStageHistories { get; set; } = new List<Sapienza.Dominus.LeadStageHistory.LeadStageHistory>();
+    public virtual ICollection<Dominus.LeadStageHistory.LeadStageHistory> LeadStageHistories { get; set; } = new List<Dominus.LeadStageHistory.LeadStageHistory>();
 
     protected Lead()
     {

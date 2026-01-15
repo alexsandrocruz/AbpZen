@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.ProposalTemplateBlock;
 
-public interface IProposalTemplateBlockRepository : IRepository<Sapienza.Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid>
+public interface IProposalTemplateBlockRepository : IRepository<Dominus.ProposalTemplateBlock.ProposalTemplateBlock, Guid>
 {
 }

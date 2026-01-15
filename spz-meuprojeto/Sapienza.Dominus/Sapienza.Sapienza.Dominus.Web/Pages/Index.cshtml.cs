@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 
-namespace Sapienza.Sapienza.Dominus.Web.Pages
+namespace Sapienza.Dominus.Web.Pages
 {
-    public class IndexModel : Sapienza.DominusPageModel
+    public class IndexModel : DominusPageModel
     {
         public void OnGet()
         {

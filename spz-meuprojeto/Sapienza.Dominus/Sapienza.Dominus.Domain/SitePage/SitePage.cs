@@ -18,10 +18,10 @@ public class SitePage : FullAuditedAggregateRoot<Guid>
     public Guid? SiteId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Site.Site? Site { get; set; }
+    public virtual Dominus.Site.Site? Site { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.SitePageVersion.SitePageVersion> SitePageVersions { get; set; } = new List<Sapienza.Dominus.SitePageVersion.SitePageVersion>();
+    public virtual ICollection<Dominus.SitePageVersion.SitePageVersion> SitePageVersions { get; set; } = new List<Dominus.SitePageVersion.SitePageVersion>();
 
     protected SitePage()
     {

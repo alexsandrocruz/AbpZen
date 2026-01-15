@@ -9,7 +9,7 @@ public static class ProjectCommunicationDbContextModelCreatingExtensions
     {
         builder.Entity<ProjectCommunication>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ProjectCommunications", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ProjectCommunications", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Channel).IsRequired();
 

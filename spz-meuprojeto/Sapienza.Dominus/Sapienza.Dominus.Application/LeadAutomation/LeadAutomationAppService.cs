@@ -19,12 +19,12 @@ public class LeadAutomationAppService :
     DominusAppService,
     ILeadAutomationAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadAutomation.LeadAutomation, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
+    private readonly IRepository<Dominus.LeadAutomation.LeadAutomation, Guid> _repository;
+    private readonly IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
 
     public LeadAutomationAppService(
-        IRepository<Sapienza.Dominus.LeadAutomation.LeadAutomation, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
+        IRepository<Dominus.LeadAutomation.LeadAutomation, Guid> repository,
+        IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadAutomationAppService :
     public virtual async Task<LeadAutomationDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
         if (entity.LeadWorkflowId != null)
         {
             var parent = await _leadWorkflowRepository.FindAsync(entity.LeadWorkflowId.Value);
@@ -67,7 +67,7 @@ public class LeadAutomationAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadAutomation.LeadAutomation>, List<LeadAutomationDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadAutomation.LeadAutomation>, List<LeadAutomationDto>>(entities);
         var leadWorkflowIds = entities
             .Where(x => x.LeadWorkflowId != null)
             .Select(x => x.LeadWorkflowId.Value)
@@ -100,11 +100,11 @@ public class LeadAutomationAppService :
     [Authorize(LeadAutomationPermissions.Create)]
     public virtual async Task<LeadAutomationDto> CreateAsync(CreateUpdateLeadAutomationDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadAutomationDto, Sapienza.Dominus.LeadAutomation.LeadAutomation>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadAutomationDto, Dominus.LeadAutomation.LeadAutomation>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadAutomationAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadAutomation.LeadAutomation), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadAutomation.LeadAutomation), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadAutomation.LeadAutomation, LeadAutomationDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadAutomationAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadAutomation.LeadAutomation> ApplyFilters(IQueryable<Sapienza.Dominus.LeadAutomation.LeadAutomation> queryable, LeadAutomationGetListInput input)
+    protected virtual IQueryable<Dominus.LeadAutomation.LeadAutomation> ApplyFilters(IQueryable<Dominus.LeadAutomation.LeadAutomation> queryable, LeadAutomationGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

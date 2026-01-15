@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.EmailLog;
 
 public class EfEmailLogRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.EmailLog.EmailLog, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.EmailLog.EmailLog, Guid>, 
       IEmailLogRepository
 {
-    public EfEmailLogRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfEmailLogRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

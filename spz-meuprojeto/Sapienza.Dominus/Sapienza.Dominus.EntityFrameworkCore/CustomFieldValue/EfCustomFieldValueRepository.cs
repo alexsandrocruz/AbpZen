@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.CustomFieldValue;
 
 public class EfCustomFieldValueRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.CustomFieldValue.CustomFieldValue, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.CustomFieldValue.CustomFieldValue, Guid>, 
       ICustomFieldValueRepository
 {
-    public EfCustomFieldValueRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfCustomFieldValueRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

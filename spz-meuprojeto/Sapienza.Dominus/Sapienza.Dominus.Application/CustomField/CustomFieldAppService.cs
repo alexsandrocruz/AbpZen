@@ -19,10 +19,10 @@ public class CustomFieldAppService :
     DominusAppService,
     ICustomFieldAppService
 {
-    private readonly IRepository<Sapienza.Dominus.CustomField.CustomField, Guid> _repository;
+    private readonly IRepository<Dominus.CustomField.CustomField, Guid> _repository;
 
     public CustomFieldAppService(
-        IRepository<Sapienza.Dominus.CustomField.CustomField, Guid> repository
+        IRepository<Dominus.CustomField.CustomField, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class CustomFieldAppService :
     public virtual async Task<CustomFieldDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.CustomField.CustomField, CustomFieldDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.CustomField.CustomField, CustomFieldDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class CustomFieldAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.CustomField.CustomField>, List<CustomFieldDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.CustomField.CustomField>, List<CustomFieldDto>>(entities);
 
         return new PagedResultDto<CustomFieldDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class CustomFieldAppService :
     [Authorize(CustomFieldPermissions.Create)]
     public virtual async Task<CustomFieldDto> CreateAsync(CreateUpdateCustomFieldDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateCustomFieldDto, Sapienza.Dominus.CustomField.CustomField>(input);
+        var entity = ObjectMapper.Map<CreateUpdateCustomFieldDto, Dominus.CustomField.CustomField>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.CustomField.CustomField, CustomFieldDto>(entity);
+        return ObjectMapper.Map<Dominus.CustomField.CustomField, CustomFieldDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class CustomFieldAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.CustomField.CustomField), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.CustomField.CustomField), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.CustomField.CustomField, CustomFieldDto>(entity);
+        return ObjectMapper.Map<Dominus.CustomField.CustomField, CustomFieldDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class CustomFieldAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.CustomField.CustomField> ApplyFilters(IQueryable<Sapienza.Dominus.CustomField.CustomField> queryable, CustomFieldGetListInput input)
+    protected virtual IQueryable<Dominus.CustomField.CustomField> ApplyFilters(IQueryable<Dominus.CustomField.CustomField> queryable, CustomFieldGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

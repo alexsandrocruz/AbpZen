@@ -9,7 +9,7 @@ public static class ProposalTemplateBlockDbContextModelCreatingExtensions
     {
         builder.Entity<ProposalTemplateBlock>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ProposalTemplateBlocks", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ProposalTemplateBlocks", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.BlockType).IsRequired();
 

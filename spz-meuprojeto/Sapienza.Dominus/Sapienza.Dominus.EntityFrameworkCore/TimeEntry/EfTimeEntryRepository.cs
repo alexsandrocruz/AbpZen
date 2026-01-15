@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.TimeEntry;
 
 public class EfTimeEntryRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.TimeEntry.TimeEntry, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.TimeEntry.TimeEntry, Guid>, 
       ITimeEntryRepository
 {
-    public EfTimeEntryRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfTimeEntryRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

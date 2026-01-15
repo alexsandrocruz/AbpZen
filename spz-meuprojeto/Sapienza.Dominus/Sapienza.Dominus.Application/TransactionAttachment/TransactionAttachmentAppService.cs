@@ -19,12 +19,12 @@ public class TransactionAttachmentAppService :
     DominusAppService,
     ITransactionAttachmentAppService
 {
-    private readonly IRepository<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Transaction.Transaction, Guid> _transactionRepository;
+    private readonly IRepository<Dominus.TransactionAttachment.TransactionAttachment, Guid> _repository;
+    private readonly IRepository<Dominus.Transaction.Transaction, Guid> _transactionRepository;
 
     public TransactionAttachmentAppService(
-        IRepository<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, Guid> repository,
-        IRepository<Sapienza.Dominus.Transaction.Transaction, Guid> transactionRepository
+        IRepository<Dominus.TransactionAttachment.TransactionAttachment, Guid> repository,
+        IRepository<Dominus.Transaction.Transaction, Guid> transactionRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class TransactionAttachmentAppService :
     public virtual async Task<TransactionAttachmentDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
         if (entity.TransactionId != null)
         {
             var parent = await _transactionRepository.FindAsync(entity.TransactionId.Value);
@@ -67,7 +67,7 @@ public class TransactionAttachmentAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.TransactionAttachment.TransactionAttachment>, List<TransactionAttachmentDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.TransactionAttachment.TransactionAttachment>, List<TransactionAttachmentDto>>(entities);
         var transactionIds = entities
             .Where(x => x.TransactionId != null)
             .Select(x => x.TransactionId.Value)
@@ -100,11 +100,11 @@ public class TransactionAttachmentAppService :
     [Authorize(TransactionAttachmentPermissions.Create)]
     public virtual async Task<TransactionAttachmentDto> CreateAsync(CreateUpdateTransactionAttachmentDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateTransactionAttachmentDto, Sapienza.Dominus.TransactionAttachment.TransactionAttachment>(input);
+        var entity = ObjectMapper.Map<CreateUpdateTransactionAttachmentDto, Dominus.TransactionAttachment.TransactionAttachment>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
+        return ObjectMapper.Map<Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class TransactionAttachmentAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.TransactionAttachment.TransactionAttachment), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.TransactionAttachment.TransactionAttachment), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
+        return ObjectMapper.Map<Dominus.TransactionAttachment.TransactionAttachment, TransactionAttachmentDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class TransactionAttachmentAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.TransactionAttachment.TransactionAttachment> ApplyFilters(IQueryable<Sapienza.Dominus.TransactionAttachment.TransactionAttachment> queryable, TransactionAttachmentGetListInput input)
+    protected virtual IQueryable<Dominus.TransactionAttachment.TransactionAttachment> ApplyFilters(IQueryable<Dominus.TransactionAttachment.TransactionAttachment> queryable, TransactionAttachmentGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

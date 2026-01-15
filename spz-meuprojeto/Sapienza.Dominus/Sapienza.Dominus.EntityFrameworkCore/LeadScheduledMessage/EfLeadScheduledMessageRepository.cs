@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadScheduledMessage;
 
 public class EfLeadScheduledMessageRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadScheduledMessage.LeadScheduledMessage, Guid>, 
       ILeadScheduledMessageRepository
 {
-    public EfLeadScheduledMessageRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadScheduledMessageRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

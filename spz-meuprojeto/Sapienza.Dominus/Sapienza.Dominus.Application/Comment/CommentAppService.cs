@@ -19,10 +19,10 @@ public class CommentAppService :
     DominusAppService,
     ICommentAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Comment.Comment, Guid> _repository;
+    private readonly IRepository<Dominus.Comment.Comment, Guid> _repository;
 
     public CommentAppService(
-        IRepository<Sapienza.Dominus.Comment.Comment, Guid> repository
+        IRepository<Dominus.Comment.Comment, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class CommentAppService :
     public virtual async Task<CommentDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Comment.Comment, CommentDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Comment.Comment, CommentDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class CommentAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Comment.Comment>, List<CommentDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Comment.Comment>, List<CommentDto>>(entities);
 
         return new PagedResultDto<CommentDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class CommentAppService :
     [Authorize(CommentPermissions.Create)]
     public virtual async Task<CommentDto> CreateAsync(CreateUpdateCommentDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateCommentDto, Sapienza.Dominus.Comment.Comment>(input);
+        var entity = ObjectMapper.Map<CreateUpdateCommentDto, Dominus.Comment.Comment>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Comment.Comment, CommentDto>(entity);
+        return ObjectMapper.Map<Dominus.Comment.Comment, CommentDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class CommentAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Comment.Comment), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Comment.Comment), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Comment.Comment, CommentDto>(entity);
+        return ObjectMapper.Map<Dominus.Comment.Comment, CommentDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class CommentAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Comment.Comment> ApplyFilters(IQueryable<Sapienza.Dominus.Comment.Comment> queryable, CommentGetListInput input)
+    protected virtual IQueryable<Dominus.Comment.Comment> ApplyFilters(IQueryable<Dominus.Comment.Comment> queryable, CommentGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

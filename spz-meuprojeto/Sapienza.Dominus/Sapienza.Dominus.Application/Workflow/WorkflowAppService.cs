@@ -19,10 +19,10 @@ public class WorkflowAppService :
     DominusAppService,
     IWorkflowAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Workflow.Workflow, Guid> _repository;
+    private readonly IRepository<Dominus.Workflow.Workflow, Guid> _repository;
 
     public WorkflowAppService(
-        IRepository<Sapienza.Dominus.Workflow.Workflow, Guid> repository
+        IRepository<Dominus.Workflow.Workflow, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class WorkflowAppService :
     public virtual async Task<WorkflowDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Workflow.Workflow, WorkflowDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Workflow.Workflow, WorkflowDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class WorkflowAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Workflow.Workflow>, List<WorkflowDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Workflow.Workflow>, List<WorkflowDto>>(entities);
 
         return new PagedResultDto<WorkflowDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class WorkflowAppService :
     [Authorize(WorkflowPermissions.Create)]
     public virtual async Task<WorkflowDto> CreateAsync(CreateUpdateWorkflowDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWorkflowDto, Sapienza.Dominus.Workflow.Workflow>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWorkflowDto, Dominus.Workflow.Workflow>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Workflow.Workflow, WorkflowDto>(entity);
+        return ObjectMapper.Map<Dominus.Workflow.Workflow, WorkflowDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class WorkflowAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Workflow.Workflow), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Workflow.Workflow), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Workflow.Workflow, WorkflowDto>(entity);
+        return ObjectMapper.Map<Dominus.Workflow.Workflow, WorkflowDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class WorkflowAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Workflow.Workflow> ApplyFilters(IQueryable<Sapienza.Dominus.Workflow.Workflow> queryable, WorkflowGetListInput input)
+    protected virtual IQueryable<Dominus.Workflow.Workflow> ApplyFilters(IQueryable<Dominus.Workflow.Workflow> queryable, WorkflowGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

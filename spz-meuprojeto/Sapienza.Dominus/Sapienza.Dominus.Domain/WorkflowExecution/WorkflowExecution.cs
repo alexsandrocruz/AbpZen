@@ -16,7 +16,7 @@ public class WorkflowExecution : Entity<Guid>
     public Guid? WorkflowId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Workflow.Workflow? Workflow { get; set; }
+    public virtual Dominus.Workflow.Workflow? Workflow { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

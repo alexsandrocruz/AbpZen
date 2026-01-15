@@ -22,11 +22,11 @@ public class Transaction : FullAuditedAggregateRoot<Guid>
     public Guid? FinancialCategoryId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Client.Client? Client { get; set; }
-    public virtual Sapienza.Dominus.FinancialCategory.FinancialCategory? FinancialCategory { get; set; }
+    public virtual Dominus.Client.Client? Client { get; set; }
+    public virtual Dominus.FinancialCategory.FinancialCategory? FinancialCategory { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.TransactionAttachment.TransactionAttachment> TransactionAttachments { get; set; } = new List<Sapienza.Dominus.TransactionAttachment.TransactionAttachment>();
+    public virtual ICollection<Dominus.TransactionAttachment.TransactionAttachment> TransactionAttachments { get; set; } = new List<Dominus.TransactionAttachment.TransactionAttachment>();
 
     protected Transaction()
     {

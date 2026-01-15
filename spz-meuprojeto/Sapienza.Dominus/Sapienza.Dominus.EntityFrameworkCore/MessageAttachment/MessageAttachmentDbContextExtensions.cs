@@ -9,7 +9,7 @@ public static class MessageAttachmentDbContextModelCreatingExtensions
     {
         builder.Entity<MessageAttachment>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "MessageAttachments", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "MessageAttachments", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.FileName).IsRequired();
 

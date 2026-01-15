@@ -19,12 +19,12 @@ public class SiteVisitDailyStatAppService :
     DominusAppService,
     ISiteVisitDailyStatAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Site.Site, Guid> _siteRepository;
+    private readonly IRepository<Dominus.SiteVisitDailyStat.SiteVisitDailyStat, Guid> _repository;
+    private readonly IRepository<Dominus.Site.Site, Guid> _siteRepository;
 
     public SiteVisitDailyStatAppService(
-        IRepository<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat, Guid> repository,
-        IRepository<Sapienza.Dominus.Site.Site, Guid> siteRepository
+        IRepository<Dominus.SiteVisitDailyStat.SiteVisitDailyStat, Guid> repository,
+        IRepository<Dominus.Site.Site, Guid> siteRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class SiteVisitDailyStatAppService :
     public virtual async Task<SiteVisitDailyStatDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
         if (entity.SiteId != null)
         {
             var parent = await _siteRepository.FindAsync(entity.SiteId.Value);
@@ -67,7 +67,7 @@ public class SiteVisitDailyStatAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat>, List<SiteVisitDailyStatDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SiteVisitDailyStat.SiteVisitDailyStat>, List<SiteVisitDailyStatDto>>(entities);
         var siteIds = entities
             .Where(x => x.SiteId != null)
             .Select(x => x.SiteId.Value)
@@ -100,11 +100,11 @@ public class SiteVisitDailyStatAppService :
     [Authorize(SiteVisitDailyStatPermissions.Create)]
     public virtual async Task<SiteVisitDailyStatDto> CreateAsync(CreateUpdateSiteVisitDailyStatDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSiteVisitDailyStatDto, Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSiteVisitDailyStatDto, Dominus.SiteVisitDailyStat.SiteVisitDailyStat>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
+        return ObjectMapper.Map<Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class SiteVisitDailyStatAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SiteVisitDailyStat.SiteVisitDailyStat), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
+        return ObjectMapper.Map<Dominus.SiteVisitDailyStat.SiteVisitDailyStat, SiteVisitDailyStatDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SiteVisitDailyStatAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat> ApplyFilters(IQueryable<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat> queryable, SiteVisitDailyStatGetListInput input)
+    protected virtual IQueryable<Dominus.SiteVisitDailyStat.SiteVisitDailyStat> ApplyFilters(IQueryable<Dominus.SiteVisitDailyStat.SiteVisitDailyStat> queryable, SiteVisitDailyStatGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

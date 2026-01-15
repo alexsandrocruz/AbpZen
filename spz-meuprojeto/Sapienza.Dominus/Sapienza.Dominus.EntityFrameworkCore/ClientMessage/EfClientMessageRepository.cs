@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ClientMessage;
 
 public class EfClientMessageRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ClientMessage.ClientMessage, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ClientMessage.ClientMessage, Guid>, 
       IClientMessageRepository
 {
-    public EfClientMessageRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfClientMessageRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

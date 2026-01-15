@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.WorkspaceAccessEvent;
 
 public class EfWorkspaceAccessEventRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid>, 
       IWorkspaceAccessEventRepository
 {
-    public EfWorkspaceAccessEventRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfWorkspaceAccessEventRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

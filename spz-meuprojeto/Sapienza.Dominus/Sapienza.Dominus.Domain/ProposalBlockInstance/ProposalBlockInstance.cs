@@ -16,7 +16,7 @@ public class ProposalBlockInstance : Entity<Guid>
     public Guid? ProposalId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Proposal.Proposal? Proposal { get; set; }
+    public virtual Dominus.Proposal.Proposal? Proposal { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

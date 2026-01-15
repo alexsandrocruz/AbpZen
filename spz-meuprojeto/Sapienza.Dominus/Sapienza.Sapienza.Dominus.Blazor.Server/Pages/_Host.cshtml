@@ -1,8 +1,8 @@
 ﻿@page "/"
-@namespace Sapienza.Sapienza.Dominus.Blazor.Pages
+@namespace Sapienza.Dominus.Blazor.Pages
 @using System.Globalization
-@using Volo.Abp.AspNetCore.Components.Server.LeptonXTheme.Bundling
-@using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme.Components
+@using Volo.Abp.AspNetCore.Components.Web.BasicTheme
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling
 @using Volo.Abp.Localization
 @{
 	Layout = null;
@@ -14,15 +14,27 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Sapienza.Sapienza.Dominus</title>
+	<title>Sapienza.Dominus</title>
 	<base href="~/" />
 
-	<abp-style-bundle name="@BlazorLeptonXThemeBundles.Styles.Global" />
-	<leptonx-theme-appearance />
+	<abp-style-bundle name="@BasicThemeBundles.Styles.Global" />
 </head>
 <body class="abp-application-layout @rtl">
 	<component type="typeof(App)" render-mode="Server" />
+    
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
 
-	<abp-script-bundle name="@BlazorLeptonXThemeBundles.Scripts.Global" />
+	<abp-script-bundle name="@BasicThemeBundles.Scripts.Global" />
+
+    <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

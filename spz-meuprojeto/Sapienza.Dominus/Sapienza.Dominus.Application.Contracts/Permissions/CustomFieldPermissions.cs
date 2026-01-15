@@ -2,7 +2,7 @@ namespace Sapienza.Dominus.Permissions;
 
 public static class CustomFieldPermissions
 {
-    public const string GroupName = "Sapienza.Dominus";
+    public const string GroupName = "Dominus";
     
     public const string Default = GroupName + ".CustomField";
     public const string Create = Default + ".Create";

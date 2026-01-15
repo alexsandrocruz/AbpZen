@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sapienza.Sapienza.Dominus.Models.Test
+namespace Sapienza.Dominus.Models.Test
 {
     public class TestModel
     {

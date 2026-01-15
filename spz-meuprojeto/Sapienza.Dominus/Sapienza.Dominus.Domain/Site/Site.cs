@@ -19,10 +19,10 @@ public class Site : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.SitePage.SitePage> SitePages { get; set; } = new List<Sapienza.Dominus.SitePage.SitePage>();
-    public virtual ICollection<Sapienza.Dominus.BlogPost.BlogPost> BlogPosts { get; set; } = new List<Sapienza.Dominus.BlogPost.BlogPost>();
-    public virtual ICollection<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent> SiteVisitEvents { get; set; } = new List<Sapienza.Dominus.SiteVisitEvent.SiteVisitEvent>();
-    public virtual ICollection<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat> SiteVisitDailyStats { get; set; } = new List<Sapienza.Dominus.SiteVisitDailyStat.SiteVisitDailyStat>();
+    public virtual ICollection<Dominus.SitePage.SitePage> SitePages { get; set; } = new List<Dominus.SitePage.SitePage>();
+    public virtual ICollection<Dominus.BlogPost.BlogPost> BlogPosts { get; set; } = new List<Dominus.BlogPost.BlogPost>();
+    public virtual ICollection<Dominus.SiteVisitEvent.SiteVisitEvent> SiteVisitEvents { get; set; } = new List<Dominus.SiteVisitEvent.SiteVisitEvent>();
+    public virtual ICollection<Dominus.SiteVisitDailyStat.SiteVisitDailyStat> SiteVisitDailyStats { get; set; } = new List<Dominus.SiteVisitDailyStat.SiteVisitDailyStat>();
 
     protected Site()
     {

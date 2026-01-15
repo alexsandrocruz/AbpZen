@@ -15,7 +15,7 @@ public class ProjectFollower : Entity<Guid>
     public Guid? ProjectId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Project.Project? Project { get; set; }
+    public virtual Dominus.Project.Project? Project { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

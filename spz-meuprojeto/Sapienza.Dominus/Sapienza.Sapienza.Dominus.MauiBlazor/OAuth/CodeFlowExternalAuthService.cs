@@ -1,16 +1,16 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using IdentityModel.OidcClient;
-using Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+using Sapienza.Dominus.MauiBlazor.Settings;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth
+namespace Sapienza.Dominus.MauiBlazor.OAuth
 {
     public class CodeFlowExternalAuthService : ExternalAuthServiceBase
     {
         private readonly OidcClient _oidcClient;
 
         public CodeFlowExternalAuthService(
-            ISapienza.DominusApplicationSettingService leptonXDemoAppApplicationSettingService,
+            IDominusApplicationSettingService leptonXDemoAppApplicationSettingService,
             OidcClient oidcClient) : base(leptonXDemoAppApplicationSettingService)
         {
             _oidcClient = oidcClient;
@@ -25,7 +25,7 @@ namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth
                 return LoginResult.Failed(loginResult.Error, loginResult.ErrorDescription);
             }
 
-            await Sapienza.DominusApplicationSettingService.SetAccessTokenAsync(loginResult.AccessToken);
+            await DominusApplicationSettingService.SetAccessTokenAsync(loginResult.AccessToken);
             CurrentUser = new ClaimsPrincipal(new ClaimsIdentity(new JwtSecurityTokenHandler().ReadJwtToken(loginResult.AccessToken).Claims, AuthenticationType));
             TriggerUserChanged();
 
@@ -35,7 +35,7 @@ namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth
         public override async Task SignOutAsync()
         {
             var logoutResult = await _oidcClient.LogoutAsync();
-            await Sapienza.DominusApplicationSettingService.SetAccessTokenAsync(null);
+            await DominusApplicationSettingService.SetAccessTokenAsync(null);
 
             CurrentUser = new ClaimsPrincipal(new ClaimsIdentity());
             TriggerUserChanged();

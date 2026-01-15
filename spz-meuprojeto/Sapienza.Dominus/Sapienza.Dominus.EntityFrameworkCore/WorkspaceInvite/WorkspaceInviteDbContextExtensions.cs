@@ -9,7 +9,7 @@ public static class WorkspaceInviteDbContextModelCreatingExtensions
     {
         builder.Entity<WorkspaceInvite>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "WorkspaceInvites", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "WorkspaceInvites", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Email).IsRequired();
 

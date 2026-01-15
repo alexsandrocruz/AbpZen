@@ -9,7 +9,7 @@ public static class LeadMessageTemplateDbContextModelCreatingExtensions
     {
         builder.Entity<LeadMessageTemplate>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadMessageTemplates", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadMessageTemplates", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

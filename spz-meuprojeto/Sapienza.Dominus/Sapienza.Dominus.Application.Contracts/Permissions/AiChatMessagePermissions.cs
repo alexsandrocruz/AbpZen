@@ -2,7 +2,7 @@ namespace Sapienza.Dominus.Permissions;
 
 public static class AiChatMessagePermissions
 {
-    public const string GroupName = "Sapienza.Dominus";
+    public const string GroupName = "Dominus";
     
     public const string Default = GroupName + ".AiChatMessage";
     public const string Create = Default + ".Create";

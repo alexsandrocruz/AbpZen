@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadTag;
 
 public class EfLeadTagRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadTag.LeadTag, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadTag.LeadTag, Guid>, 
       ILeadTagRepository
 {
-    public EfLeadTagRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadTagRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

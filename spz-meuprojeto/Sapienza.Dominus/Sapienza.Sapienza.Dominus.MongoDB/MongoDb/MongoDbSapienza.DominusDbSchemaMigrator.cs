@@ -4,20 +4,20 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Sapienza.Sapienza.Dominus.Data;
+using Sapienza.Dominus.Data;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.MongoDB;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.Reflection;
 
- namespace Sapienza.Sapienza.Dominus.MongoDB
+ namespace Sapienza.Dominus.MongoDB
 {
-    public class MongoDbSapienza.DominusDbSchemaMigrator : ISapienza.DominusDbSchemaMigrator , ITransientDependency
+    public class MongoDbDominusDbSchemaMigrator : IDominusDbSchemaMigrator , ITransientDependency
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public MongoDbSapienza.DominusDbSchemaMigrator(IServiceProvider serviceProvider)
+        public MongoDbDominusDbSchemaMigrator(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

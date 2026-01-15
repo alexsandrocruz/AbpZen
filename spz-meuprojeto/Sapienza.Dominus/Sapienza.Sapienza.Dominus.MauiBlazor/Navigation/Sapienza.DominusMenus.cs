@@ -1,6 +1,6 @@
-﻿public class Sapienza.DominusMenus
+﻿public class DominusMenus
 {
-    private const string Prefix = "Sapienza.Sapienza.Dominus";
+    private const string Prefix = "Dominus";
     public const string Home = Prefix + ".Home";
 
     public const string HostDashboard = Prefix + ".HostDashboard";

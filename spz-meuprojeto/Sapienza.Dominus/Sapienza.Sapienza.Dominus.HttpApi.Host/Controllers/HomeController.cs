@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Sapienza.Sapienza.Dominus.Controllers
+namespace Sapienza.Dominus.Controllers
 {
     public class HomeController : AbpController
     {

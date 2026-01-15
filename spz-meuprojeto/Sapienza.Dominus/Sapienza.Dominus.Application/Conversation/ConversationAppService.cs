@@ -19,12 +19,12 @@ public class ConversationAppService :
     DominusAppService,
     IConversationAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Conversation.Conversation, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _clientRepository;
+    private readonly IRepository<Dominus.Conversation.Conversation, Guid> _repository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _clientRepository;
 
     public ConversationAppService(
-        IRepository<Sapienza.Dominus.Conversation.Conversation, Guid> repository,
-        IRepository<Sapienza.Dominus.Client.Client, Guid> clientRepository
+        IRepository<Dominus.Conversation.Conversation, Guid> repository,
+        IRepository<Dominus.Client.Client, Guid> clientRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ConversationAppService :
     public virtual async Task<ConversationDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Conversation.Conversation, ConversationDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Conversation.Conversation, ConversationDto>(entity);
         if (entity.ClientId != null)
         {
             var parent = await _clientRepository.FindAsync(entity.ClientId.Value);
@@ -67,7 +67,7 @@ public class ConversationAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Conversation.Conversation>, List<ConversationDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Conversation.Conversation>, List<ConversationDto>>(entities);
         var clientIds = entities
             .Where(x => x.ClientId != null)
             .Select(x => x.ClientId.Value)
@@ -100,11 +100,11 @@ public class ConversationAppService :
     [Authorize(ConversationPermissions.Create)]
     public virtual async Task<ConversationDto> CreateAsync(CreateUpdateConversationDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateConversationDto, Sapienza.Dominus.Conversation.Conversation>(input);
+        var entity = ObjectMapper.Map<CreateUpdateConversationDto, Dominus.Conversation.Conversation>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Conversation.Conversation, ConversationDto>(entity);
+        return ObjectMapper.Map<Dominus.Conversation.Conversation, ConversationDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ConversationAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Conversation.Conversation), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Conversation.Conversation), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Conversation.Conversation, ConversationDto>(entity);
+        return ObjectMapper.Map<Dominus.Conversation.Conversation, ConversationDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ConversationAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Conversation.Conversation> ApplyFilters(IQueryable<Sapienza.Dominus.Conversation.Conversation> queryable, ConversationGetListInput input)
+    protected virtual IQueryable<Dominus.Conversation.Conversation> ApplyFilters(IQueryable<Dominus.Conversation.Conversation> queryable, ConversationGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

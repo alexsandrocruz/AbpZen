@@ -9,7 +9,7 @@ public static class SiteDbContextModelCreatingExtensions
     {
         builder.Entity<Site>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Sites", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Sites", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
             b.Property(x => x.Slug).IsRequired();

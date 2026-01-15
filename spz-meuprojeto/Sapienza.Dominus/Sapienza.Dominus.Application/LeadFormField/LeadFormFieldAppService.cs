@@ -19,12 +19,12 @@ public class LeadFormFieldAppService :
     DominusAppService,
     ILeadFormFieldAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadFormField.LeadFormField, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadForm.LeadForm, Guid> _leadFormRepository;
+    private readonly IRepository<Dominus.LeadFormField.LeadFormField, Guid> _repository;
+    private readonly IRepository<Dominus.LeadForm.LeadForm, Guid> _leadFormRepository;
 
     public LeadFormFieldAppService(
-        IRepository<Sapienza.Dominus.LeadFormField.LeadFormField, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadForm.LeadForm, Guid> leadFormRepository
+        IRepository<Dominus.LeadFormField.LeadFormField, Guid> repository,
+        IRepository<Dominus.LeadForm.LeadForm, Guid> leadFormRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadFormFieldAppService :
     public virtual async Task<LeadFormFieldDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
         if (entity.LeadFormId != null)
         {
             var parent = await _leadFormRepository.FindAsync(entity.LeadFormId.Value);
@@ -67,7 +67,7 @@ public class LeadFormFieldAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadFormField.LeadFormField>, List<LeadFormFieldDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadFormField.LeadFormField>, List<LeadFormFieldDto>>(entities);
         var leadFormIds = entities
             .Where(x => x.LeadFormId != null)
             .Select(x => x.LeadFormId.Value)
@@ -100,11 +100,11 @@ public class LeadFormFieldAppService :
     [Authorize(LeadFormFieldPermissions.Create)]
     public virtual async Task<LeadFormFieldDto> CreateAsync(CreateUpdateLeadFormFieldDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadFormFieldDto, Sapienza.Dominus.LeadFormField.LeadFormField>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadFormFieldDto, Dominus.LeadFormField.LeadFormField>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadFormFieldAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadFormField.LeadFormField), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadFormField.LeadFormField), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadFormField.LeadFormField, LeadFormFieldDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadFormFieldAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadFormField.LeadFormField> ApplyFilters(IQueryable<Sapienza.Dominus.LeadFormField.LeadFormField> queryable, LeadFormFieldGetListInput input)
+    protected virtual IQueryable<Dominus.LeadFormField.LeadFormField> ApplyFilters(IQueryable<Dominus.LeadFormField.LeadFormField> queryable, LeadFormFieldGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

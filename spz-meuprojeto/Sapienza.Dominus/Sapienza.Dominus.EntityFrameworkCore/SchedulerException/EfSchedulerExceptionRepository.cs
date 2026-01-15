@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.SchedulerException;
 
 public class EfSchedulerExceptionRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.SchedulerException.SchedulerException, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.SchedulerException.SchedulerException, Guid>, 
       ISchedulerExceptionRepository
 {
-    public EfSchedulerExceptionRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfSchedulerExceptionRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

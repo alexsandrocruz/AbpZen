@@ -9,7 +9,7 @@ public static class SmsLogDbContextModelCreatingExtensions
     {
         builder.Entity<SmsLog>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "SmsLogs", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "SmsLogs", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.ToPhone).IsRequired();
             b.Property(x => x.Status).IsRequired();

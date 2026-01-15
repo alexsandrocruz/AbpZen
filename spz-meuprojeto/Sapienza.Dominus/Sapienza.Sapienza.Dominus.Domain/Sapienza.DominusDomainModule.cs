@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Sapienza.Sapienza.Dominus.MultiTenancy;
+using Sapienza.Dominus.MultiTenancy;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Emailing;
@@ -26,10 +26,10 @@ using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.PermissionManagement.OpenIddict;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
     [DependsOn(
-        typeof(Sapienza.DominusDomainSharedModule),
+        typeof(DominusDomainSharedModule),
         typeof(AbpAuditLoggingDomainModule),
         typeof(AbpBackgroundJobsDomainModule),
         typeof(AbpFeatureManagementDomainModule),
@@ -51,7 +51,7 @@ namespace Sapienza.Sapienza.Dominus
     [DependsOn(typeof(FormsDomainModule))]
     [DependsOn(typeof(CmsKitProDomainModule))]
     [DependsOn(typeof(AbpGdprDomainModule))]
-    public class Sapienza.DominusDomainModule : AbpModule
+    public class DominusDomainModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {

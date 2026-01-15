@@ -18,12 +18,12 @@ public class LeadWorkflow : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage> LeadWorkflowStages { get; set; } = new List<Sapienza.Dominus.LeadWorkflowStage.LeadWorkflowStage>();
-    public virtual ICollection<Sapienza.Dominus.Lead.Lead> Leads { get; set; } = new List<Sapienza.Dominus.Lead.Lead>();
-    public virtual ICollection<Sapienza.Dominus.LeadForm.LeadForm> LeadForms { get; set; } = new List<Sapienza.Dominus.LeadForm.LeadForm>();
-    public virtual ICollection<Sapienza.Dominus.LeadLandingPage.LeadLandingPage> LeadLandingPages { get; set; } = new List<Sapienza.Dominus.LeadLandingPage.LeadLandingPage>();
-    public virtual ICollection<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate> LeadMessageTemplates { get; set; } = new List<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate>();
-    public virtual ICollection<Sapienza.Dominus.LeadAutomation.LeadAutomation> LeadAutomations { get; set; } = new List<Sapienza.Dominus.LeadAutomation.LeadAutomation>();
+    public virtual ICollection<Dominus.LeadWorkflowStage.LeadWorkflowStage> LeadWorkflowStages { get; set; } = new List<Dominus.LeadWorkflowStage.LeadWorkflowStage>();
+    public virtual ICollection<Dominus.Lead.Lead> Leads { get; set; } = new List<Dominus.Lead.Lead>();
+    public virtual ICollection<Dominus.LeadForm.LeadForm> LeadForms { get; set; } = new List<Dominus.LeadForm.LeadForm>();
+    public virtual ICollection<Dominus.LeadLandingPage.LeadLandingPage> LeadLandingPages { get; set; } = new List<Dominus.LeadLandingPage.LeadLandingPage>();
+    public virtual ICollection<Dominus.LeadMessageTemplate.LeadMessageTemplate> LeadMessageTemplates { get; set; } = new List<Dominus.LeadMessageTemplate.LeadMessageTemplate>();
+    public virtual ICollection<Dominus.LeadAutomation.LeadAutomation> LeadAutomations { get; set; } = new List<Dominus.LeadAutomation.LeadAutomation>();
 
     protected LeadWorkflow()
     {

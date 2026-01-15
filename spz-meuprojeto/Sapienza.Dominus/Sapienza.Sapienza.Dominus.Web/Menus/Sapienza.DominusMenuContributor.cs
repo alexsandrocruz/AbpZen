@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Localization.Resources.AbpUi;
 using Microsoft.Extensions.Configuration;
-using Sapienza.Sapienza.Dominus.Localization;
-using Sapienza.Sapienza.Dominus.Permissions;
+using Sapienza.Dominus.Localization;
+using Sapienza.Dominus.Permissions;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.AuditLogging.Web.Navigation;
 using Volo.Abp.Identity.Web.Navigation;
@@ -15,13 +15,13 @@ using Volo.Abp.UI.Navigation;
 using Volo.Saas.Host.Navigation;
 using Volo.Abp.OpenIddict.Pro.Web.Menus;
 
-namespace Sapienza.Sapienza.Dominus.Web.Menus
+namespace Sapienza.Dominus.Web.Menus
 {
-    public class Sapienza.DominusMenuContributor : IMenuContributor
+    public class DominusMenuContributor : IMenuContributor
     {
         private readonly IConfiguration _configuration;
 
-        public Sapienza.DominusMenuContributor(IConfiguration configuration)
+        public DominusMenuContributor(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -40,11 +40,11 @@ namespace Sapienza.Sapienza.Dominus.Web.Menus
 
         private static Task ConfigureMainMenuAsync(MenuConfigurationContext context)
         {
-            var l = context.GetLocalizer<Sapienza.DominusResource>();
+            var l = context.GetLocalizer<DominusResource>();
             //Home
             context.Menu.AddItem(
                 new ApplicationMenuItem(
-                    Sapienza.DominusMenus.Home,
+                    DominusMenus.Home,
                     l["Menu:Home"],
                     "~/",
                     icon: "fa fa-home",
@@ -55,23 +55,23 @@ namespace Sapienza.Sapienza.Dominus.Web.Menus
             //Host Dashboard
             context.Menu.AddItem(
                 new ApplicationMenuItem(
-                    Sapienza.DominusMenus.HostDashboard,
+                    DominusMenus.HostDashboard,
                     l["Menu:Dashboard"],
                     "~/HostDashboard",
                     icon: "fa fa-line-chart",
                     order: 2
-                ).RequirePermissions(Sapienza.DominusPermissions.Dashboard.Host)
+                ).RequirePermissions(DominusPermissions.Dashboard.Host)
             );
 
             //Tenant Dashboard
             context.Menu.AddItem(
                 new ApplicationMenuItem(
-                    Sapienza.DominusMenus.TenantDashboard,
+                    DominusMenus.TenantDashboard,
                     l["Menu:Dashboard"],
                     "~/Dashboard",
                     icon: "fa fa-line-chart",
                     order: 2
-                ).RequirePermissions(Sapienza.DominusPermissions.Dashboard.Tenant)
+                ).RequirePermissions(DominusPermissions.Dashboard.Tenant)
             );
 
             //Saas

@@ -19,12 +19,12 @@ public class ProjectFollowerAppService :
     DominusAppService,
     IProjectFollowerAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProjectFollower.ProjectFollower, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Project.Project, Guid> _projectRepository;
+    private readonly IRepository<Dominus.ProjectFollower.ProjectFollower, Guid> _repository;
+    private readonly IRepository<Dominus.Project.Project, Guid> _projectRepository;
 
     public ProjectFollowerAppService(
-        IRepository<Sapienza.Dominus.ProjectFollower.ProjectFollower, Guid> repository,
-        IRepository<Sapienza.Dominus.Project.Project, Guid> projectRepository
+        IRepository<Dominus.ProjectFollower.ProjectFollower, Guid> repository,
+        IRepository<Dominus.Project.Project, Guid> projectRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ProjectFollowerAppService :
     public virtual async Task<ProjectFollowerDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
         if (entity.ProjectId != null)
         {
             var parent = await _projectRepository.FindAsync(entity.ProjectId.Value);
@@ -67,7 +67,7 @@ public class ProjectFollowerAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProjectFollower.ProjectFollower>, List<ProjectFollowerDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProjectFollower.ProjectFollower>, List<ProjectFollowerDto>>(entities);
         var projectIds = entities
             .Where(x => x.ProjectId != null)
             .Select(x => x.ProjectId.Value)
@@ -100,11 +100,11 @@ public class ProjectFollowerAppService :
     [Authorize(ProjectFollowerPermissions.Create)]
     public virtual async Task<ProjectFollowerDto> CreateAsync(CreateUpdateProjectFollowerDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProjectFollowerDto, Sapienza.Dominus.ProjectFollower.ProjectFollower>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProjectFollowerDto, Dominus.ProjectFollower.ProjectFollower>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ProjectFollowerAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProjectFollower.ProjectFollower), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProjectFollower.ProjectFollower), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
+        return ObjectMapper.Map<Dominus.ProjectFollower.ProjectFollower, ProjectFollowerDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ProjectFollowerAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProjectFollower.ProjectFollower> ApplyFilters(IQueryable<Sapienza.Dominus.ProjectFollower.ProjectFollower> queryable, ProjectFollowerGetListInput input)
+    protected virtual IQueryable<Dominus.ProjectFollower.ProjectFollower> ApplyFilters(IQueryable<Dominus.ProjectFollower.ProjectFollower> queryable, ProjectFollowerGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

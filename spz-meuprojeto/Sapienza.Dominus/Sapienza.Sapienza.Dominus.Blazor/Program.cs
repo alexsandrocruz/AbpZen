@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace Sapienza.Sapienza.Dominus.Blazor;
+namespace Sapienza.Dominus.Blazor;
 
 public class Program
 {
@@ -9,7 +9,7 @@ public class Program
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-        var application = await builder.AddApplicationAsync<Sapienza.DominusBlazorModule>(options =>
+        var application = await builder.AddApplicationAsync<DominusBlazorModule>(options =>
         {
             options.UseAutofac();
         });

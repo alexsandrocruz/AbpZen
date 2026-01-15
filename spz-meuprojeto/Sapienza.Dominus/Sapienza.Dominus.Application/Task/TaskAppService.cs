@@ -19,12 +19,12 @@ public class TaskAppService :
     DominusAppService,
     ITaskAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Task.Task, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Project.Project, Guid> _projectRepository;
+    private readonly IRepository<Dominus.Task.Task, Guid> _repository;
+    private readonly IRepository<Dominus.Project.Project, Guid> _projectRepository;
 
     public TaskAppService(
-        IRepository<Sapienza.Dominus.Task.Task, Guid> repository,
-        IRepository<Sapienza.Dominus.Project.Project, Guid> projectRepository
+        IRepository<Dominus.Task.Task, Guid> repository,
+        IRepository<Dominus.Project.Project, Guid> projectRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class TaskAppService :
     public virtual async Task<TaskDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Task.Task, TaskDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Task.Task, TaskDto>(entity);
         if (entity.ProjectId != null)
         {
             var parent = await _projectRepository.FindAsync(entity.ProjectId.Value);
@@ -67,7 +67,7 @@ public class TaskAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Task.Task>, List<TaskDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Task.Task>, List<TaskDto>>(entities);
         var projectIds = entities
             .Where(x => x.ProjectId != null)
             .Select(x => x.ProjectId.Value)
@@ -100,11 +100,11 @@ public class TaskAppService :
     [Authorize(TaskPermissions.Create)]
     public virtual async Task<TaskDto> CreateAsync(CreateUpdateTaskDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateTaskDto, Sapienza.Dominus.Task.Task>(input);
+        var entity = ObjectMapper.Map<CreateUpdateTaskDto, Dominus.Task.Task>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Task.Task, TaskDto>(entity);
+        return ObjectMapper.Map<Dominus.Task.Task, TaskDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class TaskAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Task.Task), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Task.Task), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Task.Task, TaskDto>(entity);
+        return ObjectMapper.Map<Dominus.Task.Task, TaskDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class TaskAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Task.Task> ApplyFilters(IQueryable<Sapienza.Dominus.Task.Task> queryable, TaskGetListInput input)
+    protected virtual IQueryable<Dominus.Task.Task> ApplyFilters(IQueryable<Dominus.Task.Task> queryable, TaskGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

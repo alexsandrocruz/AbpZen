@@ -5,13 +5,13 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 
-namespace Sapienza.Sapienza.Dominus.HealthChecks
+namespace Sapienza.Dominus.HealthChecks
 {
-    public class Sapienza.DominusDatabaseCheck : IHealthCheck, ITransientDependency
+    public class DominusDatabaseCheck : IHealthCheck, ITransientDependency
     {
         protected readonly IIdentityRoleRepository IdentityRoleRepository;
 
-        public Sapienza.DominusDatabaseCheck(IIdentityRoleRepository identityRoleRepository)
+        public DominusDatabaseCheck(IIdentityRoleRepository identityRoleRepository)
         {
             IdentityRoleRepository = identityRoleRepository;
         }

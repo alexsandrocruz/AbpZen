@@ -19,12 +19,12 @@ public class BlogPostAppService :
     DominusAppService,
     IBlogPostAppService
 {
-    private readonly IRepository<Sapienza.Dominus.BlogPost.BlogPost, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Site.Site, Guid> _siteRepository;
+    private readonly IRepository<Dominus.BlogPost.BlogPost, Guid> _repository;
+    private readonly IRepository<Dominus.Site.Site, Guid> _siteRepository;
 
     public BlogPostAppService(
-        IRepository<Sapienza.Dominus.BlogPost.BlogPost, Guid> repository,
-        IRepository<Sapienza.Dominus.Site.Site, Guid> siteRepository
+        IRepository<Dominus.BlogPost.BlogPost, Guid> repository,
+        IRepository<Dominus.Site.Site, Guid> siteRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class BlogPostAppService :
     public virtual async Task<BlogPostDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
         if (entity.SiteId != null)
         {
             var parent = await _siteRepository.FindAsync(entity.SiteId.Value);
@@ -67,7 +67,7 @@ public class BlogPostAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.BlogPost.BlogPost>, List<BlogPostDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.BlogPost.BlogPost>, List<BlogPostDto>>(entities);
         var siteIds = entities
             .Where(x => x.SiteId != null)
             .Select(x => x.SiteId.Value)
@@ -100,11 +100,11 @@ public class BlogPostAppService :
     [Authorize(BlogPostPermissions.Create)]
     public virtual async Task<BlogPostDto> CreateAsync(CreateUpdateBlogPostDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateBlogPostDto, Sapienza.Dominus.BlogPost.BlogPost>(input);
+        var entity = ObjectMapper.Map<CreateUpdateBlogPostDto, Dominus.BlogPost.BlogPost>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class BlogPostAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.BlogPost.BlogPost), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.BlogPost.BlogPost), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogPost.BlogPost, BlogPostDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class BlogPostAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.BlogPost.BlogPost> ApplyFilters(IQueryable<Sapienza.Dominus.BlogPost.BlogPost> queryable, BlogPostGetListInput input)
+    protected virtual IQueryable<Dominus.BlogPost.BlogPost> ApplyFilters(IQueryable<Dominus.BlogPost.BlogPost> queryable, BlogPostGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

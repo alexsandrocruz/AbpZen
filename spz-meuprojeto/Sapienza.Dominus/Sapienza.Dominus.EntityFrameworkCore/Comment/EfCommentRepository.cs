@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Comment;
 
 public class EfCommentRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Comment.Comment, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Comment.Comment, Guid>, 
       ICommentRepository
 {
-    public EfCommentRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfCommentRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

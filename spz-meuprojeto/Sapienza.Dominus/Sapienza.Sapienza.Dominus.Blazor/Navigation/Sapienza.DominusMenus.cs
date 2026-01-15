@@ -1,8 +1,8 @@
-﻿namespace Sapienza.Sapienza.Dominus.Blazor.Navigation;
+﻿namespace Sapienza.Dominus.Blazor.Navigation;
 
-public class Sapienza.DominusMenus
+public class DominusMenus
 {
-    private const string Prefix = "Sapienza.Sapienza.Dominus";
+    private const string Prefix = "Dominus";
 
     public const string Home = Prefix + ".Home";
 }

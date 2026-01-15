@@ -9,7 +9,7 @@ public static class BlogCategoryDbContextModelCreatingExtensions
     {
         builder.Entity<BlogCategory>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "BlogCategories", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "BlogCategories", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

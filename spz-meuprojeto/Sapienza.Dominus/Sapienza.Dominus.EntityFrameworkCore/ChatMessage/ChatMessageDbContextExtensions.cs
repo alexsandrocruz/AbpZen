@@ -9,7 +9,7 @@ public static class ChatMessageDbContextModelCreatingExtensions
     {
         builder.Entity<ChatMessage>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ChatMessages", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ChatMessages", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Content).IsRequired();
 

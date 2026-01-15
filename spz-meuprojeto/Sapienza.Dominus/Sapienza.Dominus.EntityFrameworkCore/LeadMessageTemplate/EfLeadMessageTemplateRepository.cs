@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.LeadMessageTemplate;
 
 public class EfLeadMessageTemplateRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid>, 
       ILeadMessageTemplateRepository
 {
-    public EfLeadMessageTemplateRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfLeadMessageTemplateRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Sapienza.Sapienza.Dominus.HealthChecks
+namespace Sapienza.Dominus.HealthChecks
 {
     public static class HealthChecksBuilderExtensions
     {
-        public static void AddSapienza.DominusHealthChecks(this IServiceCollection services)
+        public static void AddDominusHealthChecks(this IServiceCollection services)
         {
             // Add your health checks here
             var healthChecksBuilder = services.AddHealthChecks();
-            healthChecksBuilder.AddCheck<Sapienza.DominusDatabaseCheck>("Sapienza.Sapienza.Dominus DbContext Check", tags: new string[] { "database" });
+            healthChecksBuilder.AddCheck<DominusDatabaseCheck>("Dominus DbContext Check", tags: new string[] { "database" });
             
             services.ConfigureHealthCheckEndpoint("/health-status");
             
             // If you don't want to add HealthChecksUI, remove following configurations.
             var healthChecksUiBuilder = services.AddHealthChecksUI(settings =>
             {
-                settings.AddHealthCheckEndpoint("Sapienza.Sapienza.Dominus Health Status", "/health-status");
+                settings.AddHealthCheckEndpoint("Dominus Health Status", "/health-status");
             });
             
             // Set your HealthCheck UI Storage here

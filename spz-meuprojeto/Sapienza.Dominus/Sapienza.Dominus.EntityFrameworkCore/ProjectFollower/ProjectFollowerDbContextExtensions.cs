@@ -9,7 +9,7 @@ public static class ProjectFollowerDbContextModelCreatingExtensions
     {
         builder.Entity<ProjectFollower>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ProjectFollowers", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ProjectFollowers", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

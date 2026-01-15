@@ -9,7 +9,7 @@ public static class ProjectDbContextModelCreatingExtensions
     {
         builder.Entity<Project>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Projects", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Projects", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Title).IsRequired();
 

@@ -9,7 +9,7 @@ public static class SitePageVersionDbContextModelCreatingExtensions
     {
         builder.Entity<SitePageVersion>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "SitePageVersions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "SitePageVersions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

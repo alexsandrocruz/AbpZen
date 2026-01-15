@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Sapienza.Sapienza.Dominus.Web.Pages
+namespace Sapienza.Dominus.Web.Pages
 {
     public class HostDashboardModel : PageModel
     {

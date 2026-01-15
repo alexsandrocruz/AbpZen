@@ -19,10 +19,10 @@ public class BlogCategoryAppService :
     DominusAppService,
     IBlogCategoryAppService
 {
-    private readonly IRepository<Sapienza.Dominus.BlogCategory.BlogCategory, Guid> _repository;
+    private readonly IRepository<Dominus.BlogCategory.BlogCategory, Guid> _repository;
 
     public BlogCategoryAppService(
-        IRepository<Sapienza.Dominus.BlogCategory.BlogCategory, Guid> repository
+        IRepository<Dominus.BlogCategory.BlogCategory, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class BlogCategoryAppService :
     public virtual async Task<BlogCategoryDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class BlogCategoryAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.BlogCategory.BlogCategory>, List<BlogCategoryDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.BlogCategory.BlogCategory>, List<BlogCategoryDto>>(entities);
 
         return new PagedResultDto<BlogCategoryDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class BlogCategoryAppService :
     [Authorize(BlogCategoryPermissions.Create)]
     public virtual async Task<BlogCategoryDto> CreateAsync(CreateUpdateBlogCategoryDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateBlogCategoryDto, Sapienza.Dominus.BlogCategory.BlogCategory>(input);
+        var entity = ObjectMapper.Map<CreateUpdateBlogCategoryDto, Dominus.BlogCategory.BlogCategory>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class BlogCategoryAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.BlogCategory.BlogCategory), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.BlogCategory.BlogCategory), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
+        return ObjectMapper.Map<Dominus.BlogCategory.BlogCategory, BlogCategoryDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class BlogCategoryAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.BlogCategory.BlogCategory> ApplyFilters(IQueryable<Sapienza.Dominus.BlogCategory.BlogCategory> queryable, BlogCategoryGetListInput input)
+    protected virtual IQueryable<Dominus.BlogCategory.BlogCategory> ApplyFilters(IQueryable<Dominus.BlogCategory.BlogCategory> queryable, BlogCategoryGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

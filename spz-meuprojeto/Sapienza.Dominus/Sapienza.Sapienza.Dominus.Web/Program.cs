@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace Sapienza.Sapienza.Dominus.Web
+namespace Sapienza.Dominus.Web
 {
     public class Program
     {

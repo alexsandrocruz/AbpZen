@@ -19,10 +19,10 @@ public class SiteAppService :
     DominusAppService,
     ISiteAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Site.Site, Guid> _repository;
+    private readonly IRepository<Dominus.Site.Site, Guid> _repository;
 
     public SiteAppService(
-        IRepository<Sapienza.Dominus.Site.Site, Guid> repository
+        IRepository<Dominus.Site.Site, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class SiteAppService :
     public virtual async Task<SiteDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Site.Site, SiteDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Site.Site, SiteDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class SiteAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Site.Site>, List<SiteDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Site.Site>, List<SiteDto>>(entities);
 
         return new PagedResultDto<SiteDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class SiteAppService :
     [Authorize(SitePermissions.Create)]
     public virtual async Task<SiteDto> CreateAsync(CreateUpdateSiteDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSiteDto, Sapienza.Dominus.Site.Site>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSiteDto, Dominus.Site.Site>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Site.Site, SiteDto>(entity);
+        return ObjectMapper.Map<Dominus.Site.Site, SiteDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class SiteAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Site.Site), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Site.Site), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Site.Site, SiteDto>(entity);
+        return ObjectMapper.Map<Dominus.Site.Site, SiteDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class SiteAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Site.Site> ApplyFilters(IQueryable<Sapienza.Dominus.Site.Site> queryable, SiteGetListInput input)
+    protected virtual IQueryable<Dominus.Site.Site> ApplyFilters(IQueryable<Dominus.Site.Site> queryable, SiteGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

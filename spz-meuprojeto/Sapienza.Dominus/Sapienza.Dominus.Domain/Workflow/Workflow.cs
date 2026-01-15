@@ -20,7 +20,7 @@ public class Workflow : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.WorkflowExecution.WorkflowExecution> WorkflowExecutions { get; set; } = new List<Sapienza.Dominus.WorkflowExecution.WorkflowExecution>();
+    public virtual ICollection<Dominus.WorkflowExecution.WorkflowExecution> WorkflowExecutions { get; set; } = new List<Dominus.WorkflowExecution.WorkflowExecution>();
 
     protected Workflow()
     {

@@ -17,7 +17,7 @@ public class CustomFieldValue : Entity<Guid>
     public Guid? CustomFieldId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.CustomField.CustomField? CustomField { get; set; }
+    public virtual Dominus.CustomField.CustomField? CustomField { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

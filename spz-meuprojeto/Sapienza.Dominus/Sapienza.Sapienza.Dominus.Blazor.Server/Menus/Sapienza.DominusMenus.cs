@@ -1,8 +1,8 @@
-﻿namespace Sapienza.Sapienza.Dominus.Blazor.Menus
+﻿namespace Sapienza.Dominus.Blazor.Menus
 {
-    public class Sapienza.DominusMenus
+    public class DominusMenus
     {
-        private const string Prefix = "Sapienza.Sapienza.Dominus";
+        private const string Prefix = "Dominus";
         public const string Home = Prefix + ".Home";
 
         //Add your menu items here...

@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ClientContact;
 
 public class EfClientContactRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ClientContact.ClientContact, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ClientContact.ClientContact, Guid>, 
       IClientContactRepository
 {
-    public EfClientContactRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfClientContactRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

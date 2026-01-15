@@ -19,14 +19,13 @@ using Volo.Abp.Account.Pro.Admin.Blazor.Server;
 using Volo.Abp.Account.Pro.Public.Blazor.Server;
 using Volo.Abp.Account.Public.Web.Impersonation;
 using Volo.Abp.AspNetCore.Authentication.OpenIdConnect;
-using Volo.Abp.AspNetCore.Components.Server.LeptonXTheme;
-using Volo.Abp.AspNetCore.Components.Web.LeptonXTheme;
+using Volo.Abp.AspNetCore.Components.Web.BasicTheme;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
 using Volo.Abp.AspNetCore.Mvc.Client;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonX.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.AuditLogging.Blazor.Server;
 using Volo.Abp.Autofac;
@@ -53,6 +52,7 @@ using Volo.Abp.OpenIddict.Pro.Blazor.Server;
 using Microsoft.AspNetCore.SignalR;
 using Volo.Chat.Blazor.Server;
 using Volo.Chat;
+using Volo.Abp.AspNetCore.MultiTenancy;
 
 namespace Sapienza.Zen.Blazor
 {
@@ -75,8 +75,9 @@ namespace Sapienza.Zen.Blazor
         typeof(SaasHostBlazorServerModule),
         typeof(TextTemplateManagementBlazorServerModule),
         typeof(SapienzaZenHttpApiClientModule),
-        typeof(AbpAspNetCoreMvcUiLeptonXThemeModule),
-        typeof(AbpAspNetCoreComponentsServerLeptonXThemeModule),
+        typeof(AbpAspNetCoreMvcUiBasicThemeModule),
+        typeof(AbpAspNetCoreComponentsServerBasicThemeModule), 
+        typeof(AbpAspNetCoreMultiTenancyModule),
         typeof(CmsKitProAdminBlazorServerModule)
        )]
     [DependsOn(typeof(AbpGdprBlazorServerModule))]
@@ -101,21 +102,9 @@ namespace Sapienza.Zen.Blazor
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
 
-            Configure<LeptonXThemeBlazorOptions>(options =>
+            Configure<AbpAspNetCoreMvcUiBasicThemeOptions>(options =>
             {
-                options.Layout = LeptonXBlazorLayouts.SideMenu;
-            });
-
-            Configure<LeptonXThemeMvcOptions>(options =>
-            {
-                options.ApplicationLayout = LeptonXMvcLayouts.SideMenu;
-            });
-
-            Configure<LeptonXThemeOptions>(options =>
-            {
-                /* To test without style changes, comment out the following lines:*/
-                // options.Styles.Clear();
-                // options.DefaultStyle = LeptonXStyleNames.System;
+                //options.StyleBundles.Add(BasicThemeBundles.Styles.Global);
             });
 
             ConfigureUrls(configuration);
@@ -207,7 +196,7 @@ namespace Sapienza.Zen.Blazor
             Configure<AbpBundlingOptions>(options =>
             {
                 options.StyleBundles.Configure(
-                    LeptonXThemeBundles.Styles.Global,
+                    BasicThemeBundles.Styles.Global,
                     bundle =>
                     {
                         bundle.AddFiles("/global-styles.css");

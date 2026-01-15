@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ProjectFollower;
 
 public class EfProjectFollowerRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ProjectFollower.ProjectFollower, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ProjectFollower.ProjectFollower, Guid>, 
       IProjectFollowerRepository
 {
-    public EfProjectFollowerRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfProjectFollowerRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

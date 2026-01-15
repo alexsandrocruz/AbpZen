@@ -19,10 +19,10 @@ public class ClientAppService :
     DominusAppService,
     IClientAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _repository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _repository;
 
     public ClientAppService(
-        IRepository<Sapienza.Dominus.Client.Client, Guid> repository
+        IRepository<Dominus.Client.Client, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class ClientAppService :
     public virtual async Task<ClientDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Client.Client, ClientDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Client.Client, ClientDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class ClientAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Client.Client>, List<ClientDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Client.Client>, List<ClientDto>>(entities);
 
         return new PagedResultDto<ClientDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class ClientAppService :
     [Authorize(ClientPermissions.Create)]
     public virtual async Task<ClientDto> CreateAsync(CreateUpdateClientDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateClientDto, Sapienza.Dominus.Client.Client>(input);
+        var entity = ObjectMapper.Map<CreateUpdateClientDto, Dominus.Client.Client>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Client.Client, ClientDto>(entity);
+        return ObjectMapper.Map<Dominus.Client.Client, ClientDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class ClientAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Client.Client), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Client.Client), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Client.Client, ClientDto>(entity);
+        return ObjectMapper.Map<Dominus.Client.Client, ClientDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class ClientAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Client.Client> ApplyFilters(IQueryable<Sapienza.Dominus.Client.Client> queryable, ClientGetListInput input)
+    protected virtual IQueryable<Dominus.Client.Client> ApplyFilters(IQueryable<Dominus.Client.Client> queryable, ClientGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

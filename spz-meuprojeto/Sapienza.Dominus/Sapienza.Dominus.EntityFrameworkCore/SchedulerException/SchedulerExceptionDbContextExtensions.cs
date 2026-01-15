@@ -9,7 +9,7 @@ public static class SchedulerExceptionDbContextModelCreatingExtensions
     {
         builder.Entity<SchedulerException>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "SchedulerExceptions", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "SchedulerExceptions", DominusConsts.DbSchema);
             b.ConfigureByConvention();
 
             // ========== Relationship Configuration (1:N) ==========

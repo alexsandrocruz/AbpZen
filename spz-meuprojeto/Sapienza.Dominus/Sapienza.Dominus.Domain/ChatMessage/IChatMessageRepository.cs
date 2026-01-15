@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.ChatMessage;
 
-public interface IChatMessageRepository : IRepository<Sapienza.Dominus.ChatMessage.ChatMessage, Guid>
+public interface IChatMessageRepository : IRepository<Dominus.ChatMessage.ChatMessage, Guid>
 {
 }

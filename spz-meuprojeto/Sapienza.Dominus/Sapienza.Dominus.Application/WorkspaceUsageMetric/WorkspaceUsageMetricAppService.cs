@@ -19,10 +19,10 @@ public class WorkspaceUsageMetricAppService :
     DominusAppService,
     IWorkspaceUsageMetricAppService
 {
-    private readonly IRepository<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid> _repository;
+    private readonly IRepository<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid> _repository;
 
     public WorkspaceUsageMetricAppService(
-        IRepository<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid> repository
+        IRepository<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class WorkspaceUsageMetricAppService :
     public virtual async Task<WorkspaceUsageMetricDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class WorkspaceUsageMetricAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric>, List<WorkspaceUsageMetricDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric>, List<WorkspaceUsageMetricDto>>(entities);
 
         return new PagedResultDto<WorkspaceUsageMetricDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class WorkspaceUsageMetricAppService :
     [Authorize(WorkspaceUsageMetricPermissions.Create)]
     public virtual async Task<WorkspaceUsageMetricDto> CreateAsync(CreateUpdateWorkspaceUsageMetricDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWorkspaceUsageMetricDto, Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWorkspaceUsageMetricDto, Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class WorkspaceUsageMetricAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, WorkspaceUsageMetricDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class WorkspaceUsageMetricAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric> ApplyFilters(IQueryable<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric> queryable, WorkspaceUsageMetricGetListInput input)
+    protected virtual IQueryable<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric> ApplyFilters(IQueryable<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric> queryable, WorkspaceUsageMetricGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

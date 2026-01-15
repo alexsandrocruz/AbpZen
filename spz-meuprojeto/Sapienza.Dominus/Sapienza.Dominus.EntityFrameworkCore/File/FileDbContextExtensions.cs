@@ -9,7 +9,7 @@ public static class FileDbContextModelCreatingExtensions
     {
         builder.Entity<File>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Files", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Files", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.FileName).IsRequired();
 

@@ -9,7 +9,7 @@ public static class FinancialCategoryDbContextModelCreatingExtensions
     {
         builder.Entity<FinancialCategory>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "FinancialCategories", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "FinancialCategories", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
             b.Property(x => x.Type).IsRequired();

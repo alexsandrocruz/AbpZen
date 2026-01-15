@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 
-namespace Sapienza.Sapienza.Dominus.Web
+namespace Sapienza.Dominus.Web
 {
-    public class Sapienza.DominusWebAutoMapperProfile : Profile
+    public class DominusWebAutoMapperProfile : Profile
     {
-        public Sapienza.DominusWebAutoMapperProfile()
+        public DominusWebAutoMapperProfile()
         {
             //Define your AutoMapper configuration here for the Web project.
         }

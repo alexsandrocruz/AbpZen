@@ -16,7 +16,7 @@ public class SiteVisitDailyStat : Entity<Guid>
     public Guid? SiteId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Site.Site? Site { get; set; }
+    public virtual Dominus.Site.Site? Site { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

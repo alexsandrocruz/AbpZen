@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Sapienza.Sapienza.Dominus.Data
+namespace Sapienza.Dominus.Data
 {
-    public interface ISapienza.DominusDbSchemaMigrator
+    public interface IDominusDbSchemaMigrator
     {
         Task MigrateAsync();
     }

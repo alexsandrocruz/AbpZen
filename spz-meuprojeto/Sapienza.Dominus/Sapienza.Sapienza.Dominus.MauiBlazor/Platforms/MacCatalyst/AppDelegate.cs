@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
 {

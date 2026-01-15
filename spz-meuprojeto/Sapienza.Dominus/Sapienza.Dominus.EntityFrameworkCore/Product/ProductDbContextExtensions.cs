@@ -9,7 +9,7 @@ public static class ProductDbContextModelCreatingExtensions
     {
         builder.Entity<Product>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "Products", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "Products", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

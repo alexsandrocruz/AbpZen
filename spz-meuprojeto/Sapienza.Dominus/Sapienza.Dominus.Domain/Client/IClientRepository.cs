@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.Client;
 
-public interface IClientRepository : IRepository<Sapienza.Dominus.Client.Client, Guid>
+public interface IClientRepository : IRepository<Dominus.Client.Client, Guid>
 {
 }

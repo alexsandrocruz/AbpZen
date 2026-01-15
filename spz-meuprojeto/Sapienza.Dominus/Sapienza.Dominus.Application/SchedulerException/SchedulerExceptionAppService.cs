@@ -19,12 +19,12 @@ public class SchedulerExceptionAppService :
     DominusAppService,
     ISchedulerExceptionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SchedulerException.SchedulerException, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
+    private readonly IRepository<Dominus.SchedulerException.SchedulerException, Guid> _repository;
+    private readonly IRepository<Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
 
     public SchedulerExceptionAppService(
-        IRepository<Sapienza.Dominus.SchedulerException.SchedulerException, Guid> repository,
-        IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository
+        IRepository<Dominus.SchedulerException.SchedulerException, Guid> repository,
+        IRepository<Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class SchedulerExceptionAppService :
     public virtual async Task<SchedulerExceptionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
         if (entity.SchedulerTypeId != null)
         {
             var parent = await _schedulerTypeRepository.FindAsync(entity.SchedulerTypeId.Value);
@@ -67,7 +67,7 @@ public class SchedulerExceptionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SchedulerException.SchedulerException>, List<SchedulerExceptionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SchedulerException.SchedulerException>, List<SchedulerExceptionDto>>(entities);
         var schedulerTypeIds = entities
             .Where(x => x.SchedulerTypeId != null)
             .Select(x => x.SchedulerTypeId.Value)
@@ -100,11 +100,11 @@ public class SchedulerExceptionAppService :
     [Authorize(SchedulerExceptionPermissions.Create)]
     public virtual async Task<SchedulerExceptionDto> CreateAsync(CreateUpdateSchedulerExceptionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSchedulerExceptionDto, Sapienza.Dominus.SchedulerException.SchedulerException>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSchedulerExceptionDto, Dominus.SchedulerException.SchedulerException>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class SchedulerExceptionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SchedulerException.SchedulerException), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SchedulerException.SchedulerException), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerException.SchedulerException, SchedulerExceptionDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SchedulerExceptionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SchedulerException.SchedulerException> ApplyFilters(IQueryable<Sapienza.Dominus.SchedulerException.SchedulerException> queryable, SchedulerExceptionGetListInput input)
+    protected virtual IQueryable<Dominus.SchedulerException.SchedulerException> ApplyFilters(IQueryable<Dominus.SchedulerException.SchedulerException> queryable, SchedulerExceptionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

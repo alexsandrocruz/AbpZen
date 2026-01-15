@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public class ExternalAuthStateProvider : AuthenticationStateProvider
 {

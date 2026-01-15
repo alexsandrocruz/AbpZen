@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.ProjectResponsible;
 
 public class EfProjectResponsibleRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.ProjectResponsible.ProjectResponsible, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.ProjectResponsible.ProjectResponsible, Guid>, 
       IProjectResponsibleRepository
 {
-    public EfProjectResponsibleRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfProjectResponsibleRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

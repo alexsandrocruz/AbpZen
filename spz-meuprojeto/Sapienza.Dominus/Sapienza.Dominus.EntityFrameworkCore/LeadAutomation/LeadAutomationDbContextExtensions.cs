@@ -9,7 +9,7 @@ public static class LeadAutomationDbContextModelCreatingExtensions
     {
         builder.Entity<LeadAutomation>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "LeadAutomations", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "LeadAutomations", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.Name).IsRequired();
 

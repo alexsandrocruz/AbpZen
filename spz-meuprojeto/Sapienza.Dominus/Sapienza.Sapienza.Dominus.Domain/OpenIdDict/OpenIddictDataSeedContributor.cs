@@ -14,7 +14,7 @@ using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Uow;
 
-namespace Sapienza.Sapienza.Dominus.OpenIddict;
+namespace Sapienza.Dominus.OpenIddict;
 
 /* Creates initial data that is needed to property run the application
  * and make client-to-server communication possible.
@@ -50,15 +50,15 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
     private async Task CreateScopesAsync()
     {
-        if (await _scopeManager.FindByNameAsync("Sapienza.Sapienza.Dominus") == null)
+        if (await _scopeManager.FindByNameAsync("Dominus") == null)
         {
             await _scopeManager.CreateAsync(new OpenIddictScopeDescriptor
             {
-                Name = "Sapienza.Sapienza.Dominus",
-                DisplayName = "Sapienza.Sapienza.Dominus API",
+                Name = "Dominus",
+                DisplayName = "Dominus API",
                 Resources =
                 {
-                    "Sapienza.Sapienza.Dominus"
+                    "Dominus"
                 }
             });
         }
@@ -73,25 +73,25 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             OpenIddictConstants.Permissions.Scopes.Phone,
             OpenIddictConstants.Permissions.Scopes.Profile,
             OpenIddictConstants.Permissions.Scopes.Roles,
-            "Sapienza.Sapienza.Dominus"
+            "Dominus"
         };
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
 
         //Web Client
-        var webClientId = configurationSection["Sapienza.Sapienza.Dominus_Web:ClientId"];
+        var webClientId = configurationSection["Dominus_Web:ClientId"];
         if (!webClientId.IsNullOrWhiteSpace())
         {
-            var webClientRootUrl = configurationSection["Sapienza.Sapienza.Dominus_Web:RootUrl"].EnsureEndsWith('/');
+            var webClientRootUrl = configurationSection["Dominus_Web:RootUrl"].EnsureEndsWith('/');
 
-            /* Sapienza.Sapienza.Dominus_Web client is only needed if you created a tiered
+            /* Dominus_Web client is only needed if you created a tiered
              * solution. Otherwise, you can delete this client. */
             await CreateApplicationAsync(
                 name: webClientId,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Application",
-                secret: configurationSection["Sapienza.Sapienza.Dominus_Web:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Dominus_Web:ClientSecret"] ?? "1q2w3e*",
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -106,10 +106,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         //Console Test / Angular Client
-        var consoleAndAngularClientId = configurationSection["Sapienza.Sapienza.Dominus_App:ClientId"];
+        var consoleAndAngularClientId = configurationSection["Dominus_App:ClientId"];
         if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
         {
-            var consoleAndAngularClientRootUrl = configurationSection["Sapienza.Sapienza.Dominus_App:RootUrl"]?.TrimEnd('/');
+            var consoleAndAngularClientRootUrl = configurationSection["Dominus_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
                 name: consoleAndAngularClientId,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -134,10 +134,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         //MAUI Client
-        var mauiClientId = configurationSection["Sapienza.Sapienza.Dominus_MauiBlazor:ClientId"];
+        var mauiClientId = configurationSection["Dominus_MauiBlazor:ClientId"];
         if (!mauiClientId.IsNullOrWhiteSpace())
         {
-            var mauiClientRootUrl = configurationSection["Sapienza.Sapienza.Dominus_MauiBlazor:RootUrl"].Replace("_", "-");
+            var mauiClientRootUrl = configurationSection["Dominus_MauiBlazor:RootUrl"].Replace("_", "-");
             await CreateApplicationAsync(
                 name: mauiClientId,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -158,10 +158,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         //MAUI Blazor Client
-        var mauiBlazorClientId = configurationSection["Sapienza.Sapienza.Dominus_MauiBlazor:ClientId"];
+        var mauiBlazorClientId = configurationSection["Dominus_MauiBlazor:ClientId"];
         if (!mauiBlazorClientId.IsNullOrWhiteSpace())
         {
-            var mauiBlazorClientRootUrl = configurationSection["Sapienza.Sapienza.Dominus_MauiBlazor:RootUrl"].Replace("_", "-");
+            var mauiBlazorClientRootUrl = configurationSection["Dominus_MauiBlazor:RootUrl"].Replace("_", "-");
             await CreateApplicationAsync(
                 name: mauiBlazorClientId,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -182,10 +182,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Blazor Client
-        var blazorClientId = configurationSection["Sapienza.Sapienza.Dominus_Blazor:ClientId"];
+        var blazorClientId = configurationSection["Dominus_Blazor:ClientId"];
         if (!blazorClientId.IsNullOrWhiteSpace())
         {
-            var blazorRootUrl = configurationSection["Sapienza.Sapienza.Dominus_Blazor:RootUrl"].TrimEnd('/');
+            var blazorRootUrl = configurationSection["Dominus_Blazor:RootUrl"].TrimEnd('/');
 
             await CreateApplicationAsync(
                 name: blazorClientId,
@@ -206,17 +206,17 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Blazor Server Tiered Client
-        var blazorServerTieredClientId = configurationSection["Sapienza.Sapienza.Dominus_BlazorServerTiered:ClientId"];
+        var blazorServerTieredClientId = configurationSection["Dominus_BlazorServerTiered:ClientId"];
         if (!blazorServerTieredClientId.IsNullOrWhiteSpace())
         {
-            var blazorServerTieredRootUrl = configurationSection["Sapienza.Sapienza.Dominus_BlazorServerTiered:RootUrl"].EnsureEndsWith('/');
+            var blazorServerTieredRootUrl = configurationSection["Dominus_BlazorServerTiered:RootUrl"].EnsureEndsWith('/');
 
             await CreateApplicationAsync(
                 name: blazorServerTieredClientId,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Blazor Server Application",
-                secret: configurationSection["Sapienza.Sapienza.Dominus_BlazorServerTiered:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Dominus_BlazorServerTiered:ClientSecret"] ?? "1q2w3e*",
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -231,10 +231,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Swagger Client
-        var swaggerClientId = configurationSection["Sapienza.Sapienza.Dominus_Swagger:ClientId"];
+        var swaggerClientId = configurationSection["Dominus_Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
         {
-            var swaggerRootUrl = configurationSection["Sapienza.Sapienza.Dominus_Swagger:RootUrl"].TrimEnd('/');
+            var swaggerRootUrl = configurationSection["Dominus_Swagger:RootUrl"].TrimEnd('/');
 
             await CreateApplicationAsync(
                 name: swaggerClientId,
@@ -254,17 +254,17 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Web Public Client
-        var webPublicClientId = configurationSection["Sapienza.Sapienza.Dominus_Web_Public:ClientId"];
+        var webPublicClientId = configurationSection["Dominus_Web_Public:ClientId"];
         if (!webPublicClientId.IsNullOrWhiteSpace())
         {
-            var webPublicRootUrl = configurationSection["Sapienza.Sapienza.Dominus_Web_Public:RootUrl"].EnsureEndsWith('/');
+            var webPublicRootUrl = configurationSection["Dominus_Web_Public:RootUrl"].EnsureEndsWith('/');
 
             await CreateApplicationAsync(
                 name: webPublicClientId,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Public Application",
-                secret: configurationSection["Sapienza.Sapienza.Dominus_Web_Public:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Dominus_Web_Public:ClientSecret"] ?? "1q2w3e*",
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
@@ -279,17 +279,17 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
         // Web Public Tiered Client
-        var webPublicTieredClientId = configurationSection["Sapienza.Sapienza.Dominus_Web_Public_Tiered:ClientId"];
+        var webPublicTieredClientId = configurationSection["Dominus_Web_Public_Tiered:ClientId"];
         if (!webPublicTieredClientId.IsNullOrWhiteSpace())
         {
-            var webPublicTieredRootUrl = configurationSection["Sapienza.Sapienza.Dominus_Web_Public_Tiered:RootUrl"].EnsureEndsWith('/');
+            var webPublicTieredRootUrl = configurationSection["Dominus_Web_Public_Tiered:RootUrl"].EnsureEndsWith('/');
 
             await CreateApplicationAsync(
                 name: webPublicTieredClientId,
                 type: OpenIddictConstants.ClientTypes.Confidential,
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Web Public Tiered Application",
-                secret: configurationSection["Sapienza.Sapienza.Dominus_Web_Public_Tiered:ClientSecret"] ?? "1q2w3e*",
+                secret: configurationSection["Dominus_Web_Public_Tiered:ClientSecret"] ?? "1q2w3e*",
                 grantTypes: new List<string> //Hybrid flow
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,

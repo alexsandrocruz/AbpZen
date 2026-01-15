@@ -29,14 +29,14 @@ public class Client : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.ClientContact.ClientContact> ClientContacts { get; set; } = new List<Sapienza.Dominus.ClientContact.ClientContact>();
-    public virtual ICollection<Sapienza.Dominus.ClientMessage.ClientMessage> ClientMessages { get; set; } = new List<Sapienza.Dominus.ClientMessage.ClientMessage>();
-    public virtual ICollection<Sapienza.Dominus.Project.Project> Projects { get; set; } = new List<Sapienza.Dominus.Project.Project>();
-    public virtual ICollection<Sapienza.Dominus.Transaction.Transaction> Transactions { get; set; } = new List<Sapienza.Dominus.Transaction.Transaction>();
-    public virtual ICollection<Sapienza.Dominus.Proposal.Proposal> Proposals { get; set; } = new List<Sapienza.Dominus.Proposal.Proposal>();
-    public virtual ICollection<Sapienza.Dominus.Contract.Contract> Contracts { get; set; } = new List<Sapienza.Dominus.Contract.Contract>();
-    public virtual ICollection<Sapienza.Dominus.Booking.Booking> Bookings { get; set; } = new List<Sapienza.Dominus.Booking.Booking>();
-    public virtual ICollection<Sapienza.Dominus.Conversation.Conversation> Conversations { get; set; } = new List<Sapienza.Dominus.Conversation.Conversation>();
+    public virtual ICollection<Dominus.ClientContact.ClientContact> ClientContacts { get; set; } = new List<Dominus.ClientContact.ClientContact>();
+    public virtual ICollection<Dominus.ClientMessage.ClientMessage> ClientMessages { get; set; } = new List<Dominus.ClientMessage.ClientMessage>();
+    public virtual ICollection<Dominus.Project.Project> Projects { get; set; } = new List<Dominus.Project.Project>();
+    public virtual ICollection<Dominus.Transaction.Transaction> Transactions { get; set; } = new List<Dominus.Transaction.Transaction>();
+    public virtual ICollection<Dominus.Proposal.Proposal> Proposals { get; set; } = new List<Dominus.Proposal.Proposal>();
+    public virtual ICollection<Dominus.Contract.Contract> Contracts { get; set; } = new List<Dominus.Contract.Contract>();
+    public virtual ICollection<Dominus.Booking.Booking> Bookings { get; set; } = new List<Dominus.Booking.Booking>();
+    public virtual ICollection<Dominus.Conversation.Conversation> Conversations { get; set; } = new List<Dominus.Conversation.Conversation>();
 
     protected Client()
     {

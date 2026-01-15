@@ -18,9 +18,9 @@ public class SchedulerType : FullAuditedAggregateRoot<Guid>
     // ========== Navigation Properties ==========
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
-    public virtual ICollection<Sapienza.Dominus.Booking.Booking> Bookings { get; set; } = new List<Sapienza.Dominus.Booking.Booking>();
-    public virtual ICollection<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability> SchedulerAvailabilities { get; set; } = new List<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability>();
-    public virtual ICollection<Sapienza.Dominus.SchedulerException.SchedulerException> SchedulerExceptions { get; set; } = new List<Sapienza.Dominus.SchedulerException.SchedulerException>();
+    public virtual ICollection<Dominus.Booking.Booking> Bookings { get; set; } = new List<Dominus.Booking.Booking>();
+    public virtual ICollection<Dominus.SchedulerAvailability.SchedulerAvailability> SchedulerAvailabilities { get; set; } = new List<Dominus.SchedulerAvailability.SchedulerAvailability>();
+    public virtual ICollection<Dominus.SchedulerException.SchedulerException> SchedulerExceptions { get; set; } = new List<Dominus.SchedulerException.SchedulerException>();
 
     protected SchedulerType()
     {

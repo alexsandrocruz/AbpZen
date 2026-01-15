@@ -19,12 +19,12 @@ public class AiChatMessageAppService :
     DominusAppService,
     IAiChatMessageAppService
 {
-    private readonly IRepository<Sapienza.Dominus.AiChatMessage.AiChatMessage, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.AiChatSession.AiChatSession, Guid> _aiChatSessionRepository;
+    private readonly IRepository<Dominus.AiChatMessage.AiChatMessage, Guid> _repository;
+    private readonly IRepository<Dominus.AiChatSession.AiChatSession, Guid> _aiChatSessionRepository;
 
     public AiChatMessageAppService(
-        IRepository<Sapienza.Dominus.AiChatMessage.AiChatMessage, Guid> repository,
-        IRepository<Sapienza.Dominus.AiChatSession.AiChatSession, Guid> aiChatSessionRepository
+        IRepository<Dominus.AiChatMessage.AiChatMessage, Guid> repository,
+        IRepository<Dominus.AiChatSession.AiChatSession, Guid> aiChatSessionRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class AiChatMessageAppService :
     public virtual async Task<AiChatMessageDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
         if (entity.AiChatSessionId != null)
         {
             var parent = await _aiChatSessionRepository.FindAsync(entity.AiChatSessionId.Value);
@@ -67,7 +67,7 @@ public class AiChatMessageAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.AiChatMessage.AiChatMessage>, List<AiChatMessageDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.AiChatMessage.AiChatMessage>, List<AiChatMessageDto>>(entities);
         var aiChatSessionIds = entities
             .Where(x => x.AiChatSessionId != null)
             .Select(x => x.AiChatSessionId.Value)
@@ -100,11 +100,11 @@ public class AiChatMessageAppService :
     [Authorize(AiChatMessagePermissions.Create)]
     public virtual async Task<AiChatMessageDto> CreateAsync(CreateUpdateAiChatMessageDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateAiChatMessageDto, Sapienza.Dominus.AiChatMessage.AiChatMessage>(input);
+        var entity = ObjectMapper.Map<CreateUpdateAiChatMessageDto, Dominus.AiChatMessage.AiChatMessage>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class AiChatMessageAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.AiChatMessage.AiChatMessage), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.AiChatMessage.AiChatMessage), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
+        return ObjectMapper.Map<Dominus.AiChatMessage.AiChatMessage, AiChatMessageDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class AiChatMessageAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.AiChatMessage.AiChatMessage> ApplyFilters(IQueryable<Sapienza.Dominus.AiChatMessage.AiChatMessage> queryable, AiChatMessageGetListInput input)
+    protected virtual IQueryable<Dominus.AiChatMessage.AiChatMessage> ApplyFilters(IQueryable<Dominus.AiChatMessage.AiChatMessage> queryable, AiChatMessageGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

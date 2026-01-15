@@ -19,10 +19,10 @@ public class WhatsappLogAppService :
     DominusAppService,
     IWhatsappLogAppService
 {
-    private readonly IRepository<Sapienza.Dominus.WhatsappLog.WhatsappLog, Guid> _repository;
+    private readonly IRepository<Dominus.WhatsappLog.WhatsappLog, Guid> _repository;
 
     public WhatsappLogAppService(
-        IRepository<Sapienza.Dominus.WhatsappLog.WhatsappLog, Guid> repository
+        IRepository<Dominus.WhatsappLog.WhatsappLog, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class WhatsappLogAppService :
     public virtual async Task<WhatsappLogDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class WhatsappLogAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.WhatsappLog.WhatsappLog>, List<WhatsappLogDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.WhatsappLog.WhatsappLog>, List<WhatsappLogDto>>(entities);
 
         return new PagedResultDto<WhatsappLogDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class WhatsappLogAppService :
     [Authorize(WhatsappLogPermissions.Create)]
     public virtual async Task<WhatsappLogDto> CreateAsync(CreateUpdateWhatsappLogDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWhatsappLogDto, Sapienza.Dominus.WhatsappLog.WhatsappLog>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWhatsappLogDto, Dominus.WhatsappLog.WhatsappLog>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
+        return ObjectMapper.Map<Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class WhatsappLogAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.WhatsappLog.WhatsappLog), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.WhatsappLog.WhatsappLog), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
+        return ObjectMapper.Map<Dominus.WhatsappLog.WhatsappLog, WhatsappLogDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class WhatsappLogAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.WhatsappLog.WhatsappLog> ApplyFilters(IQueryable<Sapienza.Dominus.WhatsappLog.WhatsappLog> queryable, WhatsappLogGetListInput input)
+    protected virtual IQueryable<Dominus.WhatsappLog.WhatsappLog> ApplyFilters(IQueryable<Dominus.WhatsappLog.WhatsappLog> queryable, WhatsappLogGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

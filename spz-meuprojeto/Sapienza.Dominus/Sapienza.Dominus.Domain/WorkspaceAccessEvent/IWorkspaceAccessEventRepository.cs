@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.WorkspaceAccessEvent;
 
-public interface IWorkspaceAccessEventRepository : IRepository<Sapienza.Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid>
+public interface IWorkspaceAccessEventRepository : IRepository<Dominus.WorkspaceAccessEvent.WorkspaceAccessEvent, Guid>
 {
 }

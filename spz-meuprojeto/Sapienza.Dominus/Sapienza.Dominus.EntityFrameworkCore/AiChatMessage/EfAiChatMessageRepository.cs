@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.AiChatMessage;
 
 public class EfAiChatMessageRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.AiChatMessage.AiChatMessage, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.AiChatMessage.AiChatMessage, Guid>, 
       IAiChatMessageRepository
 {
-    public EfAiChatMessageRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfAiChatMessageRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

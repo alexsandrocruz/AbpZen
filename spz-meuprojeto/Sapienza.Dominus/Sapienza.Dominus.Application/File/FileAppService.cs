@@ -19,10 +19,10 @@ public class FileAppService :
     DominusAppService,
     IFileAppService
 {
-    private readonly IRepository<Sapienza.Dominus.File.File, Guid> _repository;
+    private readonly IRepository<Dominus.File.File, Guid> _repository;
 
     public FileAppService(
-        IRepository<Sapienza.Dominus.File.File, Guid> repository
+        IRepository<Dominus.File.File, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class FileAppService :
     public virtual async Task<FileDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.File.File, FileDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.File.File, FileDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class FileAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.File.File>, List<FileDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.File.File>, List<FileDto>>(entities);
 
         return new PagedResultDto<FileDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class FileAppService :
     [Authorize(FilePermissions.Create)]
     public virtual async Task<FileDto> CreateAsync(CreateUpdateFileDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateFileDto, Sapienza.Dominus.File.File>(input);
+        var entity = ObjectMapper.Map<CreateUpdateFileDto, Dominus.File.File>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.File.File, FileDto>(entity);
+        return ObjectMapper.Map<Dominus.File.File, FileDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class FileAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.File.File), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.File.File), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.File.File, FileDto>(entity);
+        return ObjectMapper.Map<Dominus.File.File, FileDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class FileAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.File.File> ApplyFilters(IQueryable<Sapienza.Dominus.File.File> queryable, FileGetListInput input)
+    protected virtual IQueryable<Dominus.File.File> ApplyFilters(IQueryable<Dominus.File.File> queryable, FileGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

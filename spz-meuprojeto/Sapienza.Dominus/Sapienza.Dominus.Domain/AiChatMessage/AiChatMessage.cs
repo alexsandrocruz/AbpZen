@@ -17,7 +17,7 @@ public class AiChatMessage : Entity<Guid>
     public Guid? AiChatSessionId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.AiChatSession.AiChatSession? AiChatSession { get; set; }
+    public virtual Dominus.AiChatSession.AiChatSession? AiChatSession { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

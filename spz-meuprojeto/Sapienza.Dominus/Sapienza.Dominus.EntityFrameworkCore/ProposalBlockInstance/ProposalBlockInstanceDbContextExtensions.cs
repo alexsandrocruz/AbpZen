@@ -9,7 +9,7 @@ public static class ProposalBlockInstanceDbContextModelCreatingExtensions
     {
         builder.Entity<ProposalBlockInstance>(b =>
         {
-            b.ToTable(Sapienza.DominusConsts.DbTablePrefix + "ProposalBlockInstances", Sapienza.DominusConsts.DbSchema);
+            b.ToTable(DominusConsts.DbTablePrefix + "ProposalBlockInstances", DominusConsts.DbSchema);
             b.ConfigureByConvention();
             b.Property(x => x.BlockType).IsRequired();
 

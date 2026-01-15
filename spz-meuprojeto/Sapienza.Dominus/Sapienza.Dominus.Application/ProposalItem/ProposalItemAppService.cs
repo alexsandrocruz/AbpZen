@@ -19,12 +19,12 @@ public class ProposalItemAppService :
     DominusAppService,
     IProposalItemAppService
 {
-    private readonly IRepository<Sapienza.Dominus.ProposalItem.ProposalItem, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Proposal.Proposal, Guid> _proposalRepository;
+    private readonly IRepository<Dominus.ProposalItem.ProposalItem, Guid> _repository;
+    private readonly IRepository<Dominus.Proposal.Proposal, Guid> _proposalRepository;
 
     public ProposalItemAppService(
-        IRepository<Sapienza.Dominus.ProposalItem.ProposalItem, Guid> repository,
-        IRepository<Sapienza.Dominus.Proposal.Proposal, Guid> proposalRepository
+        IRepository<Dominus.ProposalItem.ProposalItem, Guid> repository,
+        IRepository<Dominus.Proposal.Proposal, Guid> proposalRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ProposalItemAppService :
     public virtual async Task<ProposalItemDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
         if (entity.ProposalId != null)
         {
             var parent = await _proposalRepository.FindAsync(entity.ProposalId.Value);
@@ -67,7 +67,7 @@ public class ProposalItemAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.ProposalItem.ProposalItem>, List<ProposalItemDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.ProposalItem.ProposalItem>, List<ProposalItemDto>>(entities);
         var proposalIds = entities
             .Where(x => x.ProposalId != null)
             .Select(x => x.ProposalId.Value)
@@ -100,11 +100,11 @@ public class ProposalItemAppService :
     [Authorize(ProposalItemPermissions.Create)]
     public virtual async Task<ProposalItemDto> CreateAsync(CreateUpdateProposalItemDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateProposalItemDto, Sapienza.Dominus.ProposalItem.ProposalItem>(input);
+        var entity = ObjectMapper.Map<CreateUpdateProposalItemDto, Dominus.ProposalItem.ProposalItem>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ProposalItemAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.ProposalItem.ProposalItem), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.ProposalItem.ProposalItem), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
+        return ObjectMapper.Map<Dominus.ProposalItem.ProposalItem, ProposalItemDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ProposalItemAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.ProposalItem.ProposalItem> ApplyFilters(IQueryable<Sapienza.Dominus.ProposalItem.ProposalItem> queryable, ProposalItemGetListInput input)
+    protected virtual IQueryable<Dominus.ProposalItem.ProposalItem> ApplyFilters(IQueryable<Dominus.ProposalItem.ProposalItem> queryable, ProposalItemGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

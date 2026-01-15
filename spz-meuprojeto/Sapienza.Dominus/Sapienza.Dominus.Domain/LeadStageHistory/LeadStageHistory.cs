@@ -16,7 +16,7 @@ public class LeadStageHistory : Entity<Guid>
     public Guid? LeadId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.Lead.Lead? Lead { get; set; }
+    public virtual Dominus.Lead.Lead? Lead { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

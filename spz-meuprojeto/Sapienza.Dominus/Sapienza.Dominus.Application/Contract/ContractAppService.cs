@@ -19,12 +19,12 @@ public class ContractAppService :
     DominusAppService,
     IContractAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Contract.Contract, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Client.Client, Guid> _clientRepository;
+    private readonly IRepository<Dominus.Contract.Contract, Guid> _repository;
+    private readonly IRepository<Dominus.Client.Client, Guid> _clientRepository;
 
     public ContractAppService(
-        IRepository<Sapienza.Dominus.Contract.Contract, Guid> repository,
-        IRepository<Sapienza.Dominus.Client.Client, Guid> clientRepository
+        IRepository<Dominus.Contract.Contract, Guid> repository,
+        IRepository<Dominus.Client.Client, Guid> clientRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class ContractAppService :
     public virtual async Task<ContractDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Contract.Contract, ContractDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Contract.Contract, ContractDto>(entity);
         if (entity.ClientId != null)
         {
             var parent = await _clientRepository.FindAsync(entity.ClientId.Value);
@@ -67,7 +67,7 @@ public class ContractAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Contract.Contract>, List<ContractDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Contract.Contract>, List<ContractDto>>(entities);
         var clientIds = entities
             .Where(x => x.ClientId != null)
             .Select(x => x.ClientId.Value)
@@ -100,11 +100,11 @@ public class ContractAppService :
     [Authorize(ContractPermissions.Create)]
     public virtual async Task<ContractDto> CreateAsync(CreateUpdateContractDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateContractDto, Sapienza.Dominus.Contract.Contract>(input);
+        var entity = ObjectMapper.Map<CreateUpdateContractDto, Dominus.Contract.Contract>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Contract.Contract, ContractDto>(entity);
+        return ObjectMapper.Map<Dominus.Contract.Contract, ContractDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class ContractAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Contract.Contract), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Contract.Contract), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Contract.Contract, ContractDto>(entity);
+        return ObjectMapper.Map<Dominus.Contract.Contract, ContractDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class ContractAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Contract.Contract> ApplyFilters(IQueryable<Sapienza.Dominus.Contract.Contract> queryable, ContractGetListInput input)
+    protected virtual IQueryable<Dominus.Contract.Contract> ApplyFilters(IQueryable<Dominus.Contract.Contract> queryable, ContractGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.Contract;
 
 public class EfContractRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.Contract.Contract, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.Contract.Contract, Guid>, 
       IContractRepository
 {
-    public EfContractRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfContractRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

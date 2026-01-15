@@ -19,10 +19,10 @@ public class WorkspaceInviteAppService :
     DominusAppService,
     IWorkspaceInviteAppService
 {
-    private readonly IRepository<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, Guid> _repository;
+    private readonly IRepository<Dominus.WorkspaceInvite.WorkspaceInvite, Guid> _repository;
 
     public WorkspaceInviteAppService(
-        IRepository<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, Guid> repository
+        IRepository<Dominus.WorkspaceInvite.WorkspaceInvite, Guid> repository
     )
     {
         _repository = repository;
@@ -34,7 +34,7 @@ public class WorkspaceInviteAppService :
     public virtual async Task<WorkspaceInviteDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
 
         return dto;
     }
@@ -59,7 +59,7 @@ public class WorkspaceInviteAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite>, List<WorkspaceInviteDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.WorkspaceInvite.WorkspaceInvite>, List<WorkspaceInviteDto>>(entities);
 
         return new PagedResultDto<WorkspaceInviteDto>(
             totalCount,
@@ -73,11 +73,11 @@ public class WorkspaceInviteAppService :
     [Authorize(WorkspaceInvitePermissions.Create)]
     public virtual async Task<WorkspaceInviteDto> CreateAsync(CreateUpdateWorkspaceInviteDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateWorkspaceInviteDto, Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite>(input);
+        var entity = ObjectMapper.Map<CreateUpdateWorkspaceInviteDto, Dominus.WorkspaceInvite.WorkspaceInvite>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ public class WorkspaceInviteAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.WorkspaceInvite.WorkspaceInvite), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
+        return ObjectMapper.Map<Dominus.WorkspaceInvite.WorkspaceInvite, WorkspaceInviteDto>(entity);
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class WorkspaceInviteAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite> ApplyFilters(IQueryable<Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite> queryable, WorkspaceInviteGetListInput input)
+    protected virtual IQueryable<Dominus.WorkspaceInvite.WorkspaceInvite> ApplyFilters(IQueryable<Dominus.WorkspaceInvite.WorkspaceInvite> queryable, WorkspaceInviteGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

@@ -19,12 +19,12 @@ public class SitePageVersionAppService :
     DominusAppService,
     ISitePageVersionAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SitePageVersion.SitePageVersion, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.SitePage.SitePage, Guid> _sitePageRepository;
+    private readonly IRepository<Dominus.SitePageVersion.SitePageVersion, Guid> _repository;
+    private readonly IRepository<Dominus.SitePage.SitePage, Guid> _sitePageRepository;
 
     public SitePageVersionAppService(
-        IRepository<Sapienza.Dominus.SitePageVersion.SitePageVersion, Guid> repository,
-        IRepository<Sapienza.Dominus.SitePage.SitePage, Guid> sitePageRepository
+        IRepository<Dominus.SitePageVersion.SitePageVersion, Guid> repository,
+        IRepository<Dominus.SitePage.SitePage, Guid> sitePageRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class SitePageVersionAppService :
     public virtual async Task<SitePageVersionDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
         if (entity.SitePageId != null)
         {
             var parent = await _sitePageRepository.FindAsync(entity.SitePageId.Value);
@@ -67,7 +67,7 @@ public class SitePageVersionAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SitePageVersion.SitePageVersion>, List<SitePageVersionDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SitePageVersion.SitePageVersion>, List<SitePageVersionDto>>(entities);
         var sitePageIds = entities
             .Where(x => x.SitePageId != null)
             .Select(x => x.SitePageId.Value)
@@ -100,11 +100,11 @@ public class SitePageVersionAppService :
     [Authorize(SitePageVersionPermissions.Create)]
     public virtual async Task<SitePageVersionDto> CreateAsync(CreateUpdateSitePageVersionDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSitePageVersionDto, Sapienza.Dominus.SitePageVersion.SitePageVersion>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSitePageVersionDto, Dominus.SitePageVersion.SitePageVersion>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
+        return ObjectMapper.Map<Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class SitePageVersionAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SitePageVersion.SitePageVersion), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SitePageVersion.SitePageVersion), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
+        return ObjectMapper.Map<Dominus.SitePageVersion.SitePageVersion, SitePageVersionDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SitePageVersionAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SitePageVersion.SitePageVersion> ApplyFilters(IQueryable<Sapienza.Dominus.SitePageVersion.SitePageVersion> queryable, SitePageVersionGetListInput input)
+    protected virtual IQueryable<Dominus.SitePageVersion.SitePageVersion> ApplyFilters(IQueryable<Dominus.SitePageVersion.SitePageVersion> queryable, SitePageVersionGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

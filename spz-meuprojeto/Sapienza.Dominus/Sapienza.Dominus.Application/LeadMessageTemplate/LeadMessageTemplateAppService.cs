@@ -19,12 +19,12 @@ public class LeadMessageTemplateAppService :
     DominusAppService,
     ILeadMessageTemplateAppService
 {
-    private readonly IRepository<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
+    private readonly IRepository<Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid> _repository;
+    private readonly IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> _leadWorkflowRepository;
 
     public LeadMessageTemplateAppService(
-        IRepository<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid> repository,
-        IRepository<Sapienza.Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
+        IRepository<Dominus.LeadMessageTemplate.LeadMessageTemplate, Guid> repository,
+        IRepository<Dominus.LeadWorkflow.LeadWorkflow, Guid> leadWorkflowRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class LeadMessageTemplateAppService :
     public virtual async Task<LeadMessageTemplateDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
         if (entity.LeadWorkflowId != null)
         {
             var parent = await _leadWorkflowRepository.FindAsync(entity.LeadWorkflowId.Value);
@@ -67,7 +67,7 @@ public class LeadMessageTemplateAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate>, List<LeadMessageTemplateDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.LeadMessageTemplate.LeadMessageTemplate>, List<LeadMessageTemplateDto>>(entities);
         var leadWorkflowIds = entities
             .Where(x => x.LeadWorkflowId != null)
             .Select(x => x.LeadWorkflowId.Value)
@@ -100,11 +100,11 @@ public class LeadMessageTemplateAppService :
     [Authorize(LeadMessageTemplatePermissions.Create)]
     public virtual async Task<LeadMessageTemplateDto> CreateAsync(CreateUpdateLeadMessageTemplateDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateLeadMessageTemplateDto, Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate>(input);
+        var entity = ObjectMapper.Map<CreateUpdateLeadMessageTemplateDto, Dominus.LeadMessageTemplate.LeadMessageTemplate>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class LeadMessageTemplateAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.LeadMessageTemplate.LeadMessageTemplate), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
+        return ObjectMapper.Map<Dominus.LeadMessageTemplate.LeadMessageTemplate, LeadMessageTemplateDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class LeadMessageTemplateAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate> ApplyFilters(IQueryable<Sapienza.Dominus.LeadMessageTemplate.LeadMessageTemplate> queryable, LeadMessageTemplateGetListInput input)
+    protected virtual IQueryable<Dominus.LeadMessageTemplate.LeadMessageTemplate> ApplyFilters(IQueryable<Dominus.LeadMessageTemplate.LeadMessageTemplate> queryable, LeadMessageTemplateGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

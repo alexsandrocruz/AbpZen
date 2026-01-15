@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.WorkspaceUsageMetric;
 
-public interface IWorkspaceUsageMetricRepository : IRepository<Sapienza.Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid>
+public interface IWorkspaceUsageMetricRepository : IRepository<Dominus.WorkspaceUsageMetric.WorkspaceUsageMetric, Guid>
 {
 }

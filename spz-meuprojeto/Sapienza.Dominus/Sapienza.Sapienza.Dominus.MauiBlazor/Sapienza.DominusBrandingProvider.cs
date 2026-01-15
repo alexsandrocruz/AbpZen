@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.Ui.Branding;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor;
+namespace Sapienza.Dominus.MauiBlazor;
 
-public class Sapienza.DominusBrandingProvider : DefaultBrandingProvider
+public class DominusBrandingProvider : DefaultBrandingProvider
 {
-    public override string AppName => "Sapienza.Sapienza.Dominus";
+    public override string AppName => "Dominus";
 }

@@ -19,12 +19,12 @@ public class TaskCommentAppService :
     DominusAppService,
     ITaskCommentAppService
 {
-    private readonly IRepository<Sapienza.Dominus.TaskComment.TaskComment, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.Task.Task, Guid> _taskRepository;
+    private readonly IRepository<Dominus.TaskComment.TaskComment, Guid> _repository;
+    private readonly IRepository<Dominus.Task.Task, Guid> _taskRepository;
 
     public TaskCommentAppService(
-        IRepository<Sapienza.Dominus.TaskComment.TaskComment, Guid> repository,
-        IRepository<Sapienza.Dominus.Task.Task, Guid> taskRepository
+        IRepository<Dominus.TaskComment.TaskComment, Guid> repository,
+        IRepository<Dominus.Task.Task, Guid> taskRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class TaskCommentAppService :
     public virtual async Task<TaskCommentDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
         if (entity.TaskId != null)
         {
             var parent = await _taskRepository.FindAsync(entity.TaskId.Value);
@@ -67,7 +67,7 @@ public class TaskCommentAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.TaskComment.TaskComment>, List<TaskCommentDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.TaskComment.TaskComment>, List<TaskCommentDto>>(entities);
         var taskIds = entities
             .Where(x => x.TaskId != null)
             .Select(x => x.TaskId.Value)
@@ -100,11 +100,11 @@ public class TaskCommentAppService :
     [Authorize(TaskCommentPermissions.Create)]
     public virtual async Task<TaskCommentDto> CreateAsync(CreateUpdateTaskCommentDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateTaskCommentDto, Sapienza.Dominus.TaskComment.TaskComment>(input);
+        var entity = ObjectMapper.Map<CreateUpdateTaskCommentDto, Dominus.TaskComment.TaskComment>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
+        return ObjectMapper.Map<Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class TaskCommentAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.TaskComment.TaskComment), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.TaskComment.TaskComment), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
+        return ObjectMapper.Map<Dominus.TaskComment.TaskComment, TaskCommentDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class TaskCommentAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.TaskComment.TaskComment> ApplyFilters(IQueryable<Sapienza.Dominus.TaskComment.TaskComment> queryable, TaskCommentGetListInput input)
+    protected virtual IQueryable<Dominus.TaskComment.TaskComment> ApplyFilters(IQueryable<Dominus.TaskComment.TaskComment> queryable, TaskCommentGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

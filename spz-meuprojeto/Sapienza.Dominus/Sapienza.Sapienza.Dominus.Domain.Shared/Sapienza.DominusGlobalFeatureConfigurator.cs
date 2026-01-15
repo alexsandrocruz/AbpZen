@@ -1,9 +1,9 @@
 ﻿using Volo.Abp.GlobalFeatures;
 using Volo.Abp.Threading;
 
-namespace Sapienza.Sapienza.Dominus
+namespace Sapienza.Dominus
 {
-    public static class Sapienza.DominusGlobalFeatureConfigurator
+    public static class DominusGlobalFeatureConfigurator
     {
         private static readonly OneTimeRunner OneTimeRunner = new OneTimeRunner();
 

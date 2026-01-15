@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Sapienza.Sapienza.Dominus.Web.Components.Toolbar.Impersonation;
-using Sapienza.Sapienza.Dominus.Web.Components.Toolbar.LoginLink;
+using Sapienza.Dominus.Web.Components.Toolbar.Impersonation;
+using Sapienza.Dominus.Web.Components.Toolbar.LoginLink;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
 using Volo.Abp.Users;
 
-namespace Sapienza.Sapienza.Dominus.Web.Menus
+namespace Sapienza.Dominus.Web.Menus
 {
-    public class Sapienza.DominusToolbarContributor : IToolbarContributor
+    public class DominusToolbarContributor : IToolbarContributor
     {
         public virtual Task ConfigureToolbarAsync(IToolbarConfigurationContext context)
         {

@@ -19,12 +19,12 @@ public class BudgetAppService :
     DominusAppService,
     IBudgetAppService
 {
-    private readonly IRepository<Sapienza.Dominus.Budget.Budget, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> _financialCategoryRepository;
+    private readonly IRepository<Dominus.Budget.Budget, Guid> _repository;
+    private readonly IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> _financialCategoryRepository;
 
     public BudgetAppService(
-        IRepository<Sapienza.Dominus.Budget.Budget, Guid> repository,
-        IRepository<Sapienza.Dominus.FinancialCategory.FinancialCategory, Guid> financialCategoryRepository
+        IRepository<Dominus.Budget.Budget, Guid> repository,
+        IRepository<Dominus.FinancialCategory.FinancialCategory, Guid> financialCategoryRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class BudgetAppService :
     public virtual async Task<BudgetDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.Budget.Budget, BudgetDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.Budget.Budget, BudgetDto>(entity);
         if (entity.FinancialCategoryId != null)
         {
             var parent = await _financialCategoryRepository.FindAsync(entity.FinancialCategoryId.Value);
@@ -67,7 +67,7 @@ public class BudgetAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.Budget.Budget>, List<BudgetDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.Budget.Budget>, List<BudgetDto>>(entities);
         var financialCategoryIds = entities
             .Where(x => x.FinancialCategoryId != null)
             .Select(x => x.FinancialCategoryId.Value)
@@ -100,11 +100,11 @@ public class BudgetAppService :
     [Authorize(BudgetPermissions.Create)]
     public virtual async Task<BudgetDto> CreateAsync(CreateUpdateBudgetDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateBudgetDto, Sapienza.Dominus.Budget.Budget>(input);
+        var entity = ObjectMapper.Map<CreateUpdateBudgetDto, Dominus.Budget.Budget>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Budget.Budget, BudgetDto>(entity);
+        return ObjectMapper.Map<Dominus.Budget.Budget, BudgetDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class BudgetAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.Budget.Budget), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.Budget.Budget), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.Budget.Budget, BudgetDto>(entity);
+        return ObjectMapper.Map<Dominus.Budget.Budget, BudgetDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class BudgetAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.Budget.Budget> ApplyFilters(IQueryable<Sapienza.Dominus.Budget.Budget> queryable, BudgetGetListInput input)
+    protected virtual IQueryable<Dominus.Budget.Budget> ApplyFilters(IQueryable<Dominus.Budget.Budget> queryable, BudgetGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

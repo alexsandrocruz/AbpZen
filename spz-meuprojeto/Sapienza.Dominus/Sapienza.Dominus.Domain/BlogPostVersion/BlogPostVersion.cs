@@ -16,7 +16,7 @@ public class BlogPostVersion : Entity<Guid>
     public Guid? BlogPostId { get; set; }
 
     // ========== Navigation Properties ==========
-    public virtual Sapienza.Dominus.BlogPost.BlogPost? BlogPost { get; set; }
+    public virtual Dominus.BlogPost.BlogPost? BlogPost { get; set; }
 
     // ========== Collection Navigation Properties (1:N - This entity is the "One" side) ==========
 

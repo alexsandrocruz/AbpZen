@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Sapienza.Sapienza.Dominus.Web.Components.Toolbar.LoginLink
+namespace Sapienza.Dominus.Web.Components.Toolbar.LoginLink
 {
     public class LoginLinkViewComponent : AbpViewComponent
     {

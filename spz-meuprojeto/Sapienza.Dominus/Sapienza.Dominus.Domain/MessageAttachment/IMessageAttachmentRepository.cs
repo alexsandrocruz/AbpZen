@@ -3,6 +3,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Sapienza.Dominus.MessageAttachment;
 
-public interface IMessageAttachmentRepository : IRepository<Sapienza.Dominus.MessageAttachment.MessageAttachment, Guid>
+public interface IMessageAttachmentRepository : IRepository<Dominus.MessageAttachment.MessageAttachment, Guid>
 {
 }

@@ -6,10 +6,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Sapienza.Dominus.WorkspaceInvite;
 
 public class EfWorkspaceInviteRepository 
-    : EfCoreRepository<Sapienza.DominusDbContext, Sapienza.Dominus.WorkspaceInvite.WorkspaceInvite, Guid>, 
+    : EfCoreRepository<DominusDbContext, Dominus.WorkspaceInvite.WorkspaceInvite, Guid>, 
       IWorkspaceInviteRepository
 {
-    public EfWorkspaceInviteRepository(IDbContextProvider<Sapienza.DominusDbContext> dbContextProvider) 
+    public EfWorkspaceInviteRepository(IDbContextProvider<DominusDbContext> dbContextProvider) 
         : base(dbContextProvider)
     {
     }

@@ -1,6 +1,6 @@
-﻿namespace Sapienza.Sapienza.Dominus.MauiBlazor.Settings;
+﻿namespace Sapienza.Dominus.MauiBlazor.Settings;
 
-public interface ISapienza.DominusApplicationSettingService
+public interface IDominusApplicationSettingService
 {   
    Task<string> GetAccessTokenAsync();
     

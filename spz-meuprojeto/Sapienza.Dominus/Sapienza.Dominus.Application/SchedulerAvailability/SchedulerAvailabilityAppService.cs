@@ -19,12 +19,12 @@ public class SchedulerAvailabilityAppService :
     DominusAppService,
     ISchedulerAvailabilityAppService
 {
-    private readonly IRepository<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, Guid> _repository;
-    private readonly IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
+    private readonly IRepository<Dominus.SchedulerAvailability.SchedulerAvailability, Guid> _repository;
+    private readonly IRepository<Dominus.SchedulerType.SchedulerType, Guid> _schedulerTypeRepository;
 
     public SchedulerAvailabilityAppService(
-        IRepository<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, Guid> repository,
-        IRepository<Sapienza.Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository
+        IRepository<Dominus.SchedulerAvailability.SchedulerAvailability, Guid> repository,
+        IRepository<Dominus.SchedulerType.SchedulerType, Guid> schedulerTypeRepository
     )
     {
         _repository = repository;
@@ -37,7 +37,7 @@ public class SchedulerAvailabilityAppService :
     public virtual async Task<SchedulerAvailabilityDto> GetAsync(Guid id)
     {
         var entity = await _repository.GetAsync(id);
-        var dto = ObjectMapper.Map<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
+        var dto = ObjectMapper.Map<Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
         if (entity.SchedulerTypeId != null)
         {
             var parent = await _schedulerTypeRepository.FindAsync(entity.SchedulerTypeId.Value);
@@ -67,7 +67,7 @@ public class SchedulerAvailabilityAppService :
         queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
 
         var entities = await AsyncExecuter.ToListAsync(queryable);
-        var dtoList = ObjectMapper.Map<List<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability>, List<SchedulerAvailabilityDto>>(entities);
+        var dtoList = ObjectMapper.Map<List<Dominus.SchedulerAvailability.SchedulerAvailability>, List<SchedulerAvailabilityDto>>(entities);
         var schedulerTypeIds = entities
             .Where(x => x.SchedulerTypeId != null)
             .Select(x => x.SchedulerTypeId.Value)
@@ -100,11 +100,11 @@ public class SchedulerAvailabilityAppService :
     [Authorize(SchedulerAvailabilityPermissions.Create)]
     public virtual async Task<SchedulerAvailabilityDto> CreateAsync(CreateUpdateSchedulerAvailabilityDto input)
     {
-        var entity = ObjectMapper.Map<CreateUpdateSchedulerAvailabilityDto, Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability>(input);
+        var entity = ObjectMapper.Map<CreateUpdateSchedulerAvailabilityDto, Dominus.SchedulerAvailability.SchedulerAvailability>(input);
 
         await _repository.InsertAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
     }
 
     /// <summary>
@@ -116,14 +116,14 @@ public class SchedulerAvailabilityAppService :
         var entity = await _repository.GetAsync(id);
         if (entity == null)
         {
-             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability), id);
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Dominus.SchedulerAvailability.SchedulerAvailability), id);
         }
 
         ObjectMapper.Map(input, entity);
 
         await _repository.UpdateAsync(entity, autoSave: true);
 
-        return ObjectMapper.Map<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
+        return ObjectMapper.Map<Dominus.SchedulerAvailability.SchedulerAvailability, SchedulerAvailabilityDto>(entity);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SchedulerAvailabilityAppService :
     /// <summary>
     /// Applies filters to the queryable based on input parameters
     /// </summary>
-    protected virtual IQueryable<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability> ApplyFilters(IQueryable<Sapienza.Dominus.SchedulerAvailability.SchedulerAvailability> queryable, SchedulerAvailabilityGetListInput input)
+    protected virtual IQueryable<Dominus.SchedulerAvailability.SchedulerAvailability> ApplyFilters(IQueryable<Dominus.SchedulerAvailability.SchedulerAvailability> queryable, SchedulerAvailabilityGetListInput input)
     {
         return queryable
             // ========== FK Filters ==========

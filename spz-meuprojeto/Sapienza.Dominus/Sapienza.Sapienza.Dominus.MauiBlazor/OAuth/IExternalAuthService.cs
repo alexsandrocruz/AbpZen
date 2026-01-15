@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Sapienza.Sapienza.Dominus.MauiBlazor.OAuth;
+namespace Sapienza.Dominus.MauiBlazor.OAuth;
 
 public interface IExternalAuthService
 {
