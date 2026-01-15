@@ -1,0 +1,167 @@
+import { useForm } from "react-hook-form";
+  import { zodResolver } from "@hookform/resolvers/zod";
+  import * as z from "zod";
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog";
+  import { Button } from "@/components/ui/button";
+  import { Input } from "@/components/ui/input";
+  import { Label } from "@/components/ui/label";
+  import { Checkbox } from "@/components/ui/checkbox";
+  import { Loader2 } from "lucide-react";
+  import { useEffect } from "react";
+  import { useCreateLead, useUpdateLead } from "@/lib/abp/hooks/useLeads";
+import { toast } from "sonner";
+
+const formSchema = z.object({
+  
+    name: z.any(),
+  
+    email: z.any(),
+  
+    phone: z.any(),
+  
+    status: z.any(),
+  
+    source: z.any(),
+  
+    workflowId: z.any(),
+  
+    stageId: z.any(),
+  
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+interface LeadFormProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialValues ?: any;
+}
+
+export function LeadForm({
+  isOpen,
+  onClose,
+  initialValues,
+}: LeadFormProps) {
+  const isEditing = !!initialValues;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue,
+    watch,
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: initialValues || {},
+  });
+
+  useEffect(() => {
+    if (initialValues) {
+      reset(initialValues);
+    } else {
+      reset({});
+    }
+  }, [initialValues, reset]);
+
+  const createMutation = useCreateLead();
+const updateMutation = useUpdateLead();
+
+const onSubmit = async (data: FormValues) => {
+  try {
+    if (isEditing) {
+      await updateMutation.mutateAsync({ id: initialValues.id, data });
+      toast.success("Lead updated successfully");
+    } else {
+      await createMutation.mutateAsync(data);
+      toast.success("Lead created successfully");
+    }
+    onClose();
+  } catch (error: any) {
+    console.error("Failed to save lead:", error);
+    toast.error(error.message || "Failed to save lead");
+  }
+};
+
+return (
+  <Dialog open= { isOpen } onOpenChange = { onClose } >
+    <DialogContent className="sm:max-w-[500px]" >
+      <DialogHeader>
+      <DialogTitle>{ isEditing? "Edit Lead": "Create Lead" } </DialogTitle>
+      <DialogDescription>
+{ isEditing ? "Update the details of the lead." : "Fill in the details to create a new lead." }
+</DialogDescription>
+  </DialogHeader>
+  < form onSubmit = { handleSubmit(onSubmit) } className = "space-y-4 py-4" >
+    
+<div className="space-y-2" >
+  <Label htmlFor="name" > Name * </Label>
+
+<Input id="name" {...register("name") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="email" > Email</Label>
+
+<Input id="email" {...register("email") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="phone" > Phone</Label>
+
+<Input id="phone" {...register("phone") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="status" > Status</Label>
+
+<Input id="status" {...register("status") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="source" > Source</Label>
+
+<Input id="source" {...register("source") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="workflowId" > WorkflowId</Label>
+
+<Input id="workflowId" {...register("workflowId") } />
+
+</div>
+
+<div className="space-y-2" >
+  <Label htmlFor="stageId" > StageId</Label>
+
+<Input id="stageId" {...register("stageId") } />
+
+</div>
+
+
+<DialogFooter>
+  <Button type="button" variant = "outline" onClick = { onClose } disabled = { isSubmitting } >
+    Cancel
+    </Button>
+    < Button type = "submit" disabled = { isSubmitting } >
+      { isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+{ isEditing ? "Save Changes" : "Create" }
+</Button>
+  </DialogFooter>
+  </form>
+  </DialogContent>
+  </Dialog>
+  );
+}

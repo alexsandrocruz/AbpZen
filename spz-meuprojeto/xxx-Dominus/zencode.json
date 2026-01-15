@@ -1,8 +1,0 @@
-{
-  "version": "1.0",
-  "name": "Dominus",
-  "namespace": "Sapienza.Dominus",
-  "createdAt": "2026-01-14T19:40:50.908Z",
-  "frontend": "react-v2",
-  "entities": []
-}
