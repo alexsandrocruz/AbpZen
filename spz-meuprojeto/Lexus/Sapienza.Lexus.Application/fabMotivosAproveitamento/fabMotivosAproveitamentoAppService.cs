@@ -1,0 +1,137 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Sapienza.Lexus.Permissions;
+using Sapienza.Lexus.fabMotivosAproveitamento.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+
+namespace Sapienza.Lexus.fabMotivosAproveitamento;
+
+/// <summary>
+/// Application service for fabMotivosAproveitamento entity
+/// </summary>
+[Authorize(fabMotivosAproveitamentoPermissions.Default)]
+public class fabMotivosAproveitamentoAppService :
+    LexusAppService,
+    IfabMotivosAproveitamentoAppService
+{
+    private readonly IRepository<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento, Guid> _repository;
+
+    public fabMotivosAproveitamentoAppService(
+        IRepository<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento, Guid> repository
+    )
+    {
+        _repository = repository;
+    }
+
+    /// <summary>
+    /// Gets a single fabMotivosAproveitamento by Id
+    /// </summary>
+    public virtual async Task<fabMotivosAproveitamentoDto> GetAsync(Guid id)
+    {
+        var entity = await _repository.GetAsync(id);
+        var dto = ObjectMapper.Map<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento, fabMotivosAproveitamentoDto>(entity);
+
+        return dto;
+    }
+
+    /// <summary>
+    /// Gets a paged and filtered list of fabMotivosAproveitamentos
+    /// </summary>
+    public virtual async Task<PagedResultDto<fabMotivosAproveitamentoDto>> GetListAsync(fabMotivosAproveitamentoGetListInput input)
+    {
+        var queryable = await _repository.GetQueryableAsync();
+
+        // Apply filters
+        queryable = ApplyFilters(queryable, input);
+
+        // Apply default sorting (by CreationTime descending)
+        queryable = queryable.OrderByDescending(e => e.CreationTime);
+
+        // Get total count
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+
+        // Apply paging
+        queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
+
+        var entities = await AsyncExecuter.ToListAsync(queryable);
+        var dtoList = ObjectMapper.Map<List<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento>, List<fabMotivosAproveitamentoDto>>(entities);
+
+        return new PagedResultDto<fabMotivosAproveitamentoDto>(
+            totalCount,
+            dtoList
+        );
+    }
+
+    /// <summary>
+    /// Creates a new fabMotivosAproveitamento
+    /// </summary>
+    [Authorize(fabMotivosAproveitamentoPermissions.Create)]
+    public virtual async Task<fabMotivosAproveitamentoDto> CreateAsync(CreateUpdatefabMotivosAproveitamentoDto input)
+    {
+        var entity = ObjectMapper.Map<CreateUpdatefabMotivosAproveitamentoDto, Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento>(input);
+
+        await _repository.InsertAsync(entity, autoSave: true);
+
+        return ObjectMapper.Map<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento, fabMotivosAproveitamentoDto>(entity);
+    }
+
+    /// <summary>
+    /// Updates an existing fabMotivosAproveitamento
+    /// </summary>
+    [Authorize(fabMotivosAproveitamentoPermissions.Update)]
+    public virtual async Task<fabMotivosAproveitamentoDto> UpdateAsync(Guid id, CreateUpdatefabMotivosAproveitamentoDto input)
+    {
+        var entity = await _repository.GetAsync(id);
+        if (entity == null)
+        {
+             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento), id);
+        }
+
+        ObjectMapper.Map(input, entity);
+
+        await _repository.UpdateAsync(entity, autoSave: true);
+
+        return ObjectMapper.Map<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento, fabMotivosAproveitamentoDto>(entity);
+    }
+
+    /// <summary>
+    /// Deletes a fabMotivosAproveitamento
+    /// </summary>
+    [Authorize(fabMotivosAproveitamentoPermissions.Delete)]
+    public virtual async Task DeleteAsync(Guid id)
+    {
+        await _repository.DeleteAsync(id);
+    }
+
+    public virtual async Task<ListResultDto<LookupDto<Guid>>> GetfabMotivosAproveitamentoLookupAsync()
+    {
+        var entities = await _repository.GetListAsync();return new ListResultDto<LookupDto<Guid>>(
+            entities.Select(x => new LookupDto<Guid>
+            {
+                Id = x.Id,
+                DisplayName = x.titulo
+            }).ToList()
+        );
+    }
+
+    /// <summary>
+    /// Applies filters to the queryable based on input parameters
+    /// </summary>
+    protected virtual IQueryable<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento> ApplyFilters(IQueryable<Sapienza.Lexus.fabMotivosAproveitamento.fabMotivosAproveitamento> queryable, fabMotivosAproveitamentoGetListInput input)
+    {
+        return queryable
+            .WhereIf(!input.Filter.IsNullOrWhiteSpace(), x =>x.titulo.Contains(input.Filter))
+            .WhereIf(input.idMotivo != null, x => x.idMotivo == input.idMotivo)
+            .WhereIf(!input.titulo.IsNullOrWhiteSpace(), x => x.titulo.Contains(input.titulo))
+            .WhereIf(input.ativo != null, x => x.ativo == input.ativo)
+            .WhereIf(input.tsInclusao != null, x => x.tsInclusao == input.tsInclusao)
+            .WhereIf(input.tsAlteracao != null, x => x.tsAlteracao == input.tsAlteracao)
+            // ========== FK Filters ==========
+            ;
+    }
+}

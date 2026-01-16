@@ -57,12 +57,12 @@ public class {{ entity.name }}AppService :
         {%- for rel in relationships.asChild %}
         {%- if rel.isRequired %}
         var {{ rel.parentEntityName | camelCase }} = await _{{ rel.parentEntityName | camelCase }}Repository.FindAsync(entity.{{ rel.fkFieldName }});
-        dto.{{ rel.parentEntityName }}DisplayName = {{ rel.parentEntityName | camelCase }}?.{{ rel.displayField }};
+        dto.{{ rel.parentEntityName }}DisplayName = {% if rel.displayField == 'Id' %}{{ rel.parentEntityName | camelCase }}?.{{ rel.displayField }}.ToString(){% else %}{{ rel.parentEntityName | camelCase }}?.{{ rel.displayField }}{% endif %};
         {%- else %}
         if (entity.{{ rel.fkFieldName }} != null)
         {
             var parent = await _{{ rel.parentEntityName | camelCase }}Repository.FindAsync(entity.{{ rel.fkFieldName }}.Value);
-            dto.{{ rel.parentEntityName }}DisplayName = parent?.{{ rel.displayField }};
+            dto.{{ rel.parentEntityName }}DisplayName = {% if rel.displayField == 'Id' %}parent?.{{ rel.displayField }}.ToString(){% else %}parent?.{{ rel.displayField }}{% endif %};
         }
         {%- endif %}
         {%- endfor %}
@@ -102,7 +102,7 @@ public class {{ entity.name }}AppService :
         if ({{ rel.parentEntityName | camelCase }}Ids.Any())
         {
             var parents = await _{{ rel.parentEntityName | camelCase }}Repository.GetListAsync(x => {{ rel.parentEntityName | camelCase }}Ids.Contains(x.Id));
-            var parentMap = parents.ToDictionary(x => x.Id, x => x.{{ rel.displayField }});
+            var parentMap = parents.ToDictionary(x => x.Id, x => {% if rel.displayField == 'Id' %}x.{{ rel.displayField }}.ToString(){% else %}x.{{ rel.displayField }}{% endif %});
 
             foreach (var dto in dtoList)
             {
@@ -122,7 +122,7 @@ public class {{ entity.name }}AppService :
         if ({{ rel.parentEntityName | camelCase }}Ids.Any())
         {
             var parents = await _{{ rel.parentEntityName | camelCase }}Repository.GetListAsync(x => {{ rel.parentEntityName | camelCase }}Ids.Contains(x.Id));
-            var parentMap = parents.ToDictionary(x => x.Id, x => x.{{ rel.displayField }});
+            var parentMap = parents.ToDictionary(x => x.Id, x => {% if rel.displayField == 'Id' %}x.{{ rel.displayField }}.ToString(){% else %}x.{{ rel.displayField }}{% endif %});
 
             foreach (var dto in dtoList.Where(x => x.{{ rel.fkFieldName }} != null))
             {
