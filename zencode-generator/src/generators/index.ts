@@ -52,6 +52,7 @@ import {
     getReactV2PageTemplate,
     getReactV2ListComponentTemplate,
     getReactV2FormComponentTemplate,
+    getReactV2CardComponentTemplate,
     getReactV2HookTemplate,
     getReactV2MasterDetailListPageTemplate,
     getReactV2MasterDetailFormPageTemplate
@@ -591,6 +592,13 @@ export class CodeGenerator {
                 content: await this.engine.parseAndRender(getReactV2MasterDetailFormPageTemplate(), formCtx),
                 layer: 'React',
             });
+
+            // Card component (for grid view in master-detail listing)
+            files.push({
+                path: `abp-react-v2/src/components/${kebabName}/${pascalCase(entity.name)}Card.tsx`,
+                content: await this.engine.parseAndRender(getReactV2CardComponentTemplate(), ctx),
+                layer: 'React',
+            });
         } else {
             // Modal layout (default for simple entities)
             // Page component
@@ -611,6 +619,13 @@ export class CodeGenerator {
             files.push({
                 path: `abp-react-v2/src/components/${kebabName}/${pascalCase(entity.name)}Form.tsx`,
                 content: await this.engine.parseAndRender(getReactV2FormComponentTemplate(), ctx),
+                layer: 'React',
+            });
+
+            // Card component (for grid view)
+            files.push({
+                path: `abp-react-v2/src/components/${kebabName}/${pascalCase(entity.name)}Card.tsx`,
+                content: await this.engine.parseAndRender(getReactV2CardComponentTemplate(), ctx),
                 layer: 'React',
             });
         }

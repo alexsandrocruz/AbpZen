@@ -8,12 +8,24 @@
 export function getReactV2PageTemplate(): string {
   return `import { Shell } from "@/components/layout/shell";
 import { {{ entity.name | pascalCase }}List } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name | pascalCase }}List";
+import { {{ entity.name | pascalCase }}Form } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name | pascalCase }}Form";
 import { Button } from "@/components/ui/button";
 import { Plus, Box } from "lucide-react";
-import { useLocation } from "wouter";
+import { useState } from "react";
 
 export default function {{ entity.pluralName | pascalCase }}Page() {
-  const [, setLocation] = useLocation();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const handleCreate = () => {
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setSelectedItem(item);
+    setIsFormOpen(true);
+  };
 
   return (
     <Shell>
@@ -28,13 +40,19 @@ export default function {{ entity.pluralName | pascalCase }}Page() {
               <p className="text-muted-foreground">Manage your {{ entity.pluralName | downcase }}</p>
             </div>
           </div>
-          <Button className="gap-2" onClick={() => setLocation("/admin/{{ entity.name | kebabCase }}/create")}>
+          <Button className="gap-2" onClick={handleCreate}>
             <Plus className="size-4" />
             New {{ entity.name }}
           </Button>
         </div>
 
-        <{{ entity.name | pascalCase }}List onEdit={(item) => setLocation(\`/admin/{{ entity.name | kebabCase }}/\${item.id}/edit\`)} />
+        <{{ entity.name | pascalCase }}List onEdit={handleEdit} />
+
+        <{{ entity.name | pascalCase }}Form
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          initialValues={selectedItem}
+        />
       </div>
     </Shell>
   );
@@ -59,7 +77,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Search, MoreHorizontal, Pencil, Trash2, Loader2, LayoutGrid, List } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -69,6 +87,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { {{ entity.name | pascalCase }}Card } from "./{{ entity.name | pascalCase }}Card";
 
 interface {{ entity.name | pascalCase }}ListProps {
   onEdit: (item: any) => void;
@@ -76,6 +95,7 @@ interface {{ entity.name | pascalCase }}ListProps {
 
 export function {{ entity.name | pascalCase }}List({ onEdit }: {{ entity.name | pascalCase }}ListProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const { data, isLoading, isError } = use{{ entity.pluralName | pascalCase }}({
     filter: searchTerm,
   });
@@ -103,8 +123,8 @@ export function {{ entity.name | pascalCase }}List({ onEdit }: {{ entity.name | 
   return (
     <Card>
       <CardContent className="p-0">
-        <div className="p-4 border-b">
-          <div className="relative max-w-sm">
+        <div className="p-4 border-b flex items-center justify-between gap-4">
+          <div className="relative max-w-sm flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search {{ entity.pluralName | downcase }}..."
@@ -113,68 +133,208 @@ export function {{ entity.name | pascalCase }}List({ onEdit }: {{ entity.name | 
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <div className="flex items-center gap-1 border rounded-md p-1 bg-muted/20">
+            <Button 
+              variant={viewMode === "grid" ? "secondary" : "ghost"} 
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setViewMode("grid")}
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant={viewMode === "list" ? "secondary" : "ghost"} 
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setViewMode("list")}
+            >
+              <List className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {% for field in entity.fields %}
-              <TableHead>{{ field.name }}</TableHead>
-              {% endfor %}
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data?.items?.map((item: any) => (
-              <TableRow key={item.id}>
-                {% for field in entity.fields %}
-                <TableCell>
-                  {% if field.type == "bool" %}
-                  <Badge variant={item.{{ field.name | camelCase }} ? "default" : "secondary"}>
-                    {item.{{ field.name | camelCase }} ? "Yes" : "No"}
-                  </Badge>
-                  {% elsif field.type == "datetime" %}
-                  {item.{{ field.name | camelCase }} ? new Date(item.{{ field.name | camelCase }}).toLocaleDateString() : "-"}
-                  {% else %}
-                  {item.{{ field.name | camelCase }}}
-                  {% endif %}
-                </TableCell>
-                {% endfor %}
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => onEdit(item)}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="text-destructive"
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-            {(!data?.items || data.items.length === 0) && (
+
+        {viewMode === "list" ? (
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={99} className="h-24 text-center">
-                  No results found.
-                </TableCell>
+                {% for field in entity.fields %}
+                <TableHead>{{ field.name }}</TableHead>
+                {% endfor %}
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data?.items?.map((item: any) => (
+                <TableRow key={item.id}>
+                  {% for field in entity.fields %}
+                  <TableCell>
+                    {% if field.type == "bool" %}
+                    <Badge variant={item.{{ field.name | camelCase }} ? "default" : "secondary"}>
+                      {item.{{ field.name | camelCase }} ? "Yes" : "No"}
+                    </Badge>
+                    {% elsif field.type == "datetime" %}
+                    {item.{{ field.name | camelCase }} ? new Date(item.{{ field.name | camelCase }}).toLocaleDateString() : "-"}
+                    {% else %}
+                    {item.{{ field.name | camelCase }}}
+                    {% endif %}
+                  </TableCell>
+                  {% endfor %}
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => onEdit(item)}>
+                          <Pencil className="mr-2 h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-destructive"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {(!data?.items || data.items.length === 0) && (
+                <TableRow>
+                  <TableCell colSpan={99} className="h-24 text-center">
+                    No results found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="p-4">
+            {(!data?.items || data.items.length === 0) ? (
+              <div className="flex items-center justify-center h-24 text-muted-foreground">
+                No results found.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {data.items.map((item: any) => (
+                  <{{ entity.name | pascalCase }}Card
+                    key={item.id}
+                    item={item}
+                    onEdit={onEdit}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
             )}
-          </TableBody>
-        </Table>
+          </div>
+        )}
       </CardContent>
+    </Card>
+  );
+}
+`;
+}
+
+// ============ CARD COMPONENT TEMPLATE ============
+
+export function getReactV2CardComponentTemplate(): string {
+  return `import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { MoreHorizontal, Pencil, Trash2, Box } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface {{ entity.name | pascalCase }}CardProps {
+  item: any;
+  onEdit: (item: any) => void;
+  onDelete: (id: string) => void;
+}
+
+export function {{ entity.name | pascalCase }}Card({ item, onEdit, onDelete }: {{ entity.name | pascalCase }}CardProps) {
+  return (
+    <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
+      <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+        <div className="flex items-center gap-2">
+          {% assign boolFields = entity.fields | where: "type", "bool" %}
+          {% for field in boolFields limit: 2 %}
+          <Badge variant={item.{{ field.name | camelCase }} ? "default" : "secondary"}>
+            {item.{{ field.name | camelCase }} ? "{{ field.name }}" : "Not {{ field.name }}"}
+          </Badge>
+          {% endfor %}
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => onEdit(item)}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              className="text-destructive"
+              onClick={() => onDelete(item.id)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
+      <CardContent className="flex-1 pt-0">
+        <div className="flex items-start gap-3">
+          <div className="bg-primary/10 p-2 rounded-lg shrink-0">
+            <Box className="h-5 w-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            {% assign stringFields = entity.fields | where: "type", "string" %}
+            {% assign firstStringField = stringFields | first %}
+            {% if firstStringField %}
+            <h3 className="font-semibold truncate" title={item.{{ firstStringField.name | camelCase }}}>
+              {item.{{ firstStringField.name | camelCase }} || "-"}
+            </h3>
+            {% else %}
+            <h3 className="font-semibold truncate">
+              {item.id}
+            </h3>
+            {% endif %}
+            {% assign secondStringField = stringFields[1] %}
+            {% if secondStringField %}
+            <p className="text-sm text-muted-foreground truncate" title={item.{{ secondStringField.name | camelCase }}}>
+              {item.{{ secondStringField.name | camelCase }} || "-"}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="pt-0">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="w-full"
+          onClick={() => onEdit(item)}
+        >
+          <Pencil className="mr-2 h-3 w-3" />
+          Edit
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
@@ -494,7 +654,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Box, Search, MoreHorizontal, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Box, Search, MoreHorizontal, Pencil, Trash2, Loader2, LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { use{{ entity.pluralName | pascalCase }}, useDelete{{ entity.name | pascalCase }} } from "@/lib/abp/hooks/use{{ entity.pluralName | pascalCase }}";
@@ -515,10 +675,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { {{ entity.name | pascalCase }}Card } from "@/components/{{ entity.name | kebabCase }}/{{ entity.name | pascalCase }}Card";
 
 export default function {{ entity.pluralName | pascalCase }}Page() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const { data, isLoading } = use{{ entity.pluralName | pascalCase }}({ filter: searchTerm });
   const deleteMutation = useDelete{{ entity.name | pascalCase }}();
 
@@ -531,6 +693,10 @@ export default function {{ entity.pluralName | pascalCase }}Page() {
         toast.error(error.message || "Failed to delete");
       }
     }
+  };
+
+  const handleEdit = (item: any) => {
+    setLocation(\`/admin/{{ entity.name | kebabCase }}/\${item.id}/edit\`);
   };
 
   return (
@@ -554,8 +720,8 @@ export default function {{ entity.pluralName | pascalCase }}Page() {
 
         <Card>
           <CardContent className="p-0">
-            <div className="p-4 border-b">
-              <div className="relative max-w-sm">
+            <div className="p-4 border-b flex items-center justify-between gap-4">
+              <div className="relative max-w-sm flex-1">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search {{ entity.pluralName | downcase }}..."
@@ -564,13 +730,31 @@ export default function {{ entity.pluralName | pascalCase }}Page() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
+              <div className="flex items-center gap-1 border rounded-md p-1 bg-muted/20">
+                <Button 
+                  variant={viewMode === "grid" ? "secondary" : "ghost"} 
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant={viewMode === "list" ? "secondary" : "ghost"} 
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
             {isLoading ? (
               <div className="flex items-center justify-center p-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
-            ) : (
+            ) : viewMode === "list" ? (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -635,6 +819,25 @@ export default function {{ entity.pluralName | pascalCase }}Page() {
                   )}
                 </TableBody>
               </Table>
+            ) : (
+              <div className="p-4">
+                {(!data?.items || data.items.length === 0) ? (
+                  <div className="flex items-center justify-center h-24 text-muted-foreground">
+                    No results found.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {data.items.map((item: any) => (
+                      <{{ entity.name | pascalCase }}Card
+                        key={item.id}
+                        item={item}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
           </CardContent>
         </Card>
